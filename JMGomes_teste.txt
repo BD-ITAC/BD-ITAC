@@ -1,1 +1,5 @@
 teste JMGomes
+
+teste conflito
+
+teste merge
