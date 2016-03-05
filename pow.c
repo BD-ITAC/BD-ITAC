@@ -2,7 +2,7 @@
 
 main()
 {
-	int x, y;
+	int x, z;
 
 	printf("Enter two numbers: ");
 	scanf("%d %d", &x, &z);
