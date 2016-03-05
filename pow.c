@@ -2,10 +2,10 @@
 
 main()
 {
-	int x,;
+	int x, z;
 
-	printf("Enter a number: ");
-	scanf("%d", &x);
+	printf("Enter two numbers: ");
+	scanf("%d %d", &x, &z);
 
-	printf("\nResult: %.2f\n\n", por(x, 2));
+	printf("\nResult: %.2f\n\n", por(x, z));
 }
