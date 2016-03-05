@@ -4,8 +4,8 @@ main()
 {
 	int x;
 
-	printf("Enter two numbers: ");
+	printf("Enter a number: ");
 	scanf("%d", &x);
 
-	printf("\nResult: %.2f\n\n", por(x, 2));
+	printf("\nResult: %.2f\n\n", por(x, 2Wq));
 }
