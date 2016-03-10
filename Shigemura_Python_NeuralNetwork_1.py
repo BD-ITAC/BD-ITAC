@@ -1,5 +1,5 @@
 """
-network.py
+network.py - CHANGED AT SHIGEMURA BRANCH
 ~~~~~~~~~~
 
 A module to implement the stochastic gradient descent learning
