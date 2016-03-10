@@ -1,6 +1,6 @@
 """
 <<<<<<< HEAD
-network.py - Changed at MASTER branch
+network.py - Changed at MASTER
 =======
 network.py - CHANGED AT SHIGEMURA BRANCH
 >>>>>>> Shigemura
