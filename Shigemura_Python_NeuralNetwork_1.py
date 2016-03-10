@@ -1,5 +1,9 @@
 """
+<<<<<<< HEAD
 network.py - Changed at MASTER branch
+=======
+network.py - CHANGED AT SHIGEMURA BRANCH
+>>>>>>> Shigemura
 ~~~~~~~~~~
 
 A module to implement the stochastic gradient descent learning
