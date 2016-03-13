@@ -1,1 +1,1 @@
-gerando conflito
+resolvendo o conflito
