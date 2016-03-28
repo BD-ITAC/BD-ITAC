@@ -1,7 +1,7 @@
 module.exports = function(app ){
   var uri = '/rest/users';
   var controller = app.controllers.user;
-
+  console.log("controllers users");
   app.get(uri, controller.listUsers);
 /*  app.post(uri+'/', controller.saveUser);
   app.delete(uri+'/:id', controller.deleteUser);

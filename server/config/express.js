@@ -5,7 +5,7 @@
  */
 var express = require('express');
 var load = require('express-load');
-var routes = require('./routes');
+var bodyParser = require('body-parser');
 var http = require('http');
 var path = require('path');
 
@@ -21,8 +21,8 @@ module.exports = function(){
   app.use(bodyParser.urlencoded({extended: true}));
   app.use(bodyParser.json());
 
-  load('models', {cwd: 'app'})
-    .then('helpers')
+  load({cwd: 'server'})
+//    .then('helpers')
     .then('dao')
     .then('controllers')
     .then('routes')
