@@ -1,0 +1,14 @@
+{
+  "name": "bditac",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+	"body-parser": "^1.12.2",
+    "ejs": "^1.0.0",
+    "express": "3.5.1",
+    "jade": "*"
+  }
+}
