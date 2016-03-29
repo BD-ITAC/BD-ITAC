@@ -21,7 +21,7 @@ module.exports = function(){
   app.use(bodyParser.urlencoded({extended: true}));
   app.use(bodyParser.json());
 
-  load({cwd: 'server'})
+  load('models', {cwd: 'server'})
 //    .then('helpers')
     .then('dao')
     .then('controllers')
