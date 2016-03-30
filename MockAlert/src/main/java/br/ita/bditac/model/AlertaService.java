@@ -60,7 +60,7 @@ public class AlertaService {
         List<Alerta> alertasPorRegiao = new ArrayList<Alerta>();
         
         for (Alerta alerta : alertas.values()) {
-            if (Haversine.distance(alerta.origemLatitude, alerta.origemLongitude, latitude, longitude) <= raio) {
+            if (Haversine.distance(alerta.getOrigemLatitude(), alerta.getOrigemLongitude(), latitude, longitude) <= raio) {
                 alertasPorRegiao.add(alerta);
             }
         }
