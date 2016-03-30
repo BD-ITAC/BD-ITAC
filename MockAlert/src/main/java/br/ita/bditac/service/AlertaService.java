@@ -1,4 +1,4 @@
-package br.ita.bditac.model;
+package br.ita.bditac.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -7,6 +7,10 @@ import java.util.Map;
 
 import org.springframework.stereotype.Component;
 
+import br.ita.bditac.model.Alerta;
+import br.ita.bditac.model.Evento;
+import br.ita.bditac.model.Message;
+import br.ita.bditac.model.Message.Type;
 import br.ita.bditac.support.Haversine;
 
 @Component

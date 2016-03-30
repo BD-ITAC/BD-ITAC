@@ -125,8 +125,7 @@ public class MockAlertTests {
                 "(12) 99876-1234",
                 endereco);
         try {
-            HttpEntity<Evento> eventoRequestEntity = new HttpEntity<Evento>(eventoRequest);
-            ResponseEntity<EventoResponse> eventoResponseEntity =  restTemplate.postForEntity(eventoURI, eventoRequestEntity, EventoResponse.class);
+            ResponseEntity<EventoResponse> eventoResponseEntity =  restTemplate.postForEntity(eventoURI, new HttpEntity<Evento>(eventoRequest), EventoResponse.class);
             
             assertThat(eventoResponseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
             
@@ -223,8 +222,7 @@ public class MockAlertTests {
                 1.0,
                 endereco);
         try {
-            HttpEntity<Alerta> alertaRequestEntity = new HttpEntity<Alerta>(alertaRequest);
-            ResponseEntity<AlertaResponse> alertaResponseEntity = restTemplate.postForEntity(alertaURI, alertaRequestEntity, AlertaResponse.class);
+            ResponseEntity<AlertaResponse> alertaResponseEntity = restTemplate.postForEntity(alertaURI, new HttpEntity<Alerta>(alertaRequest), AlertaResponse.class);
             
             assertThat(alertaResponseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
 

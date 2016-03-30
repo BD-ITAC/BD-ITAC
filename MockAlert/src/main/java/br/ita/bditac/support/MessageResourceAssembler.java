@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
 import org.springframework.stereotype.Component;
 
-import br.ita.bditac.model.AlertaService;
 import br.ita.bditac.model.Message;
+import br.ita.bditac.service.AlertaService;
 import br.ita.bditac.service.MessageController;
 
 @Component

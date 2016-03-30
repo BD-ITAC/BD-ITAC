@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.ita.bditac.model.Alerta;
-import br.ita.bditac.model.AlertaService;
 import br.ita.bditac.support.AlertaResource;
 import br.ita.bditac.support.AlertaResourceAssembler;
 import br.ita.bditac.support.MessageResource;

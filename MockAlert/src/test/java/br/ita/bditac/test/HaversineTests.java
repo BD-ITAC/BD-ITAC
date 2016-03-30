@@ -10,7 +10,7 @@ import br.ita.bditac.support.Haversine;
 
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class HaversineTest {
+public class HaversineTests {
 
     private class Coords {
         
