@@ -9,11 +9,13 @@ import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.li
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -42,7 +44,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.restdocs.RestDocumentation;
-import org.springframework.restdocs.hypermedia.LinkExtractor;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -55,6 +56,8 @@ import org.springframework.web.context.WebApplicationContext;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.databind.SerializationFeature;
 
 import br.ita.bditac.app.Application;
 import br.ita.bditac.model.Alerta;
@@ -144,8 +147,6 @@ public class MockAlertTests {
         }
     }
     
-    LinkExtractor extractor;
-    
     @Test
     public void test102GetEvento() throws Exception {
         String eventoURL = getBaseUrl() + "/evento/{id}";
@@ -192,7 +193,7 @@ public class MockAlertTests {
     }
     
     @Test
-    public void test103POSTAlerta() throws URISyntaxException {
+    public void test103PostAlerta() throws URISyntaxException {
         URI alertaURI = new URI(getBaseUrl() + "/alerta");
         
         ObjectMapper mapper = new ObjectMapper();
@@ -251,7 +252,7 @@ public class MockAlertTests {
     }
     
     @Test
-    public void test104GETEvento() throws URISyntaxException {
+    public void test104GetAlerta() throws URISyntaxException {
         String alertaURL = getBaseUrl() + "/alerta/{id}";
         
         ObjectMapper mapper = new ObjectMapper();
@@ -308,15 +309,46 @@ public class MockAlertTests {
     }
     
     @Test
+    public void test901PostEvento() throws Exception {
+        List<String> endereco = new ArrayList<String>();
+        endereco.add("rua das Casas");
+        endereco.add("numero das Portas");
+        Evento evento = new Evento(
+            "Evento de teste",
+            0,
+            "João da Horta",
+            "joao.horta@gmail.com",
+            "(12) 95678-4321",
+            endereco);
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+        ObjectWriter writer = mapper.writer().withDefaultPrettyPrinter();
+        String eventoJson = writer.writeValueAsString(evento);
+        
+        this.mvc.perform(post(getBaseUrl() + "/evento")
+            .contentType(MediaTypes.HAL_JSON_VALUE)
+            .content(eventoJson))
+            .andExpect(status().isCreated())
+            .andDo(document("evento/post",
+                requestFields(
+                    fieldWithPath("descricao").type(JsonFieldType.STRING).description("Descrição do evento"),
+                    fieldWithPath("categoria").type(JsonFieldType.NULL).description("Categoria do evento"),
+                    fieldWithPath("nome").type(JsonFieldType.STRING).description("Nome do informante do evento"),
+                    fieldWithPath("email").type(JsonFieldType.STRING).description("Email do informante do evento"),
+                    fieldWithPath("telefone").type(JsonFieldType.STRING).description("Telefone do informante do evento"),
+                    fieldWithPath("endereco").type(JsonFieldType.ARRAY).description("Uma ou mais linhas com o endereço ou localização aproximada do evento"))));
+    }
+    
+    @Test
     public void test902GetEvento() throws Exception {
         this.mvc.perform(get(getBaseUrl() + "/evento/{id}", 1))
             .andExpect(status().isOk())
-            .andDo(document("locations", 
+            .andDo(document("evento/locations", 
                 pathParameters(parameterWithName("id").description("Identificação do evento"))));
         this.mvc.perform(get(getBaseUrl() + "/evento/1")
             .accept(MediaTypes.HAL_JSON_VALUE))
             .andExpect(status().isOk())
-            .andDo(document("index", 
+            .andDo(document("evento/get", 
                 responseFields(
                     fieldWithPath("evento.descricao").type(JsonFieldType.STRING).description("Descrição do evento"),
                     fieldWithPath("evento.categoria").type(JsonFieldType.NULL).description("Categoria do evento"),
@@ -330,15 +362,58 @@ public class MockAlertTests {
     }
     
     @Test
+    public void test903PostAlerta() throws Exception {
+        List<String> endereco = new ArrayList<String>();
+        endereco.add("rua das Casas");
+        endereco.add("numero das Portas");
+        Alerta alerta = new Alerta(
+            "Alerta de teste",
+            "Teste de alerta para verificar a funcionalidade do sistema",
+            5,
+            5,
+            0,
+            50.0D,
+            50.0D,
+            1.0D,
+            50.0D,
+            50.0D,
+            1.0D,
+            endereco);
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+        ObjectWriter writer = mapper.writer().withDefaultPrettyPrinter();
+        String alertaJson = writer.writeValueAsString(alerta);
+        
+        this.mvc.perform(post(getBaseUrl() + "/alerta")
+            .contentType(MediaTypes.HAL_JSON_VALUE)
+            .content(alertaJson))
+            .andExpect(status().isCreated())
+            .andDo(document("alerta/post", 
+                requestFields(
+                    fieldWithPath("descricaoResumida").type(JsonFieldType.STRING).description("Breve descrição do alerta"),
+                    fieldWithPath("descricaoCompleta").type(JsonFieldType.NULL).description("Descrição detalhada do alerta"),
+                    fieldWithPath("fatorRiscoHumano").type(JsonFieldType.STRING).description("Fator de risco para a vida humana"),
+                    fieldWithPath("fatorRiscoMaterial").type(JsonFieldType.STRING).description("Fator de risco para instalações e equipamentos"),
+                    fieldWithPath("categoriaAlerta").type(JsonFieldType.STRING).description("Indica o tipo de alerta"),
+                    fieldWithPath("origemLatitude").type(JsonFieldType.ARRAY).description("Latitude do ponto de origem do alerta"),
+                    fieldWithPath("origemLongitude").type(JsonFieldType.ARRAY).description("Longitude do ponto de origem do alerta"),
+                    fieldWithPath("origemRaioKms").type(JsonFieldType.ARRAY).description("Área de abrangência do alerta em Kms"),
+                    fieldWithPath("destinoLatitude").type(JsonFieldType.ARRAY).description("Latitude do destino presumido do evento (se houver, senão replica a da origem)"),
+                    fieldWithPath("destinoLongitude").type(JsonFieldType.ARRAY).description("Longitude do destino presumido do evento (se houver, senão replica a da origem)"),
+                    fieldWithPath("destinoRaioKms").type(JsonFieldType.ARRAY).description("Área de abrangência em Kms (se houver, senão replica a da a origem)"),
+                    fieldWithPath("endereco").type(JsonFieldType.ARRAY).description("Uma ou mais linhas com o endereço ou localização aproximada do ponto de origem do alerta"))));
+    }
+    
+    @Test
     public void test904GetAlerta() throws Exception {
         this.mvc.perform(get(getBaseUrl() + "/alerta/{id}", 1))
             .andExpect(status().isOk())
-            .andDo(document("locations", 
+            .andDo(document("alerta/locations", 
                 pathParameters(parameterWithName("id").description("Identificação do alerta"))));
         this.mvc.perform(get(getBaseUrl() + "/alerta/1")
             .accept(MediaTypes.HAL_JSON_VALUE))
             .andExpect(status().isOk())
-            .andDo(document("index", 
+            .andDo(document("alerta/get", 
                 responseFields(
                     fieldWithPath("alerta.descricaoResumida").type(JsonFieldType.STRING).description("Breve descrição do alerta"),
                     fieldWithPath("alerta.descricaoCompleta").type(JsonFieldType.NULL).description("Descrição detalhada do alerta"),

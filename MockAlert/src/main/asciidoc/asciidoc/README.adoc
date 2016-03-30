@@ -1,0 +1,105 @@
+Mock Alert
+==========
+
+= Aplicação *mock* de serviço web de Alertas para o [big]*https://sites.google.com/site/interdproj2016/[BD-ITAC]*
+
+:source-highlighter: coderay
+:doctype: book
+:icons: font
+:toc: left
+
+Aplicação Mock usando http://projects.spring.io/spring-hateoas/[Spring HATEOAS ReST API] e http://projects.spring.io/spring-boot/[Spring Boot] para gerar um serviço web para registrar eventos e emitir alertas
+
+É um serviço muito simples que não persiste dados. Os dados recebidos ficam armazenados em memória até o sistema ser re-iniciado.
+
+Abaixo documentação atual da API implementada pelo serviço.
+
+== Eventos
+
+Os eventos são cadastrados por um usuário da aplicação móvel e são enviados para o sistema para processamento. A partir dos eventos cadastrados é possível gerar alertas de ocorrências de crises.
+
+Para testar o serviço pode utilizar o comando +curl+:
+include::{snippets}/evento/locations/curl-request.adoc[]
+
+A requisição toma a seguinte forma:
+include::{snippets}/evento/locations/http-request.adoc[]
+
+A resposta irá conter os dados formatados em +JSON+ além do cabeçalho com o resultado da operação:
+include::{snippets}/evento/locations/http-response.adoc[]
+
+O(s) parâmetro(s) da resposta:
+include::{snippets}/evento/locations/path-parameters.adoc[]
+
+Para gravar um evento podemos utilizar o seguinte exemplo (em +curl+).:
+include::{snippets}/evento/post/curl-request.adoc[]
+Os dados a serem inseridos devem ser enviados também no formato +JSON+.
+
+A requisição irá tomar o seguinte formato:
+include::{snippets}/evento/post/http-request.adoc[]
+
+O serviço irá responder com +Status 201 - Created+ e os dados que acabaram de ser inseridos:
+include::{snippets}/evento/post/http-response.adoc[]
+
+A descrição do(s) atributo(s) retornado(s): 
+include::{snippets}/evento/post/request-fields.adoc[]
+
+Para pesquisar um registro específico do serviço podemos utilizar o seguinte comando (em +curl+):
+include::{snippets}/evento/get/curl-request.adoc[]
+
+A requisição toma a seguinte forma:
+include::{snippets}/evento/get/http-request.adoc[]
+
+A resposta irá conter os dados formatados em +JSON+ além do cabeçalho com o resultado da operação:
+include::{snippets}/evento/get/http-response.adoc[]
+
+O detalhe da seção +_links+ da resposta é a implementação de https://en.wikipedia.org/wiki/Hypertext_Application_Language[HAL - Hypertext Application Language] que poderá ser ignorada no presente desenvolvimento.
+include::{snippets}/evento/get/links.adoc[]
+
+A descrição do(s) atributo(s) retornado(s):
+include::{snippets}/evento/get/response-fields.adoc[]
+
+
+== Alertas
+
+Alertas são mensagens enviadas pelo sistema para alertar a população de um problema que estiver ocorrendo em determinada área. Dado o volume presumidamente baixo de alertas enviados pelo sistema, todos os usuários recebem todos os alertas em seus aplicativos móveis e o próprio aplicativo determina se o usuário deve ter sua atenção focada na ocorrência com base em parâmetros definidos pelo próprio como tipos de ocorrências, área da ocorrência, magnitude, etc.
+
+Para testar o serviço pode utilizar o comando +curl+:
+include::{snippets}/alerta/locations/curl-request.adoc[]
+
+A requisição toma a seguinte forma:
+include::{snippets}/alerta/locations/http-request.adoc[]
+
+A resposta irá conter os dados formatados em +JSON+ além do cabeçalho com o resultado da operação:
+include::{snippets}/alerta/locations/http-response.adoc[]
+
+O(s) parâmetro(s) da resposta:
+include::{snippets}/alerta/locations/path-parameters.adoc[]
+
+Para gravar um evento podemos utilizar o seguinte exemplo (em +curl+).:
+include::{snippets}/alerta/post/curl-request.adoc[]
+Os dados a serem inseridos devem ser enviados também no formato +JSON+.
+
+A requisição irá tomar o seguinte formato:
+include::{snippets}/alerta/post/http-request.adoc[]
+
+O serviço irá responder com +Status 201 - Created+ e os dados que acabaram de ser inseridos:
+include::{snippets}/alerta/post/http-response.adoc[]
+
+A descrição do(s) atributo(s) retornado(s): 
+include::{snippets}/alerta/post/request-fields.adoc[]
+
+Para pesquisar um registro específico do serviço podemos utilizar o seguinte comando (em +curl+):
+include::{snippets}/alerta/get/curl-request.adoc[]
+
+A requisição toma a seguinte forma:
+include::{snippets}/alerta/get/http-request.adoc[]
+
+A resposta irá conter os dados formatados em +JSON+ além do cabeçalho com o resultado da operação:
+include::{snippets}/alerta/get/http-response.adoc[]
+
+O detalhe da seção +_links+ da resposta é a implementação de https://en.wikipedia.org/wiki/Hypertext_Application_Language[HAL - Hypertext Application Language] que poderá ser ignorada no presente desenvolvimento.
+include::{snippets}/alerta/get/links.adoc[]
+
+A descrição do(s) atributo(s) retornado(s):
+include::{snippets}/alerta/get/response-fields.adoc[]
+
