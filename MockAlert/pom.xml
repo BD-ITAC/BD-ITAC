@@ -30,7 +30,7 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <!-- Spring REST API Documentation -->
-        <snippetsDirectory>${project.build.directory}/generated-snippets</snippetsDirectory>
+        <snippetsDirectory>${project.build.directory}/generated-docs</snippetsDirectory>
         
 	</properties>
 
@@ -54,8 +54,7 @@
         <!-- Spring REST API Documentation -->
 		<dependency> 
 		    <groupId>org.springframework.restdocs</groupId>
-		    <artifactId>spring-restdocs</artifactId>
-		    <version>1.0.0.M1</version>
+		    <artifactId>spring-restdocs-mockmvc</artifactId>
 		    <scope>test</scope>
 		</dependency>
 
@@ -85,7 +84,12 @@
             <version>3.3.0</version>
             <scope>test</scope>
         </dependency>
-                
+        
+		<dependency>
+		    <groupId>com.jayway.jsonpath</groupId>
+		    <artifactId>json-path</artifactId>
+		</dependency>
+        
 	</dependencies>
 
     <build>
