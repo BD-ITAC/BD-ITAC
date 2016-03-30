@@ -37,12 +37,12 @@ public class Alerta implements Serializable {
     /**
      * Breve descrição do evento
      */
-    protected String descricaoResumida;
+    private String descricaoResumida;
     
     /**
      * Descrição completa do evento com detalhes de causas e conseqüências
      */
-    protected String descricaoCompleta;
+    private String descricaoCompleta;
     
     /**
      * Fator de risco para a vida humana:
@@ -62,7 +62,7 @@ public class Alerta implements Serializable {
      * - Negligenciável:
      *      Pode causar pequenos ferimentos que não precisam ser tratados no local do evento
      */
-    protected int fatorRiscoHumano;
+    private int fatorRiscoHumano;
     
     /**
      * Fator de risco para instalações e equipamentos:
@@ -82,7 +82,7 @@ public class Alerta implements Serializable {
      *      Pode causar pequenos danos às instalações e equipamentos no local e seu uso poderá prosseguir
      *      durante os reparos
      */
-    protected int fatorRiscoMaterial;
+    private int fatorRiscoMaterial;
     
     /**
      * Indica o tipo de alerta:
@@ -95,42 +95,42 @@ public class Alerta implements Serializable {
      * - Apocalipse Zumbi
      * - etc.
      */
-    protected int categoriaAlerta;
+    private int categoriaAlerta;
     
     /**
      * Coordenadas do ponto de origem do evento - longitute
      */
-    protected double origemLongitude;
+    private double origemLongitude;
     
     /**
      * Coordenadas do ponto de origem do evento - latitude
      */
-    protected double origemLatitude;
+    private double origemLatitude;
     
     /**
      * Coordenadas do ponto de origem do evento - área de abrangência em kilometros
      */
-    protected double origemRaioKms;
+    private double origemRaioKms;
     
     /**
      * Coordenadas do destino presumido do evento - longitute (se houver, senão replicar origem)
      */
-    protected double destinoLongitude;
+    private double destinoLongitude;
     
     /**
      * Coordenadas do destino presumido do evento - latitude (se houver, senão replicar origem)
      */
-    protected double destinoLatitude;
+    private double destinoLatitude;
     
     /**
      * Coordenadas do destino presumido do evento - área de abrangência em kilometros (se houver, senão replicar origem)
      */
-    protected double destinoRaioKms;
+    private double destinoRaioKms;
     
     /**
      * Endereço (se disponível) do ponto de origem do evento - área de abrangência em kilometros
      */
-    protected List<String> endereco;
+    private List<String> endereco;
 
     public Alerta() {
         this.descricaoResumida = "";

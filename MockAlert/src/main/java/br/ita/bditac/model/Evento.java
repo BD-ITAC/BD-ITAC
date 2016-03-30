@@ -29,7 +29,7 @@ public class Evento implements Serializable {
         this.id = id;
     }
     
-    protected String descricao;
+    private String descricao;
     
     /**
      * Indica o tipo de evento:
@@ -42,15 +42,15 @@ public class Evento implements Serializable {
      * - Apocalipse Zumbi
      * - etc.
      */
-    protected int categoria;
+    private int categoria;
     
-    protected String nome;
+    private String nome;
     
-    protected String email;
+    private String email;
     
-    protected String telefone;
+    private String telefone;
     
-    protected List<String> endereco;
+    private List<String> endereco;
 
     public Evento() {
         this.id = 0;
