@@ -174,6 +174,7 @@ public class Alerta implements Serializable {
         this.endereco = endereço;
     }
     
+    
     public String getDescricaoResumida() {
         return descricaoResumida;
     }
@@ -292,5 +293,5 @@ public class Alerta implements Serializable {
     public void setEndereco(List<String> endereco) {
         this.endereco = endereco;
     }    
- 
+    
 }

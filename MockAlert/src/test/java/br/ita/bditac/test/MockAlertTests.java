@@ -2,6 +2,7 @@ package br.ita.bditac.test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
 import java.net.URI;
@@ -13,9 +14,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.IntegrationTest;
+import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.hateoas.hal.Jackson2HalModule;
 import org.springframework.http.HttpEntity;
@@ -23,24 +30,151 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.context.WebApplicationContext;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import br.ita.bditac.app.Application;
 import br.ita.bditac.model.Alerta;
 import br.ita.bditac.model.AlertaResponse;
+import br.ita.bditac.model.Evento;
+import br.ita.bditac.model.EventoResponse;
 
-
+@RunWith(SpringJUnit4ClassRunner.class)
+@SpringApplicationConfiguration(classes = Application.class)
+@IntegrationTest("server.port:0")
+@WebAppConfiguration
+@ActiveProfiles("hateoas")
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class AlertaTest {
+public class MockAlertTests {
 
     private static final double DELTA = 1e-6;
     
+    @Value("${local.server.port}")
+    private int port;
+
+    @Autowired
+    WebApplicationContext context;
+
+    protected MockMvc mvc;
+
+    protected String getBaseUrl() {
+        return "http://localhost:" + port;
+    }
+
+    @Before
+    public void setup() {
+        mvc = MockMvcBuilders.webAppContextSetup(context).build();
+    }
+
+    @Test
+    public void test00BootstrapsWebApp() {
+        assertNotNull(mvc);
+    }
+    
+    @Test 
+    public void test01PostEvento() throws Exception {
+        URI eventoURI = new URI(getBaseUrl() + "/evento");
+        
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        mapper.registerModule(new Jackson2HalModule());
+
+        MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
+        converter.setSupportedMediaTypes(Arrays.asList(MediaTypes.HAL_JSON));
+        converter.setObjectMapper(mapper);
+      
+        RestTemplate restTemplate = new RestTemplate(Collections.<HttpMessageConverter<?>> singletonList(converter));
+        
+        List<String> endereco = new ArrayList<String>();
+        endereco.add("rua das Casas");
+        endereco.add("numero das Portas");
+        Evento eventoRequest = new Evento(
+                "Deslizamento na na favela do Paraiso",
+                0,
+                "Ze das Couves",
+                "zedascouves@gmail.com",
+                "(12) 99876-1234",
+                endereco);
+        try {
+            HttpEntity<Evento> eventoRequestEntity = new HttpEntity<Evento>(eventoRequest);
+            ResponseEntity<EventoResponse> eventoResponseEntity =  restTemplate.postForEntity(eventoURI, eventoRequestEntity, EventoResponse.class);
+            
+            assertThat(eventoResponseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+            
+            Evento eventoResponse = eventoResponseEntity.getBody().getEvento();
+            
+            assertEquals("Resposta(descricao):'" + eventoResponse.getDescricao() + "' do POST diferente do que foi enviado: '" + eventoRequest.getDescricao() + "'!", eventoResponse.getDescricao(), eventoRequest.getDescricao());
+            assertEquals("Resposta(categoria) do POST diferente do que foi enviado!", eventoResponse.getCategoria(), eventoRequest.getCategoria());
+            assertEquals("Resposta(nome) do POST diferente do que foi enviado!", eventoResponse.getNome(), eventoRequest.getNome());
+            assertEquals("Resposta(email) do POST diferente do que foi enviado!", eventoResponse.getEmail(), eventoRequest.getEmail());
+            assertEquals("Resposta(telefone) do POST diferente do que foi enviado!", eventoResponse.getTelefone(), eventoRequest.getTelefone());
+            int linha = 0;
+            for(String linhaEndereco : eventoRequest.getEndereco()) {
+                assertEquals("Resposta(endereco) do POST diferente do que foi enviado!", linhaEndereco, eventoRequest.getEndereco().get(linha++));
+            }
+        }
+        catch(ResourceAccessException raex) {
+            fail("Servico web '" + getBaseUrl() + "' não esta sendo executado!");
+        }
+    }
+    
+    @Test
+    public void test02GetEvento() throws Exception {
+        String eventoURL = getBaseUrl() + "/evento/{id}";
+        
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        mapper.registerModule(new Jackson2HalModule());
+
+        MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
+        converter.setSupportedMediaTypes(Arrays.asList(MediaTypes.HAL_JSON));
+        converter.setObjectMapper(mapper);
+        
+        Map<String, Integer> params = new HashMap<String, Integer>();
+        params.put("id", 1);
+        
+        RestTemplate restTemplate = new RestTemplate(Collections.<HttpMessageConverter<?>> singletonList(converter));
+        
+        ResponseEntity<EventoResponse> eventoResponseEntity = restTemplate.getForEntity(eventoURL, EventoResponse.class, params);
+        
+        assertThat(eventoResponseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+        Evento eventoResponse = eventoResponseEntity.getBody().getEvento();
+        
+        List<String> endereco = new ArrayList<String>();
+        endereco.add("rua das Casas");
+        endereco.add("numero das Portas");
+        Evento eventoRequest = new Evento(
+                "Deslizamento na na favela do Paraiso",
+                0,
+                "Ze das Couves",
+                "zedascouves@gmail.com",
+                "(12) 99876-1234",
+                endereco);
+
+        assertEquals("Resposta(descricao):'" + eventoResponse.getDescricao() + "' do POST diferente do que foi enviado: '" + eventoRequest.getDescricao() + "'!", eventoResponse.getDescricao(), eventoRequest.getDescricao());
+        assertEquals("Resposta(categoria) do POST diferente do que foi enviado!", eventoResponse.getCategoria(), eventoRequest.getCategoria());
+        assertEquals("Resposta(nome) do POST diferente do que foi enviado!", eventoResponse.getNome(), eventoRequest.getNome());
+        assertEquals("Resposta(email) do POST diferente do que foi enviado!", eventoResponse.getEmail(), eventoRequest.getEmail());
+        assertEquals("Resposta(telefone) do POST diferente do que foi enviado!", eventoResponse.getTelefone(), eventoRequest.getTelefone());
+        int linha = 0;
+        for(String linhaEndereco : eventoRequest.getEndereco()) {
+            assertEquals("Resposta(endereco) do POST diferente do que foi enviado!", linhaEndereco, eventoRequest.getEndereco().get(linha++));
+        }
+    }
+    
     @Test
     public void test03POSTAlerta() throws URISyntaxException {
-        URI alertaURI = new URI("http://localhost:8080/alerta");
+        URI alertaURI = new URI(getBaseUrl() + "/alerta");
         
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -93,13 +227,13 @@ public class AlertaTest {
             }
         }
         catch(ResourceAccessException raex) {
-            fail("Servico web não esta sendo executado!");
+            fail("Servico web '" + getBaseUrl() + "' não esta sendo executado!");
         }
     }
     
     @Test
     public void test04GETEvento() throws URISyntaxException {
-        String alertaURL = "http://localhost:8080/alerta/{id}";
+        String alertaURL = getBaseUrl() + "/alerta/{id}";
         
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -153,5 +287,5 @@ public class AlertaTest {
             assertEquals("Resposta(endereco)'" + " do POST diferente do que foi enviado'" + "'!", linhaEndereco, alertaRequest.getEndereco().get(linha++));
         }
     }
-    
+   
 }

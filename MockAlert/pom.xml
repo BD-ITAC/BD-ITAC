@@ -29,6 +29,9 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
+        <!-- Spring REST API Documentation -->
+        <snippetsDirectory>${project.build.directory}/generated-snippets</snippetsDirectory>
+        
 	</properties>
 
 	<dependencies>
@@ -42,6 +45,19 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Spring REST API Documentation -->
+		<dependency> 
+		    <groupId>org.springframework.restdocs</groupId>
+		    <artifactId>spring-restdocs</artifactId>
+		    <version>1.0.0.M1</version>
+		    <scope>test</scope>
+		</dependency>
 
 		<!-- Spring HATEOAS -->
         <dependency>
@@ -62,6 +78,14 @@
         	<groupId>org.springframework.boot</groupId>
         	<artifactId>spring-boot-starter-jersey</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>3.3.0</version>
+            <scope>test</scope>
+        </dependency>
+                
 	</dependencies>
 
     <build>
@@ -73,10 +97,103 @@
 					<debuglevel>lines,vars,source</debuglevel>
 				</configuration>
             </plugin>
+            
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+            
+	        <plugin> 
+	            <groupId>org.apache.maven.plugins</groupId>
+	            <artifactId>maven-surefire-plugin</artifactId>
+	            <configuration>
+	                <includes>
+	                    <include>**/*Documentation.java</include>
+	                </includes>
+                    <includes>
+                        <include>**/*Tests.java</include>
+                    </includes>
+                    <excludes>
+                        <exclude>**/Abstract*.java</exclude>
+                    </excludes>
+	                <systemPropertyVariables>
+	                    <org.springframework.restdocs.outputDir>
+	                        ${snippetsDirectory}
+	                    </org.springframework.restdocs.outputDir>
+	                </systemPropertyVariables>
+	            </configuration>
+	        </plugin>
+	        
+	        <plugin> 
+	            <groupId>org.asciidoctor</groupId>
+	            <artifactId>asciidoctor-maven-plugin</artifactId>
+	            <version>1.5.2</version>
+	            <executions>
+	                <execution>
+	                    <id>generate-docs</id>
+	                    <phase>package</phase> 
+	                    <goals>
+	                        <goal>process-asciidoc</goal>
+	                    </goals>
+	                    <configuration>
+	                        <backend>html</backend>
+	                        <doctype>book</doctype>
+	                        <attributes>
+	                            <snippets>${snippetsDirectory}</snippets>
+	                        </attributes>
+	                    </configuration>
+	                </execution>
+	            </executions>
+	        </plugin>
+			
+			<plugin> 
+			    <artifactId>maven-resources-plugin</artifactId>
+			    <executions>
+			        <execution>
+			            <id>copy-resources</id>
+			            <phase>prepare-package</phase>
+			            <goals>
+			                <goal>copy-resources</goal>
+			            </goals>
+			            <configuration>
+			                <outputDirectory>
+			                    ${project.build.outputDirectory}/static/docs
+			                </outputDirectory>
+			                <resources>
+			                    <resource>
+			                        <directory>
+			                            ${project.build.directory}/generated-docs
+			                        </directory>
+			                    </resource>
+			                </resources>
+			            </configuration>
+			        </execution>
+			    </executions>
+			</plugin>
+
+            <!-- Plugin to generate a Docker image for running this app -->
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>0.2.11</version>
+                <configuration>
+                    <imageName>MockAlert</imageName>
+                    <baseImage>java:8</baseImage>
+                    <entryPoint>["java", "-Djava.security.egd=file:/dev/./urandom", "-jar", "/${project.build.finalName}.jar"]</entryPoint>
+                    <exposes>
+                        <expose>8080</expose>
+                    </exposes>
+                    <!-- copy the service's jar file from target into the root directory of the image -->
+                    <resources>
+                        <resource>
+                            <targetPath>/</targetPath>
+                            <directory>${project.build.directory}</directory>
+                            <include>${project.build.finalName}.jar</include>
+                        </resource>
+                    </resources>
+                </configuration>
+            </plugin>
+	        
         </plugins>
     </build>
 

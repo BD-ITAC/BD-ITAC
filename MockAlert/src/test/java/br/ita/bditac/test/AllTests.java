@@ -5,7 +5,7 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({ HaversineTest.class, EventoTest.class, AlertaTest.class })
+@SuiteClasses({ HaversineTest.class, MockAlertTests.class })
 public class AllTests {
 
 }

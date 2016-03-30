@@ -1,5 +1,6 @@
 package br.ita.bditac.test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
@@ -18,6 +19,7 @@ import org.junit.runners.MethodSorters;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.hateoas.hal.Jackson2HalModule;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -61,6 +63,9 @@ public class EventoTest {
         try {
             HttpEntity<Evento> eventoRequestEntity = new HttpEntity<Evento>(eventoRequest);
             ResponseEntity<EventoResponse> eventoResponseEntity =  restTemplate.postForEntity(eventoURI, eventoRequestEntity, EventoResponse.class);
+            
+            assertThat(eventoResponseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+            
             Evento eventoResponse = eventoResponseEntity.getBody().getEvento();
             
             assertEquals("Resposta(descricao):'" + eventoResponse.getDescricao() + "' do POST diferente do que foi enviado: '" + eventoRequest.getDescricao() + "'!", eventoResponse.getDescricao(), eventoRequest.getDescricao());
@@ -97,6 +102,9 @@ public class EventoTest {
         RestTemplate restTemplate = new RestTemplate(Collections.<HttpMessageConverter<?>> singletonList(converter));
         
         ResponseEntity<EventoResponse> eventoResponseEntity = restTemplate.getForEntity(eventoURL, EventoResponse.class, params);
+        
+        assertThat(eventoResponseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+
         Evento eventoResponse = eventoResponseEntity.getBody().getEvento();
         
         List<String> endereco = new ArrayList<String>();
