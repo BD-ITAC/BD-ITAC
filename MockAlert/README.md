@@ -4,4 +4,4 @@ Aplicação Mock usando http://projects.spring.io/spring-hateoas/[Spring HATEOAS
 
 É um serviço muito simples que não persiste dados. Os dados recebidos ficam armazenados em memória até o sistema ser re-iniciado.
 
-https://github.com/BD-ITAC/BD-ITAC/blob/SP1_TS02/MockAlert/README.html[API]
+https://cdn.rawgit.com/BD-ITAC/BD-ITAC/SP1_TS02/MockAlert/README.html[API]
