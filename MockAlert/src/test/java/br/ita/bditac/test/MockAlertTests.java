@@ -3,7 +3,6 @@ package br.ita.bditac.test;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
 import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.linkWithRel;
 import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.links;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -52,7 +51,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.ResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.context.WebApplicationContext;
@@ -141,8 +139,6 @@ public class MockAlertTests {
     public void test101PostEvento() throws Exception {
         URI eventoURI = new URI(getBaseUrl() + "/evento");
         
-        RestTemplate restTemplate = getRestTemplate();
-        
         List<String> endereco = new ArrayList<String>();
         endereco.add("rua das Casas");
         endereco.add("numero das Portas");
@@ -153,25 +149,21 @@ public class MockAlertTests {
                 "zedascouves@gmail.com",
                 "(12) 99876-1234",
                 endereco);
-        try {
-            ResponseEntity<EventoResource> eventoResponseEntity =  restTemplate.postForEntity(eventoURI, new HttpEntity<Evento>(eventoRequest), EventoResource.class);
-            
-            assertThat(eventoResponseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
-            
-            Evento eventoResponse = eventoResponseEntity.getBody().getContent();
-            
-            assertEquals("Resposta(descricao):'" + eventoResponse.getDescricao() + "' do POST diferente do que foi enviado: '" + eventoRequest.getDescricao() + "'!", eventoResponse.getDescricao(), eventoRequest.getDescricao());
-            assertEquals("Resposta(categoria) do POST diferente do que foi enviado!", eventoResponse.getCategoria(), eventoRequest.getCategoria());
-            assertEquals("Resposta(nome) do POST diferente do que foi enviado!", eventoResponse.getNome(), eventoRequest.getNome());
-            assertEquals("Resposta(email) do POST diferente do que foi enviado!", eventoResponse.getEmail(), eventoRequest.getEmail());
-            assertEquals("Resposta(telefone) do POST diferente do que foi enviado!", eventoResponse.getTelefone(), eventoRequest.getTelefone());
-            int linha = 0;
-            for(String linhaEndereco : eventoRequest.getEndereco()) {
-                assertEquals("Resposta(endereco) do POST diferente do que foi enviado!", linhaEndereco, eventoRequest.getEndereco().get(linha++));
-            }
-        }
-        catch(ResourceAccessException raex) {
-            fail("Servico web '" + getBaseUrl() + "' não esta sendo executado!");
+
+        ResponseEntity<EventoResource> eventoResponseEntity =  getRestTemplate().postForEntity(eventoURI, new HttpEntity<Evento>(eventoRequest), EventoResource.class);
+        
+        assertThat(eventoResponseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+        
+        Evento eventoResponse = eventoResponseEntity.getBody().getContent();
+        
+        assertEquals("Resposta(descricao):'" + eventoResponse.getDescricao() + "' do POST diferente do que foi enviado: '" + eventoRequest.getDescricao() + "'!", eventoResponse.getDescricao(), eventoRequest.getDescricao());
+        assertEquals("Resposta(categoria) do POST diferente do que foi enviado!", eventoResponse.getCategoria(), eventoRequest.getCategoria());
+        assertEquals("Resposta(nome) do POST diferente do que foi enviado!", eventoResponse.getNome(), eventoRequest.getNome());
+        assertEquals("Resposta(email) do POST diferente do que foi enviado!", eventoResponse.getEmail(), eventoRequest.getEmail());
+        assertEquals("Resposta(telefone) do POST diferente do que foi enviado!", eventoResponse.getTelefone(), eventoRequest.getTelefone());
+        int linha = 0;
+        for(String linhaEndereco : eventoRequest.getEndereco()) {
+            assertEquals("Resposta(endereco) do POST diferente do que foi enviado!", linhaEndereco, eventoRequest.getEndereco().get(linha++));
         }
     }
     
@@ -179,12 +171,10 @@ public class MockAlertTests {
     public void test102GetEvento() throws Exception {
         String eventoURL = getBaseUrl() + "/evento/{id}";
         
-        RestTemplate restTemplate = getRestTemplate();
-        
         Map<String, Integer> params = new HashMap<String, Integer>();
         params.put("id", 1);
         
-        ResponseEntity<EventoResource> eventoResponseEntity = restTemplate.getForEntity(eventoURL, EventoResource.class, params);
+        ResponseEntity<EventoResource> eventoResponseEntity = getRestTemplate().getForEntity(eventoURL, EventoResource.class, params);
         
         assertThat(eventoResponseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
 
@@ -216,12 +206,10 @@ public class MockAlertTests {
     public void test103GetEventoInexistente() throws Exception {
         String eventoURL = getBaseUrl() + "/evento/{id}";
         
-        RestTemplate restTemplate = getRestTemplate();
-        
         Map<String, Integer> params = new HashMap<String, Integer>();
         params.put("id", 100);
         
-        ResponseEntity<EventoResource> eventoResponseEntity = restTemplate.getForEntity(eventoURL, EventoResource.class, params);
+        ResponseEntity<EventoResource> eventoResponseEntity = getRestTemplate().getForEntity(eventoURL, EventoResource.class, params);
         
         assertThat(eventoResponseEntity.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
@@ -229,8 +217,6 @@ public class MockAlertTests {
     @Test
     public void test104PostAlerta() throws URISyntaxException {
         URI alertaURI = new URI(getBaseUrl() + "/alerta");
-        
-        RestTemplate restTemplate = getRestTemplate();
         
         List<String> endereco = new ArrayList<String>();
         endereco.add("rua das Casas");
@@ -248,31 +234,27 @@ public class MockAlertTests {
                 0.50,
                 1.0,
                 endereco);
-        try {
-            ResponseEntity<AlertaResource> alertaResponseEntity = restTemplate.postForEntity(alertaURI, new HttpEntity<Alerta>(alertaRequest), AlertaResource.class);
-            
-            assertThat(alertaResponseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
 
-            Alerta alertasResponse = alertaResponseEntity.getBody().getContent();
-            
-            assertEquals("Resposta(descricaoResumida)'" + alertasResponse.getDescricaoResumida() + "' do POST diferente do que foi enviado: '" + alertaRequest.getDescricaoResumida() + "'!", alertasResponse.getDescricaoResumida(), alertaRequest.getDescricaoResumida());
-            assertEquals("Resposta(descricaoCompleta)'" + alertasResponse.getDescricaoCompleta() + "' do POST diferente do que foi enviado'" + alertaRequest.getDescricaoCompleta() + "'!", alertasResponse.getDescricaoCompleta(), alertaRequest.getDescricaoCompleta());
-            assertEquals("Resposta(fatorRiscoHumano)'" + alertasResponse.getFatorRiscoHumano() + "' do POST diferente do que foi enviado'" + alertaRequest.getFatorRiscoHumano() + "'!", alertasResponse.getFatorRiscoHumano(), alertaRequest.getFatorRiscoHumano());
-            assertEquals("Resposta(fatorRiscoMaterial)'" + alertasResponse.getFatorRiscoMaterial() + "' do POST diferente do que foi enviado'" + alertaRequest.getFatorRiscoMaterial() + "'!", alertasResponse.getFatorRiscoMaterial(), alertaRequest.getFatorRiscoMaterial());
-            assertEquals("Resposta(categoriaAlerta)'" + alertasResponse.getCategoriaAlerta() + "' do POST diferente do que foi enviado'" + alertaRequest.getCategoriaAlerta() + "'!", alertasResponse.getCategoriaAlerta(), alertaRequest.getCategoriaAlerta());
-            assertEquals("Resposta(origemLatitude)'" + alertasResponse.getOrigemLatitude() + "' do POST diferente do que foi enviado'" + alertaRequest.getOrigemLatitude() + "'!", alertasResponse.getOrigemLatitude(), alertaRequest.getOrigemLatitude(), DELTA);
-            assertEquals("Resposta(origemLongitude)'" + alertasResponse.getOrigemLongitude() + "' do POST diferente do que foi enviado'" + alertaRequest.getOrigemLongitude() + "'!", alertasResponse.getOrigemLongitude(), alertaRequest.getOrigemLongitude(), DELTA);
-            assertEquals("Resposta(origemRaioKms)'" + alertasResponse.getOrigemRaioKms() + "' do POST diferente do que foi enviado'" + alertaRequest.getOrigemRaioKms() + "'!", alertasResponse.getOrigemRaioKms(), alertaRequest.getOrigemRaioKms(), DELTA);
-            assertEquals("Resposta(destinoLatitude)'" + alertasResponse.getDestinoLatitude() + "' do POST diferente do que foi enviado'" + alertaRequest.getDestinoLatitude() + "'!", alertasResponse.getDestinoLatitude(), alertaRequest.getDestinoLatitude(), DELTA);
-            assertEquals("Resposta(destinoLongitude)'" + alertasResponse.getDestinoLongitude() + "' do POST diferente do que foi enviado'" + alertaRequest.getDestinoLongitude() + "'!", alertasResponse.getDestinoLongitude(), alertaRequest.getDestinoLongitude(), DELTA);
-            assertEquals("Resposta(destinoRaio)'" + alertasResponse.getDestinoRaioKms() + "' do POST diferente do que foi enviado'" + alertaRequest.getDestinoRaioKms() + "'!", alertasResponse.getDestinoRaioKms(), alertaRequest.getDestinoRaioKms(), DELTA);
-            int linha = 0;
-            for(String linhaEndereco : alertaRequest.getEndereco()) {
-                assertEquals("Resposta(endereco)'" + " do POST diferente do que foi enviado'" + "'!", linhaEndereco, alertaRequest.getEndereco().get(linha++));
-            }
-        }
-        catch(ResourceAccessException raex) {
-            fail("Servico web '" + getBaseUrl() + "' não esta sendo executado!");
+        ResponseEntity<AlertaResource> alertaResponseEntity = getRestTemplate().postForEntity(alertaURI, new HttpEntity<Alerta>(alertaRequest), AlertaResource.class);
+        
+        assertThat(alertaResponseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+
+        Alerta alertasResponse = alertaResponseEntity.getBody().getContent();
+        
+        assertEquals("Resposta(descricaoResumida)'" + alertasResponse.getDescricaoResumida() + "' do POST diferente do que foi enviado: '" + alertaRequest.getDescricaoResumida() + "'!", alertasResponse.getDescricaoResumida(), alertaRequest.getDescricaoResumida());
+        assertEquals("Resposta(descricaoCompleta)'" + alertasResponse.getDescricaoCompleta() + "' do POST diferente do que foi enviado'" + alertaRequest.getDescricaoCompleta() + "'!", alertasResponse.getDescricaoCompleta(), alertaRequest.getDescricaoCompleta());
+        assertEquals("Resposta(fatorRiscoHumano)'" + alertasResponse.getFatorRiscoHumano() + "' do POST diferente do que foi enviado'" + alertaRequest.getFatorRiscoHumano() + "'!", alertasResponse.getFatorRiscoHumano(), alertaRequest.getFatorRiscoHumano());
+        assertEquals("Resposta(fatorRiscoMaterial)'" + alertasResponse.getFatorRiscoMaterial() + "' do POST diferente do que foi enviado'" + alertaRequest.getFatorRiscoMaterial() + "'!", alertasResponse.getFatorRiscoMaterial(), alertaRequest.getFatorRiscoMaterial());
+        assertEquals("Resposta(categoriaAlerta)'" + alertasResponse.getCategoriaAlerta() + "' do POST diferente do que foi enviado'" + alertaRequest.getCategoriaAlerta() + "'!", alertasResponse.getCategoriaAlerta(), alertaRequest.getCategoriaAlerta());
+        assertEquals("Resposta(origemLatitude)'" + alertasResponse.getOrigemLatitude() + "' do POST diferente do que foi enviado'" + alertaRequest.getOrigemLatitude() + "'!", alertasResponse.getOrigemLatitude(), alertaRequest.getOrigemLatitude(), DELTA);
+        assertEquals("Resposta(origemLongitude)'" + alertasResponse.getOrigemLongitude() + "' do POST diferente do que foi enviado'" + alertaRequest.getOrigemLongitude() + "'!", alertasResponse.getOrigemLongitude(), alertaRequest.getOrigemLongitude(), DELTA);
+        assertEquals("Resposta(origemRaioKms)'" + alertasResponse.getOrigemRaioKms() + "' do POST diferente do que foi enviado'" + alertaRequest.getOrigemRaioKms() + "'!", alertasResponse.getOrigemRaioKms(), alertaRequest.getOrigemRaioKms(), DELTA);
+        assertEquals("Resposta(destinoLatitude)'" + alertasResponse.getDestinoLatitude() + "' do POST diferente do que foi enviado'" + alertaRequest.getDestinoLatitude() + "'!", alertasResponse.getDestinoLatitude(), alertaRequest.getDestinoLatitude(), DELTA);
+        assertEquals("Resposta(destinoLongitude)'" + alertasResponse.getDestinoLongitude() + "' do POST diferente do que foi enviado'" + alertaRequest.getDestinoLongitude() + "'!", alertasResponse.getDestinoLongitude(), alertaRequest.getDestinoLongitude(), DELTA);
+        assertEquals("Resposta(destinoRaio)'" + alertasResponse.getDestinoRaioKms() + "' do POST diferente do que foi enviado'" + alertaRequest.getDestinoRaioKms() + "'!", alertasResponse.getDestinoRaioKms(), alertaRequest.getDestinoRaioKms(), DELTA);
+        int linha = 0;
+        for(String linhaEndereco : alertaRequest.getEndereco()) {
+            assertEquals("Resposta(endereco)'" + " do POST diferente do que foi enviado'" + "'!", linhaEndereco, alertaRequest.getEndereco().get(linha++));
         }
     }
     
@@ -280,12 +262,10 @@ public class MockAlertTests {
     public void test105GetAlertaById() throws URISyntaxException {
         String alertaURL = getBaseUrl() + "/alerta/{id}";
         
-        RestTemplate restTemplate = getRestTemplate();
-        
         Map<String, Integer> params = new HashMap<String, Integer>();
         params.put("id", 1);
         
-        ResponseEntity<AlertaResource> alertaResponseEntity = restTemplate.getForEntity(alertaURL, AlertaResource.class, params);
+        ResponseEntity<AlertaResource> alertaResponseEntity = getRestTemplate().getForEntity(alertaURL, AlertaResource.class, params);
         
         assertThat(alertaResponseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
 
@@ -329,14 +309,12 @@ public class MockAlertTests {
     public void test106GetAlertasByCoords() throws Exception {
         String alertaURL = getBaseUrl() + "/alerta/latitude/{latitude}/longitude/{longitude}/raio/{raio}";
         
-        RestTemplate restTemplate = getRestTemplate();
-        
         Map<String, Double> params = new HashMap<String, Double>();
         params.put("latitude", 0.5D);
         params.put("longitude", 0.5D);
         params.put("raio", 1D);
         
-        List<Alerta> alertas = restTemplate.getForObject(alertaURL, AlertaResources.class, params).unwrap();
+        List<Alerta> alertas = getRestTemplate().getForObject(alertaURL, AlertaResources.class, params).unwrap();
 
         assertEquals("Resposta(descricaoResumida)'" + alertas.get(0).getDescricaoResumida() + "' do POST diferente do esperado!", alertas.get(0).getDescricaoResumida(), "Alerta de deslizamento");
     }
@@ -345,14 +323,12 @@ public class MockAlertTests {
     public void test107GetAlertaByCoordsInexistente() throws Exception {
         String alertaURL = getBaseUrl() + "/alerta/latitude/{latitude}/longitude/{longitude}/raio/{raio}";
         
-        RestTemplate restTemplate = getRestTemplate();
-        
         Map<String, Double> params = new HashMap<String, Double>();
         params.put("latitude", 0.6D);
         params.put("longitude", 0.6D);
         params.put("raio", 1D);
         
-        List<Alerta> alertas = restTemplate.getForObject(alertaURL, AlertaResources.class, params).unwrap();
+        List<Alerta> alertas = getRestTemplate().getForObject(alertaURL, AlertaResources.class, params).unwrap();
 
         assertThat(alertas.size() == 0);
     }
