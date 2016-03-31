@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 import br.ita.bditac.model.Alerta;
 import br.ita.bditac.model.Evento;
 import br.ita.bditac.model.Message;
-import br.ita.bditac.model.Message.Type;
 import br.ita.bditac.support.Haversine;
 
 @Component

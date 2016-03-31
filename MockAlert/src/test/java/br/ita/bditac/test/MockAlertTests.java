@@ -389,7 +389,7 @@ public class MockAlertTests {
             .andDo(document("alerta/post", 
                 requestFields(
                     fieldWithPath("descricaoResumida").type(JsonFieldType.STRING).description("Breve descrição do alerta"),
-                    fieldWithPath("descricaoCompleta").type(JsonFieldType.NULL).description("Descrição detalhada do alerta"),
+                    fieldWithPath("descricaoCompleta").type(JsonFieldType.STRING).description("Descrição detalhada do alerta"),
                     fieldWithPath("fatorRiscoHumano").type(JsonFieldType.STRING).description("Fator de risco para a vida humana"),
                     fieldWithPath("fatorRiscoMaterial").type(JsonFieldType.STRING).description("Fator de risco para instalações e equipamentos"),
                     fieldWithPath("categoriaAlerta").type(JsonFieldType.STRING).description("Indica o tipo de alerta"),
@@ -414,7 +414,7 @@ public class MockAlertTests {
             .andDo(document("alerta/get", 
                 responseFields(
                     fieldWithPath("alerta.descricaoResumida").type(JsonFieldType.STRING).description("Breve descrição do alerta"),
-                    fieldWithPath("alerta.descricaoCompleta").type(JsonFieldType.NULL).description("Descrição detalhada do alerta"),
+                    fieldWithPath("alerta.descricaoCompleta").type(JsonFieldType.STRING).description("Descrição detalhada do alerta"),
                     fieldWithPath("alerta.fatorRiscoHumano").type(JsonFieldType.STRING).description("Fator de risco para a vida humana"),
                     fieldWithPath("alerta.fatorRiscoMaterial").type(JsonFieldType.STRING).description("Fator de risco para instalações e equipamentos"),
                     fieldWithPath("alerta.categoriaAlerta").type(JsonFieldType.STRING).description("Indica o tipo de alerta"),
