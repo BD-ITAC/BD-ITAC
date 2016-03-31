@@ -32,12 +32,15 @@ import br.ita.bditac.support.MessageResourceAssembler;
 @RequestMapping("/alerta")
 public class AlertaController {
 
+    private static final String COORD_REGEX = "(?:[-+]?(?:(?:[1-8]?\\d(?:\\.\\d+))+|90))";
+    
+    private static final String DIST_REGEX = "[+-]?(?=\\.\\d|\\d)(?:\\d+)?(?:\\.?\\d*)(?:[eE][+-]?\\d+)?";
+    
     public interface Request {
         
         String ID = "/{id}";
         
-        //String BY_REGIAO = "/latitude/{latitude:^(\\-?\\d+(\\.\\d+)?),\\s*(\\-?\\d+(\\.\\d+)?)$}/longitude/{longitude:^(\\-?\\d+(\\.\\d+)?),\\s*(\\-?\\d+(\\.\\d+)?)$}/raio/{raio:^(\\-?\\d+(\\.\\d+)?),\\s*(\\-?\\d+(\\.\\d+)?)$}";
-        String BY_REGIAO = "/latitude/{latitude}/longitude/{longitude}/raio/{raio}";
+        String BY_REGIAO = "/latitude/{latitude:" + COORD_REGEX + "}" + "/longitude/{longitude:" + COORD_REGEX + "}" + "/raio/{raio:" + DIST_REGEX + "}";
 
     }
 
@@ -72,8 +75,12 @@ public class AlertaController {
     }
     
     @RequestMapping(method = RequestMethod.GET, produces = { MediaTypes.HAL_JSON_VALUE }, value = Request.BY_REGIAO)
-    public ResponseEntity<AlertaResources> alertasPorRegiao(@PathVariable("latitude") double latitude, @PathVariable("longitude") double longitude, @PathVariable("raio") double raio) {
-        List<Alerta> alertas = service.obterAlertasPorRegiao(latitude, longitude, raio);
+    public ResponseEntity<AlertaResources> alertasPorRegiao(@PathVariable("latitude") String latitude, @PathVariable("longitude") String longitude, @PathVariable("raio") String raio) {
+        Double dLatitude = Double.valueOf(latitude);
+        Double dLongitude = Double.valueOf(longitude);
+        Double dRaio = Double.valueOf(raio);
+        
+        List<Alerta> alertas = service.obterAlertasPorRegiao(dLatitude, dLongitude, dRaio);
         List<AlertaResource> resources = resourceAssembler.toResources(alertas);
         AlertaResources alertaResources = new AlertaResources(resources);
         
