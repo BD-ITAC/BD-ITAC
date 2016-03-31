@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.ita.bditac.model.AlertaDAO;
 import br.ita.bditac.model.Message;
 import br.ita.bditac.support.MessageResource;
 import br.ita.bditac.support.MessageResourceAssembler;
@@ -38,7 +39,7 @@ public class MessageController {
     private MessageResourceAssembler resourceAssembler;
 
     @Autowired
-    private AlertaService service;
+    private AlertaDAO service;
 
     @RequestMapping(method = RequestMethod.OPTIONS, produces = { MediaTypes.HAL_JSON_VALUE })
     public ResponseEntity<MessageResource> options(@RequestHeader(value = "Version", required = false) String version) {

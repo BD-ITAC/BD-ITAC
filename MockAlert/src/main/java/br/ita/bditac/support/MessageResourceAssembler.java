@@ -7,15 +7,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
 import org.springframework.stereotype.Component;
 
+import br.ita.bditac.model.AlertaDAO;
 import br.ita.bditac.model.Message;
-import br.ita.bditac.service.AlertaService;
 import br.ita.bditac.service.MessageController;
 
 @Component
 public class MessageResourceAssembler extends ResourceAssemblerSupport<Message, MessageResource> {
 
     @Autowired
-    private AlertaService service;
+    private AlertaDAO service;
 
     public MessageResourceAssembler() {
         super(MessageController.class, MessageResource.class);

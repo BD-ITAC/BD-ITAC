@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.ita.bditac.model.AlertaDAO;
 import br.ita.bditac.model.Evento;
 import br.ita.bditac.support.EventoResource;
 import br.ita.bditac.support.EventoResourceAssembler;
@@ -41,7 +42,7 @@ public class EventoController {
     private MessageResourceAssembler messageResourceAssembler;
     
     @Autowired
-    private AlertaService service;
+    private AlertaDAO service;
     
     @RequestMapping(method = RequestMethod.POST, consumes = { MediaTypes.HAL_JSON_VALUE })
     public ResponseEntity<EventoResource> adicionar(@RequestBody Evento body) {

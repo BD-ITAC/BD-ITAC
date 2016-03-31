@@ -1,4 +1,4 @@
-package br.ita.bditac.service;
+package br.ita.bditac.model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -7,13 +7,10 @@ import java.util.Map;
 
 import org.springframework.stereotype.Component;
 
-import br.ita.bditac.model.Alerta;
-import br.ita.bditac.model.Evento;
-import br.ita.bditac.model.Message;
 import br.ita.bditac.support.Haversine;
 
 @Component
-public class AlertaService {
+public class AlertaDAO {
     
     private Map<Integer, Alerta> alertas = new HashMap<Integer, Alerta>();
     
@@ -25,7 +22,7 @@ public class AlertaService {
 
     private Map<Integer, Message> messages = new HashMap<Integer, Message>();
     
-    public AlertaService() {
+    public AlertaDAO() {
         _idAlerta = 0;
         _idEvento = 0;
 

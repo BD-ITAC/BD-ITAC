@@ -9,14 +9,14 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
 
-import br.ita.bditac.service.AlertaService;
+import br.ita.bditac.model.AlertaDAO;
 
 @Component
 public class LocalHandlerExceptionResolver implements HandlerExceptionResolver, Ordered {
 
     @SuppressWarnings("unused")
     @Autowired
-    private AlertaService service;
+    private AlertaDAO service;
 
     @Override
     public int getOrder() {
