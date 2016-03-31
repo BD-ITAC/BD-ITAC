@@ -7,7 +7,7 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
-import br.ita.bditac.ws.client.AlertaService;
+import br.ita.bditac.ws.client.AlertaClient;
 import br.ita.bditac.ws.model.Alerta;
 import junit.framework.TestCase;
 
@@ -19,7 +19,7 @@ public class AlertaTests extends TestCase {
     
     @Test
     public void test01PostAlerta() {
-        AlertaService alertaService = new AlertaService(HOST_URL);
+        AlertaClient alertaClient = new AlertaClient(HOST_URL);
         List<String> endereco = new ArrayList<String>();
         endereco.add("rua das Casas");
         endereco.add("numero das Portas");
@@ -36,15 +36,41 @@ public class AlertaTests extends TestCase {
                 0.50,
                 1.0,
                 endereco);
-        Alerta alertaRetorno = alertaService.addAlerta(alertaNovo);
+        Alerta alertaRetorno = alertaClient.addAlerta(alertaNovo);
+        assertNotNull(alertaRetorno);
         assertEquals("Resposta(descricao):'" + alertaRetorno.getDescricaoResumida() + "' do POST diferente do que foi enviado: '" + alertaNovo.getDescricaoResumida() + "'!", alertaRetorno.getDescricaoResumida(), alertaNovo.getDescricaoResumida());
     }
     
     @Test
     public void test02GetAlertaById() {
-        AlertaService alertaService = new AlertaService(HOST_URL);
-        Alerta alerta = alertaService.getAlertaById(1);
+        AlertaClient alertaClient = new AlertaClient(HOST_URL);
+        Alerta alerta = alertaClient.getAlertaById(1);
+        assertNotNull(alerta);
         assertEquals("Resposta(descricao):'" + alerta.getDescricaoResumida() + "' do POST diferente do que foi enviado!", alerta.getDescricaoResumida(), "Alerta de deslizamento");
+    }
+    
+    @Test
+    public void test03GetAlertaByIdInexistente() {
+        AlertaClient alertaClient = new AlertaClient(HOST_URL);
+        Alerta alerta = alertaClient.getAlertaById(100);
+        assertNull(alerta);
+    }
+    
+    @Test
+    public void test04GetAlertaByRegiao() {
+        AlertaClient alertaClient = new AlertaClient(HOST_URL);
+        List<Alerta> alertas = alertaClient.getAlertaByRegiao(0.5D, 0.5D, 1D);
+        if(alertas.size() == 0) {
+            fail("Não localizou os alertas experados na região!");
+        }
+        assertEquals("Resposta(descricao):'" + alertas.get(0).getDescricaoResumida() + "' do POST diferente do que foi enviado!", alertas.get(0).getDescricaoResumida(), "Alerta de deslizamento");
+    }
+    
+    @Test
+    public void test05GetAlertaByRegiaoInexistente() {
+        AlertaClient alertaClient = new AlertaClient(HOST_URL);
+        List<Alerta> alertas = alertaClient.getAlertaByRegiao(0.6D, 0.6D, 10D);
+        assertEquals("Resposta inexperada!", alertas.size(), 0);
     }
     
 }

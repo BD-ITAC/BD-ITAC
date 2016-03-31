@@ -8,6 +8,7 @@ import java.util.Map;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.hateoas.hal.Jackson2HalModule;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -17,13 +18,13 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import br.ita.bditac.ws.model.Evento;
-import br.ita.bditac.ws.model.EventoResponse;
+import br.ita.bditac.ws.model.EventoResource;
 
-public class EventoService extends AbstractBaseService {
+public class EventoClient extends AbstractBaseService {
     
     private static final String SERVICE_URL = "/evento";
     
-    public EventoService(String hostURL) {
+    public EventoClient(String hostURL) {
         super(hostURL);
     }
     
@@ -39,11 +40,14 @@ public class EventoService extends AbstractBaseService {
       
         RestTemplate restTemplate = new RestTemplate(Collections.<HttpMessageConverter<?>> singletonList(converter));
 
-        ResponseEntity<EventoResponse> eventoResponseEntity =  restTemplate.postForEntity(getHostURL() + SERVICE_URL, new HttpEntity<Evento>(evento), EventoResponse.class);
+        ResponseEntity<EventoResource> eventoResponseEntity =  restTemplate.postForEntity(getHostURL() + SERVICE_URL, new HttpEntity<Evento>(evento), EventoResource.class);
         
-        Evento eventoRetorno = eventoResponseEntity.getBody().getEvento();
-        
-        return eventoRetorno;
+        if(eventoResponseEntity.getStatusCode() == HttpStatus.CREATED) {
+            return eventoResponseEntity.getBody().getContent();
+        }
+        else {
+            return null;
+        }
         
     }
     
@@ -61,12 +65,20 @@ public class EventoService extends AbstractBaseService {
         params.put("id", id);
         
         RestTemplate restTemplate = new RestTemplate(Collections.<HttpMessageConverter<?>> singletonList(converter));
+        restTemplate.setErrorHandler(new ClientErrorHandler());
         
-        ResponseEntity<EventoResponse> eventoResponseEntity = restTemplate.getForEntity(getHostURL() + SERVICE_URL + "/{id}", EventoResponse.class, params);
+        try {
+            ResponseEntity<EventoResource> eventoResponseEntity = restTemplate.getForEntity(getHostURL() + SERVICE_URL + "/{id}", EventoResource.class, params);
+            
+            if(eventoResponseEntity.getStatusCode() == HttpStatus.OK) {
+                return eventoResponseEntity.getBody().getContent();
+            }
+        }
+        catch(Exception ex) {
+            
+        }
         
-        Evento evento = eventoResponseEntity.getBody().getEvento();
-        
-        return evento;
+        return null;
         
     }
 
