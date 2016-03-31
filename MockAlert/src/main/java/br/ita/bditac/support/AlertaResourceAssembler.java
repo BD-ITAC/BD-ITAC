@@ -17,7 +17,7 @@ public class AlertaResourceAssembler extends ResourceAssemblerSupport<Alerta, Al
         AlertaResource resource = createResourceWithId(alerta.getId(), alerta);
         
         return resource;
-    }
+    }    
     
     @Override
     protected AlertaResource instantiateResource(Alerta alerta) {

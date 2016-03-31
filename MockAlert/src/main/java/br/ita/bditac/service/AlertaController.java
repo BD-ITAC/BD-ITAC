@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.ita.bditac.model.Alerta;
 import br.ita.bditac.support.AlertaResource;
 import br.ita.bditac.support.AlertaResourceAssembler;
+import br.ita.bditac.support.AlertaResources;
 import br.ita.bditac.support.MessageResource;
 import br.ita.bditac.support.MessageResourceAssembler;
 
@@ -65,15 +66,12 @@ public class AlertaController {
     }
     
     @RequestMapping(method = RequestMethod.GET, produces = { MediaTypes.HAL_JSON_VALUE }, value = Request.BY_REGIAO)
-    public ResponseEntity<List<AlertaResource>> alertasPorRegiao(@PathVariable("latitude") String latitude, @PathVariable("longitude") String longitude, @PathVariable("raio") String raio) {
-        double dLatitude = Double.parseDouble(latitude);
-        double dLongitude = Double.parseDouble(longitude);
-        double dRaio = Double.parseDouble(raio);
+    public ResponseEntity<AlertaResources> alertasPorRegiao(@PathVariable("latitude") double latitude, @PathVariable("longitude") double longitude, @PathVariable("raio") double raio) {
+        List<Alerta> alertas = service.obterAlertasPorRegiao(latitude, longitude, raio);
+        List<AlertaResource> resources = resourceAssembler.toResources(alertas);
+        AlertaResources alertaResources = new AlertaResources(resources);
         
-        List<Alerta> alertas = service.obterAlertasPorRegiao(dLatitude, dLongitude, dRaio);
-        List<AlertaResource> resource = resourceAssembler.toResources(alertas);
-        
-        return new ResponseEntity<List<AlertaResource>>(resource, HttpStatus.OK);
+        return new ResponseEntity<AlertaResources>(alertaResources, HttpStatus.OK);
     }
 
     @ExceptionHandler(Exception.class)

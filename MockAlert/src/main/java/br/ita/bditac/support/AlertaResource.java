@@ -1,21 +1,26 @@
 package br.ita.bditac.support;
 
-import org.springframework.hateoas.ResourceSupport;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.Resource;
 
 import br.ita.bditac.model.Alerta;
 
-public class AlertaResource extends ResourceSupport {
+public class AlertaResource extends Resource<Alerta> {
     
-    private Alerta alerta;
+    public AlertaResource() {
+        super(new Alerta());
+    }
     
     public AlertaResource(Alerta alerta) {
-        super();
-        
-        this.alerta = alerta;
+        super(alerta);
     }
     
-    public Alerta getAlerta() {
-        return alerta;
+    public AlertaResource(Alerta alerta, Iterable<Link> links) {
+        super(alerta, links);
     }
-
+    
+    public AlertaResource(Alerta alerta, Link... links) {
+        super(alerta, links);
+    }
+    
 }
