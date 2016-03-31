@@ -24,7 +24,7 @@ public class EventoTests extends TestCase {
         endereco.add("rua das Casas");
         endereco.add("numero das Portas");
         Evento eventoNovo = new Evento(
-                "Deslizamento na na favela do Paraiso",
+                "Deslizamento na favela do Paraiso",
                 0,
                 "Ze das Couves",
                 "zedascouves@gmail.com",
@@ -40,7 +40,7 @@ public class EventoTests extends TestCase {
         EventoClient eventoClient = new EventoClient(HOST_URL);
         Evento evento = eventoClient.getEventoById(1);
         assertNotNull(evento);
-        assertEquals("Resposta(descricao):'" + evento.getDescricao() + "' do POST diferente do que foi enviado!", evento.getDescricao(), "Deslizamento na na favela do Paraiso");
+        assertEquals("Resposta(descricao):'" + evento.getDescricao() + "' do POST diferente do que foi enviado!", evento.getDescricao(), "Deslizamento na favela do Paraiso");
     }
     
     @Test
