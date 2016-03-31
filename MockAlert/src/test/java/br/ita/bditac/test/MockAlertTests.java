@@ -17,6 +17,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.paramete
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -41,6 +42,7 @@ import org.springframework.hateoas.hal.Jackson2HalModule;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.restdocs.RestDocumentation;
@@ -51,6 +53,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.client.ResourceAccessException;
+import org.springframework.web.client.ResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -75,6 +78,39 @@ import br.ita.bditac.support.EventoResource;
 public class MockAlertTests {
 
     private static final double DELTA = 1e-6;
+
+    public class ClientErrorHandler implements ResponseErrorHandler {
+    
+        public void handleError(ClientHttpResponse response) throws IOException {
+
+        }
+    
+        public boolean hasError(ClientHttpResponse response) throws IOException {
+            if ((response.getStatusCode().series() == HttpStatus.Series.CLIENT_ERROR) || (response.getStatusCode().series() == HttpStatus.Series.SERVER_ERROR)) {
+                return true;
+            }
+            
+            return false;
+        }
+    
+    }
+
+    public RestTemplate getRestTemplate() {
+        
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        mapper.registerModule(new Jackson2HalModule());
+
+        MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
+        converter.setSupportedMediaTypes(Arrays.asList(MediaTypes.HAL_JSON));
+        converter.setObjectMapper(mapper);
+      
+        RestTemplate restTemplate = new RestTemplate(Collections.<HttpMessageConverter<?>> singletonList(converter));
+        restTemplate.setErrorHandler(new ClientErrorHandler());
+        
+        return restTemplate;
+        
+    }
     
     @Value("${local.server.port}")
     private int port;
@@ -105,15 +141,7 @@ public class MockAlertTests {
     public void test101PostEvento() throws Exception {
         URI eventoURI = new URI(getBaseUrl() + "/evento");
         
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        mapper.registerModule(new Jackson2HalModule());
-
-        MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
-        converter.setSupportedMediaTypes(Arrays.asList(MediaTypes.HAL_JSON));
-        converter.setObjectMapper(mapper);
-      
-        RestTemplate restTemplate = new RestTemplate(Collections.<HttpMessageConverter<?>> singletonList(converter));
+        RestTemplate restTemplate = getRestTemplate();
         
         List<String> endereco = new ArrayList<String>();
         endereco.add("rua das Casas");
@@ -151,15 +179,7 @@ public class MockAlertTests {
     public void test102GetEvento() throws Exception {
         String eventoURL = getBaseUrl() + "/evento/{id}";
         
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        mapper.registerModule(new Jackson2HalModule());
-
-        MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
-        converter.setSupportedMediaTypes(Arrays.asList(MediaTypes.HAL_JSON));
-        converter.setObjectMapper(mapper);
-        
-        RestTemplate restTemplate = new RestTemplate(Collections.<HttpMessageConverter<?>> singletonList(converter));
+        RestTemplate restTemplate = getRestTemplate();
         
         Map<String, Integer> params = new HashMap<String, Integer>();
         params.put("id", 1);
@@ -196,60 +216,21 @@ public class MockAlertTests {
     public void test103GetEventoInexistente() throws Exception {
         String eventoURL = getBaseUrl() + "/evento/{id}";
         
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        mapper.registerModule(new Jackson2HalModule());
-
-        MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
-        converter.setSupportedMediaTypes(Arrays.asList(MediaTypes.HAL_JSON));
-        converter.setObjectMapper(mapper);
-        
-        RestTemplate restTemplate = new RestTemplate(Collections.<HttpMessageConverter<?>> singletonList(converter));
+        RestTemplate restTemplate = getRestTemplate();
         
         Map<String, Integer> params = new HashMap<String, Integer>();
-        params.put("id", 1);
+        params.put("id", 100);
         
         ResponseEntity<EventoResource> eventoResponseEntity = restTemplate.getForEntity(eventoURL, EventoResource.class, params);
         
-        assertThat(eventoResponseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
-
-        Evento eventoResponse = eventoResponseEntity.getBody().getContent();
-        
-        List<String> endereco = new ArrayList<String>();
-        endereco.add("rua das Casas");
-        endereco.add("numero das Portas");
-        Evento eventoRequest = new Evento(
-                "Deslizamento na na favela do Paraiso",
-                0,
-                "Ze das Couves",
-                "zedascouves@gmail.com",
-                "(12) 99876-1234",
-                endereco);
-
-        assertEquals("Resposta(descricao):'" + eventoResponse.getDescricao() + "' do POST diferente do que foi enviado: '" + eventoRequest.getDescricao() + "'!", eventoResponse.getDescricao(), eventoRequest.getDescricao());
-        assertEquals("Resposta(categoria) do POST diferente do que foi enviado!", eventoResponse.getCategoria(), eventoRequest.getCategoria());
-        assertEquals("Resposta(nome) do POST diferente do que foi enviado!", eventoResponse.getNome(), eventoRequest.getNome());
-        assertEquals("Resposta(email) do POST diferente do que foi enviado!", eventoResponse.getEmail(), eventoRequest.getEmail());
-        assertEquals("Resposta(telefone) do POST diferente do que foi enviado!", eventoResponse.getTelefone(), eventoRequest.getTelefone());
-        int linha = 0;
-        for(String linhaEndereco : eventoRequest.getEndereco()) {
-            assertEquals("Resposta(endereco) do POST diferente do que foi enviado!", linhaEndereco, eventoRequest.getEndereco().get(linha++));
-        }
+        assertThat(eventoResponseEntity.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
     
     @Test
     public void test104PostAlerta() throws URISyntaxException {
         URI alertaURI = new URI(getBaseUrl() + "/alerta");
         
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        mapper.registerModule(new Jackson2HalModule());
-
-        MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
-        converter.setSupportedMediaTypes(Arrays.asList(MediaTypes.HAL_JSON));
-        converter.setObjectMapper(mapper);
-        
-        RestTemplate restTemplate = new RestTemplate(Collections.<HttpMessageConverter<?>> singletonList(converter));
+        RestTemplate restTemplate = getRestTemplate();
         
         List<String> endereco = new ArrayList<String>();
         endereco.add("rua das Casas");
@@ -299,15 +280,7 @@ public class MockAlertTests {
     public void test105GetAlertaById() throws URISyntaxException {
         String alertaURL = getBaseUrl() + "/alerta/{id}";
         
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        mapper.registerModule(new Jackson2HalModule());
-
-        MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
-        converter.setSupportedMediaTypes(Arrays.asList(MediaTypes.HAL_JSON));
-        converter.setObjectMapper(mapper);
-        
-        RestTemplate restTemplate = new RestTemplate(Collections.<HttpMessageConverter<?>> singletonList(converter));
+        RestTemplate restTemplate = getRestTemplate();
         
         Map<String, Integer> params = new HashMap<String, Integer>();
         params.put("id", 1);
@@ -356,15 +329,7 @@ public class MockAlertTests {
     public void test106GetAlertasByCoords() throws Exception {
         String alertaURL = getBaseUrl() + "/alerta/latitude/{latitude}/longitude/{longitude}/raio/{raio}";
         
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        mapper.registerModule(new Jackson2HalModule());
-
-        MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
-        converter.setSupportedMediaTypes(Arrays.asList(MediaTypes.HAL_JSON));
-        converter.setObjectMapper(mapper);
-        
-        RestTemplate restTemplate = new RestTemplate(Collections.<HttpMessageConverter<?>> singletonList(converter));
+        RestTemplate restTemplate = getRestTemplate();
         
         Map<String, Double> params = new HashMap<String, Double>();
         params.put("latitude", 0.5D);
@@ -380,15 +345,7 @@ public class MockAlertTests {
     public void test107GetAlertaByCoordsInexistente() throws Exception {
         String alertaURL = getBaseUrl() + "/alerta/latitude/{latitude}/longitude/{longitude}/raio/{raio}";
         
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        mapper.registerModule(new Jackson2HalModule());
-
-        MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
-        converter.setSupportedMediaTypes(Arrays.asList(MediaTypes.HAL_JSON));
-        converter.setObjectMapper(mapper);
-        
-        RestTemplate restTemplate = new RestTemplate(Collections.<HttpMessageConverter<?>> singletonList(converter));
+        RestTemplate restTemplate = getRestTemplate();
         
         Map<String, Double> params = new HashMap<String, Double>();
         params.put("latitude", 0.6D);
