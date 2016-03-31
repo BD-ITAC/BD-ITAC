@@ -53,8 +53,8 @@ public class AlertaClient extends AbstractBaseService {
         
         Map<String, Double> params = new HashMap<String, Double>();
         params.put("latitude", latitude);
-        params.put("longitude", latitude);
-        params.put("raio", latitude);
+        params.put("longitude", longitude);
+        params.put("raio", raio);
         
         List<Alerta> alertas = getRestTemplate().getForObject(getHostURL() + SERVICE_URL + "/latitude/{latitude}/longitude/{longitude}/raio/{raio}", AlertaResources.class, params).unwrap();
         
