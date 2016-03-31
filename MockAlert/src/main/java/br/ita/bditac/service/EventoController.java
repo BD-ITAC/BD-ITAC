@@ -54,9 +54,14 @@ public class EventoController {
     @RequestMapping(method = RequestMethod.GET, produces = { MediaTypes.HAL_JSON_VALUE }, value = Request.ID)
     public ResponseEntity<EventoResource> obter(@PathVariable("id") int id) {
         Evento evento = service.obterEvento(id);
-        EventoResource resource = resourceAssembler.toResource(evento);
-        
-        return new ResponseEntity<EventoResource>(resource, HttpStatus.OK);
+        if(evento == null) {
+            return new ResponseEntity<EventoResource>(HttpStatus.NOT_FOUND);
+        }
+        else {
+            EventoResource resource = resourceAssembler.toResource(evento);
+            
+            return new ResponseEntity<EventoResource>(resource, HttpStatus.OK);
+        }
     }
     
     @ExceptionHandler(Exception.class)

@@ -193,7 +193,52 @@ public class MockAlertTests {
     }
     
     @Test
-    public void test103PostAlerta() throws URISyntaxException {
+    public void test103GetEventoInexistente() throws Exception {
+        String eventoURL = getBaseUrl() + "/evento/{id}";
+        
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        mapper.registerModule(new Jackson2HalModule());
+
+        MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
+        converter.setSupportedMediaTypes(Arrays.asList(MediaTypes.HAL_JSON));
+        converter.setObjectMapper(mapper);
+        
+        RestTemplate restTemplate = new RestTemplate(Collections.<HttpMessageConverter<?>> singletonList(converter));
+        
+        Map<String, Integer> params = new HashMap<String, Integer>();
+        params.put("id", 1);
+        
+        ResponseEntity<EventoResource> eventoResponseEntity = restTemplate.getForEntity(eventoURL, EventoResource.class, params);
+        
+        assertThat(eventoResponseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+        Evento eventoResponse = eventoResponseEntity.getBody().getContent();
+        
+        List<String> endereco = new ArrayList<String>();
+        endereco.add("rua das Casas");
+        endereco.add("numero das Portas");
+        Evento eventoRequest = new Evento(
+                "Deslizamento na na favela do Paraiso",
+                0,
+                "Ze das Couves",
+                "zedascouves@gmail.com",
+                "(12) 99876-1234",
+                endereco);
+
+        assertEquals("Resposta(descricao):'" + eventoResponse.getDescricao() + "' do POST diferente do que foi enviado: '" + eventoRequest.getDescricao() + "'!", eventoResponse.getDescricao(), eventoRequest.getDescricao());
+        assertEquals("Resposta(categoria) do POST diferente do que foi enviado!", eventoResponse.getCategoria(), eventoRequest.getCategoria());
+        assertEquals("Resposta(nome) do POST diferente do que foi enviado!", eventoResponse.getNome(), eventoRequest.getNome());
+        assertEquals("Resposta(email) do POST diferente do que foi enviado!", eventoResponse.getEmail(), eventoRequest.getEmail());
+        assertEquals("Resposta(telefone) do POST diferente do que foi enviado!", eventoResponse.getTelefone(), eventoRequest.getTelefone());
+        int linha = 0;
+        for(String linhaEndereco : eventoRequest.getEndereco()) {
+            assertEquals("Resposta(endereco) do POST diferente do que foi enviado!", linhaEndereco, eventoRequest.getEndereco().get(linha++));
+        }
+    }
+    
+    @Test
+    public void test104PostAlerta() throws URISyntaxException {
         URI alertaURI = new URI(getBaseUrl() + "/alerta");
         
         ObjectMapper mapper = new ObjectMapper();
@@ -251,7 +296,7 @@ public class MockAlertTests {
     }
     
     @Test
-    public void test104GetAlerta() throws URISyntaxException {
+    public void test105GetAlertaById() throws URISyntaxException {
         String alertaURL = getBaseUrl() + "/alerta/{id}";
         
         ObjectMapper mapper = new ObjectMapper();
@@ -308,7 +353,7 @@ public class MockAlertTests {
     }
     
     @Test
-    public void test105GetAlertas() throws Exception {
+    public void test106GetAlertasByCoords() throws Exception {
         String alertaURL = getBaseUrl() + "/alerta/latitude/{latitude}/longitude/{longitude}/raio/{raio}";
         
         ObjectMapper mapper = new ObjectMapper();
@@ -329,6 +374,30 @@ public class MockAlertTests {
         List<Alerta> alertas = restTemplate.getForObject(alertaURL, AlertaResources.class, params).unwrap();
 
         assertEquals("Resposta(descricaoResumida)'" + alertas.get(0).getDescricaoResumida() + "' do POST diferente do esperado!", alertas.get(0).getDescricaoResumida(), "Alerta de deslizamento");
+    }
+    
+    @Test
+    public void test107GetAlertaByCoordsInexistente() throws Exception {
+        String alertaURL = getBaseUrl() + "/alerta/latitude/{latitude}/longitude/{longitude}/raio/{raio}";
+        
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        mapper.registerModule(new Jackson2HalModule());
+
+        MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
+        converter.setSupportedMediaTypes(Arrays.asList(MediaTypes.HAL_JSON));
+        converter.setObjectMapper(mapper);
+        
+        RestTemplate restTemplate = new RestTemplate(Collections.<HttpMessageConverter<?>> singletonList(converter));
+        
+        Map<String, Double> params = new HashMap<String, Double>();
+        params.put("latitude", 0.6D);
+        params.put("longitude", 0.6D);
+        params.put("raio", 1D);
+        
+        List<Alerta> alertas = restTemplate.getForObject(alertaURL, AlertaResources.class, params).unwrap();
+
+        assertThat(alertas.size() == 0);
     }
     
     @Test
@@ -385,7 +454,7 @@ public class MockAlertTests {
     }
     
     @Test
-    public void test903PostAlerta() throws Exception {
+    public void test904PostAlerta() throws Exception {
         List<String> endereco = new ArrayList<String>();
         endereco.add("rua das Casas");
         endereco.add("numero das Portas");
@@ -428,7 +497,7 @@ public class MockAlertTests {
     }
     
     @Test
-    public void test904GetAlerta() throws Exception {
+    public void test905GetAlertaById() throws Exception {
         this.mvc.perform(get(getBaseUrl() + "/alerta/{id}", 1))
             .andExpect(status().isOk())
             .andDo(document("alerta/locations", 

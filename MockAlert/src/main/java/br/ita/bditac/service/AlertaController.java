@@ -60,9 +60,14 @@ public class AlertaController {
     @RequestMapping(method = RequestMethod.GET, produces = { MediaTypes.HAL_JSON_VALUE }, value = Request.ID)
     public ResponseEntity<AlertaResource> alerta(@PathVariable("id") int id) {
         Alerta alerta = service.obterAlerta(id);
-        AlertaResource resource = resourceAssembler.toResource(alerta);
-        
-        return new ResponseEntity<AlertaResource>(resource, HttpStatus.OK);
+        if(alerta == null) {
+            return new ResponseEntity<AlertaResource>(HttpStatus.NOT_FOUND);
+        }
+        else {
+            AlertaResource resource = resourceAssembler.toResource(alerta);
+            
+            return new ResponseEntity<AlertaResource>(resource, HttpStatus.OK);
+        }
     }
     
     @RequestMapping(method = RequestMethod.GET, produces = { MediaTypes.HAL_JSON_VALUE }, value = Request.BY_REGIAO)
