@@ -11,6 +11,9 @@ Para criar o jar do projeto, após clonar o projeto no GitHub, no onde o gravou 
     mvn clean
     mvn install
 
+> ###Obs.:
+> Antes é necessário ter o serviço MockAlert ativo para os testes unitários poderem ser executados!
+
 Depois copie o **jar** que vai estar em *<diretório do projeto>/target/AlertWSClient-0.0.1.jar* para a pasta do seu projeto e onde ele possa ser acessado. Este **jar** deve fazer parte do pacote do seu projeto.
 
 A utilização do cliente é bastante simples. Basta consultar os testes unitários para ver exemplos de uso. Abaixo um exemplo de consulta a um evento:
