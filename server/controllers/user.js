@@ -12,14 +12,12 @@ module.exports = function(app){
     userDAO.listAll(function(err, data) {
       if(err) {
           res.status(500).json(err);
-      }
-      else {
-          if(data !== null && data.length >= 0) {
-            res.json(data);
-          }
-          else {
-            res.status(404).json({message:'List of Users Empty.'});
-          }
+      }else{
+        if(data !== null && data.length >= 0) {
+          res.json(data);
+        }else {
+          res.status(404).json({message:'List of Users Empty.'});
+        }
       }
     });
  };

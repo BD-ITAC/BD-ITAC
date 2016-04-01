@@ -22,7 +22,7 @@ module.exports = function(app){
   * @param nothing parameters
   */
   dao.listAll = function(callback){
-    return users;
+    return callback(null, users);
   };
 
   return dao;

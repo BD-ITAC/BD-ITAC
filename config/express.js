@@ -6,8 +6,6 @@
 var express = require('express');
 var load = require('express-load');
 var bodyParser = require('body-parser');
-var http = require('http');
-var path = require('path');
 
 module.exports = function(){
   var app = express();
