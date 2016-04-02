@@ -259,7 +259,16 @@ public class MockAlertTests {
     }
     
     @Test
-    public void test105GetAlertaById() throws URISyntaxException {
+    public void test105GetAlerta() throws URISyntaxException {
+        String alertaURL = getBaseUrl() + "/alerta";
+        
+        ResponseEntity<AlertaResource> alertaResponseEntity = getRestTemplate().getForEntity(alertaURL, AlertaResource.class);
+        
+        assertThat(alertaResponseEntity.getStatusCode() == HttpStatus.OK);
+    }
+    
+    @Test
+    public void test106GetAlertaById() throws URISyntaxException {
         String alertaURL = getBaseUrl() + "/alerta/{id}";
         
         Map<String, Integer> params = new HashMap<String, Integer>();
@@ -306,7 +315,7 @@ public class MockAlertTests {
     }
     
     @Test
-    public void test106GetAlertasByCoords() throws Exception {
+    public void test107GetAlertasByCoords() throws Exception {
         String alertaURL = getBaseUrl() + "/alerta/latitude/{latitude}/longitude/{longitude}/raio/{raio}";
         
         Map<String, Double> params = new HashMap<String, Double>();
@@ -320,7 +329,7 @@ public class MockAlertTests {
     }
     
     @Test
-    public void test107GetAlertaByCoordsInexistente() throws Exception {
+    public void test108GetAlertaByCoordsInexistente() throws Exception {
         String alertaURL = getBaseUrl() + "/alerta/latitude/{latitude}/longitude/{longitude}/raio/{raio}";
         
         Map<String, Double> params = new HashMap<String, Double>();
@@ -430,7 +439,7 @@ public class MockAlertTests {
     }
     
     @Test
-    public void test905GetAlertaById() throws Exception {
+    public void test906GetAlertaById() throws Exception {
         this.mvc.perform(get(getBaseUrl() + "/alerta/{id}", 1))
             .andExpect(status().isOk())
             .andDo(document("alerta/locations", 

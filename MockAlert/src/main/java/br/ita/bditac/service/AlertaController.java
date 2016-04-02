@@ -74,6 +74,17 @@ public class AlertaController {
         }
     }
     
+    @RequestMapping(method = RequestMethod.GET, produces = { MediaTypes.HAL_JSON_VALUE })
+    public ResponseEntity<AlertaResource> alerta() {
+        boolean hasAlertas = service.obterAlerta();
+        if(hasAlertas) {
+            return new ResponseEntity<AlertaResource>(HttpStatus.OK);
+        }
+        else {
+            return new ResponseEntity<AlertaResource>(HttpStatus.NOT_FOUND);
+        }
+    }
+    
     @RequestMapping(method = RequestMethod.GET, produces = { MediaTypes.HAL_JSON_VALUE }, value = Request.BY_REGIAO)
     public ResponseEntity<AlertaResources> alertasPorRegiao(@PathVariable("latitude") String latitude, @PathVariable("longitude") String longitude, @PathVariable("raio") String raio) {
         Double dLatitude = Double.valueOf(latitude);

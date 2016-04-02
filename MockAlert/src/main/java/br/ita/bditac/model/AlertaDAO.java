@@ -52,6 +52,10 @@ public class AlertaDAO {
         return novoAlerta;
     }
     
+    public boolean obterAlerta() {
+        return alertas.size() != 0;
+    }
+    
     public Alerta obterAlerta(int id) {
         return alertas.get(id);
     }
