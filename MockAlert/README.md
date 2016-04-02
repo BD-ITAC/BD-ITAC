@@ -24,3 +24,21 @@ Se por alguma razão for necessário mudar a porta do serviço basta modificar o
         port: 8080
         address: 0.0.0.0
 
+O docker funciona. Basta entrar no diretório do projeto e digitar
+
+    mvn package
+    cp src/main/docker/Dockerfile target/docker
+    cp target/MockAlerta-0.0.1.jar target/docker
+    docker build target/docker
+    docker run <numero do build informado pelo build do docker>
+    
+Só uma observação. Se você tentar usar o plugin maven do docker:
+
+    mvn docker:build
+    
+Ele irá
+
+* Copiar os arquivos *src/main/docker/Dockerfile* e *target/MockAlerta-0.0.1.jar* para a pasta *target/docker*;
+* Tentar executar **docker buil**;
+
+Porém irá falhar miseravelmente, aparentemente porque irá tentar executar as tarefas do docker concorrentemente e vai acabar chocando consigo próprio!
