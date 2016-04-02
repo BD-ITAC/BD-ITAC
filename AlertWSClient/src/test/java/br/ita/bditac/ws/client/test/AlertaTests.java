@@ -73,4 +73,16 @@ public class AlertaTests extends TestCase {
         assertEquals("Resposta inexperada!", alertas.size(), 0);
     }
     
+    @Test
+    public void test06GetRegiaoComAlerta() {
+        AlertaClient alertaClient = new AlertaClient(HOST_URL);
+        assertTrue("Falta de alerta inexperado em região com alertas", alertaClient.hasAlerta(0.5D, 0.5D, 1D));
+    }
+    
+    @Test
+    public void test75GetRegiaoSemAlerta() {
+        AlertaClient alertaClient = new AlertaClient(HOST_URL);
+        assertFalse("Alerta inexperado em região sem alertas", alertaClient.hasAlerta(0.6D, 0.6D, 10D));
+    }
+    
 }

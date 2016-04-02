@@ -52,8 +52,17 @@ public class AlertaDAO {
         return novoAlerta;
     }
     
-    public boolean obterAlerta() {
-        return alertas.size() != 0;
+    public boolean obterAlerta(double latitude, double longitude, double raio) {
+        List<Alerta> alertasPorRegiao = new ArrayList<Alerta>();
+        
+        for (Alerta alerta : alertas.values()) {
+            if (Haversine.distance(alerta.getOrigemLatitude(), alerta.getOrigemLongitude(), latitude, longitude) <= raio) {
+                alertasPorRegiao.add(alerta);
+                break;
+            }
+        }
+        
+        return alertasPorRegiao.size() != 0;
     }
     
     public Alerta obterAlerta(int id) {

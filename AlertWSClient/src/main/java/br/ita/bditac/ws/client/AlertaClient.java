@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -28,7 +29,7 @@ public class AlertaClient extends AbstractBaseService {
         
         return alertaRetorno;
     }
-
+    
     public Alerta getAlertaById(int id) {
         
         Map<String, Integer> params = new HashMap<String, Integer>();
@@ -47,6 +48,24 @@ public class AlertaClient extends AbstractBaseService {
 
         return null;
 
+    }
+
+    public boolean hasAlerta(double latitude, double longitude, double raio) {
+        
+        Map<String, Double> params = new HashMap<String, Double>();
+        params.put("latitude", latitude);
+        params.put("longitude", longitude);
+        params.put("raio", raio);
+        
+        ResponseEntity<Void> response = getRestTemplate().exchange(getHostURL() + SERVICE_URL + "/latitude/{latitude}/longitude/{longitude}/raio/{raio}", HttpMethod.HEAD, null, Void.class, params);
+        
+        if(response.getStatusCode() == HttpStatus.OK) {
+            return true;
+        }
+        else {
+            return false;
+        }
+        
     }
 
     public List<Alerta> getAlertaByRegiao(double latitude, double longitude, double raio) {
