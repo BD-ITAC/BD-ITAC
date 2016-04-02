@@ -51,7 +51,19 @@ public class Evento implements Serializable {
     private String telefone;
     
     private List<String> endereco;
-
+    
+//    private double origemLatitude;
+//    
+//    private double origemLongitude;
+//    
+//    private double origemRaioKms;
+//    
+//    private double destinoLatitude;
+//    
+//    private double destinoLongitude;
+//    
+//    private double destinoRaioKms;
+    
     public Evento() {
         this.id = 0;
         

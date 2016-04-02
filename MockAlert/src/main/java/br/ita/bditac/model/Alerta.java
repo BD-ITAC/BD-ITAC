@@ -98,14 +98,14 @@ public class Alerta implements Serializable {
     private int categoriaAlerta;
     
     /**
-     * Coordenadas do ponto de origem do evento - longitute
-     */
-    private double origemLongitude;
-    
-    /**
      * Coordenadas do ponto de origem do evento - latitude
      */
     private double origemLatitude;
+    
+    /**
+     * Coordenadas do ponto de origem do evento - longitute
+     */
+    private double origemLongitude;
     
     /**
      * Coordenadas do ponto de origem do evento - área de abrangência em kilometros
@@ -113,14 +113,14 @@ public class Alerta implements Serializable {
     private double origemRaioKms;
     
     /**
-     * Coordenadas do destino presumido do evento - longitute (se houver, senão replicar origem)
-     */
-    private double destinoLongitude;
-    
-    /**
      * Coordenadas do destino presumido do evento - latitude (se houver, senão replicar origem)
      */
     private double destinoLatitude;
+    
+    /**
+     * Coordenadas do destino presumido do evento - longitute (se houver, senão replicar origem)
+     */
+    private double destinoLongitude;
     
     /**
      * Coordenadas do destino presumido do evento - área de abrangência em kilometros (se houver, senão replicar origem)
@@ -225,16 +225,6 @@ public class Alerta implements Serializable {
     }
 
     
-    public double getOrigemLongitude() {
-        return origemLongitude;
-    }
-
-    
-    public void setOrigemLongitude(double origemLongitude) {
-        this.origemLongitude = origemLongitude;
-    }
-
-    
     public double getOrigemLatitude() {
         return origemLatitude;
     }
@@ -242,6 +232,16 @@ public class Alerta implements Serializable {
     
     public void setOrigemLatitude(double origemLatitude) {
         this.origemLatitude = origemLatitude;
+    }
+
+    
+    public double getOrigemLongitude() {
+        return origemLongitude;
+    }
+
+    
+    public void setOrigemLongitude(double origemLongitude) {
+        this.origemLongitude = origemLongitude;
     }
 
     
@@ -255,16 +255,6 @@ public class Alerta implements Serializable {
     }
 
     
-    public double getDestinoLongitude() {
-        return destinoLongitude;
-    }
-
-    
-    public void setDestinoLongitude(double destinoLongitude) {
-        this.destinoLongitude = destinoLongitude;
-    }
-
-    
     public double getDestinoLatitude() {
         return destinoLatitude;
     }
@@ -272,6 +262,16 @@ public class Alerta implements Serializable {
     
     public void setDestinoLatitude(double destinoLatitude) {
         this.destinoLatitude = destinoLatitude;
+    }
+
+    
+    public double getDestinoLongitude() {
+        return destinoLongitude;
+    }
+
+    
+    public void setDestinoLongitude(double destinoLongitude) {
+        this.destinoLongitude = destinoLongitude;
     }
 
     
