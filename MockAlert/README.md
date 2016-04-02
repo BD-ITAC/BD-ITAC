@@ -32,13 +32,13 @@ O docker funciona. Basta entrar no diretório do projeto e digitar
     docker build target/docker
     docker run <numero do build informado pelo build do docker>
     
-Só uma observação. Se você tentar usar o plugin maven do docker:
-
-    mvn docker:build
-    
-Ele irá
-
-* Copiar os arquivos *src/main/docker/Dockerfile* e *target/MockAlerta-0.0.1.jar* para a pasta *target/docker*;
-* Tentar executar **docker buil**;
-
-Porém irá falhar miseravelmente, aparentemente porque irá tentar executar as tarefas do docker concorrentemente e vai acabar chocando consigo próprio!
+>Só uma observação. Se você tentar usar o plugin maven do docker:
+>
+>    mvn docker:build
+>    
+>Ele irá:
+>
+>* Copiar os arquivos *src/main/docker/Dockerfile* e *target/MockAlerta-0.0.1.jar* para a pasta *target/docker*;
+>* Tentar executar **docker buil**;
+>
+>Porém irá falhar miseravelmente, aparentemente porque irá tentar executar as tarefas do docker concorrentemente e vai acabar chocando consigo próprio!

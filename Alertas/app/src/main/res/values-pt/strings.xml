@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Alertas</string>
+    <string name="msg_alert_received">Novo alerta recebido</string>
+    <string name="open">Abrir</string>
+    <string name="dismiss">Ignorar</string>
+</resources>
