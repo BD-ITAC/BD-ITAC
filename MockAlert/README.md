@@ -4,7 +4,7 @@ Aplicação Mock usando [Spring HATEOAS ReST API](http://projects.spring.io/spri
 
 É um serviço muito simples que não persiste dados. Os dados recebidos ficam armazenados em memória até o sistema ser re-iniciado.
 
-A documentação provisória pode ser vista [aqui:](https://cdn.rawgit.com/BD-ITAC/BD-ITAC/SP1_TS02/MockAlert/README.html)
+A documentação provisória pode ser vista [aqui:](https://cdn.rawgit.com/BD-ITAC/BD-ITAC/commit/93690b804adf8d3ee9544d82085b60a2554c2841)
 
 Para usar basta compilar e executar o jar do projeto. Após clonar o projeto no GitHub, no onde o gravou execute diretamente na linha de comando:
 
