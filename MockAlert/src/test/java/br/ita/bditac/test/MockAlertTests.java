@@ -466,4 +466,33 @@ public class MockAlertTests {
                     linkWithRel("self").description("Link para o evento"))));
     }
    
+    @Test
+    public void test907GetAlertaByCoords() throws Exception {
+        this.mvc.perform(get(getBaseUrl() + "/alerta/latitude/{latitude}/longitude/{longitude}/raio/{raio}", 0.5D, 0.5D, 1.0D))
+            .andExpect(status().isOk())
+            .andDo(document("alerta/locations",
+                pathParameters(
+                    parameterWithName("latitude").description("Latitude do ponto de origem do alerta"),
+                    parameterWithName("longitude").description("Longitude do ponto de origem do alerta"),
+                    parameterWithName("raio").description("Área de abrangência do alerta em Kms"))));
+        this.mvc.perform(get(getBaseUrl() + "alerta/latitude/0.5/longitude/0.5/raio/1.0")
+            .accept(MediaTypes.HAL_JSON_VALUE))
+            .andExpect(status().isOk())
+            .andDo(document("alerta/get",
+                responseFields(
+                    fieldWithPath("_embedded.alertaList[].descricaoResumida").type(JsonFieldType.STRING).description("Breve descrição do alerta"),
+                    fieldWithPath("_embedded.alertaList[].descricaoCompleta").type(JsonFieldType.STRING).description("Descrição detalhada do alerta"),
+                    fieldWithPath("_embedded.alertaList[].fatorRiscoHumano").type(JsonFieldType.STRING).description("Fator de risco para a vida humana"),
+                    fieldWithPath("_embedded.alertaList[].fatorRiscoMaterial").type(JsonFieldType.STRING).description("Fator de risco para instalações e equipamentos"),
+                    fieldWithPath("_embedded.alertaList[].categoriaAlerta").type(JsonFieldType.STRING).description("Indica o tipo de alerta"),
+                    fieldWithPath("_embedded.alertaList[].origemLatitude").type(JsonFieldType.ARRAY).description("Latitude do ponto de origem do alerta"),
+                    fieldWithPath("_embedded.alertaList[].origemLongitude").type(JsonFieldType.ARRAY).description("Longitude do ponto de origem do alerta"),
+                    fieldWithPath("_embedded.alertaList[].origemRaioKms").type(JsonFieldType.ARRAY).description("Área de abrangência do alerta em Kms"),
+                    fieldWithPath("_embedded.alertaList[].destinoLatitude").type(JsonFieldType.ARRAY).description("Latitude do destino presumido do evento (se houver, senão replica a da origem)"),
+                    fieldWithPath("_embedded.alertaList[].destinoLongitude").type(JsonFieldType.ARRAY).description("Longitude do destino presumido do evento (se houver, senão replica a da origem)"),
+                    fieldWithPath("_embedded.alertaList[].destinoRaioKms").type(JsonFieldType.ARRAY).description("Área de abrangência em Kms (se houver, senão replica a da a origem)"),
+                    fieldWithPath("_embedded.alertaList[].endereco").type(JsonFieldType.ARRAY).description("Uma ou mais linhas com o endereço ou localização aproximada do ponto de origem do alerta"),
+                    fieldWithPath("_embedded.alertaList[]._links.self.href").type(JsonFieldType.STRING).description("URI do link para o alerta"))));
+    }
+    
 }
