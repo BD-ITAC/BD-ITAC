@@ -4,4 +4,5 @@
     <string name="msg_alert_received">Novo alerta recebido</string>
     <string name="open">Abrir</string>
     <string name="dismiss">Ignorar</string>
+    <string name="msg_location_denied">Serviço de localização não permitido</string>
 </resources>

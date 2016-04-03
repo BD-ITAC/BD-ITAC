@@ -8,9 +8,17 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import br.ita.bditac.ws.model.Alerta;
+
 public class AlertaActivity extends AppCompatActivity {
 
-    public final int NOTIFICATION_ID = 1;
+    private final int NOTIFICATION_ID = 1;
+
+    public Alerta getAlerta() {
+
+        return new Alerta();
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
