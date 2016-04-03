@@ -68,8 +68,8 @@ public class AlertaRequestTask extends AsyncTask<Void, Void, List<Alerta>> {
                 Location location = locationManager.getLastKnownLocation(bestProvider);
 
                 SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(null);
-                String alertasUrl = preferences.getString("alertas.service.url", DEFAULT_URL);
-                Double radiusKms = new Double(preferences.getFloat("alertas.service.radiusKms", DEFAULT_RADIUS_KMS));
+                String alertasUrl = preferences.getString("alerts.service.url", DEFAULT_URL);
+                Double radiusKms = new Double(preferences.getFloat("alerts.service.radiusKms", DEFAULT_RADIUS_KMS));
 
                 AlertaClient alertaClient = new AlertaClient(alertasUrl);
 
@@ -89,23 +89,25 @@ public class AlertaRequestTask extends AsyncTask<Void, Void, List<Alerta>> {
 
     @Override
     protected void onPostExecute(List<Alerta> alertas) {
-        for(Alerta alerta : alertas) {
-            Intent getAlertaIntent = new Intent(context, NotificationReceiverActivity.class);
-            PendingIntent pGetAlertaIntent = PendingIntent.getActivity(context, (int) System.currentTimeMillis(), getAlertaIntent, 0);
+        if(alertas != null) {
+            for (Alerta alerta : alertas) {
+                Intent getAlertaIntent = new Intent(context, NotificationReceiverActivity.class);
+                PendingIntent pGetAlertaIntent = PendingIntent.getActivity(context, (int) System.currentTimeMillis(), getAlertaIntent, 0);
 
-            Notification notification = new Notification.Builder(context)
-                    .setContentTitle(context.getText(R.string.msg_alert_received))
-                    .setContentText(alerta.getDescricaoResumida())
-                    .setStyle(new Notification.BigTextStyle().bigText(alerta.getDescricaoCompleta()))
-                    .setSmallIcon(R.drawable.ic_action_alert)
-                    .setContentIntent(pGetAlertaIntent)
-                    .addAction(R.drawable.ic_stat_alert, context.getText(R.string.open), pGetAlertaIntent)
-                    .build();
-            NotificationManager notificationManager = (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
+                Notification notification = new Notification.Builder(context)
+                        .setContentTitle(context.getText(R.string.msg_alert_received))
+                        .setContentText(alerta.getDescricaoResumida())
+                        .setStyle(new Notification.BigTextStyle().bigText(alerta.getDescricaoCompleta()))
+                        .setSmallIcon(R.drawable.ic_action_alert)
+                        .setContentIntent(pGetAlertaIntent)
+                        .addAction(R.drawable.ic_stat_alert, context.getText(R.string.open), pGetAlertaIntent)
+                        .build();
+                NotificationManager notificationManager = (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
 
-            notification.flags |= Notification.FLAG_AUTO_CANCEL;
+                notification.flags |= Notification.FLAG_AUTO_CANCEL;
 
-            notificationManager.notify(NotificationIdGenerator.getNewID(), notification);
+                notificationManager.notify(NotificationIdGenerator.getNewID(), notification);
+            }
         }
     }
 

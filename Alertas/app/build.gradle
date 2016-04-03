@@ -17,6 +17,14 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    packagingOptions {
+        pickFirst 'META-INF/spring.tooling'
+        pickFirst 'META-INF/spring.handlers'
+        pickFirst 'META-INF/spring.schemas'
+        pickFirst 'META-INF/license.txt'
+        pickFirst 'META-INF/notice.txt'
+    }
 }
 
 dependencies {
