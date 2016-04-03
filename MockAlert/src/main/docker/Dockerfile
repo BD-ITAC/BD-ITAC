@@ -4,4 +4,5 @@ LABEL description="Mock de Alertas para o sistema BD-ITAC"
 VOLUME /tmp
 ADD MockAlert-0.0.1.jar MockAlert.jar
 RUN bash -c 'touch /MockAlert.jar'
+EXPOSE 8080
 ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/MockAlert.jar"]

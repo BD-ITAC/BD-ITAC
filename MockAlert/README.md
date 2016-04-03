@@ -24,14 +24,12 @@ Se por alguma razão for necessário mudar a porta do serviço basta modificar o
         port: 8080
         address: 0.0.0.0
 
-O docker funciona. Basta entrar no diretório do projeto e digitar
+O docker funciona. Basta executar o seguinte comando (basta ter o docker instalado):
 
-    mvn package
-    cp src/main/docker/Dockerfile target/docker
-    cp target/MockAlerta-0.0.1.jar target/docker
-    docker build target/docker
-    docker run <numero do build informado pelo build do docker>
-    
+    docker run --rm -it -p 8080:8080 bditac/sp1_ts02:devel
+
+Será feito o download do repositório na internet e vai executar o serviço. Para testar basta apontar para o endereço do host (o meu fica em 192.168.99.100:8080).
+
 >Só uma observação. Se você tentar usar o plugin maven do docker:
 >
 >    mvn docker:build

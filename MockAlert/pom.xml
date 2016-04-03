@@ -31,7 +31,10 @@
 
         <!-- Spring REST API Documentation -->
         <snippetsDirectory>${project.build.directory}/generated-docs</snippetsDirectory>
-        
+
+        <!-- Docker hub -->
+        <docker.image.prefix>bditac</docker.image.prefix>
+
 	</properties>
 
 	<dependencies>
@@ -52,7 +55,7 @@
         </dependency>
 
         <!-- Spring REST API Documentation -->
-		<dependency> 
+		<dependency>
 		    <groupId>org.springframework.restdocs</groupId>
 		    <artifactId>spring-restdocs-mockmvc</artifactId>
 		    <scope>test</scope>
@@ -84,12 +87,12 @@
             <version>3.3.0</version>
             <scope>test</scope>
         </dependency>
-        
+
 		<dependency>
 		    <groupId>com.jayway.jsonpath</groupId>
 		    <artifactId>json-path</artifactId>
 		</dependency>
-        
+
 	</dependencies>
 
     <build>
@@ -101,13 +104,13 @@
 					<debuglevel>lines,vars,source</debuglevel>
 				</configuration>
             </plugin>
-            
+
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
-            
-	        <plugin> 
+
+	        <plugin>
 	            <groupId>org.apache.maven.plugins</groupId>
 	            <artifactId>maven-surefire-plugin</artifactId>
 	            <configuration>
@@ -124,15 +127,15 @@
 	                </systemPropertyVariables>
 	            </configuration>
 	        </plugin>
-	        
-	        <plugin> 
+
+	        <plugin>
 	            <groupId>org.asciidoctor</groupId>
 	            <artifactId>asciidoctor-maven-plugin</artifactId>
 	            <version>1.5.2</version>
 	            <executions>
 	                <execution>
 	                    <id>generate-docs</id>
-	                    <phase>package</phase> 
+	                    <phase>package</phase>
 	                    <goals>
 	                        <goal>process-asciidoc</goal>
 	                    </goals>
@@ -148,8 +151,8 @@
 	                </execution>
 	            </executions>
 	        </plugin>
-			
-			<plugin> 
+
+			<plugin>
 			    <artifactId>maven-resources-plugin</artifactId>
 			    <executions>
 			        <execution>
@@ -180,7 +183,7 @@
                 <artifactId>docker-maven-plugin</artifactId>
                 <version>0.4.3</version>
                 <configuration>
-                    <imageName>${project.artifactId}</imageName>
+                    <imageName>${docker.image.prefix}/${project.artifactId}</imageName>
                     <dockerDirectory>src/main/docker</dockerDirectory>
                     <!-- copy the service's jar file from target into the root directory of the image -->
                     <resources>
@@ -192,7 +195,7 @@
                     </resources>
                 </configuration>
             </plugin>
-	        
+
         </plugins>
     </build>
 
