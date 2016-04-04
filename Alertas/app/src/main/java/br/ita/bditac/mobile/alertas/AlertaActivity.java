@@ -26,15 +26,6 @@ public class AlertaActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStart() {
-
-        super.onStart();
-
-        new AlertaRequestTask(getBaseContext()).execute();
-
-    }
-
-    @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
 
         switch (requestCode) {
