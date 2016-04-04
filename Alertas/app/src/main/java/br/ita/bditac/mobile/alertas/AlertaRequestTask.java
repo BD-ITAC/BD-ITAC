@@ -25,70 +25,96 @@ import br.ita.bditac.ws.model.Alerta;
 
 public class AlertaRequestTask extends AsyncTask<Void, Void, List<Alerta>> {
 
-    private static final String DEFAULT_URL = "http://localhost/alerta";
+    private static final String DEFAULT_URL = "http://localhost:8080/alerta";
 
     private static final float DEFAULT_RADIUS_KMS = 50f;
 
     private Context context;
 
     public AlertaRequestTask(Context context) {
+
         this.context = context;
+
     }
 
     @Override
     protected List<Alerta> doInBackground(Void... params) {
+
+        Log.i(this.getClass().getName(), "Background task initiated.");
+
         try {
             LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-            String bestProvider = locationManager.getBestProvider(new Criteria(), true);
+            Criteria criteria = new Criteria();
+            criteria.setAccuracy(Criteria.ACCURACY_COARSE);
+            criteria.setAltitudeRequired(false);
+            criteria.setBearingRequired(false);
+            criteria.setCostAllowed(false);
+            String bestProvider = locationManager.getBestProvider(criteria, true);
+            if(bestProvider == null) {
+                Log.e(this.getClass().getName(), "Location service providers not enabled.");
+            }
+            else {
+                LocationListener locationListener = new LocationListener() {
+                    @Override
+                    public void onLocationChanged(Location location) {
 
-            LocationListener locationListener = new LocationListener() {
-                @Override
-                public void onLocationChanged(Location location) {
+                        Log.w(this.getClass().getName(), "Location service location change detected.");
 
+                    }
+
+                    @Override
+                    public void onStatusChanged(String s, int i, Bundle bundle) {
+
+                        Log.w(this.getClass().getName(), "Location services status " + s + " change detected.");
+
+                    }
+
+                    @Override
+                    public void onProviderEnabled(String s) {
+
+                        Log.w(this.getClass().getName(), "Location services provider " + s + " enabled.");
+
+                    }
+
+                    @Override
+                    public void onProviderDisabled(String s) {
+
+                        Log.w(this.getClass().getName(), "Location services provider " + s + " disabled.");
+
+                    }
+                };
+
+                if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                    locationManager.requestLocationUpdates(bestProvider, 0, 0, locationListener);
+                    Location location = locationManager.getLastKnownLocation(bestProvider);
+
+                    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(null);
+                    String alertasUrl = preferences.getString("alerts.service.url", DEFAULT_URL);
+                    Double radiusKms = new Double(preferences.getFloat("alerts.service.radiusKms", DEFAULT_RADIUS_KMS));
+
+                    AlertaClient alertaClient = new AlertaClient(alertasUrl);
+
+                    List<Alerta> alertas = alertaClient.getAlertaByRegiao(location.getLatitude(), location.getLongitude(), radiusKms);
+
+                    Log.i(this.getClass().getName(), "Background task finished.");
+
+                    return alertas;
                 }
-
-                @Override
-                public void onStatusChanged(String s, int i, Bundle bundle) {
-
-                }
-
-                @Override
-                public void onProviderEnabled(String s) {
-
-                }
-
-                @Override
-                public void onProviderDisabled(String s) {
-
-                }
-            };
-
-            if(ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                locationManager.requestLocationUpdates(bestProvider, 0, 0, locationListener);
-                Location location = locationManager.getLastKnownLocation(bestProvider);
-
-                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(null);
-                String alertasUrl = preferences.getString("alerts.service.url", DEFAULT_URL);
-                Double radiusKms = new Double(preferences.getFloat("alerts.service.radiusKms", DEFAULT_RADIUS_KMS));
-
-                AlertaClient alertaClient = new AlertaClient(alertasUrl);
-
-                List<Alerta> alertas = alertaClient.getAlertaByRegiao(location.getLatitude(), location.getLongitude(), radiusKms);
-
-                return alertas;
             }
         }
         catch(Exception ex) {
             Log.e(this.getClass().getName(), ex.getMessage(), ex);
         }
 
-        Log.w(this.getClass().getName(), context.getString(R.string.msg_location_denied));
+        Log.w(this.getClass().getName(), "Location services service unavailable.");
 
         return null;
+
     }
 
     @Override
     protected void onPostExecute(List<Alerta> alertas) {
+
         if(alertas != null) {
             for (Alerta alerta : alertas) {
                 Intent getAlertaIntent = new Intent(context, NotificationReceiverActivity.class);
@@ -107,8 +133,11 @@ public class AlertaRequestTask extends AsyncTask<Void, Void, List<Alerta>> {
                 notification.flags |= Notification.FLAG_AUTO_CANCEL;
 
                 notificationManager.notify(NotificationIdGenerator.getNewID(), notification);
+
+                Log.w(this.getClass().getName(), "Notification posted.");
             }
         }
+
     }
 
 }
