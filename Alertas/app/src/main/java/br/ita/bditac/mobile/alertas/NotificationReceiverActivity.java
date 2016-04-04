@@ -12,7 +12,7 @@ public class NotificationReceiverActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notification_receiver);
 
-        Log.w(this.getClass().getName(), "Notification activity triggered.");
+        Log.w(this.getClass().getSimpleName(), "Notification activity triggered.");
 
     }
 

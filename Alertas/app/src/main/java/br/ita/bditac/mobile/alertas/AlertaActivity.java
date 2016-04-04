@@ -10,7 +10,7 @@ import android.util.Log;
 
 public class AlertaActivity extends AppCompatActivity {
 
-    private static final int REQUEST_CODE_ACCESS_COARSE_LOCATION = 200;
+    private static final int REQUEST_CODE_ACCESS_FINE_LOCATION = 200;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,8 +19,10 @@ public class AlertaActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_alerta);
 
-        if(ContextCompat.checkSelfPermission(getBaseContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, REQUEST_CODE_ACCESS_COARSE_LOCATION);
+        if(ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            Log.i(this.getClass().getSimpleName(), "Permission to localization services requested.");
+
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE_ACCESS_FINE_LOCATION);
         }
 
     }
@@ -29,9 +31,12 @@ public class AlertaActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
 
         switch (requestCode) {
-            case REQUEST_CODE_ACCESS_COARSE_LOCATION: {
-                if(grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-                    Log.e(this.getClass().getName(), "Localization services disabled.");
+            case REQUEST_CODE_ACCESS_FINE_LOCATION: {
+                if(grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Log.i(this.getClass().getSimpleName(), "Localization services permission granted.");
+                }
+                else {
+                    Log.e(this.getClass().getSimpleName(), "Localization services permission not granted..");
                 }
             }
         }

@@ -7,14 +7,20 @@ import android.util.Log;
 
 public class AlertaService extends Service {
 
-    AlertaReceiver alertaReceiver = new AlertaReceiver();
+    private AlertaReceiver alertaReceiver = new AlertaReceiver();
+
+    public AlertaService() {
+
+        Log.i(this.getClass().getSimpleName(), "Service constructed.");
+
+    }
 
     @Override
     public void onCreate() {
 
         super.onCreate();
 
-        Log.i(this.getClass().getName(), "Service started.");
+        Log.i(this.getClass().getSimpleName(), "Service started.");
 
     }
 
@@ -22,19 +28,11 @@ public class AlertaService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
 
         alertaReceiver.setAlarm(this);
+        sendBroadcast(new Intent(alertaReceiver.getClass().getName()));
 
-        Log.i(this.getClass().getName(), "Service flagged.");
+        Log.i(this.getClass().getSimpleName(), "Service flagged.");
 
         return START_STICKY;
-
-    }
-
-    @Override
-    public void onStart(Intent intent, int startId) {
-
-        alertaReceiver.setAlarm(this);
-
-        Log.i(this.getClass().getName(), "Service flagged.");
 
     }
 
