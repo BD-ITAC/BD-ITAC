@@ -1,1 +1,1 @@
-include ':alertaApp', ':alertaWSClient'
+include ':alertaApp', ':alertaWSClient', ':springAndroidRest'
