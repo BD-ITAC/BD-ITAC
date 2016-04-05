@@ -7,7 +7,7 @@ import android.util.Log;
 
 public class AlertaService extends Service {
 
-    private AlertaReceiver alertaReceiver = new AlertaReceiver();
+    private AlarmReceiver alarmReceiver = new AlarmReceiver();
 
     public AlertaService() {
 
@@ -27,8 +27,8 @@ public class AlertaService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        alertaReceiver.setAlarm(this);
-        sendBroadcast(new Intent(alertaReceiver.getClass().getName()));
+        alarmReceiver.setAlarm(this);
+        sendBroadcast(new Intent(alarmReceiver.getClass().getName()));
 
         Log.i(this.getClass().getSimpleName(), "Service flagged.");
 

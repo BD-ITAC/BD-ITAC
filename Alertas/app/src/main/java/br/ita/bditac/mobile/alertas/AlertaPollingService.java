@@ -21,30 +21,17 @@ public class AlertaPollingService extends IntentService {
 
     private static final int DEBUG_LOCATION_POLLING_INTERVAL = 15000;
 
-    private int locationPollingInterval;
-
     private Location currentLocation;
 
     public AlertaPollingService() {
 
         super("AlertaPollingService");
 
-        Debug.waitForDebugger();
-
-        SharedPreferences preferences = null;
-
-        if(!Debug.isDebuggerConnected()) {
-            preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        }
-
-        locationPollingInterval =
-                Debug.isDebuggerConnected() ?
-                        DEBUG_LOCATION_POLLING_INTERVAL :
-                        preferences.getInt("alerts.servce.locationPollingInterval",DEFAULT_LOCATION_POLLING_INTERVAL);
-
         currentLocation = null;
 
-        Log.i(this.getClass().getSimpleName(), "Receiver initialized.");
+    }
+
+    private void initializeContext() {
 
     }
 
@@ -58,7 +45,7 @@ public class AlertaPollingService extends IntentService {
 
     }
 
-    protected boolean isBetterLocation(Location location, Location currentBestLocation) {
+    private boolean isBetterLocation(Location location, Location currentBestLocation, int locationPollingInterval) {
 
         if (currentBestLocation == null) {
             return true;
@@ -104,8 +91,28 @@ public class AlertaPollingService extends IntentService {
 
             Log.i(this.getClass().getSimpleName(), "Location service location change detected.");
 
-            if(currentLocation == null || !isBetterLocation(location, currentLocation)) {
+            Context context = getApplicationContext();
+
+            SharedPreferences preferences = null;
+
+            if(!Debug.isDebuggerConnected()) {
+                preferences = PreferenceManager.getDefaultSharedPreferences(context);
+            }
+
+            int locationPollingInterval =
+                    Debug.isDebuggerConnected() ?
+                            DEBUG_LOCATION_POLLING_INTERVAL :
+                            preferences.getInt("alerts.servce.locationPollingInterval",DEFAULT_LOCATION_POLLING_INTERVAL);
+
+            if(currentLocation == null || !isBetterLocation(location, currentLocation, locationPollingInterval)) {
                 currentLocation = location;
+            }
+
+            if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+
+                AlertaGetter alertaGetter = new AlertaGetter(context);
+                alertaGetter.fetchAlertas(locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER));
             }
 
         }
@@ -141,19 +148,20 @@ public class AlertaPollingService extends IntentService {
         try {
             Context context = getApplicationContext();
 
-            LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
             if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+
                 Log.i(this.getClass().getSimpleName(), "Location service registered.");
 
                 LocationListener locationListener = new AlertaLocationListener();
                 locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
 
-                AlertaGetter alertaGetter = new AlertaGetter(getApplicationContext());
+                AlertaGetter alertaGetter = new AlertaGetter(context);
 
                 alertaGetter.fetchAlertas(locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER));
-            }
 
-            Log.i(this.getClass().getSimpleName(), "Background task finished.");
+                locationManager.removeUpdates(locationListener);
+            }
         }
         catch(Exception ex) {
             Log.e(this.getClass().getSimpleName(), ex.getMessage(), ex);

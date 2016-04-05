@@ -11,6 +11,7 @@ import android.os.Debug;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import br.ita.bditac.ws.client.AlertaClient;
@@ -26,6 +27,8 @@ public class AlertaGetter {
     private static final String DEFAULT_RADIUS_KMS = "10";
 
     private static final double DEBUG_RADIUS_KMS = 1;
+
+    private static List<Integer> notifications = new ArrayList<Integer>();
 
     private String alertasUrl;
 
@@ -79,9 +82,18 @@ public class AlertaGetter {
                         .build();
                 NotificationManager notificationManager = (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
 
+                if(notifications.size() > 0) {
+                    for(Integer notificationId : notifications) {
+                        notificationManager.cancel(notificationId);
+                    }
+                }
+
                 notification.flags |= Notification.FLAG_AUTO_CANCEL;
 
-                notificationManager.notify(NotificationIdGenerator.getNewID(), notification);
+                int notificationId = NotificationIdGenerator.getNewID();
+                notifications.add(notificationId);
+
+                notificationManager.notify(notificationId, notification);
 
                 Log.w(this.getClass().getSimpleName(), "Notification posted.");
             }

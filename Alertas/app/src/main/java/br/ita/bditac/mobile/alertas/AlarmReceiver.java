@@ -10,7 +10,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.content.WakefulBroadcastReceiver;
 import android.util.Log;
 
-public class AlertaReceiver extends WakefulBroadcastReceiver {
+public class AlarmReceiver extends WakefulBroadcastReceiver {
 
     private static final int DEFAULT_TIME = 600000;
 
@@ -18,16 +18,16 @@ public class AlertaReceiver extends WakefulBroadcastReceiver {
 
     private int alarmTimer;
 
-    public AlertaReceiver() {
+    public AlarmReceiver() {
 
-        Log.i(this.getClass().getSimpleName(), "Alert receiver initialized.");
+        Log.i(this.getClass().getSimpleName(), "Alerm initialized.");
 
     }
 
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        Log.i(this.getClass().getSimpleName(), "Alert receiver request triggered.");
+        Log.i(this.getClass().getSimpleName(), "Alert request triggered.");
 
         Intent alertaPollingService = new Intent(context, AlertaPollingService.class);
 
@@ -48,25 +48,25 @@ public class AlertaReceiver extends WakefulBroadcastReceiver {
                         DEBUG_TIME:
                         preferences.getInt("alerts.service.alarmTimer", DEFAULT_TIME);
 
-        Intent intent = new Intent(context, AlertaReceiver.class);
+        Intent intent = new Intent(context, AlarmReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), alarmTimer, pendingIntent);
 
-        Log.i(this.getClass().getSimpleName(), "Alarm set request triggered.");
+        Log.i(this.getClass().getSimpleName(), "Alarm set to trigger at " + alarmTimer + "ms.");
 
     }
 
     public void cancelAlarm(Context context) {
 
-        Intent intent = new Intent(context, AlertaReceiver.class);
+        Intent intent = new Intent(context, AlarmReceiver.class);
         PendingIntent sender = PendingIntent.getBroadcast(context, 0, intent, 0);
 
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         alarmManager.cancel(sender);
 
-        Log.i(this.getClass().getSimpleName(), "Alarm cancel request triggered.");
+        Log.i(this.getClass().getSimpleName(), "Alarm canceled.");
 
     }
 
