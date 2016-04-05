@@ -3,11 +3,7 @@ var should = require("should");
 
 var server = supertest.agent("http://localhost:3000");
 
-
-
 describe("Teste de Usuarios",function(){
-
- 
 
   it("Deve retornar dois usuarios",function(done){
 
@@ -17,7 +13,6 @@ describe("Teste de Usuarios",function(){
     .expect("Content-type",/json/)
     .expect(200) // THis is HTTP response
     .end(function(err,res){
-
 
 
       // HTTP status should be 200
@@ -33,10 +28,6 @@ describe("Teste de Usuarios",function(){
       res.body[1].should.have.property('email');
 
       res.body.should.be.instanceof(Array).and.have.lengthOf(2);
-
-      
-
-
 
       done();
     });
