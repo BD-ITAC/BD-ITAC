@@ -9,6 +9,10 @@ Project with structure single page in AngularJS + NodeJS
 1. npm install bower -g
 2. npm install
 3. bower install
+3. npm install mocha -g
 
 # Start Project
 1. node app.js
+
+#Run Tests
+1. mocha 

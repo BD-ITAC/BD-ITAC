@@ -11,5 +11,10 @@
     "express": "^4.13.4",
     "express-load": "^1.1.15",
     "jade": "*"
+  },
+  "devDependencies": {
+    "mocha": "^2.4.5",
+    "should": "^8.3.0",
+    "supertest": "^1.2.0"
   }
 }
