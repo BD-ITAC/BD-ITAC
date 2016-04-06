@@ -16,6 +16,8 @@ O Spring BOOT irá executar um Tomcat já embutido dentro do jar e no console po
 
 Agora no seu browser basta apontar para [http://localhost:8080/evento](http://localhost:8080/evento) para ter acesso a um dos serviços.
 
+## Docker
+
 Existe ainda um exemplo (script shell *tests.sh* na raiz do projeto) com uma série de comandos utilizando **curl** na raiz do projeto que irá exercitar o serviço e validar algumas funcionalidades básicas. Após executar o exemplo podemos observar o resultado de uma consulta de um serviço apontando para [http://localhost:8080/evento/1](http://localhost:8080/evento/1) e obtendo o evento gravado pelo script.
 
 Se por alguma razão for necessário mudar a porta do serviço basta modificar o atributo **port** no arquivo *<diretório do projeto>/src/main/resources/application.yml*:
@@ -40,3 +42,25 @@ Será feito o download do repositório na internet e vai executar o serviço. Pa
 >* Tentar executar **docker buil**;
 >
 >Porém irá falhar miseravelmente, aparentemente porque irá tentar executar as tarefas do docker concorrentemente e vai acabar chocando consigo próprio!
+
+## Documentação
+
+A documentação é gerada pelo plugin [Spring ReST Docs](http://projects.spring.io/spring-restdocs/) e escrita usando [Asciidoctor](http://asciidoctor.org/docs/user-manual/).
+
+Para melhorar o aspecto de apresentação de código fonte adicionamos o enfatizador de syntaxes [Pygments](http://pygments.org) que por sua vez utiliza (Python 2)[https://www.python.org].
+
+O Sprint ReST Docs utiliza os testes unitários para gerar a documentação. Para gerar basta executar a seqüência de comandos:
+
+    mvn clean package
+    
+Será executado um "build" do projeto e gerado um pacote, porém o importante é que serão executadas as fases de teste. Na fase de testes é geração de documentos e em seguida, no empacotamento, os documentos gerados são formatados pelo *Asciidoctor*.
+
+A documentação gerada e formatada é gravada na pasta *target/generated-docs*, que **não é salva no controle de versões** e portanto é descartada. No diretório de fontes *src/main/asciidoc/asciidoc* existe um arquivo chamado *README.adoc*. Este arquivo gera o arquivo *README.html*  que vai para a pasta *target/generated-docs*  juntamente com todos os demais arquivos gerados pelo **Spring ReST Docs**.
+
+A função do arquivo *REAMDE.adoc* é "costurar" o conteúdo gerado pelo **Spring ReST Docs** num único documento - o *README.html*. Basicamente neste arquivo inserimos macros para incluir as várias partes:
+
+    include::{snippets}/evento/locations/curl-request.adoc[]
+    
+Esse trecho de comando para o **Asciidoctor** instrui a inclusão do documento *curl-request.adoc*  que foi gerado pelo **Spring ReST Docs** durante o teste unitário.
+
+Depois o arquivo *README.html* é copiado manualmente para a raiz do projeto para poder ser lido.

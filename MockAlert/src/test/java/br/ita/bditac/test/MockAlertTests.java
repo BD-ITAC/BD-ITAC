@@ -442,12 +442,12 @@ public class MockAlertTests {
     public void test906GetAlertaById() throws Exception {
         this.mvc.perform(get(getBaseUrl() + "/alerta/{id}", 1))
             .andExpect(status().isOk())
-            .andDo(document("alerta/locations", 
+            .andDo(document("alerta/locationsId", 
                 pathParameters(parameterWithName("id").description("Identificação do alerta"))));
         this.mvc.perform(get(getBaseUrl() + "/alerta/1")
             .accept(MediaTypes.HAL_JSON_VALUE))
             .andExpect(status().isOk())
-            .andDo(document("alerta/get", 
+            .andDo(document("alerta/getId", 
                 responseFields(
                     fieldWithPath("descricaoResumida").type(JsonFieldType.STRING).description("Breve descrição do alerta"),
                     fieldWithPath("descricaoCompleta").type(JsonFieldType.STRING).description("Descrição detalhada do alerta"),
@@ -470,7 +470,7 @@ public class MockAlertTests {
     public void test907GetAlertaByCoords() throws Exception {
         this.mvc.perform(get(getBaseUrl() + "/alerta/latitude/{latitude}/longitude/{longitude}/raio/{raio}", 0.5D, 0.5D, 1.0D))
             .andExpect(status().isOk())
-            .andDo(document("alerta/locations",
+            .andDo(document("alerta/locationsCoords",
                 pathParameters(
                     parameterWithName("latitude").description("Latitude do ponto de origem do alerta"),
                     parameterWithName("longitude").description("Longitude do ponto de origem do alerta"),
@@ -478,7 +478,7 @@ public class MockAlertTests {
         this.mvc.perform(get(getBaseUrl() + "alerta/latitude/0.5/longitude/0.5/raio/1.0")
             .accept(MediaTypes.HAL_JSON_VALUE))
             .andExpect(status().isOk())
-            .andDo(document("alerta/get",
+            .andDo(document("alerta/getCoords",
                 responseFields(
                     fieldWithPath("_embedded.alertaList[].descricaoResumida").type(JsonFieldType.STRING).description("Breve descrição do alerta"),
                     fieldWithPath("_embedded.alertaList[].descricaoCompleta").type(JsonFieldType.STRING).description("Descrição detalhada do alerta"),
