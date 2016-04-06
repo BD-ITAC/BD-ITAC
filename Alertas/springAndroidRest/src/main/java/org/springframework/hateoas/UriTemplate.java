@@ -1,5 +1,11 @@
 package org.springframework.hateoas;
 
+import org.springframework.hateoas.TemplateVariable.VariableType;
+import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
+
 import java.io.Serializable;
 import java.net.URI;
 import java.util.ArrayList;
@@ -9,12 +15,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.springframework.hateoas.TemplateVariable.VariableType;
-import org.springframework.util.Assert;
-import org.springframework.util.StringUtils;
-import org.springframework.web.util.UriComponents;
-import org.springframework.web.util.UriComponentsBuilder;
 
 /**
  * Custom URI template to support qualified URI template variables.
