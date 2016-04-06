@@ -8,7 +8,11 @@ import org.junit.runners.MethodSorters;
 
 import br.ita.bditac.support.Haversine;
 
-
+/**
+ * 
+ * Testes unitários da classe utilitária Haversine.
+ * 
+ */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class HaversineTests {
 
@@ -39,6 +43,20 @@ public class HaversineTests {
     Coords barCoronelCoords = new Coords(-23.1911191,-45.8951512);
     Coords inpeCoords = new Coords(-23.211512,-45.8757535);
     
+    /**
+     * 
+     * @bditac.assertion Testa a distância entre três pontos obtidas através da interface web do Google Maps:<br/>
+     * 
+     * @bditac.given <code>Coords itaCoords = new Coords(-23.2122219,-45.8804741);</code><br/>
+     * @bditac.given <code>Coords centerValeCoords = new Coords(-23.209816,-45.8857956);</code><br/>
+     * @bditac.given <code>Coords barCoronelCoords = new Coords(-23.1911191,-45.8951512);</code><br/>
+     * 
+     * @bditac.perform A distância entre os pontos <code>itaCoords</code> e <code>centerValeCoords</code> é calculada e armazenada em <code>distance1</code>.<br/>
+     * @bditac.perform A distância entre os pontos <code>itaCoords</code> e <code>barCoronelCoords</code> é calculada e armazenada em <code>distance2</code>.<br/>
+     * 
+     * @bditac.expected A distância <code>distance1</code> deve ser <b>menor</b> que a distância <code>distance2</code>.<br/>
+     * 
+     */
     @Test
     public void test01Distance() {
         
@@ -49,6 +67,20 @@ public class HaversineTests {
         
     }
     
+    /**
+     * 
+     * @bditac.assertion Testa a distância entre três pontos obtidas através da interface web do Google Maps:<br/>
+     * 
+     * @bditac.given <code>Coords itaCoords = new Coords(-23.2122219,-45.8804741);</code><br/>
+     * @bditac.given <code>Coords centerValeCoords = new Coords(-23.209816,-45.8857956);</code><br/>
+     * @bditac.given <code>Coords inpeCoords = new Coords(-23.211512,-45.8757535);</code><br/>
+     * 
+     * @bditac.perform A distância entre os pontos <code>itaCoords</code> e <code>centerValeCoords</code> é calculada e armazenada em <code>distance1</code>.<br/>
+     * @bditac.perform A distância entre os pontos <code>itaCoords</code> e <code>inpeCoords</code> é calculada e armazenada em <code>distance2</code>.<br/>
+     * 
+     * @bditac.expected A distância <code>distance1</code> deve ser <b>maior</b> que a distância <code>distance2</code>.<br/>
+     * 
+     */
     @Test
     public void test02Distance() {
 

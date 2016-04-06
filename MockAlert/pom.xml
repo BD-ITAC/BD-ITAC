@@ -110,6 +110,19 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
 
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<configuration>
+				    <tags>
+				        <tag><name>bditac.assertion</name><placement>a</placement><head>Asserção: </head></tag>
+                        <tag><name>bditac.given</name><placement>a</placement><head>Dado: </head></tag>
+                        <tag><name>bditac.perform</name><placement>a</placement><head>Executa: </head></tag>
+                        <tag><name>bditac.expected</name><placement>a</placement><head>Resultado experado: </head></tag>
+				    </tags>
+				</configuration>
+			</plugin>
+
 	        <plugin>
 	            <groupId>org.apache.maven.plugins</groupId>
 	            <artifactId>maven-surefire-plugin</artifactId>

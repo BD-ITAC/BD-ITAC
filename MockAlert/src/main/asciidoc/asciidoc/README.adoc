@@ -94,27 +94,28 @@ Alertas são mensagens enviadas pelo sistema para alertar a população de um pr
 === Leitura
 
 Para testar o serviço pode utilizar o comando +curl+:
-include::{snippets}/alerta/locations/curl-request.adoc[]
+include::{snippets}/alerta/locationsId/curl-request.adoc[]
 
 ==== Requisição
 
 A requisição toma a seguinte forma:
-include::{snippets}/alerta/locations/http-request.adoc[]
+include::{snippets}/alerta/locationsId/http-request.adoc[]
 
 ==== Descrição da resposta
 
 Os parâmetros que devem ser informados na requisição são:
-include::{snippets}/alerta/locations/path-parameters.adoc[]
+include::{snippets}/alerta/locationsId/path-parameters.adoc[]
 
 ==== Resposta
 
 A resposta irá conter os dados formatados em +JSON+ além do cabeçalho com o resultado da operação:
-include::{snippets}/alerta/locations/http-response.adoc[]
+include::{snippets}/alerta/locationsId/http-response.adoc[]
 
 === Gravação
 
 Para gravar um evento podemos utilizar o seguinte exemplo (em +curl+).:
 include::{snippets}/alerta/post/curl-request.adoc[]
+
 Os dados a serem inseridos devem ser enviados também no formato +JSON+.
 
 ==== Requisição
@@ -135,33 +136,27 @@ include::{snippets}/alerta/post/request-fields.adoc[]
 === Pesquisa por *coordenadas*
 
 Para pesquisar um registro específico do serviço podemos utilizar o seguinte comando (em +curl+):
-include::{snippets}/alerta/get/curl-request.adoc[]
+include::{snippets}/alerta/getCoords/curl-request.adoc[]
 
 ==== Requisição
 
 A requisição toma a seguinte forma:
-include::{snippets}/alerta/get/http-request.adoc[]
+include::{snippets}/alerta/getCoords/http-request.adoc[]
 
 ==== Parâmetros da requisição
 
 Os parâmetros que devem ser informados na requisição são:
 include::{snippets}/alerta/locationsCoords/path-parameters.adoc[]
 
-
 ==== Resposta
 
 A resposta irá conter os dados formatados em +JSON+ além do cabeçalho com o resultado da operação:
-include::{snippets}/alerta/get/http-response.adoc[]
-
-==== Links
-
-O detalhe da seção +_links+ da resposta é a implementação de https://en.wikipedia.org/wiki/Hypertext_Application_Language[HAL - Hypertext Application Language] que poderá ser ignorada no presente desenvolvimento.
-include::{snippets}/alerta/get/links.adoc[]
+include::{snippets}/alerta/getCoords/http-response.adoc[]
 
 ==== Descrição da resposta
 
 A descrição do(s) atributo(s) retornado(s):
-include::{snippets}/alerta/get/response-fields.adoc[]
+include::{snippets}/alerta/getCoords/response-fields.adoc[]
 
 === Pesquisa por *id*
 
