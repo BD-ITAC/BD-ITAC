@@ -1,6 +1,7 @@
 package br.ita.bditac.ws.client;
 
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -20,7 +21,9 @@ public class EventoClient extends AbstractBaseService {
 
     public Evento addEvento(Evento evento) {
 
-        ResponseEntity<EventoResource> eventoResponseEntity =  getRestTemplate().postForEntity(getHostURL() + SERVICE_URL, new HttpEntity<Evento>(evento), EventoResource.class);
+        HttpEntity envio = new HttpEntity(evento, getRequestHeader());
+
+        ResponseEntity<EventoResource> eventoResponseEntity =  getRestTemplate().postForEntity(getHostURL() + SERVICE_URL, envio, EventoResource.class);
 
         if(eventoResponseEntity.getStatusCode() == HttpStatus.CREATED) {
             return eventoResponseEntity.getBody().getContent();
@@ -37,7 +40,9 @@ public class EventoClient extends AbstractBaseService {
         params.put("id", id);
 
         try {
-            ResponseEntity<EventoResource> eventoResponseEntity = getRestTemplate().getForEntity(getHostURL() + SERVICE_URL + "/{id}", EventoResource.class, params);
+            HttpEntity envio = new HttpEntity(getResponseHeader());
+
+            ResponseEntity<EventoResource> eventoResponseEntity = getRestTemplate().exchange(getHostURL() + SERVICE_URL + "/{id}", HttpMethod.GET, envio, EventoResource.class, params);
 
             if(eventoResponseEntity.getStatusCode() == HttpStatus.OK) {
                 return eventoResponseEntity.getBody().getContent();

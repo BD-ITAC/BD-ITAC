@@ -15,19 +15,23 @@
  */
 package org.springframework.hateoas;
 
-import java.io.Serializable;
+import org.springframework.http.MediaType;
 
 /**
- * Interface to mark objects that are identifiable by an ID of any type.
+ * Constants for well-known hypermedia types.
  *
  * @author Oliver Gierke
+ * @author Przemek Nowak
  */
-public interface Identifiable<ID extends Serializable> {
+public class MediaTypes {
 
     /**
-     * Returns the id identifying the object.
-     *
-     * @return the identifier or {@literal null} if not available.
+     * A String equivalent of {@link MediaTypes#HAL_JSON}.
      */
-    ID getId();
+    public static final String HAL_JSON_VALUE = "application/hal+json";
+
+    /**
+     * Public constant media type for {@code application/hal+json}.
+     */
+    public static final MediaType HAL_JSON = MediaType.valueOf(HAL_JSON_VALUE);
 }

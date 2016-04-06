@@ -25,7 +25,8 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
-    provided 'com.fasterxml.jackson.core:jackson-databind:2.3.2'
+    provided 'com.fasterxml.jackson.core:jackson-databind:2.5.4'
     provided 'org.springframework:spring-web:4.1.7.RELEASE'
     provided 'org.springframework:spring-core:4.1.7.RELEASE'
+    provided 'org.springframework.plugin:spring-plugin-core:1.2.0.RELEASE'
 }

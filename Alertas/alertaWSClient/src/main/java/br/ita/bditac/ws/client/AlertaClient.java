@@ -23,7 +23,9 @@ public class AlertaClient extends AbstractBaseService {
 
     public Alerta addAlerta(Alerta alerta) {
 
-        ResponseEntity<AlertaResource> alertaResponseEntity = getRestTemplate().postForEntity(getHostURL() + SERVICE_URL, new HttpEntity<Alerta>(alerta), AlertaResource.class);
+        HttpEntity<Alerta> alertaEnvio = new HttpEntity<Alerta>(alerta, getRequestHeader());
+
+        ResponseEntity<AlertaResource> alertaResponseEntity = getRestTemplate().postForEntity(getHostURL() + SERVICE_URL, alertaEnvio, AlertaResource.class);
 
         Alerta alertaRetorno = alertaResponseEntity.getBody().getContent();
 
@@ -36,7 +38,9 @@ public class AlertaClient extends AbstractBaseService {
         params.put("id", id);
 
         try {
-            ResponseEntity<AlertaResource> alertaResponseEntity = getRestTemplate().getForEntity(getHostURL() + SERVICE_URL + "/{id}", AlertaResource.class, params);
+            HttpEntity envio = new HttpEntity(getResponseHeader());
+
+            ResponseEntity<AlertaResource> alertaResponseEntity = getRestTemplate().exchange(getHostURL() + SERVICE_URL + "/{id}", HttpMethod.GET, envio, AlertaResource.class, params);
 
             if(alertaResponseEntity.getStatusCode() == HttpStatus.OK) {
                 return alertaResponseEntity.getBody().getContent();
@@ -57,7 +61,9 @@ public class AlertaClient extends AbstractBaseService {
         params.put("longitude", longitude);
         params.put("raio", raio);
 
-        ResponseEntity<Void> response = getRestTemplate().exchange(getHostURL() + SERVICE_URL + "/latitude/{latitude}/longitude/{longitude}/raio/{raio}", HttpMethod.HEAD, null, Void.class, params);
+        HttpEntity envio = new HttpEntity(getResponseHeader());
+
+        ResponseEntity<Void> response = getRestTemplate().exchange(getHostURL() + SERVICE_URL + "/latitude/{latitude}/longitude/{longitude}/raio/{raio}", HttpMethod.HEAD, envio, Void.class, params);
 
         if(response.getStatusCode() == HttpStatus.OK) {
             return true;
@@ -75,7 +81,11 @@ public class AlertaClient extends AbstractBaseService {
         params.put("longitude", longitude);
         params.put("raio", raio);
 
-        List<Alerta> alertas = getRestTemplate().getForObject(getHostURL() + SERVICE_URL + "/latitude/{latitude}/longitude/{longitude}/raio/{raio}", AlertaResources.class, params).unwrap();
+        HttpEntity envio = new HttpEntity(getResponseHeader());
+
+        ResponseEntity<AlertaResources> response = getRestTemplate().exchange(getHostURL() + SERVICE_URL + "/latitude/{latitude}/longitude/{longitude}/raio/{raio}", HttpMethod.GET, envio, AlertaResources.class, params);
+
+        List<Alerta> alertas = response.getBody().unwrap();
 
         return alertas;
 
