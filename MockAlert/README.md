@@ -16,15 +16,19 @@ O Spring BOOT irá executar um Tomcat já embutido dentro do jar e no console po
 
 Agora no seu browser basta apontar para [http://localhost:8080/evento](http://localhost:8080/evento) para ter acesso a um dos serviços.
 
-## Docker
+## Testes e popular a base *in-memory*
 
 Existe ainda um exemplo (script shell *tests.sh* na raiz do projeto) com uma série de comandos utilizando **curl** na raiz do projeto que irá exercitar o serviço e validar algumas funcionalidades básicas. Após executar o exemplo podemos observar o resultado de uma consulta de um serviço apontando para [http://localhost:8080/evento/1](http://localhost:8080/evento/1) e obtendo o evento gravado pelo script.
+
+O script pode ser extendido para inserir mais dados com o intuito de realizar novos testes.
 
 Se por alguma razão for necessário mudar a porta do serviço basta modificar o atributo **port** no arquivo *<diretório do projeto>/src/main/resources/application.yml*:
 
     server:
         port: 8080
         address: 0.0.0.0
+
+## Docker
 
 O docker funciona. Basta executar o seguinte comando (basta ter o docker instalado):
 
@@ -42,6 +46,47 @@ Será feito o download do repositório na internet e vai executar o serviço. Pa
 >* Tentar executar **docker buil**;
 >
 >Porém irá falhar miseravelmente, aparentemente porque irá tentar executar as tarefas do docker concorrentemente e vai acabar chocando consigo próprio!
+
+### Gerar imagem Docker
+
+Para gerar uma imagem Docker basta executar a seguinte seqüência de comandos na janela do **Docker Quickstart Terminal**:
+
+    docker login
+    
+>Aqui estamos deduzindo que você já tenha criado uma conta no site [Docker](https://www.docker.com) e também no [Hub Docker](https://hub.docker.com).
+
+    cd <diretório local *git* onde está o projeto>
+    cd target
+
+Vamos criar uma pasta para os objetos que serão gravados na imagem Docker:
+
+    mkdir dockeer
+    cd docker
+    cp ../MockAlert-0.0.1.jar
+    cp ../../src/main/docker/Dockerfile
+    
+Agora podemos gerar a imagem:
+
+    docker build .
+    
+O comando irá apresentar uma identificação da imagem gerada. Se você perder esse número pode obtêlo novamente com o seguinte comando:
+
+    docker images
+    
+Verificar a sua imagem criada a alguns segundos e anotar o *IMAGE ID* para usar no próximo comando:
+
+    docker tag <numero da imagem gerada> <seu id no docker>/<seu repositório no docker hub>:devel
+    
+Agora você pode subir a sua imagem recém criada (observar que ":devel" não vai aqui):
+
+    docker push <seu id no docker>/<seu repositório no docker hub>
+    
+Pronto! Seus colegas poderão executar a sua versão com o seguinte comando (observar que aqui vai o ":devel"):
+
+    docker run <seu id no docker>/<seu repositório no docker hub>:devel
+    
+O Docker na máquina vai baixar a imagem e executá-la logo em seguida. Se ele for executar uma segunda vez basta repetir o comando: a imagem não será baixada novamente e o Docker vai usar o repositório local.
+    
 
 ## Documentação
 
