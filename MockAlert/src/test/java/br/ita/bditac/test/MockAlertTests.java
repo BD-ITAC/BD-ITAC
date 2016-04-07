@@ -350,11 +350,7 @@ public class MockAlertTests {
      *          0,
      *          0.50,
      *          0.50,
-     *          1.0,
-     *          0.50,
-     *          0.50,
-     *          1.0,
-     *          endereco);
+     *          1.0);
      * -- 
      * 
      * == Execução:
@@ -369,9 +365,6 @@ public class MockAlertTests {
      * 
      * [source,java]
      * --
-     *  List<String> endereco = new ArrayList<String>();
-     *  endereco.add("rua das Casas");
-     *  endereco.add("numero das Portas");
      *  Alerta alertaRequest = new Alerta(
      *          "Alerta de deslizamento",
      *          "Perigo de deslizamento na altura do Km 20 da rodovia Tamoios, pista Sao Jose dos Campos/Litoral",
@@ -380,11 +373,7 @@ public class MockAlertTests {
      *          0,
      *          0.50,
      *          0.50,
-     *          1.0,
-     *          0.50,
-     *          0.50,
-     *          1.0,
-     *          endereco);
+     *          1.0);
      * -- 
      * 
      */
@@ -392,9 +381,6 @@ public class MockAlertTests {
     public void test104PostAlerta() throws URISyntaxException {
         URI alertaURI = new URI(getBaseUrl() + "/alerta");
         
-        List<String> endereco = new ArrayList<String>();
-        endereco.add("rua das Casas");
-        endereco.add("numero das Portas");
         Alerta alertaRequest = new Alerta(
                 "Alerta de deslizamento",
                 "Perigo de deslizamento na altura do Km 20 da rodovia Tamoios, pista Sao Jose dos Campos/Litoral",
@@ -403,11 +389,7 @@ public class MockAlertTests {
                 0,
                 0.50,
                 0.50,
-                1.0,
-                0.50,
-                0.50,
-                1.0,
-                endereco);
+                1.0);
 
         ResponseEntity<AlertaResource> alertaResponseEntity = getRestTemplate().postForEntity(alertaURI, new HttpEntity<Alerta>(alertaRequest), AlertaResource.class);
         
@@ -423,13 +405,6 @@ public class MockAlertTests {
         assertEquals("Resposta(origemLatitude)'" + alertasResponse.getOrigemLatitude() + "' do POST diferente do que foi enviado'" + alertaRequest.getOrigemLatitude() + "'!", alertasResponse.getOrigemLatitude(), alertaRequest.getOrigemLatitude(), DELTA);
         assertEquals("Resposta(origemLongitude)'" + alertasResponse.getOrigemLongitude() + "' do POST diferente do que foi enviado'" + alertaRequest.getOrigemLongitude() + "'!", alertasResponse.getOrigemLongitude(), alertaRequest.getOrigemLongitude(), DELTA);
         assertEquals("Resposta(origemRaioKms)'" + alertasResponse.getOrigemRaioKms() + "' do POST diferente do que foi enviado'" + alertaRequest.getOrigemRaioKms() + "'!", alertasResponse.getOrigemRaioKms(), alertaRequest.getOrigemRaioKms(), DELTA);
-        assertEquals("Resposta(destinoLatitude)'" + alertasResponse.getDestinoLatitude() + "' do POST diferente do que foi enviado'" + alertaRequest.getDestinoLatitude() + "'!", alertasResponse.getDestinoLatitude(), alertaRequest.getDestinoLatitude(), DELTA);
-        assertEquals("Resposta(destinoLongitude)'" + alertasResponse.getDestinoLongitude() + "' do POST diferente do que foi enviado'" + alertaRequest.getDestinoLongitude() + "'!", alertasResponse.getDestinoLongitude(), alertaRequest.getDestinoLongitude(), DELTA);
-        assertEquals("Resposta(destinoRaio)'" + alertasResponse.getDestinoRaioKms() + "' do POST diferente do que foi enviado'" + alertaRequest.getDestinoRaioKms() + "'!", alertasResponse.getDestinoRaioKms(), alertaRequest.getDestinoRaioKms(), DELTA);
-        int linha = 0;
-        for(String linhaEndereco : alertaRequest.getEndereco()) {
-            assertEquals("Resposta(endereco)'" + " do POST diferente do que foi enviado'" + "'!", linhaEndereco, alertaRequest.getEndereco().get(linha++));
-        }
     }
     
     /**
@@ -465,11 +440,7 @@ public class MockAlertTests {
      *          0,
      *          0.50,
      *          0.50,
-     *          1.0,
-     *          0.50,
-     *          0.50,
-     *          1.0,
-     *          endereco);
+     *          1.0);
      * -- 
      * 
      */
@@ -515,11 +486,7 @@ public class MockAlertTests {
      *          0,
      *          0.50,
      *          0.50,
-     *          1.0,
-     *          0.50,
-     *          0.50,
-     *          1.0,
-     *          endereco);
+     *          1.0);
      * -- 
      * 
      */
@@ -547,11 +514,7 @@ public class MockAlertTests {
                 0,
                 0.50,
                 0.50,
-                1.0,
-                0.50,
-                0.50,
-                1.0,
-                endereco);
+                1.0);
         
         assertEquals("Resposta(descricaoResumida)'" + alertaResponse.getDescricaoResumida() + "' do POST diferente do que foi enviado: '" + alertaRequest.getDescricaoResumida() + "'!", alertaResponse.getDescricaoResumida(), alertaRequest.getDescricaoResumida());
         assertEquals("Resposta(descricaoCompleta)'" + alertaResponse.getDescricaoCompleta() + "' do POST diferente do que foi enviado'" + alertaRequest.getDescricaoCompleta() + "'!", alertaResponse.getDescricaoCompleta(), alertaRequest.getDescricaoCompleta());
@@ -561,13 +524,6 @@ public class MockAlertTests {
         assertEquals("Resposta(origemLatitude)'" + alertaResponse.getOrigemLatitude() + "' do POST diferente do que foi enviado'" + alertaRequest.getOrigemLatitude() + "'!", alertaResponse.getOrigemLatitude(), alertaRequest.getOrigemLatitude(), DELTA);
         assertEquals("Resposta(origemLongitude)'" + alertaResponse.getOrigemLongitude() + "' do POST diferente do que foi enviado'" + alertaRequest.getOrigemLongitude() + "'!", alertaResponse.getOrigemLongitude(), alertaRequest.getOrigemLongitude(), DELTA);
         assertEquals("Resposta(origemRaioKms)'" + alertaResponse.getOrigemRaioKms() + "' do POST diferente do que foi enviado'" + alertaRequest.getOrigemRaioKms() + "'!", alertaResponse.getOrigemRaioKms(), alertaRequest.getOrigemRaioKms(), DELTA);
-        assertEquals("Resposta(destinoLatitude)'" + alertaResponse.getDestinoLatitude() + "' do POST diferente do que foi enviado'" + alertaRequest.getDestinoLatitude() + "'!", alertaResponse.getDestinoLatitude(), alertaRequest.getDestinoLatitude(), DELTA);
-        assertEquals("Resposta(destinoLongitude)'" + alertaResponse.getDestinoLongitude() + "' do POST diferente do que foi enviado'" + alertaRequest.getDestinoLongitude() + "'!", alertaResponse.getDestinoLongitude(), alertaRequest.getDestinoLongitude(), DELTA);
-        assertEquals("Resposta(destinoRaio)'" + alertaResponse.getDestinoRaioKms() + "' do POST diferente do que foi enviado'" + alertaRequest.getDestinoRaioKms() + "'!", alertaResponse.getDestinoRaioKms(), alertaRequest.getDestinoRaioKms(), DELTA);
-        int linha = 0;
-        for(String linhaEndereco : alertaRequest.getEndereco()) {
-            assertEquals("Resposta(endereco)'" + " do POST diferente do que foi enviado'" + "'!", linhaEndereco, alertaRequest.getEndereco().get(linha++));
-        }
     }
     
     /**
@@ -613,11 +569,7 @@ public class MockAlertTests {
      *          0,
      *          0.50,
      *          0.50,
-     *          1.0,
-     *          0.50,
-     *          0.50,
-     *          1.0,
-     *          endereco);
+     *          1.0);
      * -- 
      * 
      */
@@ -744,11 +696,7 @@ public class MockAlertTests {
             0,
             50.0D,
             50.0D,
-            1.0D,
-            50.0D,
-            50.0D,
-            1.0D,
-            endereco);
+            1.0D);
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
         ObjectWriter writer = mapper.writer().withDefaultPrettyPrinter();
@@ -767,11 +715,7 @@ public class MockAlertTests {
                     fieldWithPath("categoriaAlerta").type(JsonFieldType.STRING).description("Indica o tipo de alerta"),
                     fieldWithPath("origemLatitude").type(JsonFieldType.ARRAY).description("Latitude do ponto de origem do alerta"),
                     fieldWithPath("origemLongitude").type(JsonFieldType.ARRAY).description("Longitude do ponto de origem do alerta"),
-                    fieldWithPath("origemRaioKms").type(JsonFieldType.ARRAY).description("Área de abrangência do alerta em Kms"),
-                    fieldWithPath("destinoLatitude").type(JsonFieldType.ARRAY).description("Latitude do destino presumido do evento (se houver, senão replica a da origem)"),
-                    fieldWithPath("destinoLongitude").type(JsonFieldType.ARRAY).description("Longitude do destino presumido do evento (se houver, senão replica a da origem)"),
-                    fieldWithPath("destinoRaioKms").type(JsonFieldType.ARRAY).description("Área de abrangência em Kms (se houver, senão replica a da a origem)"),
-                    fieldWithPath("endereco").type(JsonFieldType.ARRAY).description("Uma ou mais linhas com o endereço ou localização aproximada do ponto de origem do alerta"))));
+                    fieldWithPath("origemRaioKms").type(JsonFieldType.ARRAY).description("Área de abrangência do alerta em Kms"))));
     }
     
     @Test
@@ -793,10 +737,6 @@ public class MockAlertTests {
                     fieldWithPath("origemLatitude").type(JsonFieldType.ARRAY).description("Latitude do ponto de origem do alerta"),
                     fieldWithPath("origemLongitude").type(JsonFieldType.ARRAY).description("Longitude do ponto de origem do alerta"),
                     fieldWithPath("origemRaioKms").type(JsonFieldType.ARRAY).description("Área de abrangência do alerta em Kms"),
-                    fieldWithPath("destinoLatitude").type(JsonFieldType.ARRAY).description("Latitude do destino presumido do evento (se houver, senão replica a da origem)"),
-                    fieldWithPath("destinoLongitude").type(JsonFieldType.ARRAY).description("Longitude do destino presumido do evento (se houver, senão replica a da origem)"),
-                    fieldWithPath("destinoRaioKms").type(JsonFieldType.ARRAY).description("Área de abrangência em Kms (se houver, senão replica a da a origem)"),
-                    fieldWithPath("endereco").type(JsonFieldType.ARRAY).description("Uma ou mais linhas com o endereço ou localização aproximada do ponto de origem do alerta"),
                     fieldWithPath("_links.self.href").type(JsonFieldType.STRING).description("URI do link para o alerta")),
                 links(
                     linkWithRel("self").description("Link para o evento"))));
@@ -824,10 +764,6 @@ public class MockAlertTests {
                     fieldWithPath("_embedded.alertaList[].origemLatitude").type(JsonFieldType.ARRAY).description("Latitude do ponto de origem do alerta"),
                     fieldWithPath("_embedded.alertaList[].origemLongitude").type(JsonFieldType.ARRAY).description("Longitude do ponto de origem do alerta"),
                     fieldWithPath("_embedded.alertaList[].origemRaioKms").type(JsonFieldType.ARRAY).description("Área de abrangência do alerta em Kms"),
-                    fieldWithPath("_embedded.alertaList[].destinoLatitude").type(JsonFieldType.ARRAY).description("Latitude do destino presumido do evento (se houver, senão replica a da origem)"),
-                    fieldWithPath("_embedded.alertaList[].destinoLongitude").type(JsonFieldType.ARRAY).description("Longitude do destino presumido do evento (se houver, senão replica a da origem)"),
-                    fieldWithPath("_embedded.alertaList[].destinoRaioKms").type(JsonFieldType.ARRAY).description("Área de abrangência em Kms (se houver, senão replica a da a origem)"),
-                    fieldWithPath("_embedded.alertaList[].endereco").type(JsonFieldType.ARRAY).description("Uma ou mais linhas com o endereço ou localização aproximada do ponto de origem do alerta"),
                     fieldWithPath("_embedded.alertaList[]._links.self.href").type(JsonFieldType.STRING).description("URI do link para o alerta"))));
     }
     

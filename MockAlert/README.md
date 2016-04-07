@@ -28,7 +28,7 @@ Se por alguma razão for necessário mudar a porta do serviço basta modificar o
 
 O docker funciona. Basta executar o seguinte comando (basta ter o docker instalado):
 
-    docker run --rm -it -p 8080:8080 bditac/sp1_ts02:devel
+    docker run --rm -it -p 8080:8080 bditac/mockalert:sp1
 
 Será feito o download do repositório na internet e vai executar o serviço. Para testar basta apontar para o endereço do host (o meu fica em 192.168.99.100:8080).
 

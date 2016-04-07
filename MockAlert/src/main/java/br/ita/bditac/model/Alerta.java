@@ -1,8 +1,6 @@
 package br.ita.bditac.model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -112,26 +110,6 @@ public class Alerta implements Serializable {
      */
     private double origemRaioKms;
     
-    /**
-     * Coordenadas do destino presumido do evento - latitude (se houver, senão replicar origem)
-     */
-    private double destinoLatitude;
-    
-    /**
-     * Coordenadas do destino presumido do evento - longitute (se houver, senão replicar origem)
-     */
-    private double destinoLongitude;
-    
-    /**
-     * Coordenadas do destino presumido do evento - área de abrangência em kilometros (se houver, senão replicar origem)
-     */
-    private double destinoRaioKms;
-    
-    /**
-     * Endereço (se disponível) do ponto de origem do evento - área de abrangência em kilometros
-     */
-    private List<String> endereco;
-
     public Alerta() {
         this.descricaoResumida = "";
         this.descricaoCompleta = "";
@@ -141,10 +119,6 @@ public class Alerta implements Serializable {
         this.origemLatitude = 0;
         this.origemLongitude = 0;
         this.origemRaioKms = 0;
-        this.destinoLatitude = 0;
-        this.destinoLongitude = 0;
-        this.destinoRaioKms = 0;
-        this.endereco = new ArrayList<String>();
     }
     
     public Alerta(
@@ -155,11 +129,7 @@ public class Alerta implements Serializable {
             int categoriaAlerta, 
             double origemLatitude, 
             double origemLongitude, 
-            double origemRaioKms, 
-            double destinoLatitude, 
-            double destinoLongitude, 
-            double destinoRaioKms, 
-            List<String> endereço) {
+            double origemRaioKms) {
         this.descricaoResumida = descricaoResumida;
         this.descricaoCompleta = descricaoCompleta;
         this.fatorRiscoHumano = fatorRiscoHumano;
@@ -168,10 +138,6 @@ public class Alerta implements Serializable {
         this.origemLatitude = origemLatitude;
         this.origemLongitude = origemLongitude;
         this.origemRaioKms = origemRaioKms;
-        this.destinoLatitude = destinoLatitude;
-        this.destinoLongitude = destinoLongitude;
-        this.destinoRaioKms = destinoRaioKms;
-        this.endereco = endereço;
     }
     
     
@@ -253,45 +219,5 @@ public class Alerta implements Serializable {
     public void setOrigemRaioKms(double origemRaioKms) {
         this.origemRaioKms = origemRaioKms;
     }
-
-    
-    public double getDestinoLatitude() {
-        return destinoLatitude;
-    }
-
-    
-    public void setDestinoLatitude(double destinoLatitude) {
-        this.destinoLatitude = destinoLatitude;
-    }
-
-    
-    public double getDestinoLongitude() {
-        return destinoLongitude;
-    }
-
-    
-    public void setDestinoLongitude(double destinoLongitude) {
-        this.destinoLongitude = destinoLongitude;
-    }
-
-    
-    public double getDestinoRaioKms() {
-        return destinoRaioKms;
-    }
-
-    
-    public void setDestinoRaioKms(double destinoRaioKms) {
-        this.destinoRaioKms = destinoRaioKms;
-    }
-
-    
-    public List<String> getEndereco() {
-        return endereco;
-    }
-
-    
-    public void setEndereco(List<String> endereco) {
-        this.endereco = endereco;
-    }    
     
 }

@@ -41,10 +41,6 @@ public class AlertaDAO {
         novoAlerta.setOrigemLatitude(alerta.getOrigemLatitude());
         novoAlerta.setOrigemLongitude(alerta.getOrigemLatitude());
         novoAlerta.setOrigemRaioKms(alerta.getOrigemRaioKms());
-        novoAlerta.setDestinoLatitude(alerta.getDestinoLatitude());
-        novoAlerta.setDestinoLongitude(alerta.getDestinoLongitude());
-        novoAlerta.setDestinoRaioKms(alerta.getDestinoRaioKms());
-        novoAlerta.setEndereco(alerta.getEndereco());
         novoAlerta.setId(++_idAlerta);
         
         alertas.put(novoAlerta.getId(),  novoAlerta);
