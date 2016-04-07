@@ -1,4 +1,4 @@
-package br.ita.bd_itac;
+package br.ita.bditac.mobile.alertas;
 
 import org.junit.Test;
 

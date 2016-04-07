@@ -1,4 +1,4 @@
-package br.ita.bd_itac;
+package br.ita.bditac.mobile.alertas;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

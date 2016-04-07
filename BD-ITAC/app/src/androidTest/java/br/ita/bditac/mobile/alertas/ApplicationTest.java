@@ -1,4 +1,4 @@
-package br.ita.bd_itac;
+package br.ita.bditac.mobile.alertas;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
