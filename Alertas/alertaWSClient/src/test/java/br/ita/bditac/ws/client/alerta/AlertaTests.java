@@ -31,11 +31,7 @@ public class AlertaTests extends TestCase {
                 0,
                 0.50,
                 0.50,
-                1.0,
-                0.50,
-                0.50,
-                1.0,
-                endereco);
+                1.0);
         Alerta alertaRetorno = alertaClient.addAlerta(alertaNovo);
         assertNotNull(alertaRetorno);
         assertEquals("Resposta(descricao):'" + alertaRetorno.getDescricaoResumida() + "' do POST diferente do que foi enviado: '" + alertaNovo.getDescricaoResumida() + "'!", alertaRetorno.getDescricaoResumida(), alertaNovo.getDescricaoResumida());

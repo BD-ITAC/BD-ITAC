@@ -1,7 +1,6 @@
 package br.ita.bditac.ws.model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Alerta implements Serializable {
@@ -26,12 +25,7 @@ public class Alerta implements Serializable {
     
     private double origemRaioKms;
     
-    private double destinoLongitude;
-    
-    private double destinoLatitude;
-    
-    private double destinoRaioKms;
-    
+
     private List<String> endereco;
 
     public Alerta() {
@@ -43,10 +37,6 @@ public class Alerta implements Serializable {
         this.origemLatitude = 0;
         this.origemLongitude = 0;
         this.origemRaioKms = 0;
-        this.destinoLatitude = 0;
-        this.destinoLongitude = 0;
-        this.destinoRaioKms = 0;
-        this.endereco = new ArrayList<String>();
     }
     
     public Alerta(
@@ -57,11 +47,7 @@ public class Alerta implements Serializable {
             int categoriaAlerta, 
             double origemLatitude, 
             double origemLongitude, 
-            double origemRaioKms, 
-            double destinoLatitude, 
-            double destinoLongitude, 
-            double destinoRaioKms, 
-            List<String> endereço) {
+            double origemRaioKms) {
         this.descricaoResumida = descricaoResumida;
         this.descricaoCompleta = descricaoCompleta;
         this.fatorRiscoHumano = fatorRiscoHumano;
@@ -70,10 +56,7 @@ public class Alerta implements Serializable {
         this.origemLatitude = origemLatitude;
         this.origemLongitude = origemLongitude;
         this.origemRaioKms = origemRaioKms;
-        this.destinoLatitude = destinoLatitude;
-        this.destinoLongitude = destinoLongitude;
-        this.destinoRaioKms = destinoRaioKms;
-        this.endereco = endereço;
+
     }
 
     public int getId() {
@@ -165,37 +148,7 @@ public class Alerta implements Serializable {
         this.origemRaioKms = origemRaioKms;
     }
 
-    
-    public double getDestinoLongitude() {
-        return destinoLongitude;
-    }
 
-    
-    public void setDestinoLongitude(double destinoLongitude) {
-        this.destinoLongitude = destinoLongitude;
-    }
-
-    
-    public double getDestinoLatitude() {
-        return destinoLatitude;
-    }
-
-    
-    public void setDestinoLatitude(double destinoLatitude) {
-        this.destinoLatitude = destinoLatitude;
-    }
-
-    
-    public double getDestinoRaioKms() {
-        return destinoRaioKms;
-    }
-
-    
-    public void setDestinoRaioKms(double destinoRaioKms) {
-        this.destinoRaioKms = destinoRaioKms;
-    }
-
-    
     public List<String> getEndereco() {
         return endereco;
     }

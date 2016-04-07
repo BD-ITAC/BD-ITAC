@@ -15,7 +15,7 @@ import junit.framework.TestCase;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class EventoTests extends TestCase {
 
-    private static final String HOST_URL = "http://localhost:8080";
+    private static final String HOST_URL = "http://10.0.2.2:8080";
     
     @Test
     public void test01PostEvento() {
