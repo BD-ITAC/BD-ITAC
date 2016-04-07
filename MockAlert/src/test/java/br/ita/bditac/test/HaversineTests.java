@@ -10,7 +10,7 @@ import br.ita.bditac.support.Haversine;
 
 /**
  * 
- * Testes unitários da classe utilitária Haversine.
+ * = Testes unitários da classe utilitária Haversine.
  * 
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
@@ -45,16 +45,29 @@ public class HaversineTests {
     
     /**
      * 
-     * @bditac.assertion Testa a distância entre três pontos obtidas através da interface web do Google Maps:<br/>
+     * == Asserção:
      * 
-     * @bditac.given <code>Coords itaCoords = new Coords(-23.2122219,-45.8804741);</code><br/>
-     * @bditac.given <code>Coords centerValeCoords = new Coords(-23.209816,-45.8857956);</code><br/>
-     * @bditac.given <code>Coords barCoronelCoords = new Coords(-23.1911191,-45.8951512);</code><br/>
+     * Testa a distância entre três pontos obtidos através da interface web do Google Maps:
      * 
-     * @bditac.perform A distância entre os pontos <code>itaCoords</code> e <code>centerValeCoords</code> é calculada e armazenada em <code>distance1</code>.<br/>
-     * @bditac.perform A distância entre os pontos <code>itaCoords</code> e <code>barCoronelCoords</code> é calculada e armazenada em <code>distance2</code>.<br/>
+     * == Dados:
      * 
-     * @bditac.expected A distância <code>distance1</code> deve ser <b>menor</b> que a distância <code>distance2</code>.<br/>
+     * === Coordenadas
+     *  
+     * [source,java]
+     * --
+     * Coords itaCoords = new Coords(-23.2122219,-45.8804741);
+     * Coords centerValeCoords = new Coords(-23.209816,-45.8857956);
+     * Coords barCoronelCoords = new Coords(-23.1911191,-45.8951512);
+     * --
+     * 
+     * == Execução
+     * 
+     * - A distância entre os pontos itaCoords e centerValeCoords é calculada e armazenada em distance1.
+     * - A distância entre os pontos itaCoords e barCoronelCoords é calculada e armazenada em distance2.
+     * 
+     * == Resultado esperado: 
+     * 
+     * A medida distance1 deve ser *menor* que a medida distance2.
      * 
      */
     @Test
@@ -69,16 +82,29 @@ public class HaversineTests {
     
     /**
      * 
-     * @bditac.assertion Testa a distância entre três pontos obtidas através da interface web do Google Maps:<br/>
+     * == Asserção:
      * 
-     * @bditac.given <code>Coords itaCoords = new Coords(-23.2122219,-45.8804741);</code><br/>
-     * @bditac.given <code>Coords centerValeCoords = new Coords(-23.209816,-45.8857956);</code><br/>
-     * @bditac.given <code>Coords inpeCoords = new Coords(-23.211512,-45.8757535);</code><br/>
+     * Testa a distância entre três pontos obtidos através da interface web do Google Maps:
      * 
-     * @bditac.perform A distância entre os pontos <code>itaCoords</code> e <code>centerValeCoords</code> é calculada e armazenada em <code>distance1</code>.<br/>
-     * @bditac.perform A distância entre os pontos <code>itaCoords</code> e <code>inpeCoords</code> é calculada e armazenada em <code>distance2</code>.<br/>
+     * == Dados:
      * 
-     * @bditac.expected A distância <code>distance1</code> deve ser <b>maior</b> que a distância <code>distance2</code>.<br/>
+     * === Coordenadas
+     *  
+     * [source,java]
+     * --
+     * Coords itaCoords = new Coords(-23.2122219,-45.8804741);
+     * Coords centerValeCoords = new Coords(-23.209816,-45.8857956);
+     * Coords inpeCoords = new Coords(-23.211512,-45.8757535);
+     * --
+     * 
+     * == Execução:
+     * 
+     * - A distância entre os pontos itaCoords e centerValeCoords é calculada e armazenada em distance1.
+     * - A distância entre os pontos itaCoords e inpeCoords é calculada e armazenada em distance2.
+     * 
+     * == Resultado esperado: 
+     * 
+     * A medida distance1 deve ser *maior* que a medida distance2.
      * 
      */
     @Test

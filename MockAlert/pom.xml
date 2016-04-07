@@ -113,13 +113,31 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
 				<configuration>
 				    <tags>
 				        <tag><name>bditac.assertion</name><placement>a</placement><head>Asserção: </head></tag>
                         <tag><name>bditac.given</name><placement>a</placement><head>Dado: </head></tag>
                         <tag><name>bditac.perform</name><placement>a</placement><head>Executa: </head></tag>
-                        <tag><name>bditac.expected</name><placement>a</placement><head>Resultado experado: </head></tag>
+                        <tag><name>bditac.expected</name><placement>a</placement><head>Resultado esperado: </head></tag>
 				    </tags>
+					<doclet>org.asciidoctor.Asciidoclet</doclet>
+						<docletArtifact>
+						<groupId>org.asciidoctor</groupId>
+						<artifactId>asciidoclet</artifactId>
+						<version>1.5.0</version>
+					</docletArtifact>
+			        <additionalparam>
+			            --base-dir ${project.basedir}
+			            --attribute "name=${project.name}"
+			            --attribute "version=${project.version}"
+			        </additionalparam>
 				</configuration>
 			</plugin>
 

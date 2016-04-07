@@ -67,6 +67,12 @@ import br.ita.bditac.support.AlertaResource;
 import br.ita.bditac.support.AlertaResources;
 import br.ita.bditac.support.EventoResource;
 
+/**
+ * 
+ * = Testes unitários do serviço de Alertas para o BD-ITAC.
+ * 
+ */
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
 @IntegrationTest("server.port:0")
@@ -135,6 +141,57 @@ public class MockAlertTests {
         assertNotNull(mvc);
     }
     
+    /**
+     * 
+     * == Asserção:
+     * 
+     * Testa a inclusão de um evento de crise usando o seriço de Alertas.
+     * 
+     * == Dados: 
+     * 
+     * Uma estrutura de dados contendo o evento.
+     * 
+     * === Estrutura de dados
+     *  
+     * [source,java]
+     * --
+     *  List<String> endereco = new ArrayList<String>();
+     *  endereco.add("rua das Casas");
+     *  endereco.add("numero das Portas");
+     *  Evento eventoRequest = new Evento(
+     *          "Deslizamento na na favela do Paraiso",
+     *          0,
+     *          "Ze das Couves",
+     *          "zedascouves@gmail.com",
+     *          "(12) 99876-1234",
+     *          endereco);
+     * --
+     * 
+     * == Execução:
+     * 
+     * Uma chamada ao serviço de Alertas.
+     * 
+     * ==Resultado esperado:
+     * 
+     * Uma estrutura de dados com a mesma informação da estrutura enviada.
+     * 
+     * === Estrutura de dados
+     *  
+     * [source,java]
+     * --
+     *  List<String> endereco = new ArrayList<String>();
+     *  endereco.add("rua das Casas");
+     *  endereco.add("numero das Portas");
+     *  Evento eventoRequest = new Evento(
+     *          "Deslizamento na na favela do Paraiso",
+     *          0,
+     *          "Ze das Couves",
+     *          "zedascouves@gmail.com",
+     *          "(12) 99876-1234",
+     *          endereco);
+     * --
+     * 
+     */
     @Test 
     public void test101PostEvento() throws Exception {
         URI eventoURI = new URI(getBaseUrl() + "/evento");
@@ -167,6 +224,41 @@ public class MockAlertTests {
         }
     }
     
+    /**
+     * 
+     * == Asserção:
+     * 
+     * Testa a obtenção de um evento de crise do seriço de Alertas:
+     * 
+     * == Dados:
+     * 
+     * Identificação do evento na requisição. 
+     * 
+     * == Execução:
+     * 
+     * Uma chamada ao serviço de Alertas.
+     * 
+     * == Resultado esperado:
+     * 
+     * Uma estrutura de dados com os dados do evento.
+     * 
+     * === Estrutura de dados
+     *  
+     * [source,java]
+     * --
+     *  List<String> endereco = new ArrayList<String>();
+     *  endereco.add("rua das Casas");
+     *  endereco.add("numero das Portas");
+     *  Evento eventoRequest = new Evento(
+     *          "Deslizamento na na favela do Paraiso",
+     *          0,
+     *          "Ze das Couves",
+     *          "zedascouves@gmail.com",
+     *          "(12) 99876-1234",
+     *          endereco);
+     * --
+     * 
+     */
     @Test
     public void test102GetEvento() throws Exception {
         String eventoURL = getBaseUrl() + "/evento/{id}";
@@ -202,6 +294,25 @@ public class MockAlertTests {
         }
     }
     
+    /**
+     * 
+     * == Asserção:
+     * 
+     * Testa a inclusão de um evento de crise usando o seriço de Alertas:
+     * 
+     * == Dados:
+     * 
+     * Identificação do evento na requisição. 
+     * 
+     * == Execução:
+     * 
+     * Uma chamada ao serviço de Alertas.
+     * 
+     * == Resultado esperado:
+     * 
+     * O código de estado da chamada deve ser o código HTTP 404 (NOT FOUND).
+     * 
+     */
     @Test
     public void test103GetEventoInexistente() throws Exception {
         String eventoURL = getBaseUrl() + "/evento/{id}";
@@ -214,6 +325,69 @@ public class MockAlertTests {
         assertThat(eventoResponseEntity.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
     
+    /**
+     * 
+     * == Asserção:
+     * 
+     * Testa a inclusão de um alerta utilizando o serviço de Alertas.
+     * 
+     * == Dados:
+     * 
+     * Uma estrutura de dados com os dados do alerta.
+     * 
+     * === Estrutura de Dados
+     * 
+     * [source,java]
+     * --
+     *  List<String> endereco = new ArrayList<String>();
+     *  endereco.add("rua das Casas");
+     *  endereco.add("numero das Portas");
+     *  Alerta alertaRequest = new Alerta(
+     *          "Alerta de deslizamento",
+     *          "Perigo de deslizamento na altura do Km 20 da rodovia Tamoios, pista Sao Jose dos Campos/Litoral",
+     *          5,
+     *          5,
+     *          0,
+     *          0.50,
+     *          0.50,
+     *          1.0,
+     *          0.50,
+     *          0.50,
+     *          1.0,
+     *          endereco);
+     * -- 
+     * 
+     * == Execução:
+     * 
+     * Uma chamada ao serviço de de Alertas
+     * 
+     * == Resultado esperado:
+     * 
+     * Uma estrutura de dados com a mesma informação da estrutura enviada.
+     * 
+     * === Estrutura de Dados
+     * 
+     * [source,java]
+     * --
+     *  List<String> endereco = new ArrayList<String>();
+     *  endereco.add("rua das Casas");
+     *  endereco.add("numero das Portas");
+     *  Alerta alertaRequest = new Alerta(
+     *          "Alerta de deslizamento",
+     *          "Perigo de deslizamento na altura do Km 20 da rodovia Tamoios, pista Sao Jose dos Campos/Litoral",
+     *          5,
+     *          5,
+     *          0,
+     *          0.50,
+     *          0.50,
+     *          1.0,
+     *          0.50,
+     *          0.50,
+     *          1.0,
+     *          endereco);
+     * -- 
+     * 
+     */
     @Test
     public void test104PostAlerta() throws URISyntaxException {
         URI alertaURI = new URI(getBaseUrl() + "/alerta");
@@ -258,6 +432,47 @@ public class MockAlertTests {
         }
     }
     
+    /**
+     * 
+     * == Asserção:
+     * 
+     * Testa a obtenção de um alerta de crise do seriço de Alertas:
+     * 
+     * == Dados:
+     * 
+     * Identificação do alerta na requisição. 
+     * 
+     * == Execução:
+     * 
+     * Uma chamada ao serviço de Alertas.
+     * 
+     * == Resultado esperado:
+     * 
+     * Uma estrutura de dados com os dados do alerta.
+     * 
+     * === Estrutura de dados
+     * 
+     * [source,java]
+     * --
+     *  List<String> endereco = new ArrayList<String>();
+     *  endereco.add("rua das Casas");
+     *  endereco.add("numero das Portas");
+     *  Alerta alertaRequest = new Alerta(
+     *          "Alerta de deslizamento",
+     *          "Perigo de deslizamento na altura do Km 20 da rodovia Tamoios, pista Sao Jose dos Campos/Litoral",
+     *          5,
+     *          5,
+     *          0,
+     *          0.50,
+     *          0.50,
+     *          1.0,
+     *          0.50,
+     *          0.50,
+     *          1.0,
+     *          endereco);
+     * -- 
+     * 
+     */
     @Test
     public void test105GetAlerta() throws URISyntaxException {
         String alertaURL = getBaseUrl() + "/alerta";
@@ -267,6 +482,47 @@ public class MockAlertTests {
         assertThat(alertaResponseEntity.getStatusCode() == HttpStatus.OK);
     }
     
+    /**
+     * 
+     * == Asserção:
+     * 
+     * Testa a obtenção de um determinado alerta identificado pelo *id* do seriço de Alertas:
+     * 
+     * == Dados:
+     * 
+     * Identificação do alerta na requisição. 
+     * 
+     * == Execução:
+     * 
+     * Uma chamada ao serviço de Alertas.
+     * 
+     * == Resultado esperado:
+     * 
+     * Uma estrutura de dados com os dados do alerta.
+     * 
+     * === Estrutura de dados
+     * 
+     * [source,java]
+     * --
+     *  List<String> endereco = new ArrayList<String>();
+     *  endereco.add("rua das Casas");
+     *  endereco.add("numero das Portas");
+     *  Alerta alertaRequest = new Alerta(
+     *          "Alerta de deslizamento",
+     *          "Perigo de deslizamento na altura do Km 20 da rodovia Tamoios, pista Sao Jose dos Campos/Litoral",
+     *          5,
+     *          5,
+     *          0,
+     *          0.50,
+     *          0.50,
+     *          1.0,
+     *          0.50,
+     *          0.50,
+     *          1.0,
+     *          endereco);
+     * -- 
+     * 
+     */
     @Test
     public void test106GetAlertaById() throws URISyntaxException {
         String alertaURL = getBaseUrl() + "/alerta/{id}";
@@ -314,6 +570,57 @@ public class MockAlertTests {
         }
     }
     
+    /**
+     * 
+     * == Asserção:
+     * 
+     * Testa a obtenção de alertas dentro de uma área identificada por um ponto geográfico e um raio no seriço de Alertas:
+     * 
+     * == Dados:
+     * 
+     * Identificação da área de pesquisa desejada. 
+     * 
+     * === Dados informados:
+     * 
+     * [source,java]
+     * --
+     *  Map<String, Double> params = new HashMap<String, Double>();
+     *  params.put("latitude", 0.5D);
+     *  params.put("longitude", 0.5D);
+     *  params.put("raio", 1D);
+     * --
+     * 
+     * == Execução:
+     * 
+     * Uma chamada ao serviço de Alertas.
+     * 
+     * == Resultado esperado:
+     * 
+     * Uma lista de dados com os dados dos alertas na área informada.
+     * 
+     * === Estrutura de dados
+     * 
+     * [source,java]
+     * --
+     *  List<String> endereco = new ArrayList<String>();
+     *  endereco.add("rua das Casas");
+     *  endereco.add("numero das Portas");
+     *  Alerta alertaRequest = new Alerta(
+     *          "Alerta de deslizamento",
+     *          "Perigo de deslizamento na altura do Km 20 da rodovia Tamoios, pista Sao Jose dos Campos/Litoral",
+     *          5,
+     *          5,
+     *          0,
+     *          0.50,
+     *          0.50,
+     *          1.0,
+     *          0.50,
+     *          0.50,
+     *          1.0,
+     *          endereco);
+     * -- 
+     * 
+     */
     @Test
     public void test107GetAlertasByCoords() throws Exception {
         String alertaURL = getBaseUrl() + "/alerta/latitude/{latitude}/longitude/{longitude}/raio/{raio}";
@@ -328,6 +635,35 @@ public class MockAlertTests {
         assertEquals("Resposta(descricaoResumida)'" + alertas.get(0).getDescricaoResumida() + "' do POST diferente do esperado!", alertas.get(0).getDescricaoResumida(), "Alerta de deslizamento");
     }
     
+    /**
+     * 
+     * == Asserção:
+     * 
+     * Testa a obtenção de alertas dentro de uma área identificada por um ponto geográfico e um raio no seriço de Alertas onde não há alertas:
+     * 
+     * == Dados:
+     * 
+     * Identificação da área de pesquisa desejada. 
+     * 
+     * === Dados informados:
+     * 
+     * [source,java]
+     * --
+     *  Map<String, Double> params = new HashMap<String, Double>();
+     *  params.put("latitude", 0.6D);
+     *  params.put("longitude", 0.6D);
+     *  params.put("raio", 1D);
+     * --
+     * 
+     * == Execução:
+     * 
+     * Uma chamada ao serviço de Alertas.
+     * 
+     * == Resultado esperado:
+     * 
+     * Uma lista *vazia* de dados com os dados dos alertas na área informada.
+     * 
+     */
     @Test
     public void test108GetAlertaByCoordsInexistente() throws Exception {
         String alertaURL = getBaseUrl() + "/alerta/latitude/{latitude}/longitude/{longitude}/raio/{raio}";
