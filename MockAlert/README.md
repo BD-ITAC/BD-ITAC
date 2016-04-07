@@ -109,3 +109,33 @@ A função do arquivo *REAMDE.adoc* é "costurar" o conteúdo gerado pelo **Spri
 Esse trecho de comando para o **Asciidoctor** instrui a inclusão do documento *curl-request.adoc*  que foi gerado pelo **Spring ReST Docs** durante o teste unitário.
 
 Depois o arquivo *README.html* é copiado manualmente para a raiz do projeto para poder ser lido.
+
+### Documentação dos casos de testes
+
+Utilizamos também o plugin *Asciidoclet* do *Asciidoctor* para gerar a documentação dos casos testes seguindo a forma:
+
+     * == Asserção:
+     * 
+     * Testa a distância entre três pontos obtidos através da interface web do Google Maps:
+     * 
+     * == Dados:
+     * 
+     * === Coordenadas
+     *  
+     * [source,java]
+     * --
+     * Coords itaCoords = new Coords(-23.2122219,-45.8804741);
+     * Coords centerValeCoords = new Coords(-23.209816,-45.8857956);
+     * Coords barCoronelCoords = new Coords(-23.1911191,-45.8951512);
+     * --
+     * 
+     * == Execução
+     * 
+     * - A distância entre os pontos itaCoords e centerValeCoords é calculada e armazenada em distance1.
+     * - A distância entre os pontos itaCoords e barCoronelCoords é calculada e armazenada em distance2.
+     * 
+     * == Resultado esperado: 
+     * 
+     * A medida distance1 deve ser *menor* que a medida distance2.
+
+Depois executando o seguinte comando podemos gerar na pasta *target/site/testapidocs* um site contendo o Javadoc dos testes e apresentando os dados necessários para documentar o teste implementado.
