@@ -22,8 +22,6 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".AlertaActivity"/>
-
         <activity android:name=".CadastrarEventoActivity"/>
 
         <activity android:name=".ConsultarIndicadorActivity" />
