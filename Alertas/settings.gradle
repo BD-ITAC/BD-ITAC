@@ -1,1 +1,1 @@
-include ':alertaApp', ':alertaWSClient', ':springAndroidRest'
+include ':alertaApp', ':alertaWSClient', ':springAndroidRest', ':MPChartLib'

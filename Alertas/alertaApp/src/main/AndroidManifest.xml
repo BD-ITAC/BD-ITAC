@@ -15,12 +15,20 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".AlertaActivity">
+        <activity android:name="br.ita.bditac.mobile.alertas.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
+        <activity android:name=".AlertaActivity"/>
+
+        <activity android:name=".CadastrarEventoActivity"/>
+
+        <activity android:name=".ConsultarIndicadorActivity" />
+
+        <activity android:name=".ConsultaEventoActivity"/>
 
         <receiver android:name=".AutoStartReceiver">
             <intent-filter>

@@ -9,6 +9,7 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/MPChartLib" />
             <option value="$PROJECT_DIR$/alertaApp" />
             <option value="$PROJECT_DIR$/alertaWSClient" />
             <option value="$PROJECT_DIR$/springAndroidRest" />
