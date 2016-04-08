@@ -40,7 +40,7 @@ public class ConsultarIndicadorActivity extends ChartBase implements OnChartValu
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_piechart);
+        setContentView(R.layout.activity_consultar_indicadores);
 
         mChart = (PieChart) findViewById(R.id.chart1);
         mChart.setUsePercentValues(true);
