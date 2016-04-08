@@ -21,11 +21,6 @@ public class MainActivity extends AppCompatActivity {
         startActivity(itentCadastrarEvento);
     }
 
-    public void startConsultarEvento(View view) {
-        Intent itentConsultarEvento = new Intent(this, ConsultaEventoActivity.class);
-        startActivity(itentConsultarEvento);
-    }
-
     public void startConsultarIndicador(View view) {
         Intent itentConsultarIndicador = new Intent(this, ConsultarIndicadorActivity.class);
         startActivity(itentConsultarIndicador);
