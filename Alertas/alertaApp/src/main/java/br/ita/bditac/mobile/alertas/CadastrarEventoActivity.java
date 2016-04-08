@@ -1,19 +1,19 @@
 package br.ita.bditac.mobile.alertas;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
 
 public class CadastrarEventoActivity extends AppCompatActivity {
 
-    private EditText inputNome, inputEmail, inputFone, inputLocal, inputTitulo, inputMsg;
+    private EditText inputTitulo;
+    private EditText inputMsg;
     private Spinner inputClassificacao;
 
     @Override
@@ -22,9 +22,6 @@ public class CadastrarEventoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastrar_evento);
 
-        inputNome = (EditText) findViewById(R.id.nome);
-        inputEmail = (EditText) findViewById(R.id.email);
-        inputLocal = (EditText) findViewById(R.id.local);
         inputTitulo = (EditText) findViewById(R.id.titulo);
         inputMsg  = (EditText) findViewById(R.id.mensagem);
 
@@ -73,10 +70,6 @@ public class CadastrarEventoActivity extends AppCompatActivity {
 
     private void LimparTela(){
 
-        inputNome.setText("");
-        inputEmail.setText("");
-        inputFone.setText("");
-        inputLocal.setText("");
         inputTitulo.setText("");
         inputMsg.setText("");
         inputClassificacao.setSelection(0);
@@ -85,25 +78,6 @@ public class CadastrarEventoActivity extends AppCompatActivity {
 
     private void SalvarDados(){
 
-        // TODO: Ajustar esse método para chmar a API ou o Mock para simular a integração
-
-        StringBuilder builder = new StringBuilder();
-
-        builder.append("{\n");
-        builder.append(" \"doc\":{");
-
-        builder.append("\"nome\": \"" + inputNome.getEditableText().toString() + "\",\n");
-        builder.append("\"email\": \"" + inputEmail.getEditableText().toString() + "\",\n");
-        builder.append("\"fone\": \"" + inputFone.getEditableText().toString() + "\",\n");
-        builder.append("\"local: \"" + inputLocal.getEditableText().toString() + "\",\n");
-        builder.append("\"titulo: \"" + inputTitulo.getEditableText().toString() + "\",\n");
-        builder.append("\"classificacao\" : " + inputClassificacao.getSelectedItem().toString() + "\",\n");
-        builder.append("\"msg\": \"" + inputMsg.getEditableText().toString() + "\"}\n}\n\n");
-
-        builder.append("<<agora é só enviar essa mensagem para o Mock ou para a API de integração!! >>");
-
-        Toast toast = Toast.makeText(CadastrarEventoActivity.this, builder.toString(), Toast.LENGTH_LONG);
-        toast.show();
     }
 
 }

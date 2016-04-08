@@ -19,33 +19,6 @@
             android:layout_height ="wrap_content"
             android:text ="BD-ITAC: Cadastro de Crises ou Eventos" />
 
-        <EditText
-            android:id ="@+id/nome"
-            android:layout_width ="match_parent"
-            android:layout_height ="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:hint ="Nome"
-            android:imeOptions ="actionNext"
-            android:inputType ="textAutoCorrect|textCapSentences"/>
-
-        <EditText
-            android:id ="@+id/email"
-            android:layout_width ="match_parent"
-            android:layout_height ="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:hint ="seu@email.com"
-            android:imeOptions ="actionNext"
-            android:inputType ="textEmailAddress"/>
-
-        <EditText
-            android:id ="@+id/local"
-            android:layout_width ="match_parent"
-            android:layout_height ="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:hint ="Cidade"
-            android:imeOptions ="actionNext"
-            android:inputType ="textAutoCorrect|textCapSentences"/>
-
         <Spinner
             android:id ="@+id/classificacao"
             android:layout_width ="match_parent"
