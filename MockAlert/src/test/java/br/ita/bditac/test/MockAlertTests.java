@@ -19,7 +19,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -72,7 +71,6 @@ import br.ita.bditac.support.EventoResource;
  * = Testes unitários do serviço de Alertas para o BD-ITAC.
  * 
  */
-
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
 @IntegrationTest("server.port:0")
@@ -155,16 +153,12 @@ public class MockAlertTests {
      *  
      * [source,java]
      * --
-     *  List<String> endereco = new ArrayList<String>();
-     *  endereco.add("rua das Casas");
-     *  endereco.add("numero das Portas");
      *  Evento eventoRequest = new Evento(
      *          "Deslizamento na na favela do Paraiso",
      *          0,
      *          "Ze das Couves",
      *          "zedascouves@gmail.com",
-     *          "(12) 99876-1234",
-     *          endereco);
+     *          "(12) 99876-1234");
      * --
      * 
      * == Execução:
@@ -179,16 +173,12 @@ public class MockAlertTests {
      *  
      * [source,java]
      * --
-     *  List<String> endereco = new ArrayList<String>();
-     *  endereco.add("rua das Casas");
-     *  endereco.add("numero das Portas");
      *  Evento eventoRequest = new Evento(
      *          "Deslizamento na na favela do Paraiso",
      *          0,
      *          "Ze das Couves",
      *          "zedascouves@gmail.com",
-     *          "(12) 99876-1234",
-     *          endereco);
+     *          "(12) 99876-1234");
      * --
      * 
      */
@@ -196,16 +186,12 @@ public class MockAlertTests {
     public void test101PostEvento() throws Exception {
         URI eventoURI = new URI(getBaseUrl() + "/evento");
         
-        List<String> endereco = new ArrayList<String>();
-        endereco.add("rua das Casas");
-        endereco.add("numero das Portas");
         Evento eventoRequest = new Evento(
                 "Deslizamento na na favela do Paraiso",
                 0,
                 "Ze das Couves",
                 "zedascouves@gmail.com",
-                "(12) 99876-1234",
-                endereco);
+                "(12) 99876-1234");
 
         ResponseEntity<EventoResource> eventoResponseEntity =  getRestTemplate().postForEntity(eventoURI, new HttpEntity<Evento>(eventoRequest), EventoResource.class);
         
@@ -218,10 +204,6 @@ public class MockAlertTests {
         assertEquals("Resposta(nome) do POST diferente do que foi enviado!", eventoResponse.getNome(), eventoRequest.getNome());
         assertEquals("Resposta(email) do POST diferente do que foi enviado!", eventoResponse.getEmail(), eventoRequest.getEmail());
         assertEquals("Resposta(telefone) do POST diferente do que foi enviado!", eventoResponse.getTelefone(), eventoRequest.getTelefone());
-        int linha = 0;
-        for(String linhaEndereco : eventoRequest.getEndereco()) {
-            assertEquals("Resposta(endereco) do POST diferente do que foi enviado!", linhaEndereco, eventoRequest.getEndereco().get(linha++));
-        }
     }
     
     /**
@@ -246,16 +228,12 @@ public class MockAlertTests {
      *  
      * [source,java]
      * --
-     *  List<String> endereco = new ArrayList<String>();
-     *  endereco.add("rua das Casas");
-     *  endereco.add("numero das Portas");
      *  Evento eventoRequest = new Evento(
      *          "Deslizamento na na favela do Paraiso",
      *          0,
      *          "Ze das Couves",
      *          "zedascouves@gmail.com",
-     *          "(12) 99876-1234",
-     *          endereco);
+     *          "(12) 99876-1234");
      * --
      * 
      */
@@ -272,26 +250,18 @@ public class MockAlertTests {
 
         Evento eventoResponse = eventoResponseEntity.getBody().getContent();
         
-        List<String> endereco = new ArrayList<String>();
-        endereco.add("rua das Casas");
-        endereco.add("numero das Portas");
         Evento eventoRequest = new Evento(
                 "Deslizamento na na favela do Paraiso",
                 0,
                 "Ze das Couves",
                 "zedascouves@gmail.com",
-                "(12) 99876-1234",
-                endereco);
+                "(12) 99876-1234");
 
         assertEquals("Resposta(descricao):'" + eventoResponse.getDescricao() + "' do POST diferente do que foi enviado: '" + eventoRequest.getDescricao() + "'!", eventoResponse.getDescricao(), eventoRequest.getDescricao());
         assertEquals("Resposta(categoria) do POST diferente do que foi enviado!", eventoResponse.getCategoria(), eventoRequest.getCategoria());
         assertEquals("Resposta(nome) do POST diferente do que foi enviado!", eventoResponse.getNome(), eventoRequest.getNome());
         assertEquals("Resposta(email) do POST diferente do que foi enviado!", eventoResponse.getEmail(), eventoRequest.getEmail());
         assertEquals("Resposta(telefone) do POST diferente do que foi enviado!", eventoResponse.getTelefone(), eventoRequest.getTelefone());
-        int linha = 0;
-        for(String linhaEndereco : eventoRequest.getEndereco()) {
-            assertEquals("Resposta(endereco) do POST diferente do que foi enviado!", linhaEndereco, eventoRequest.getEndereco().get(linha++));
-        }
     }
     
     /**
@@ -339,9 +309,6 @@ public class MockAlertTests {
      * 
      * [source,java]
      * --
-     *  List<String> endereco = new ArrayList<String>();
-     *  endereco.add("rua das Casas");
-     *  endereco.add("numero das Portas");
      *  Alerta alertaRequest = new Alerta(
      *          "Alerta de deslizamento",
      *          "Perigo de deslizamento na altura do Km 20 da rodovia Tamoios, pista Sao Jose dos Campos/Litoral",
@@ -429,9 +396,6 @@ public class MockAlertTests {
      * 
      * [source,java]
      * --
-     *  List<String> endereco = new ArrayList<String>();
-     *  endereco.add("rua das Casas");
-     *  endereco.add("numero das Portas");
      *  Alerta alertaRequest = new Alerta(
      *          "Alerta de deslizamento",
      *          "Perigo de deslizamento na altura do Km 20 da rodovia Tamoios, pista Sao Jose dos Campos/Litoral",
@@ -475,9 +439,6 @@ public class MockAlertTests {
      * 
      * [source,java]
      * --
-     *  List<String> endereco = new ArrayList<String>();
-     *  endereco.add("rua das Casas");
-     *  endereco.add("numero das Portas");
      *  Alerta alertaRequest = new Alerta(
      *          "Alerta de deslizamento",
      *          "Perigo de deslizamento na altura do Km 20 da rodovia Tamoios, pista Sao Jose dos Campos/Litoral",
@@ -503,9 +464,6 @@ public class MockAlertTests {
 
         Alerta alertaResponse = alertaResponseEntity.getBody().getContent();
         
-        List<String> endereco = new ArrayList<String>();
-        endereco.add("rua das Casas");
-        endereco.add("numero das Portas");
         Alerta alertaRequest = new Alerta(
                 "Alerta de deslizamento",
                 "Perigo de deslizamento na altura do Km 20 da rodovia Tamoios, pista Sao Jose dos Campos/Litoral",
@@ -558,9 +516,6 @@ public class MockAlertTests {
      * 
      * [source,java]
      * --
-     *  List<String> endereco = new ArrayList<String>();
-     *  endereco.add("rua das Casas");
-     *  endereco.add("numero das Portas");
      *  Alerta alertaRequest = new Alerta(
      *          "Alerta de deslizamento",
      *          "Perigo de deslizamento na altura do Km 20 da rodovia Tamoios, pista Sao Jose dos Campos/Litoral",
@@ -632,16 +587,12 @@ public class MockAlertTests {
     
     @Test
     public void test901PostEvento() throws Exception {
-        List<String> endereco = new ArrayList<String>();
-        endereco.add("rua das Casas");
-        endereco.add("numero das Portas");
         Evento evento = new Evento(
             "Evento de teste",
             0,
             "João da Horta",
             "joao.horta@gmail.com",
-            "(12) 95678-4321",
-            endereco);
+            "(12) 95678-4321");
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
         ObjectWriter writer = mapper.writer().withDefaultPrettyPrinter();
@@ -657,8 +608,7 @@ public class MockAlertTests {
                     fieldWithPath("categoria").type(JsonFieldType.NULL).description("Categoria do evento"),
                     fieldWithPath("nome").type(JsonFieldType.STRING).description("Nome do informante do evento"),
                     fieldWithPath("email").type(JsonFieldType.STRING).description("Email do informante do evento"),
-                    fieldWithPath("telefone").type(JsonFieldType.STRING).description("Telefone do informante do evento"),
-                    fieldWithPath("endereco").type(JsonFieldType.ARRAY).description("Uma ou mais linhas com o endereço ou localização aproximada do evento"))));
+                    fieldWithPath("telefone").type(JsonFieldType.STRING).description("Telefone do informante do evento"))));
     }
     
     @Test
@@ -677,7 +627,6 @@ public class MockAlertTests {
                     fieldWithPath("nome").type(JsonFieldType.STRING).description("Nome do informante do evento"),
                     fieldWithPath("email").type(JsonFieldType.STRING).description("Email do informante do evento"),
                     fieldWithPath("telefone").type(JsonFieldType.STRING).description("Telefone do informante do evento"),
-                    fieldWithPath("endereco").type(JsonFieldType.ARRAY).description("Uma ou mais linhas com o endereço ou localização aproximada do evento"),
                     fieldWithPath("_links.self.href").type(JsonFieldType.STRING).description("URI do link para o evento")),
                 links(
                     linkWithRel("self").description("Link para o evento"))));
@@ -685,9 +634,6 @@ public class MockAlertTests {
     
     @Test
     public void test904PostAlerta() throws Exception {
-        List<String> endereco = new ArrayList<String>();
-        endereco.add("rua das Casas");
-        endereco.add("numero das Portas");
         Alerta alerta = new Alerta(
             "Alerta de teste",
             "Teste de alerta para verificar a funcionalidade do sistema",

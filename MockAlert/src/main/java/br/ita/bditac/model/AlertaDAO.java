@@ -85,7 +85,6 @@ public class AlertaDAO {
         novoEvento.setNome(eventoRequest.getNome());
         novoEvento.setEmail(eventoRequest.getEmail());
         novoEvento.setTelefone(eventoRequest.getTelefone());
-        novoEvento.setEndereco(eventoRequest.getEndereco());
         novoEvento.setId(++_idEvento);
         
         eventos.put(novoEvento.getId(), novoEvento);
