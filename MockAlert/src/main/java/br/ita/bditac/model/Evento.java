@@ -1,8 +1,6 @@
 package br.ita.bditac.model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -50,20 +48,6 @@ public class Evento implements Serializable {
     
     private String telefone;
     
-    private List<String> endereco;
-    
-//    private double origemLatitude;
-//    
-//    private double origemLongitude;
-//    
-//    private double origemRaioKms;
-//    
-//    private double destinoLatitude;
-//    
-//    private double destinoLongitude;
-//    
-//    private double destinoRaioKms;
-    
     public Evento() {
         this.id = 0;
         
@@ -72,7 +56,6 @@ public class Evento implements Serializable {
         this.nome = "";
         this.email = "";
         this.telefone = "";
-        this.endereco = new ArrayList<String>();
     }
     
     public Evento(
@@ -80,8 +63,7 @@ public class Evento implements Serializable {
             int categoria,
             String nome,
             String email,
-            String telefone,
-            List<String> endereco) {
+            String telefone) {
         this.id = 0;
         
         this.descricao = descricao;
@@ -89,7 +71,6 @@ public class Evento implements Serializable {
         this.nome = nome;
         this.email = email;
         this.telefone = telefone;
-        this.endereco = endereco;
     }
 
     
@@ -140,16 +121,6 @@ public class Evento implements Serializable {
     
     public void setTelefone(String telefone) {
         this.telefone = telefone;
-    }
-
-    
-    public List<String> getEndereco() {
-        return endereco;
-    }
-
-    
-    public void setEndereco(List<String> endereco) {
-        this.endereco = endereco;
     }
 
     

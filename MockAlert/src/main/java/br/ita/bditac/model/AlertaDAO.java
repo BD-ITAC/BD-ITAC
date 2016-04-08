@@ -22,6 +22,8 @@ public class AlertaDAO {
 
     private Map<Integer, Message> messages = new HashMap<Integer, Message>();
     
+    private Indicadores indicadores;
+    
     public AlertaDAO() {
         _idAlerta = 0;
         _idEvento = 0;
@@ -97,6 +99,23 @@ public class AlertaDAO {
         
         return evento;
     }
+    
+    public Indicadores adicionarIndicador(String nome, int valor) {
+    	this.indicadores.addIndicador(nome, valor);
+    	
+    	return this.indicadores;
+    }
+    
+    public Indicadores adicionarIndicadores(Indicadores indicadores) {
+    	this.indicadores = indicadores;
+    	
+    	return this.indicadores;
+    }
+    
+    public Indicadores obterIndicadores() {
+    	return this.indicadores;
+    }
+    
     
     public Message obterMessage(int id) {
         Message message = messages.get(id);

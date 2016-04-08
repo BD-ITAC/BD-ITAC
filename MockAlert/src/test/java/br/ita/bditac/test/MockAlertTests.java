@@ -62,9 +62,11 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import br.ita.bditac.app.Application;
 import br.ita.bditac.model.Alerta;
 import br.ita.bditac.model.Evento;
+import br.ita.bditac.model.Indicadores;
 import br.ita.bditac.support.AlertaResource;
 import br.ita.bditac.support.AlertaResources;
 import br.ita.bditac.support.EventoResource;
+import br.ita.bditac.support.IndicadoresResource;
 
 /**
  * 
@@ -80,6 +82,12 @@ import br.ita.bditac.support.EventoResource;
 public class MockAlertTests {
 
     private static final double DELTA = 1e-6;
+    
+    private static final String IND_CADASTRADO = "Cadastrados";
+    
+    private static final String IND_FINALIZADOS = "Finalizados";
+
+    private static final String IND_ABERTOS = "Em andamento";
 
     public class ClientErrorHandler implements ResponseErrorHandler {
     
@@ -583,6 +591,56 @@ public class MockAlertTests {
         List<Alerta> alertas = getRestTemplate().getForObject(alertaURL, AlertaResources.class, params).unwrap();
 
         assertThat(alertas.size() == 0);
+    }
+    
+    /**
+     * 
+     * == Asserção:
+     * 
+     * Testa a obtenção de alertas dentro de uma área identificada por um ponto geográfico e um raio no seriço de Alertas onde não há alertas:
+     * 
+     * == Dados:
+     * 
+     * Identificação da área de pesquisa desejada. 
+     * 
+     * === Dados informados:
+     * 
+     * [source,java]
+     * --
+     *  Map<String, Double> params = new HashMap<String, Double>();
+     *  params.put("latitude", 0.6D);
+     *  params.put("longitude", 0.6D);
+     *  params.put("raio", 1D);
+     * --
+     * 
+     * == Execução:
+     * 
+     * Uma chamada ao serviço de Alertas.
+     * 
+     * == Resultado esperado:
+     * 
+     * Uma lista *vazia* de dados com os dados dos alertas na área informada.
+     * 
+     */
+    @Test
+    public void test109PostIndicadores() throws Exception {
+    	String alertaURL = getBaseUrl() + "/indicadores/";
+    	
+    	Indicadores indicadoresRequest = new Indicadores();
+    	indicadoresRequest.addIndicador("Cadastrados", 31);
+    	indicadoresRequest.addIndicador("Finalizados", 19);
+    	indicadoresRequest.addIndicador("Em andamento", 6);
+    	
+        ResponseEntity<IndicadoresResource> indicadoresResponseEntity =  getRestTemplate().postForEntity(alertaURL, new HttpEntity<Indicadores>(indicadoresRequest), IndicadoresResource.class);
+        
+        assertThat(indicadoresResponseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+        
+        Indicadores indicadorResponse = indicadoresResponseEntity.getBody().getContent();
+        
+        assertEquals("Resposta(itens):'" + indicadorResponse.getIndicadores().size() + "' do POST diferente do que foi enviado: '" + indicadoresRequest.getIndicadores().size() + "'!", indicadoresRequest.getIndicadores().size(), indicadoresRequest.getIndicadores().size());
+        assertEquals("Resposta(valor do indicador'" + IND_CADASTRADO + "'):'" + indicadorResponse.getIndicador(IND_CADASTRADO) + "' do POST diferente do que foi enviado: '" + indicadoresRequest.getIndicador(IND_CADASTRADO) + "'!", indicadoresRequest.getIndicador(IND_CADASTRADO), indicadoresRequest.getIndicador(IND_CADASTRADO));
+        assertEquals("Resposta(valor do indicador'" + IND_FINALIZADOS + "'):'" + indicadorResponse.getIndicador(IND_FINALIZADOS) + "' do POST diferente do que foi enviado: '" + indicadoresRequest.getIndicador(IND_FINALIZADOS) + "'!", indicadoresRequest.getIndicador(IND_FINALIZADOS), indicadoresRequest.getIndicador(IND_FINALIZADOS));
+        assertEquals("Resposta(valor do indicador'" + IND_ABERTOS + "'):'" + indicadorResponse.getIndicador(IND_ABERTOS) + "' do POST diferente do que foi enviado: '" + indicadoresRequest.getIndicador(IND_ABERTOS) + "'!", indicadoresRequest.getIndicador(IND_ABERTOS), indicadoresRequest.getIndicador(IND_ABERTOS));
     }
     
     @Test
