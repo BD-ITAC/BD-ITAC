@@ -14,9 +14,7 @@ public class IndicadoresResourceAssembler extends ResourceAssemblerSupport<Indic
 	}
 	
 	public IndicadoresResource toResource(Indicadores indicadores) {
-		IndicadoresResource resource = createResourceWithId(0, indicadores);
-		
-		return resource;
+		return instantiateResource(indicadores);
 	}
 	
 	@Override

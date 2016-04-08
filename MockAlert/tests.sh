@@ -13,3 +13,7 @@ curl -i -H "Content-Type: application/hal+json" "http://localhost:8080/evento" -
 curl -i -H "Content-Type: application/hal+json" "http://localhost:8080/evento/1" -X GET
 
 curl -i -H "Content-Type: application/hal+json" "http://localhost:8080/evento/2" -X GET
+
+curl -i -H "Content-Type: application/hal+json" "http://localhost:8080/indicadores" -X POST -d '{"indicadores": { "Cadastrados":31, "Finalizados":19, "Em andamento":6 } }'
+
+curl -i -H "Content-Type: application/hal+json" "http://localhost:8080/indicadores" -X GET

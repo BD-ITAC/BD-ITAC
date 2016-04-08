@@ -11,7 +11,6 @@ import java.util.Map;
  * A classe Indicadores representa os dados de indicadores de ocorrências de crises.
  *
  */
-
 public class Indicadores implements Serializable {
 
     private static final long serialVersionUID = 1L;
