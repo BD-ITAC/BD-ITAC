@@ -38,15 +38,6 @@
             android:inputType ="textEmailAddress"/>
 
         <EditText
-            android:id ="@+id/fone"
-            android:layout_width ="match_parent"
-            android:layout_height ="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:hint ="Telefone"
-            android:imeOptions ="actionNext"
-            android:inputType ="textAutoCorrect|textCapSentences"/>
-
-        <EditText
             android:id ="@+id/local"
             android:layout_width ="match_parent"
             android:layout_height ="wrap_content"

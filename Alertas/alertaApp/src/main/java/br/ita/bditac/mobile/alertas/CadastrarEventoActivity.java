@@ -24,7 +24,6 @@ public class CadastrarEventoActivity extends AppCompatActivity {
 
         inputNome = (EditText) findViewById(R.id.nome);
         inputEmail = (EditText) findViewById(R.id.email);
-        inputFone = (EditText) findViewById(R.id.fone);
         inputLocal = (EditText) findViewById(R.id.local);
         inputTitulo = (EditText) findViewById(R.id.titulo);
         inputMsg  = (EditText) findViewById(R.id.mensagem);
