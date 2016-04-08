@@ -20,20 +20,10 @@
             android:text ="BD-ITAC: Cadastro de Crises ou Eventos" />
 
         <Spinner
-            android:id ="@+id/classificacao"
+            android:id ="@+id/categoria"
             android:layout_width ="match_parent"
             android:layout_height ="wrap_content"
             android:layout_marginBottom ="16dp"/>
-
-        <EditText
-            android:id ="@+id/titulo"
-            android:layout_width ="match_parent"
-            android:layout_height ="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:hint ="Titulo"
-            android:imeOptions ="actionNext"
-            android:inputType ="textAutoCorrect|textCapSentences"
-            />
 
         <EditText
             android:id ="@+id/mensagem"

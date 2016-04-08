@@ -12,9 +12,8 @@ import java.util.ArrayList;
 
 public class CadastrarEventoActivity extends AppCompatActivity {
 
-    private EditText inputTitulo;
-    private EditText inputMsg;
-    private Spinner inputClassificacao;
+    private EditText inputDescricao;
+    private Spinner inputCategoria;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,10 +21,9 @@ public class CadastrarEventoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastrar_evento);
 
-        inputTitulo = (EditText) findViewById(R.id.titulo);
-        inputMsg  = (EditText) findViewById(R.id.mensagem);
+        inputDescricao = (EditText) findViewById(R.id.mensagem);
 
-        CarregarClassificacao();
+        CarregarCategoria();
 
     }
 
@@ -42,37 +40,36 @@ public class CadastrarEventoActivity extends AppCompatActivity {
     }
 
 
-    private void CarregarClassificacao(){
+    private void CarregarCategoria(){
 
         // TODO: Criar essa lista em resources e alterar quando a API estiver pronta para cadastrar esse dominio dinamicamente
 
-        inputClassificacao = (Spinner) findViewById(R.id.classificacao);
+        inputCategoria = (Spinner) findViewById(R.id.categoria);
 
-        if (inputClassificacao == null)
+        if (inputCategoria == null)
             return ;
 
-        ArrayList<String> classificacaoArrayList = new ArrayList<>();
-        classificacaoArrayList.add("");
-        classificacaoArrayList.add("Alagamento");
-        classificacaoArrayList.add("Incêndio");
-        classificacaoArrayList.add("Acidente Veicular");
-        classificacaoArrayList.add("Acidente Aéreo");
-        classificacaoArrayList.add("Assassinato");
-        classificacaoArrayList.add("Roubo");
-        classificacaoArrayList.add("Terremoto");
-        classificacaoArrayList.add("Desmoronamento");
-        classificacaoArrayList.add("Tiroteio");
+        ArrayList<String> categoriaArrayList = new ArrayList<>();
+        categoriaArrayList.add("");
+        categoriaArrayList.add("Alagamento");
+        categoriaArrayList.add("Incêndio");
+        categoriaArrayList.add("Acidente Veicular");
+        categoriaArrayList.add("Acidente Aéreo");
+        categoriaArrayList.add("Assassinato");
+        categoriaArrayList.add("Roubo");
+        categoriaArrayList.add("Terremoto");
+        categoriaArrayList.add("Desmoronamento");
+        categoriaArrayList.add("Tiroteio");
 
-        ArrayAdapter<String> adapter = new ArrayAdapter <String>(this, android.R.layout.simple_dropdown_item_1line, classificacaoArrayList);
-        inputClassificacao.setAdapter(adapter);
+        ArrayAdapter<String> adapter = new ArrayAdapter <String>(this, android.R.layout.simple_dropdown_item_1line, categoriaArrayList);
+        inputCategoria.setAdapter(adapter);
 
     }
 
     private void LimparTela(){
 
-        inputTitulo.setText("");
-        inputMsg.setText("");
-        inputClassificacao.setSelection(0);
+        inputDescricao.setText("");
+        inputCategoria.setSelection(0);
 
     }
 
