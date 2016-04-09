@@ -24,7 +24,7 @@
 
         <activity android:name=".CadastrarEventoActivity"/>
 
-        <activity android:name=".ConsultarIndicadorActivity" />
+        <activity android:name=".ConsultarIndicadoresActivity" />
 
         <activity android:name=".ConsultaEventoActivity"/>
 
