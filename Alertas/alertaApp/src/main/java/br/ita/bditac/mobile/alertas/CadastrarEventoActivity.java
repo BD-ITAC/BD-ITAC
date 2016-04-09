@@ -39,6 +39,7 @@ public class CadastrarEventoActivity extends AppCompatActivity {
 
         private Exception exception;
 
+        @Override
         protected Void doInBackground(Evento... eventos) {
 
             try {
@@ -55,6 +56,14 @@ public class CadastrarEventoActivity extends AppCompatActivity {
                 return null;
             }
 
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+
+            super.onPostExecute(aVoid);
+
+            finish();
         }
 
     }
