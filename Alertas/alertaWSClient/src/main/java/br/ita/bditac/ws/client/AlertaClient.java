@@ -1,5 +1,6 @@
 package br.ita.bditac.ws.client;
 
+
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -12,6 +13,7 @@ import java.util.Map;
 import br.ita.bditac.ws.model.Alerta;
 import br.ita.bditac.ws.model.AlertaResource;
 import br.ita.bditac.ws.model.AlertaResources;
+
 
 public class AlertaClient extends AbstractBaseService {
 

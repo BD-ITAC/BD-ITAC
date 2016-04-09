@@ -1,8 +1,12 @@
 package br.ita.bditac.mobile.alertas;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Debug;
+import android.preference.PreferenceManager;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
@@ -11,11 +15,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.Legend.LegendPosition;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
@@ -27,9 +31,22 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
 
+import br.ita.bditac.ws.client.IndicadoresClient;
+import br.ita.bditac.ws.model.Indicadores;
+
 
 public class ConsultarIndicadorActivity extends ChartBase implements OnChartValueSelectedListener {
 
+    // TODO Definir a localização padrão do serviço BD-ITAC em produção
+    private static final String DEFAULT_URL = "http://10.0.2.2:8080";
+
+    private static final String DEBUG_URL = "http://10.0.2.2:8080";
+
+    private Context context;
+
+    protected String alertasUrl;
+
+    protected Indicadores indicadores;
 
     private PieChart mChart;
 
@@ -37,55 +54,87 @@ public class ConsultarIndicadorActivity extends ChartBase implements OnChartValu
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_consultar_indicadores);
 
-        mChart = (PieChart) findViewById(R.id.chart1);
-        mChart.setUsePercentValues(true);
-        mChart.setDescription("");
-        mChart.setExtraOffsets(5, 10, 5, 5);
+        SharedPreferences preferences = null;
 
-        mChart.setDragDecelerationFrictionCoef(0.95f);
+        this.context = getApplicationContext();
 
-        tf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
+        if (!Debug.isDebuggerConnected()) {
+            preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        }
 
-        mChart.setCenterTextTypeface(Typeface.createFromAsset(getAssets(), "OpenSans-Light.ttf"));
-        mChart.setCenterText(generateCenterSpannableText());
+        alertasUrl = Debug.isDebuggerConnected() ? DEBUG_URL : preferences.getString("alerts.service.url", DEFAULT_URL);
 
-        mChart.setExtraOffsets(0.f, 50.f, 0.f, 50.f);
+        try {
+            IndicadoresClient indicadoresClient = new IndicadoresClient(alertasUrl);
 
-        mChart.setDrawHoleEnabled(true);
-        mChart.setHoleColor(Color.WHITE);
+            this.indicadores = indicadoresClient.getIndicadores();
 
-        mChart.setTransparentCircleColor(Color.WHITE);
-        mChart.setTransparentCircleAlpha(110);
+            if(indicadores == null || indicadores.getIndicadores().size() == 0 ) {
+                CharSequence mensagem = getText(R.string.msg_statistics_service_unaivalable);
+                Toast.makeText(context, mensagem, Toast.LENGTH_LONG).show();
 
-        mChart.setHoleRadius(58f);
-        mChart.setTransparentCircleRadius(61f);
+                Log.i(this.getClass().getSimpleName(), "Statistics unaivalable.");
+            }
+            else {
+                mChart = (PieChart)findViewById(R.id.chart1);
+                mChart.setUsePercentValues(true);
+                mChart.setDescription("");
+                mChart.setExtraOffsets(5, 10, 5, 5);
 
-        mChart.setDrawCenterText(true);
+                mChart.setDragDecelerationFrictionCoef(0.95f);
 
-        mChart.setRotationAngle(0);
-        // enable rotation of the chart by touch
-        mChart.setRotationEnabled(true);
-        mChart.setHighlightPerTapEnabled(true);
+                tf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
 
-        // mChart.setUnit(" €");
-        // mChart.setDrawUnitsInChart(true);
+                mChart.setCenterTextTypeface(Typeface.createFromAsset(getAssets(), "OpenSans-Light.ttf"));
+                mChart.setCenterText(generateCenterSpannableText());
 
-        // add a selection listener
-        mChart.setOnChartValueSelectedListener(this);
+                mChart.setExtraOffsets(0.f, 50.f, 0.f, 50.f);
 
-        setData(2, 100);
+                mChart.setDrawHoleEnabled(true);
+                mChart.setHoleColor(Color.WHITE);
 
-        mChart.animateY(1400, Easing.EasingOption.EaseInOutQuad);
-        // mChart.spin(2000, 0, 360);
+                mChart.setTransparentCircleColor(Color.WHITE);
+                mChart.setTransparentCircleAlpha(110);
 
-        Legend l = mChart.getLegend();
-        l.setPosition(LegendPosition.RIGHT_OF_CHART);
-        l.setEnabled(false);
+                mChart.setHoleRadius(58f);
+                mChart.setTransparentCircleRadius(61f);
+
+                mChart.setDrawCenterText(true);
+
+                mChart.setRotationAngle(0);
+                // enable rotation of the chart by touch
+                mChart.setRotationEnabled(true);
+                mChart.setHighlightPerTapEnabled(true);
+
+                // mChart.setUnit(" €");
+                // mChart.setDrawUnitsInChart(true);
+
+                // add a selection listener
+                mChart.setOnChartValueSelectedListener(this);
+
+                setData(2, 100);
+
+                mChart.animateY(1400, Easing.EasingOption.EaseInOutQuad);
+                // mChart.spin(2000, 0, 360);
+
+                Legend l = mChart.getLegend();
+                l.setPosition(Legend.LegendPosition.RIGHT_OF_CHART);
+                l.setEnabled(false);
+            }
+        }
+        catch(Exception ex) {
+            CharSequence mensagem = getText(R.string.msg_alerts_service_unaivalable);
+            Toast.makeText(context, mensagem, Toast.LENGTH_LONG).show();
+
+            Log.e(this.getClass().getSimpleName(), ex.getMessage(), ex);
+        }
+
     }
 
     @Override
@@ -157,18 +206,17 @@ public class ConsultarIndicadorActivity extends ChartBase implements OnChartValu
         float mult = range;
 
         ArrayList<Entry> yVals1 = new ArrayList<Entry>();
+        ArrayList<Integer> yValues = new ArrayList<>(indicadores.getIndicadores().values());
 
         // IMPORTANT: In a PieChart, no values (Entry) should have the same
         // xIndex (even if from different DataSets), since no values can be
         // drawn above each other.
-        for (int i = 0; i < count + 1; i++) {
-            yVals1.add(new Entry((float) (Math.random() * mult) + mult / 5, i));
+
+        for (int i = 0; i < indicadores.getIndicadores().size(); i++) {
+            yVals1.add(new Entry((float) yValues.get(i), i));
         }
 
-        ArrayList<String> xVals = new ArrayList<String>();
-
-        for (int i = 0; i < count + 1; i++)
-            xVals.add(mParties[i % mParties.length]);
+        ArrayList<String> xVals = new ArrayList<String>(indicadores.getIndicadores().keySet());
 
         PieDataSet dataSet = new PieDataSet(yVals1, "Estatísticas");
         dataSet.setSliceSpace(3f);
