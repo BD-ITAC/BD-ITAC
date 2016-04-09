@@ -10,9 +10,9 @@ describe("Test of Crisis",function(){
     // calling home page api
     server
     .post("/rest/crisis")
+    .send({'name': 'Java', 'email': 'teste@teste.com'})
     .expect("Content-type",/json/)
-    .expect(404
-    ) // THis is HTTP response
+    .expect(404) // THis is HTTP response
     .end(function(err,res){
 
       res.should.be.json;
