@@ -41,15 +41,15 @@ public class CadastrarEventoActivity extends AppCompatActivity {
 
     private Context context;
 
+    private Location currentLocation;
+
     private String alertasUrl;
 
     private EditText inputDescricao;
 
     private Spinner inputCategoria;
 
-    private Location currentLocation;
-
-    LocationListener locationListener;
+    private LocationListener locationListener;
 
     private class SalvarEventoTask extends AsyncTask<Evento, Void, Void> {
 
@@ -105,7 +105,7 @@ public class CadastrarEventoActivity extends AppCompatActivity {
             int locationPollingInterval =
                     Debug.isDebuggerConnected() ?
                             DEBUG_LOCATION_POLLING_INTERVAL :
-                            preferences.getInt("alerts.servce.locationPollingInterval",DEFAULT_LOCATION_POLLING_INTERVAL);
+                            preferences.getInt("alerts.service.locationPollingInterval",DEFAULT_LOCATION_POLLING_INTERVAL);
 
             if(currentLocation == null || !isBetterLocation(location, currentLocation, locationPollingInterval)) {
                 currentLocation = location;
