@@ -15,13 +15,13 @@ module.exports = function(app){
 
     if((!crisis.name || !crisis.email || !crisis.phone || !crisis.place || !crisis.title ||
       !crisis.type) || !(crisis.type >= 0 && crisis.type <= 8) || !(ValidEmail(crisis.email))){
-        callback({status: 'Error', message: 'Invalid value data fields.'});
+        callback({success: false, message: 'Invalid value data fields.'});
       }else{
         crisisDAO.save(crisis, function(err, result){
             if(err){
-              callback({status: 'fail', message: err}, null);
+              callback({success: false, message: err}, null);
             }else{
-              callback(null, {data: result});
+              callback(null, {success: true, data: result});
             }
         });
       }

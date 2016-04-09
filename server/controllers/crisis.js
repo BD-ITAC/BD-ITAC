@@ -16,7 +16,7 @@ module.exports = function(app){
         !req.body.hasOwnProperty('place') ||
         !req.body.hasOwnProperty('type') ||
         !req.body.hasOwnProperty('title')) {
-          res.status(404).json('Required fields not informed.');
+          res.status(404).json({success: false, message: 'Required fields not informed.'});
       }else{
         crisis = {
           name : req.body.name,
