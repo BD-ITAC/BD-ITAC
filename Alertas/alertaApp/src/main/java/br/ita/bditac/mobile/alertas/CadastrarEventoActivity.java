@@ -39,13 +39,13 @@ public class CadastrarEventoActivity extends AppCompatActivity {
 
     private static final int DEBUG_LOCATION_POLLING_INTERVAL = 15000;
 
+    private Context context;
+
     private String alertasUrl;
 
     private EditText inputDescricao;
 
     private Spinner inputCategoria;
-
-    private Context context;
 
     private Location currentLocation;
 
@@ -66,7 +66,10 @@ public class CadastrarEventoActivity extends AppCompatActivity {
                 }
             }
             catch(Exception ex) {
-                this.exception = ex;
+                CharSequence mensagem = getText(R.string.msg_alerts_service_unaivalable);
+                Toast.makeText(context, mensagem, Toast.LENGTH_LONG).show();
+
+                Log.e(this.getClass().getSimpleName(), ex.getMessage(), ex);
             }
             finally {
                 return null;
@@ -215,6 +218,9 @@ public class CadastrarEventoActivity extends AppCompatActivity {
             }
         }
         catch(Exception ex) {
+            CharSequence mensagem = getText(R.string.msg_alerts_service_unaivalable);
+            Toast.makeText(context, mensagem, Toast.LENGTH_LONG).show();
+
             Log.e(this.getClass().getSimpleName(), ex.getMessage(), ex);
         }
 
