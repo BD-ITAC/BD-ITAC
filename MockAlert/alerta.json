@@ -8,9 +8,6 @@
         "origemLongitude" : 0.5,
         "origemLatitude" : 0.5,
         "origemRaioKms" : 1.0,
-        "destinoLongitude" : 0.5,
-        "destinoLatitude" : 0.5,
-        "destinoRaioKms" : 1.0
     },
     "_links" : {
         "self" : {
