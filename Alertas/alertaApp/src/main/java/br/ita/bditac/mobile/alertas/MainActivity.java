@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void startConsultarIndicador(View view) {
-        Intent itentConsultarIndicador = new Intent(this, ConsultarIndicadorActivity.class);
+        Intent itentConsultarIndicador = new Intent(this, ConsultarIndicadoresActivity.class);
         startActivity(itentConsultarIndicador);
     }
 

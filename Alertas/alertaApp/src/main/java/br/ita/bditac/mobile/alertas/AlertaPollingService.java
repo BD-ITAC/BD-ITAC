@@ -102,7 +102,7 @@ public class AlertaPollingService extends IntentService {
             int locationPollingInterval =
                     Debug.isDebuggerConnected() ?
                             DEBUG_LOCATION_POLLING_INTERVAL :
-                            preferences.getInt("alerts.servce.locationPollingInterval",DEFAULT_LOCATION_POLLING_INTERVAL);
+                            preferences.getInt("alerts.service.locationPollingInterval",DEFAULT_LOCATION_POLLING_INTERVAL);
 
             if(currentLocation == null || !isBetterLocation(location, currentLocation, locationPollingInterval)) {
                 currentLocation = location;
