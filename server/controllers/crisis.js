@@ -27,7 +27,6 @@ module.exports = function(app){
           title: req.body.title,
           note: req.body.note
         };
-console.log('controller');
         crisisBusiness.save(crisis, function(err, data) {
           if(err) {
               res.status(500).json(err);

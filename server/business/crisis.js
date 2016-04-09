@@ -11,7 +11,7 @@ module.exports = function(app){
 console.log('businnes');
     //valida preenchimento de campos obrigatórios
     if((!crisis.name || !crisis.email || !crisis.phone || !crisis.place || !crisis.title ||
-      !crisis.type) && (crisis.type < 0 || crisis.type > 8)){
+      !crisis.type) || !(crisis.type >= 0 && crisis.type <= 8)){
         callback({status: 'Error', message: 'Invalid value data fields.'});
       }else{
         crisisDAO.save(crisis, function(err, result){
