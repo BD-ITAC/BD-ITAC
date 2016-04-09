@@ -5,10 +5,8 @@
         "nome" : "Ze das Couves",
         "email" : "zedascouves@gmail.com",
         "telefone" : "(12) 99876-1234",
-        "endereco" : [
-            "rua das Casas",
-            "numero das Portas"
-        ]
+        "latitude": 50,
+        "longitude": 50,
     },
     "_links" : {
         "self" : {
