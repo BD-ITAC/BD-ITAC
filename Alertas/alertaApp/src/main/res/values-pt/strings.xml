@@ -3,6 +3,7 @@
     <string name="app_name">Alertas</string>
     <string name="action_settings">Configurações</string>
     <string name="msg_alert_received">Novo alerta recebido</string>
+    <string name="msg_location_service_unaivalable">Serviço de localização indisponível.\nTente novamente mais tarde.</string>
     <string name="open">Abrir</string>
     <string name="dismiss">Ignorar</string>
     <string name="msg_location_denied">Serviço de localização não permitido</string>
