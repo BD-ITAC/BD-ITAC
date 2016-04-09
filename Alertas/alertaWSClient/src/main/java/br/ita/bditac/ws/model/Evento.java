@@ -17,6 +17,10 @@ public class Evento implements Serializable {
     private String email;
     
     private String telefone;
+
+    private double latitude;
+
+    private double longitude;
     
     public Evento() {
         this.id = 0;
@@ -33,7 +37,9 @@ public class Evento implements Serializable {
             int categoria,
             String nome,
             String email,
-            String telefone) {
+            String telefone,
+            double latitude,
+            double longitude) {
         this.id = 0;
         
         this.descricao = descricao;
@@ -106,6 +112,26 @@ public class Evento implements Serializable {
     
     public static long getSerialversionuid() {
         return serialVersionUID;
+    }
+
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+
+    public double getLongitude() {
+        return longitude;
     }
 
 }
