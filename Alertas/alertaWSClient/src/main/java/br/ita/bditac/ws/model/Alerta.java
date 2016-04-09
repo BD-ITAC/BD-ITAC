@@ -1,7 +1,6 @@
 package br.ita.bditac.ws.model;
 
 import java.io.Serializable;
-import java.util.List;
 
 public class Alerta implements Serializable {
 
@@ -24,9 +23,6 @@ public class Alerta implements Serializable {
     private double origemLatitude;
     
     private double origemRaioKms;
-    
-
-    private List<String> endereco;
 
     public Alerta() {
         this.descricaoResumida = "";
@@ -147,15 +143,5 @@ public class Alerta implements Serializable {
     public void setOrigemRaioKms(double origemRaioKms) {
         this.origemRaioKms = origemRaioKms;
     }
-
-
-    public List<String> getEndereco() {
-        return endereco;
-    }
-
-    
-    public void setEndereco(List<String> endereco) {
-        this.endereco = endereco;
-    }    
 
 }
