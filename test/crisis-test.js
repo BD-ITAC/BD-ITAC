@@ -89,4 +89,34 @@ describe("Test of Crisis",function(){
     });
   });
 
+  it("Deve retornar ok",function(done){
+
+    var crisis_param = {
+      name: 'Teste',
+      email: 'teste@gmail.com',
+      phone: 111111,
+      place: 'Teste',
+      type: 3,
+      title: 'Teste'
+    };
+
+    // calling home page api
+    server
+    .post("/rest/crisis")
+    .send(crisis_param)
+    .expect("Content-type",/json/)
+    .set('Accept', 'application/json')
+    .expect(200) // THis is HTTP response
+    .end(function(err,res){
+
+      res.should.be.json;
+      // Error key should havebe false.
+      res.body.should.have.property('success');
+      res.body.success.should.equal(true);
+     
+
+      done();
+    });
+  });
+
 });
