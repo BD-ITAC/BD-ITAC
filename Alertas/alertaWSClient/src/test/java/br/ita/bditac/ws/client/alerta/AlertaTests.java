@@ -1,15 +1,15 @@
-package br.ita.bditac.ws.client.test;
+package br.ita.bditac.ws.client.alerta;
 
-import java.util.ArrayList;
-import java.util.List;
+import junit.framework.TestCase;
 
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
+import java.util.List;
+
 import br.ita.bditac.ws.client.AlertaClient;
 import br.ita.bditac.ws.model.Alerta;
-import junit.framework.TestCase;
 
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
@@ -20,9 +20,6 @@ public class AlertaTests extends TestCase {
     @Test
     public void test01PostAlerta() {
         AlertaClient alertaClient = new AlertaClient(HOST_URL);
-        List<String> endereco = new ArrayList<String>();
-        endereco.add("rua das Casas");
-        endereco.add("numero das Portas");
         Alerta alertaNovo = new Alerta(
                 "Alerta de deslizamento",
                 "Perigo de deslizamento na altura do Km 20 da rodovia Tamoios, pista Sao Jose dos Campos/Litoral",
