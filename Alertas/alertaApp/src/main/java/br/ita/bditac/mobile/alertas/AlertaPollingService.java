@@ -109,10 +109,8 @@ public class AlertaPollingService extends IntentService {
             }
 
             if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-
                 AlertaGetter alertaGetter = new AlertaGetter(context);
-                alertaGetter.fetchAlertas(locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER));
+                alertaGetter.fetchAlertas(currentLocation);
             }
 
         }
