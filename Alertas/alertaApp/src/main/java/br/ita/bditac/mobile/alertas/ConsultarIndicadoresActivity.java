@@ -35,7 +35,7 @@ import br.ita.bditac.ws.client.IndicadoresClient;
 import br.ita.bditac.ws.model.Indicadores;
 
 
-public class ConsultarIndicadorActivity extends ChartBase implements OnChartValueSelectedListener {
+public class ConsultarIndicadoresActivity extends ChartBase implements OnChartValueSelectedListener {
 
     // TODO Definir a localização padrão do serviço BD-ITAC em produção
     private static final String DEFAULT_URL = "http://10.0.2.2:8080";
@@ -44,19 +44,19 @@ public class ConsultarIndicadorActivity extends ChartBase implements OnChartValu
 
     private Context context;
 
-    protected String alertasUrl;
-
-    protected Indicadores indicadores;
+    private String alertasUrl;
 
     private PieChart mChart;
 
     private Typeface tf;
 
-    private class ConsultarIndicadoresTask extends AsyncTask<Void, Void, Void> {
+    private Indicadores indicadores = null;
+
+    private class ConsultarIndicadoresTask extends AsyncTask<Void, Void, Indicadores> {
 
         private Exception exception;
 
-        protected Void doInBackground(Void... params) {
+        protected Indicadores doInBackground(Void... params) {
 
             try {
                 IndicadoresClient indicadoresClient = new IndicadoresClient(alertasUrl);
@@ -70,61 +70,62 @@ public class ConsultarIndicadorActivity extends ChartBase implements OnChartValu
                 Log.e(this.getClass().getSimpleName(), ex.getMessage(), ex);
             }
             finally {
-                return null;
+                return indicadores;
             }
 
         }
 
         @Override
-        protected void onPostExecute(Void param) {
+        protected void onPostExecute(Indicadores indicadores) {
 
-            super.onPostExecute(param);
+            super.onPostExecute(indicadores);
 
-            mChart = (PieChart)findViewById(R.id.indicadores_chart);
-            mChart.setUsePercentValues(true);
-            mChart.setDescription("");
-            mChart.setExtraOffsets(5, 10, 5, 5);
+            if(indicadores != null) {
+                mChart = (PieChart)findViewById(R.id.indicadores_chart);
+                mChart.setUsePercentValues(true);
+                mChart.setDescription("");
+                mChart.setExtraOffsets(5, 10, 5, 5);
 
-            mChart.setDragDecelerationFrictionCoef(0.95f);
+                mChart.setDragDecelerationFrictionCoef(0.95f);
 
-            tf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
+                tf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
 
-            mChart.setCenterTextTypeface(Typeface.createFromAsset(getAssets(), "OpenSans-Light.ttf"));
-            mChart.setCenterText(generateCenterSpannableText());
+                mChart.setCenterTextTypeface(Typeface.createFromAsset(getAssets(), "OpenSans-Light.ttf"));
+                mChart.setCenterText(generateCenterSpannableText());
 
-            mChart.setExtraOffsets(0.f, 50.f, 0.f, 50.f);
+                mChart.setExtraOffsets(0.f, 50.f, 0.f, 50.f);
 
-            mChart.setDrawHoleEnabled(true);
-            mChart.setHoleColor(Color.WHITE);
+                mChart.setDrawHoleEnabled(true);
+                mChart.setHoleColor(Color.WHITE);
 
-            mChart.setTransparentCircleColor(Color.WHITE);
-            mChart.setTransparentCircleAlpha(110);
+                mChart.setTransparentCircleColor(Color.WHITE);
+                mChart.setTransparentCircleAlpha(110);
 
-            mChart.setHoleRadius(58f);
-            mChart.setTransparentCircleRadius(61f);
+                mChart.setHoleRadius(58f);
+                mChart.setTransparentCircleRadius(61f);
 
-            mChart.setDrawCenterText(true);
+                mChart.setDrawCenterText(true);
 
-            mChart.setRotationAngle(0);
-            // enable rotation of the chart by touch
-            mChart.setRotationEnabled(true);
-            mChart.setHighlightPerTapEnabled(true);
+                mChart.setRotationAngle(0);
+                // enable rotation of the chart by touch
+                mChart.setRotationEnabled(true);
+                mChart.setHighlightPerTapEnabled(true);
 
-            // mChart.setUnit(" €");
-            // mChart.setDrawUnitsInChart(true);
+                // mChart.setUnit(" €");
+                // mChart.setDrawUnitsInChart(true);
 
-            // add a selection listener
-            //mChart.setOnChartValueSelectedListener(this);
+                // add a selection listener
+                //mChart.setOnChartValueSelectedListener(this);
 
-            setData(2, 100);
+                setData(2, 100);
 
-            mChart.animateY(1400, Easing.EasingOption.EaseInOutQuad);
-            // mChart.spin(2000, 0, 360);
+                mChart.animateY(1400, Easing.EasingOption.EaseInOutQuad);
+                // mChart.spin(2000, 0, 360);
 
-            Legend l = mChart.getLegend();
-            l.setPosition(Legend.LegendPosition.RIGHT_OF_CHART);
-            l.setEnabled(false);
-
+                Legend l = mChart.getLegend();
+                l.setPosition(Legend.LegendPosition.RIGHT_OF_CHART);
+                l.setEnabled(false);
+            }
         }
     }
 
