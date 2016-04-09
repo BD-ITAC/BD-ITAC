@@ -11,7 +11,7 @@ import br.ita.bditac.ws.model.IndicadoresResource;
 
 public class IndicadoresClient extends AbstractBaseService {
 
-    private static final String SERVICE_URL = "/alerta";
+    private static final String SERVICE_URL = "/indicadores";
 
     public IndicadoresClient(String hostURL) {
         super(hostURL);

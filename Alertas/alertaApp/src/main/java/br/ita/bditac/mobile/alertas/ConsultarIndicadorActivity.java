@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Debug;
 import android.preference.PreferenceManager;
@@ -14,7 +15,6 @@ import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.animation.Easing;
@@ -52,12 +52,87 @@ public class ConsultarIndicadorActivity extends ChartBase implements OnChartValu
 
     private Typeface tf;
 
+    private class ConsultarIndicadoresTask extends AsyncTask<Void, Void, Void> {
+
+        private Exception exception;
+
+        protected Void doInBackground(Void... params) {
+
+            try {
+                IndicadoresClient indicadoresClient = new IndicadoresClient(alertasUrl);
+
+                indicadores = indicadoresClient.getIndicadores();
+            }
+            catch(Exception ex) {
+                CharSequence mensagem = getText(R.string.msg_alerts_service_unaivalable);
+                Toast.makeText(context, mensagem, Toast.LENGTH_LONG).show();
+
+                Log.e(this.getClass().getSimpleName(), ex.getMessage(), ex);
+            }
+            finally {
+                return null;
+            }
+
+        }
+
+        @Override
+        protected void onPostExecute(Void param) {
+
+            super.onPostExecute(param);
+
+            mChart = (PieChart)findViewById(R.id.indicadores_chart);
+            mChart.setUsePercentValues(true);
+            mChart.setDescription("");
+            mChart.setExtraOffsets(5, 10, 5, 5);
+
+            mChart.setDragDecelerationFrictionCoef(0.95f);
+
+            tf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
+
+            mChart.setCenterTextTypeface(Typeface.createFromAsset(getAssets(), "OpenSans-Light.ttf"));
+            mChart.setCenterText(generateCenterSpannableText());
+
+            mChart.setExtraOffsets(0.f, 50.f, 0.f, 50.f);
+
+            mChart.setDrawHoleEnabled(true);
+            mChart.setHoleColor(Color.WHITE);
+
+            mChart.setTransparentCircleColor(Color.WHITE);
+            mChart.setTransparentCircleAlpha(110);
+
+            mChart.setHoleRadius(58f);
+            mChart.setTransparentCircleRadius(61f);
+
+            mChart.setDrawCenterText(true);
+
+            mChart.setRotationAngle(0);
+            // enable rotation of the chart by touch
+            mChart.setRotationEnabled(true);
+            mChart.setHighlightPerTapEnabled(true);
+
+            // mChart.setUnit(" €");
+            // mChart.setDrawUnitsInChart(true);
+
+            // add a selection listener
+            //mChart.setOnChartValueSelectedListener(this);
+
+            setData(2, 100);
+
+            mChart.animateY(1400, Easing.EasingOption.EaseInOutQuad);
+            // mChart.spin(2000, 0, 360);
+
+            Legend l = mChart.getLegend();
+            l.setPosition(Legend.LegendPosition.RIGHT_OF_CHART);
+            l.setEnabled(false);
+
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        //getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_consultar_indicadores);
 
         SharedPreferences preferences = null;
@@ -70,62 +145,13 @@ public class ConsultarIndicadorActivity extends ChartBase implements OnChartValu
 
         alertasUrl = Debug.isDebuggerConnected() ? DEBUG_URL : preferences.getString("alerts.service.url", DEFAULT_URL);
 
+        new ConsultarIndicadoresTask().execute();
+
         try {
-            IndicadoresClient indicadoresClient = new IndicadoresClient(alertasUrl);
-
-            this.indicadores = indicadoresClient.getIndicadores();
-
             if(indicadores == null || indicadores.getIndicadores().size() == 0 ) {
                 CharSequence mensagem = getText(R.string.msg_statistics_service_unaivalable);
-                Toast.makeText(context, mensagem, Toast.LENGTH_LONG).show();
 
                 Log.i(this.getClass().getSimpleName(), "Statistics unaivalable.");
-            }
-            else {
-                mChart = (PieChart)findViewById(R.id.chart1);
-                mChart.setUsePercentValues(true);
-                mChart.setDescription("");
-                mChart.setExtraOffsets(5, 10, 5, 5);
-
-                mChart.setDragDecelerationFrictionCoef(0.95f);
-
-                tf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
-
-                mChart.setCenterTextTypeface(Typeface.createFromAsset(getAssets(), "OpenSans-Light.ttf"));
-                mChart.setCenterText(generateCenterSpannableText());
-
-                mChart.setExtraOffsets(0.f, 50.f, 0.f, 50.f);
-
-                mChart.setDrawHoleEnabled(true);
-                mChart.setHoleColor(Color.WHITE);
-
-                mChart.setTransparentCircleColor(Color.WHITE);
-                mChart.setTransparentCircleAlpha(110);
-
-                mChart.setHoleRadius(58f);
-                mChart.setTransparentCircleRadius(61f);
-
-                mChart.setDrawCenterText(true);
-
-                mChart.setRotationAngle(0);
-                // enable rotation of the chart by touch
-                mChart.setRotationEnabled(true);
-                mChart.setHighlightPerTapEnabled(true);
-
-                // mChart.setUnit(" €");
-                // mChart.setDrawUnitsInChart(true);
-
-                // add a selection listener
-                mChart.setOnChartValueSelectedListener(this);
-
-                setData(2, 100);
-
-                mChart.animateY(1400, Easing.EasingOption.EaseInOutQuad);
-                // mChart.spin(2000, 0, 360);
-
-                Legend l = mChart.getLegend();
-                l.setPosition(Legend.LegendPosition.RIGHT_OF_CHART);
-                l.setEnabled(false);
             }
         }
         catch(Exception ex) {
@@ -139,6 +165,7 @@ public class ConsultarIndicadorActivity extends ChartBase implements OnChartValu
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
         getMenuInflater().inflate(R.menu.pie, menu);
         return true;
     }
@@ -269,25 +296,28 @@ public class ConsultarIndicadorActivity extends ChartBase implements OnChartValu
     private SpannableString generateCenterSpannableText() {
 
         SpannableString s = new SpannableString("Indicadores de Alertas\nBD-ITAC");
+
         s.setSpan(new RelativeSizeSpan(1.7f), 0, 12, 0);
         s.setSpan(new StyleSpan(Typeface.NORMAL), 12, s.length() - 7, 0);
         s.setSpan(new ForegroundColorSpan(Color.GRAY), 12, s.length() - 7, 0);
         s.setSpan(new RelativeSizeSpan(.8f), 8, s.length() - 9, 0);
         s.setSpan(new StyleSpan(Typeface.ITALIC), s.length() - 8, s.length(), 0);
         s.setSpan(new ForegroundColorSpan(ColorTemplate.getHoloBlue()), s.length() - 8, s.length(), 0);
+
         return s;
+
     }
 
     @Override
     public void onValueSelected(Entry e, int dataSetIndex, Highlight h) {
-
-        if (e == null)
+        if (e == null) {
             return;
-        Log.i("VAL SELECTED", "Value: " + e.getVal() + ", xIndex: " + e.getXIndex() + ", DataSet index: " + dataSetIndex);
+        }
     }
 
     @Override
     public void onNothingSelected() {
+
         Log.i("PieChart", "nothing selected");
     }
 
