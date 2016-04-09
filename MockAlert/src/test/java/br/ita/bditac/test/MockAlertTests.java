@@ -69,9 +69,9 @@ import br.ita.bditac.support.EventoResource;
 import br.ita.bditac.support.IndicadoresResource;
 
 /**
- * 
+ *
  * = Testes unitários do serviço de Alertas para o BD-ITAC.
- * 
+ *
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
@@ -82,31 +82,31 @@ import br.ita.bditac.support.IndicadoresResource;
 public class MockAlertTests {
 
     private static final double DELTA = 1e-6;
-    
+
     private static final String IND_CADASTRADO = "Cadastrados";
-    
+
     private static final String IND_FINALIZADOS = "Finalizados";
 
     private static final String IND_ABERTOS = "Em andamento";
 
     public class ClientErrorHandler implements ResponseErrorHandler {
-    
+
         public void handleError(ClientHttpResponse response) throws IOException {
 
         }
-    
+
         public boolean hasError(ClientHttpResponse response) throws IOException {
             if ((response.getStatusCode().series() == HttpStatus.Series.CLIENT_ERROR) || (response.getStatusCode().series() == HttpStatus.Series.SERVER_ERROR)) {
                 return true;
             }
-            
+
             return false;
         }
-    
+
     }
 
     public RestTemplate getRestTemplate() {
-        
+
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         mapper.registerModule(new Jackson2HalModule());
@@ -114,23 +114,23 @@ public class MockAlertTests {
         MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
         converter.setSupportedMediaTypes(Arrays.asList(MediaTypes.HAL_JSON));
         converter.setObjectMapper(mapper);
-      
+
         RestTemplate restTemplate = new RestTemplate(Collections.<HttpMessageConverter<?>> singletonList(converter));
         restTemplate.setErrorHandler(new ClientErrorHandler());
-        
+
         return restTemplate;
-        
+
     }
-    
+
     @Value("${local.server.port}")
     private int port;
 
     @Autowired
     WebApplicationContext context;
-    
+
     @Rule
     public RestDocumentation restDocumentation = new RestDocumentation("target/generated-docs");
-    
+
     protected MockMvc mvc;
 
     protected String getBaseUrl() {
@@ -146,19 +146,19 @@ public class MockAlertTests {
     public void _000BootstrapsWebApp() {
         assertNotNull(mvc);
     }
-    
+
     /**
-     * 
+     *
      * == Asserção:
-     * 
+     *
      * Testa a inclusão de um evento de crise usando o seriço de Alertas.
-     * 
-     * == Dados: 
-     * 
+     *
+     * == Dados:
+     *
      * Uma estrutura de dados contendo o evento.
-     * 
+     *
      * === Estrutura de dados
-     *  
+     *
      * [source,java]
      * --
      *  Evento eventoRequest = new Evento(
@@ -168,17 +168,17 @@ public class MockAlertTests {
      *          "zedascouves@gmail.com",
      *          "(12) 99876-1234");
      * --
-     * 
+     *
      * == Execução:
-     * 
+     *
      * Uma chamada ao serviço de Alertas.
-     * 
+     *
      * ==Resultado esperado:
-     * 
+     *
      * Uma estrutura de dados com a mesma informação da estrutura enviada.
-     * 
+     *
      * === Estrutura de dados
-     *  
+     *
      * [source,java]
      * --
      *  Evento eventoRequest = new Evento(
@@ -190,12 +190,12 @@ public class MockAlertTests {
      *          50.0,
      *          50.0);
      * --
-     * 
+     *
      */
-    @Test 
+    @Test
     public void test101PostEvento() throws Exception {
         URI eventoURI = new URI(getBaseUrl() + "/evento");
-        
+
         Evento eventoRequest = new Evento(
                 "Deslizamento na na favela do Paraiso",
                 0,
@@ -206,38 +206,38 @@ public class MockAlertTests {
                 50.0);
 
         ResponseEntity<EventoResource> eventoResponseEntity =  getRestTemplate().postForEntity(eventoURI, new HttpEntity<Evento>(eventoRequest), EventoResource.class);
-        
+
         assertThat(eventoResponseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
-        
+
         Evento eventoResponse = eventoResponseEntity.getBody().getContent();
-        
+
         assertEquals("Resposta(descricao):'" + eventoResponse.getDescricao() + "' do POST diferente do que foi enviado: '" + eventoRequest.getDescricao() + "'!", eventoResponse.getDescricao(), eventoRequest.getDescricao());
         assertEquals("Resposta(categoria) do POST diferente do que foi enviado!", eventoResponse.getCategoria(), eventoRequest.getCategoria());
         assertEquals("Resposta(nome) do POST diferente do que foi enviado!", eventoResponse.getNome(), eventoRequest.getNome());
         assertEquals("Resposta(email) do POST diferente do que foi enviado!", eventoResponse.getEmail(), eventoRequest.getEmail());
         assertEquals("Resposta(telefone) do POST diferente do que foi enviado!", eventoResponse.getTelefone(), eventoRequest.getTelefone());
     }
-    
+
     /**
-     * 
+     *
      * == Asserção:
-     * 
+     *
      * Testa a obtenção de um evento de crise do seriço de Alertas:
-     * 
+     *
      * == Dados:
-     * 
-     * Identificação do evento na requisição. 
-     * 
+     *
+     * Identificação do evento na requisição.
+     *
      * == Execução:
-     * 
+     *
      * Uma chamada ao serviço de Alertas.
-     * 
+     *
      * == Resultado esperado:
-     * 
+     *
      * Uma estrutura de dados com os dados do evento.
-     * 
+     *
      * === Estrutura de dados
-     *  
+     *
      * [source,java]
      * --
      *  Evento eventoRequest = new Evento(
@@ -249,21 +249,21 @@ public class MockAlertTests {
      *          50.0,
      *          50.0);
      * --
-     * 
+     *
      */
     @Test
     public void test102GetEvento() throws Exception {
         String eventoURL = getBaseUrl() + "/evento/{id}";
-        
+
         Map<String, Integer> params = new HashMap<String, Integer>();
         params.put("id", 1);
-        
+
         ResponseEntity<EventoResource> eventoResponseEntity = getRestTemplate().getForEntity(eventoURL, EventoResource.class, params);
-        
+
         assertThat(eventoResponseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         Evento eventoResponse = eventoResponseEntity.getBody().getContent();
-        
+
         Evento eventoRequest = new Evento(
                 "Deslizamento na na favela do Paraiso",
                 0,
@@ -281,50 +281,50 @@ public class MockAlertTests {
         assertEquals("Resposta(latitude) do POST diferente do que foi enviado!", eventoResponse.getLatitude(), eventoRequest.getLatitude(), DELTA);
         assertEquals("Resposta(longitude) do POST diferente do que foi enviado!", eventoResponse.getLongitude(), eventoRequest.getLongitude(), DELTA);
     }
-    
+
     /**
-     * 
+     *
      * == Asserção:
-     * 
+     *
      * Testa a inclusão de um evento de crise usando o seriço de Alertas:
-     * 
+     *
      * == Dados:
-     * 
-     * Identificação do evento na requisição. 
-     * 
+     *
+     * Identificação do evento na requisição.
+     *
      * == Execução:
-     * 
+     *
      * Uma chamada ao serviço de Alertas.
-     * 
+     *
      * == Resultado esperado:
-     * 
+     *
      * O código de estado da chamada deve ser o código HTTP 404 (NOT FOUND).
-     * 
+     *
      */
     @Test
     public void test103GetEventoInexistente() throws Exception {
         String eventoURL = getBaseUrl() + "/evento/{id}";
-        
+
         Map<String, Integer> params = new HashMap<String, Integer>();
         params.put("id", 100);
-        
+
         ResponseEntity<EventoResource> eventoResponseEntity = getRestTemplate().getForEntity(eventoURL, EventoResource.class, params);
-        
+
         assertThat(eventoResponseEntity.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
-    
+
     /**
-     * 
+     *
      * == Asserção:
-     * 
+     *
      * Testa a inclusão de um alerta utilizando o serviço de Alertas.
-     * 
+     *
      * == Dados:
-     * 
+     *
      * Uma estrutura de dados com os dados do alerta.
-     * 
+     *
      * === Estrutura de Dados
-     * 
+     *
      * [source,java]
      * --
      *  Alerta alertaRequest = new Alerta(
@@ -336,18 +336,18 @@ public class MockAlertTests {
      *          50.0,
      *          50.0,
      *          1.0);
-     * -- 
-     * 
+     * --
+     *
      * == Execução:
-     * 
+     *
      * Uma chamada ao serviço de de Alertas
-     * 
+     *
      * == Resultado esperado:
-     * 
+     *
      * Uma estrutura de dados com a mesma informação da estrutura enviada.
-     * 
+     *
      * === Estrutura de Dados
-     * 
+     *
      * [source,java]
      * --
      *  Alerta alertaRequest = new Alerta(
@@ -359,13 +359,13 @@ public class MockAlertTests {
      *          50.0,
      *          50.0,
      *          1.0);
-     * -- 
-     * 
+     * --
+     *
      */
     @Test
     public void test104PostAlerta() throws URISyntaxException {
         URI alertaURI = new URI(getBaseUrl() + "/alerta");
-        
+
         Alerta alertaRequest = new Alerta(
                 "Alerta de deslizamento",
                 "Perigo de deslizamento na altura do Km 20 da rodovia Tamoios, pista Sao Jose dos Campos/Litoral",
@@ -377,11 +377,11 @@ public class MockAlertTests {
                 1.0);
 
         ResponseEntity<AlertaResource> alertaResponseEntity = getRestTemplate().postForEntity(alertaURI, new HttpEntity<Alerta>(alertaRequest), AlertaResource.class);
-        
+
         assertThat(alertaResponseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
 
         Alerta alertasResponse = alertaResponseEntity.getBody().getContent();
-        
+
         assertEquals("Resposta(descricaoResumida)'" + alertasResponse.getDescricaoResumida() + "' do POST diferente do que foi enviado: '" + alertaRequest.getDescricaoResumida() + "'!", alertasResponse.getDescricaoResumida(), alertaRequest.getDescricaoResumida());
         assertEquals("Resposta(descricaoCompleta)'" + alertasResponse.getDescricaoCompleta() + "' do POST diferente do que foi enviado'" + alertaRequest.getDescricaoCompleta() + "'!", alertasResponse.getDescricaoCompleta(), alertaRequest.getDescricaoCompleta());
         assertEquals("Resposta(fatorRiscoHumano)'" + alertasResponse.getFatorRiscoHumano() + "' do POST diferente do que foi enviado'" + alertaRequest.getFatorRiscoHumano() + "'!", alertasResponse.getFatorRiscoHumano(), alertaRequest.getFatorRiscoHumano());
@@ -391,27 +391,27 @@ public class MockAlertTests {
         assertEquals("Resposta(origemLongitude)'" + alertasResponse.getOrigemLongitude() + "' do POST diferente do que foi enviado'" + alertaRequest.getOrigemLongitude() + "'!", alertasResponse.getOrigemLongitude(), alertaRequest.getOrigemLongitude(), DELTA);
         assertEquals("Resposta(origemRaioKms)'" + alertasResponse.getOrigemRaioKms() + "' do POST diferente do que foi enviado'" + alertaRequest.getOrigemRaioKms() + "'!", alertasResponse.getOrigemRaioKms(), alertaRequest.getOrigemRaioKms(), DELTA);
     }
-    
+
     /**
-     * 
+     *
      * == Asserção:
-     * 
+     *
      * Testa a obtenção de um alerta de crise do seriço de Alertas:
-     * 
+     *
      * == Dados:
-     * 
-     * Identificação do alerta na requisição. 
-     * 
+     *
+     * Identificação do alerta na requisição.
+     *
      * == Execução:
-     * 
+     *
      * Uma chamada ao serviço de Alertas.
-     * 
+     *
      * == Resultado esperado:
-     * 
+     *
      * Uma estrutura de dados com os dados do alerta.
-     * 
+     *
      * === Estrutura de dados
-     * 
+     *
      * [source,java]
      * --
      *  Alerta alertaRequest = new Alerta(
@@ -423,38 +423,38 @@ public class MockAlertTests {
      *          50.0,
      *          50.0,
      *          1.0);
-     * -- 
-     * 
+     * --
+     *
      */
     @Test
     public void test105GetAlerta() throws URISyntaxException {
         String alertaURL = getBaseUrl() + "/alerta";
-        
+
         ResponseEntity<AlertaResource> alertaResponseEntity = getRestTemplate().getForEntity(alertaURL, AlertaResource.class);
-        
+
         assertThat(alertaResponseEntity.getStatusCode() == HttpStatus.OK);
     }
-    
+
     /**
-     * 
+     *
      * == Asserção:
-     * 
+     *
      * Testa a obtenção de um determinado alerta identificado pelo *id* do seriço de Alertas:
-     * 
+     *
      * == Dados:
-     * 
-     * Identificação do alerta na requisição. 
-     * 
+     *
+     * Identificação do alerta na requisição.
+     *
      * == Execução:
-     * 
+     *
      * Uma chamada ao serviço de Alertas.
-     * 
+     *
      * == Resultado esperado:
-     * 
+     *
      * Uma estrutura de dados com os dados do alerta.
-     * 
+     *
      * === Estrutura de dados
-     * 
+     *
      * [source,java]
      * --
      *  Alerta alertaRequest = new Alerta(
@@ -466,22 +466,22 @@ public class MockAlertTests {
      *          50.0,
      *          50.0,
      *          1.0);
-     * -- 
-     * 
+     * --
+     *
      */
     @Test
     public void test106GetAlertaById() throws URISyntaxException {
         String alertaURL = getBaseUrl() + "/alerta/{id}";
-        
+
         Map<String, Integer> params = new HashMap<String, Integer>();
         params.put("id", 1);
-        
+
         ResponseEntity<AlertaResource> alertaResponseEntity = getRestTemplate().getForEntity(alertaURL, AlertaResource.class, params);
-        
+
         assertThat(alertaResponseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         Alerta alertaResponse = alertaResponseEntity.getBody().getContent();
-        
+
         Alerta alertaRequest = new Alerta(
                 "Alerta de deslizamento",
                 "Perigo de deslizamento na altura do Km 20 da rodovia Tamoios, pista Sao Jose dos Campos/Litoral",
@@ -491,7 +491,7 @@ public class MockAlertTests {
                 50.0,
                 50.0,
                 1.0);
-        
+
         assertEquals("Resposta(descricaoResumida)'" + alertaResponse.getDescricaoResumida() + "' do POST diferente do que foi enviado: '" + alertaRequest.getDescricaoResumida() + "'!", alertaResponse.getDescricaoResumida(), alertaRequest.getDescricaoResumida());
         assertEquals("Resposta(descricaoCompleta)'" + alertaResponse.getDescricaoCompleta() + "' do POST diferente do que foi enviado'" + alertaRequest.getDescricaoCompleta() + "'!", alertaResponse.getDescricaoCompleta(), alertaRequest.getDescricaoCompleta());
         assertEquals("Resposta(fatorRiscoHumano)'" + alertaResponse.getFatorRiscoHumano() + "' do POST diferente do que foi enviado'" + alertaRequest.getFatorRiscoHumano() + "'!", alertaResponse.getFatorRiscoHumano(), alertaRequest.getFatorRiscoHumano());
@@ -501,19 +501,19 @@ public class MockAlertTests {
         assertEquals("Resposta(origemLongitude)'" + alertaResponse.getOrigemLongitude() + "' do POST diferente do que foi enviado'" + alertaRequest.getOrigemLongitude() + "'!", alertaResponse.getOrigemLongitude(), alertaRequest.getOrigemLongitude(), DELTA);
         assertEquals("Resposta(origemRaioKms)'" + alertaResponse.getOrigemRaioKms() + "' do POST diferente do que foi enviado'" + alertaRequest.getOrigemRaioKms() + "'!", alertaResponse.getOrigemRaioKms(), alertaRequest.getOrigemRaioKms(), DELTA);
     }
-    
+
     /**
-     * 
+     *
      * == Asserção:
-     * 
+     *
      * Testa a obtenção de alertas dentro de uma área identificada por um ponto geográfico e um raio no seriço de Alertas:
-     * 
+     *
      * == Dados:
-     * 
-     * Identificação da área de pesquisa desejada. 
-     * 
+     *
+     * Identificação da área de pesquisa desejada.
+     *
      * === Dados informados:
-     * 
+     *
      * [source,java]
      * --
      *  Map<String, Double> params = new HashMap<String, Double>();
@@ -521,17 +521,17 @@ public class MockAlertTests {
      *  params.put("longitude", 50.0);
      *  params.put("raio", 1D);
      * --
-     * 
+     *
      * == Execução:
-     * 
+     *
      * Uma chamada ao serviço de Alertas.
-     * 
+     *
      * == Resultado esperado:
-     * 
+     *
      * Uma lista de dados com os dados dos alertas na área informada.
-     * 
+     *
      * === Estrutura de dados
-     * 
+     *
      * [source,java]
      * --
      *  Alerta alertaRequest = new Alerta(
@@ -543,35 +543,35 @@ public class MockAlertTests {
      *          50.0,
      *          50.0,
      *          1.0);
-     * -- 
-     * 
+     * --
+     *
      */
     @Test
     public void test107GetAlertasByCoords() throws Exception {
         String alertaURL = getBaseUrl() + "/alerta/latitude/{latitude}/longitude/{longitude}/raio/{raio}";
-        
+
         Map<String, Double> params = new HashMap<String, Double>();
         params.put("latitude", 50.0);
         params.put("longitude", 50.0);
         params.put("raio", 1D);
-        
+
         List<Alerta> alertas = getRestTemplate().getForObject(alertaURL, AlertaResources.class, params).unwrap();
 
         assertEquals("Resposta(descricaoResumida)'" + alertas.get(0).getDescricaoResumida() + "' do POST diferente do esperado!", alertas.get(0).getDescricaoResumida(), "Alerta de deslizamento");
     }
-    
+
     /**
-     * 
+     *
      * == Asserção:
-     * 
+     *
      * Testa a obtenção de alertas dentro de uma área identificada por um ponto geográfico e um raio no seriço de Alertas onde não há alertas:
-     * 
+     *
      * == Dados:
-     * 
-     * Identificação da área de pesquisa desejada. 
-     * 
+     *
+     * Identificação da área de pesquisa desejada.
+     *
      * === Dados informados:
-     * 
+     *
      * [source,java]
      * --
      *  Map<String, Double> params = new HashMap<String, Double>();
@@ -579,78 +579,98 @@ public class MockAlertTests {
      *  params.put("longitude", 0.6D);
      *  params.put("raio", 1D);
      * --
-     * 
+     *
      * == Execução:
-     * 
+     *
      * Uma chamada ao serviço de Alertas.
-     * 
+     *
      * == Resultado esperado:
-     * 
+     *
      * Uma lista *vazia* de dados com os dados dos alertas na área informada.
-     * 
+     *
      */
     @Test
     public void test108GetAlertaByCoordsInexistente() throws Exception {
         String alertaURL = getBaseUrl() + "/alerta/latitude/{latitude}/longitude/{longitude}/raio/{raio}";
-        
+
         Map<String, Double> params = new HashMap<String, Double>();
         params.put("latitude", 0.6D);
         params.put("longitude", 0.6D);
         params.put("raio", 1D);
-        
+
         List<Alerta> alertas = getRestTemplate().getForObject(alertaURL, AlertaResources.class, params).unwrap();
 
         assertThat(alertas.size() == 0);
     }
-    
-    /**
-     * 
-     * == Asserção:
-     * 
-     * Testa a obtenção de alertas dentro de uma área identificada por um ponto geográfico e um raio no seriço de Alertas onde não há alertas:
-     * 
-     * == Dados:
-     * 
-     * Identificação da área de pesquisa desejada. 
-     * 
-     * === Dados informados:
-     * 
-     * [source,java]
-     * --
-     *  Map<String, Double> params = new HashMap<String, Double>();
-     *  params.put("latitude", 0.6D);
-     *  params.put("longitude", 0.6D);
-     *  params.put("raio", 1D);
-     * --
-     * 
-     * == Execução:
-     * 
-     * Uma chamada ao serviço de Alertas.
-     * 
-     * == Resultado esperado:
-     * 
-     * Uma lista *vazia* de dados com os dados dos alertas na área informada.
-     * 
-     */
+
     @Test
     public void test109PostIndicadores() throws Exception {
-    	String alertaURL = getBaseUrl() + "/indicadores/";
-    	
+    	String indicadoresURL = getBaseUrl() + "/indicadores/";
+
     	Indicadores indicadoresRequest = new Indicadores();
     	indicadoresRequest.addIndicador("Cadastrados", 31);
     	indicadoresRequest.addIndicador("Finalizados", 19);
     	indicadoresRequest.addIndicador("Em andamento", 6);
-    	
-        ResponseEntity<IndicadoresResource> indicadoresResponseEntity =  getRestTemplate().postForEntity(alertaURL, new HttpEntity<Indicadores>(indicadoresRequest), IndicadoresResource.class);
-        
+
+        ResponseEntity<IndicadoresResource> indicadoresResponseEntity =  getRestTemplate().postForEntity(indicadoresURL, new HttpEntity<Indicadores>(indicadoresRequest), IndicadoresResource.class);
+
         assertThat(indicadoresResponseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
-        
-        Indicadores indicadorResponse = indicadoresResponseEntity.getBody().getContent();
-        
-        assertEquals("Resposta(itens):'" + indicadorResponse.getIndicadores().size() + "' do POST diferente do que foi enviado: '" + indicadoresRequest.getIndicadores().size() + "'!", indicadoresRequest.getIndicadores().size(), indicadoresRequest.getIndicadores().size());
-        assertEquals("Resposta(valor do indicador'" + IND_CADASTRADO + "'):'" + indicadorResponse.getIndicador(IND_CADASTRADO) + "' do POST diferente do que foi enviado: '" + indicadoresRequest.getIndicador(IND_CADASTRADO) + "'!", indicadoresRequest.getIndicador(IND_CADASTRADO), indicadoresRequest.getIndicador(IND_CADASTRADO));
-        assertEquals("Resposta(valor do indicador'" + IND_FINALIZADOS + "'):'" + indicadorResponse.getIndicador(IND_FINALIZADOS) + "' do POST diferente do que foi enviado: '" + indicadoresRequest.getIndicador(IND_FINALIZADOS) + "'!", indicadoresRequest.getIndicador(IND_FINALIZADOS), indicadoresRequest.getIndicador(IND_FINALIZADOS));
-        assertEquals("Resposta(valor do indicador'" + IND_ABERTOS + "'):'" + indicadorResponse.getIndicador(IND_ABERTOS) + "' do POST diferente do que foi enviado: '" + indicadoresRequest.getIndicador(IND_ABERTOS) + "'!", indicadoresRequest.getIndicador(IND_ABERTOS), indicadoresRequest.getIndicador(IND_ABERTOS));
+
+        Indicadores indicadoresResponse = indicadoresResponseEntity.getBody().getContent();
+
+        assertEquals("Resposta(itens):'" + indicadoresResponse.getIndicadores().size() + "' do POST diferente do que foi enviado: '" + indicadoresRequest.getIndicadores().size() + "'!", indicadoresRequest.getIndicadores().size(), indicadoresRequest.getIndicadores().size());
+        assertEquals("Resposta(valor do indicador'" + IND_CADASTRADO + "'):'" + indicadoresResponse.getIndicador(IND_CADASTRADO) + "' do POST diferente do que foi enviado: '" + indicadoresRequest.getIndicador(IND_CADASTRADO) + "'!", indicadoresRequest.getIndicador(IND_CADASTRADO), indicadoresRequest.getIndicador(IND_CADASTRADO));
+        assertEquals("Resposta(valor do indicador'" + IND_FINALIZADOS + "'):'" + indicadoresResponse.getIndicador(IND_FINALIZADOS) + "' do POST diferente do que foi enviado: '" + indicadoresRequest.getIndicador(IND_FINALIZADOS) + "'!", indicadoresRequest.getIndicador(IND_FINALIZADOS), indicadoresRequest.getIndicador(IND_FINALIZADOS));
+        assertEquals("Resposta(valor do indicador'" + IND_ABERTOS + "'):'" + indicadoresResponse.getIndicador(IND_ABERTOS) + "' do POST diferente do que foi enviado: '" + indicadoresRequest.getIndicador(IND_ABERTOS) + "'!", indicadoresRequest.getIndicador(IND_ABERTOS), indicadoresRequest.getIndicador(IND_ABERTOS));
+    }
+    /**
+     *
+     * == Asserção:
+     *
+     * Testa a obtenção dos indicadores de Alertas:
+     *
+     * == Dados:
+     *
+     * Não se aplica.
+     *
+     * == Execução:
+     *
+     * Uma chamada ao serviço de Alertas.
+     *
+     * == Resultado esperado:
+     *
+     * Uma estrutura de dados com os dados dos indicadores.
+     *
+     * === Estrutura de dados
+     *
+     * [source,java]
+     * --
+     *	Indicadores indicadoresRequest = new Indicadores();
+     *	indicadoresRequest.addIndicador("Cadastrados", 31);
+     *	indicadoresRequest.addIndicador("Finalizados", 19);
+     *	indicadoresRequest.addIndicador("Em andamento", 6);
+     * --
+     *
+     */
+    @Test
+    public void test110GetIndicadores() throws URISyntaxException {
+        String indicadoresURL = getBaseUrl() + "/indicadores";
+
+        ResponseEntity<IndicadoresResource> indicadoresResponseEntity = getRestTemplate().getForEntity(indicadoresURL, IndicadoresResource.class);
+
+        assertThat(indicadoresResponseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+        Indicadores indicadoresResponse = indicadoresResponseEntity.getBody().getContent();
+
+    	Indicadores indicadoresRequest = new Indicadores();
+    	indicadoresRequest.addIndicador("Cadastrados", 31);
+    	indicadoresRequest.addIndicador("Finalizados", 19);
+    	indicadoresRequest.addIndicador("Em andamento", 6);
+
+        assertEquals("Resposta(itens):'" + indicadoresResponse.getIndicadores().size() + "' do POST diferente do que foi enviado: '" + indicadoresRequest.getIndicadores().size() + "'!", indicadoresRequest.getIndicadores().size(), indicadoresRequest.getIndicadores().size());
+        assertEquals("Resposta(valor do indicador'" + IND_CADASTRADO + "'):'" + indicadoresResponse.getIndicador(IND_CADASTRADO) + "' do POST diferente do que foi enviado: '" + indicadoresRequest.getIndicador(IND_CADASTRADO) + "'!", indicadoresRequest.getIndicador(IND_CADASTRADO), indicadoresRequest.getIndicador(IND_CADASTRADO));
+        assertEquals("Resposta(valor do indicador'" + IND_FINALIZADOS + "'):'" + indicadoresResponse.getIndicador(IND_FINALIZADOS) + "' do POST diferente do que foi enviado: '" + indicadoresRequest.getIndicador(IND_FINALIZADOS) + "'!", indicadoresRequest.getIndicador(IND_FINALIZADOS), indicadoresRequest.getIndicador(IND_FINALIZADOS));
+        assertEquals("Resposta(valor do indicador'" + IND_ABERTOS + "'):'" + indicadoresResponse.getIndicador(IND_ABERTOS) + "' do POST diferente do que foi enviado: '" + indicadoresRequest.getIndicador(IND_ABERTOS) + "'!", indicadoresRequest.getIndicador(IND_ABERTOS), indicadoresRequest.getIndicador(IND_ABERTOS));
     }
     
     @Test
@@ -667,7 +687,7 @@ public class MockAlertTests {
         mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
         ObjectWriter writer = mapper.writer().withDefaultPrettyPrinter();
         String eventoJson = writer.writeValueAsString(evento);
-        
+
         this.mvc.perform(post(getBaseUrl() + "/evento")
             .contentType(MediaTypes.HAL_JSON_VALUE)
             .content(eventoJson))
@@ -682,17 +702,17 @@ public class MockAlertTests {
                     fieldWithPath("latitude").type(JsonFieldType.NUMBER).description("Latitude da localização do informante durante o post do evento"),
                     fieldWithPath("longitude").type(JsonFieldType.STRING).description("Longitude da localização do informante durante o post do evento"))));
     }
-    
+
     @Test
     public void test902GetEvento() throws Exception {
         this.mvc.perform(get(getBaseUrl() + "/evento/{id}", 1))
             .andExpect(status().isOk())
-            .andDo(document("evento/locations", 
+            .andDo(document("evento/locations",
                 pathParameters(parameterWithName("id").description("Identificação do evento"))));
         this.mvc.perform(get(getBaseUrl() + "/evento/1")
             .accept(MediaTypes.HAL_JSON_VALUE))
             .andExpect(status().isOk())
-            .andDo(document("evento/get", 
+            .andDo(document("evento/get",
                 responseFields(
                     fieldWithPath("descricao").type(JsonFieldType.STRING).description("Descrição do evento"),
                     fieldWithPath("categoria").type(JsonFieldType.NULL).description("Categoria do evento"),
@@ -705,7 +725,7 @@ public class MockAlertTests {
                 links(
                     linkWithRel("self").description("Link para o evento"))));
     }
-    
+
     @Test
     public void test904PostAlerta() throws Exception {
         Alerta alerta = new Alerta(
@@ -721,12 +741,12 @@ public class MockAlertTests {
         mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
         ObjectWriter writer = mapper.writer().withDefaultPrettyPrinter();
         String alertaJson = writer.writeValueAsString(alerta);
-        
+
         this.mvc.perform(post(getBaseUrl() + "/alerta")
             .contentType(MediaTypes.HAL_JSON_VALUE)
             .content(alertaJson))
             .andExpect(status().isCreated())
-            .andDo(document("alerta/post", 
+            .andDo(document("alerta/post",
                 requestFields(
                     fieldWithPath("descricaoResumida").type(JsonFieldType.STRING).description("Breve descrição do alerta"),
                     fieldWithPath("descricaoCompleta").type(JsonFieldType.STRING).description("Descrição detalhada do alerta"),
@@ -737,17 +757,17 @@ public class MockAlertTests {
                     fieldWithPath("origemLongitude").type(JsonFieldType.ARRAY).description("Longitude do ponto de origem do alerta"),
                     fieldWithPath("origemRaioKms").type(JsonFieldType.ARRAY).description("Área de abrangência do alerta em Kms"))));
     }
-    
+
     @Test
     public void test906GetAlertaById() throws Exception {
         this.mvc.perform(get(getBaseUrl() + "/alerta/{id}", 1))
             .andExpect(status().isOk())
-            .andDo(document("alerta/locationsId", 
+            .andDo(document("alerta/locationsId",
                 pathParameters(parameterWithName("id").description("Identificação do alerta"))));
         this.mvc.perform(get(getBaseUrl() + "/alerta/1")
             .accept(MediaTypes.HAL_JSON_VALUE))
             .andExpect(status().isOk())
-            .andDo(document("alerta/getId", 
+            .andDo(document("alerta/getId",
                 responseFields(
                     fieldWithPath("descricaoResumida").type(JsonFieldType.STRING).description("Breve descrição do alerta"),
                     fieldWithPath("descricaoCompleta").type(JsonFieldType.STRING).description("Descrição detalhada do alerta"),
@@ -761,7 +781,7 @@ public class MockAlertTests {
                 links(
                     linkWithRel("self").description("Link para o evento"))));
     }
-   
+
     @Test
     public void test907GetAlertaByCoords() throws Exception {
         this.mvc.perform(get(getBaseUrl() + "/alerta/latitude/{latitude}/longitude/{longitude}/raio/{raio}", 50.0, 50.0, 1.0D))
@@ -786,5 +806,5 @@ public class MockAlertTests {
                     fieldWithPath("_embedded.alertaList[].origemRaioKms").type(JsonFieldType.ARRAY).description("Área de abrangência do alerta em Kms"),
                     fieldWithPath("_embedded.alertaList[]._links.self.href").type(JsonFieldType.STRING).description("URI do link para o alerta"))));
     }
-    
+
 }
