@@ -69,7 +69,12 @@ public class ConsultaEventoActivity extends ListActivity {
         @Override
         public int getCount() {
 
-            return alertas.length;
+            if(alertas == null) {
+                return 0;
+            }
+            else {
+                return alertas.length;
+            }
 
         }
 
