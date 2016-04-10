@@ -35,7 +35,7 @@ public abstract class AbstractBaseService {
         converter.setSupportedMediaTypes(Arrays.asList(MediaTypes.HAL_JSON));
         converter.setObjectMapper(mapper);
 
-        restTemplate = new RestTemplate(true);
+        restTemplate = new RestTemplate();
 
         restTemplate.getMessageConverters().add(converter);
         restTemplate.setErrorHandler(new ClientErrorHandler());

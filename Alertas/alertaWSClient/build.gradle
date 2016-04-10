@@ -31,4 +31,10 @@ dependencies {
     compile 'org.springframework.android:spring-android-rest-template:1.0.1.RELEASE'
     compile 'com.fasterxml.jackson.core:jackson-databind:2.5.4'
     compile project(':springAndroidRest')
+    compile 'org.apache.httpcomponents:httpclient:4.5.2'
+    /* compile 'com.fasterxml.jackson.core:jackson-databind:2.5.4'
+    compile 'org.springframework:spring-web:4.1.7.RELEASE'
+    compile 'org.springframework:spring-core:4.1.7.RELEASE'
+    compile 'org.springframework.plugin:spring-plugin-core:1.2.0.RELEASE'
+    compile 'commons-logging:commons-logging:1.2' */
 }
