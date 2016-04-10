@@ -1,6 +1,6 @@
 //var b=  require('../server/business/business')();
 var sinon = require('sinon');
-var app = require('../config/express')();
+var app = require('../../../config/express')();
 var crisisBusiness = app.business.crisis;
 var should = require("should");
 
