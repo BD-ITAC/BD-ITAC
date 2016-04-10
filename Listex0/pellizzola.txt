@@ -1,0 +1,3 @@
+teste PULL & MERGE
+
+resolvin conflict
