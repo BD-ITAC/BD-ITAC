@@ -167,7 +167,6 @@
 	                        <goal>process-asciidoc</goal>
 	                    </goals>
 	                    <configuration>
-						    <sourceHighlighter>pygments</sourceHighlighter>
 	                        <backend>html</backend>
 	                        <doctype>book</doctype>
 	                        <attributes>
