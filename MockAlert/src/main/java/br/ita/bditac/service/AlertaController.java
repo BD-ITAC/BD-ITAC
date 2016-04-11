@@ -98,8 +98,12 @@ public class AlertaController {
         List<Alerta> alertas = service.obterAlertasPorRegiao(dLatitude, dLongitude, dRaio);
         List<AlertaResource> resources = resourceAssembler.toResources(alertas);
         AlertaResources alertaResources = new AlertaResources(resources);
-        
-        return new ResponseEntity<AlertaResources>(alertaResources, HttpStatus.OK);
+        if(alertaResources.getContent().size() == 0) {
+        	return new ResponseEntity<AlertaResources>(HttpStatus.NOT_FOUND);
+        }
+        else {
+        	return new ResponseEntity<AlertaResources>(alertaResources, HttpStatus.OK);
+        }
     }
 
     @ExceptionHandler(Exception.class)

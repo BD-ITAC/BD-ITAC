@@ -598,9 +598,8 @@ public class MockAlertTests {
         params.put("longitude", 0.6D);
         params.put("raio", 1D);
 
-        List<Alerta> alertas = getRestTemplate().getForObject(alertaURL, AlertaResources.class, params).unwrap();
-
-        assertThat(alertas.size() == 0);
+        ResponseEntity<AlertaResources> resources = getRestTemplate().getForEntity(alertaURL, AlertaResources.class, params);
+        assertThat(resources.getStatusCode() == HttpStatus.NOT_FOUND);
     }
 
     @Test
