@@ -87,9 +87,12 @@ public class AlertaClient extends AbstractBaseService {
 
         ResponseEntity<AlertaResources> response = getRestTemplate().exchange(getHostURL() + SERVICE_URL + "/latitude/{latitude}/longitude/{longitude}/raio/{raio}", HttpMethod.GET, envio, AlertaResources.class, params);
 
-        List<Alerta> alertas = response.getBody().unwrap();
-
-        return alertas;
+        if(response.getStatusCode() == HttpStatus.OK) {
+            return response.getBody().unwrap();
+        }
+        else {
+            return null;
+        }
 
     }
 

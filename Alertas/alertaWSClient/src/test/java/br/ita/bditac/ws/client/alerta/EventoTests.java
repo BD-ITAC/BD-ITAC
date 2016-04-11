@@ -15,7 +15,60 @@ import br.ita.bditac.ws.model.Evento;
 public class EventoTests extends TestCase {
 
     private static final String HOST_URL = "http://localhost:8080";
-    
+
+    /**
+     *
+     * == Asserção:
+     *
+     * Testa a inclusão de um evento de crise usando o seriço de Alertas.
+     *
+     * == Dados:
+     *
+     * Uma estrutura de dados contendo o evento.
+     *
+     * === Estrutura de dados
+     *
+     * [source,json]
+     * --
+     *      {
+     *          "evento" : {
+     *          "descricao" : "Deslizamento na na favela do Paraiso",
+     *          "categoria" : 0,
+     *          "nome" : "Ze das Couves",
+     *          "email" : "zedascouves@gmail.com",
+     *          "telefone" : "(12) 99876-1234",
+     *          "latitude": 50,
+     *          "longitude": 50,
+     *          }
+     *      }
+     * --
+     *
+     * == Execução:
+     *
+     * Uma chamada ao serviço de Alertas.
+     *
+     * == Resultado esperado:
+     *
+     * Uma estrutura de dados com a mesma informação da estrutura enviada.
+     *
+     * === Estrutura de dados
+     *
+     * [source,json]
+     * --
+     *      {
+     *          "evento" : {
+     *          "descricao" : "Deslizamento na na favela do Paraiso",
+     *          "categoria" : 0,
+     *          "nome" : "Ze das Couves",
+     *          "email" : "zedascouves@gmail.com",
+     *          "telefone" : "(12) 99876-1234",
+     *          "latitude": 50,
+     *          "longitude": 50,
+     *          }
+     *      }
+     * --
+     *
+     */
     @Test
     public void test01PostEvento() {
         EventoClient eventoClient = new EventoClient(HOST_URL);
@@ -31,7 +84,43 @@ public class EventoTests extends TestCase {
         assertNotNull(eventoRetorno);
         assertEquals("Resposta(descricao):'" + eventoRetorno.getDescricao() + "' do POST diferente do que foi enviado: '" + eventoNovo.getDescricao() + "'!", eventoRetorno.getDescricao(), eventoNovo.getDescricao());
     }
-    
+
+    /**
+     *
+     * == Asserção:
+     *
+     * Testa a obtenção de um evento de crise do seriço de Alertas:
+     *
+     * == Dados:
+     *
+     * Identificação do evento na requisição.
+     *
+     * == Execução:
+     *
+     * Uma chamada ao serviço de Alertas.
+     *
+     * == Resultado esperado:
+     *
+     * Uma estrutura de dados com os dados do evento.
+     *
+     * === Estrutura de dados
+     *
+     [source,json]
+     * --
+     *      {
+     *          "evento" : {
+     *          "descricao" : "Deslizamento na na favela do Paraiso",
+     *          "categoria" : 0,
+     *          "nome" : "Ze das Couves",
+     *          "email" : "zedascouves@gmail.com",
+     *          "telefone" : "(12) 99876-1234",
+     *          "latitude": 50,
+     *          "longitude": 50,
+     *          }
+     *      }
+     * --
+     *
+     */
     @Test
     public void test02GetEventoById() {
         EventoClient eventoClient = new EventoClient(HOST_URL);
@@ -39,7 +128,26 @@ public class EventoTests extends TestCase {
         assertNotNull(evento);
         assertEquals("Resposta(descricao):'" + evento.getDescricao() + "' do POST diferente do que foi enviado!", evento.getDescricao(), "Deslizamento na favela do Paraiso");
     }
-    
+
+    /**
+     *
+     * == Asserção:
+     *
+     * Testa a inclusão de um evento de crise usando o seriço de Alertas:
+     *
+     * == Dados:
+     *
+     * Identificação do evento na requisição.
+     *
+     * == Execução:
+     *
+     * Uma chamada ao serviço de Alertas.
+     *
+     * == Resultado esperado:
+     *
+     * O código de estado de retorno deve ser o código HTTP 404 (NOT FOUND).
+     *
+     */
     @Test
     public void test03GetEventoByIdInexistente() {
         EventoClient eventoClient = new EventoClient(HOST_URL);
