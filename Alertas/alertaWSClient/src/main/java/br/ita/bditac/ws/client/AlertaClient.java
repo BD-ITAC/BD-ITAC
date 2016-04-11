@@ -19,6 +19,10 @@ public class AlertaClient extends AbstractBaseService {
 
     private static final String SERVICE_URL = "/alerta";
 
+    private static final String ID_PARM = "/{id}";
+
+    private static final String COORDS_PARM = "/latitude/{latitude}/longitude/{longitude}/raio/{raio}";
+
     public AlertaClient(String hostURL) {
         super(hostURL);
     }
@@ -42,7 +46,7 @@ public class AlertaClient extends AbstractBaseService {
         try {
             HttpEntity envio = new HttpEntity(getResponseHeader());
 
-            ResponseEntity<AlertaResource> alertaResponseEntity = getRestTemplate().exchange(getHostURL() + SERVICE_URL + "/{id}", HttpMethod.GET, envio, AlertaResource.class, params);
+            ResponseEntity<AlertaResource> alertaResponseEntity = getRestTemplate().exchange(getHostURL() + SERVICE_URL + ID_PARM, HttpMethod.GET, envio, AlertaResource.class, params);
 
             if(alertaResponseEntity.getStatusCode() == HttpStatus.OK) {
                 return alertaResponseEntity.getBody().getContent();
@@ -65,7 +69,7 @@ public class AlertaClient extends AbstractBaseService {
 
         HttpEntity envio = new HttpEntity(getResponseHeader());
 
-        ResponseEntity<Void> response = getRestTemplate().exchange(getHostURL() + SERVICE_URL + "/latitude/{latitude}/longitude/{longitude}/raio/{raio}", HttpMethod.HEAD, envio, Void.class, params);
+        ResponseEntity<Void> response = getRestTemplate().exchange(getHostURL() + SERVICE_URL + COORDS_PARM, HttpMethod.HEAD, envio, Void.class, params);
 
         if(response.getStatusCode() == HttpStatus.OK) {
             return true;
@@ -85,7 +89,7 @@ public class AlertaClient extends AbstractBaseService {
 
         HttpEntity envio = new HttpEntity(getResponseHeader());
 
-        ResponseEntity<AlertaResources> response = getRestTemplate().exchange(getHostURL() + SERVICE_URL + "/latitude/{latitude}/longitude/{longitude}/raio/{raio}", HttpMethod.GET, envio, AlertaResources.class, params);
+        ResponseEntity<AlertaResources> response = getRestTemplate().exchange(getHostURL() + SERVICE_URL + COORDS_PARM, HttpMethod.GET, envio, AlertaResources.class, params);
 
         if(response.getStatusCode() == HttpStatus.OK) {
             return response.getBody().unwrap();

@@ -15,6 +15,8 @@ public class EventoClient extends AbstractBaseService {
 
     private static final String SERVICE_URL = "/evento";
 
+    private static final String ID_PARM = "/{id}";
+
     public EventoClient(String hostURL) {
         super(hostURL);
     }
@@ -42,7 +44,7 @@ public class EventoClient extends AbstractBaseService {
         try {
             HttpEntity envio = new HttpEntity(getResponseHeader());
 
-            ResponseEntity<EventoResource> eventoResponseEntity = getRestTemplate().exchange(getHostURL() + SERVICE_URL + "/{id}", HttpMethod.GET, envio, EventoResource.class, params);
+            ResponseEntity<EventoResource> eventoResponseEntity = getRestTemplate().exchange(getHostURL() + SERVICE_URL + ID_PARM, HttpMethod.GET, envio, EventoResource.class, params);
 
             if(eventoResponseEntity.getStatusCode() == HttpStatus.OK) {
                 return eventoResponseEntity.getBody().getContent();
