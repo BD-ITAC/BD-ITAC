@@ -64,6 +64,7 @@ public class EventoController {
         alerta.setOrigemLongitude(evento.getLongitude());
         // TODO - Sala de gerenciamento de crises determina a área de abrangência do evento
         alerta.setOrigemRaioKms(10);
+        service.adicionarAlerta(alerta);
         
         EventoResource resource = resourceAssembler.toResource(evento);
         

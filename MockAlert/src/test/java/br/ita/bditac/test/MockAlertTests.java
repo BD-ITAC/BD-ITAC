@@ -193,7 +193,7 @@ public class MockAlertTests {
      *
      */
     @Test
-    public void test101PostEvento() throws Exception {
+    public void test101PostEventoGerarAlerta() throws Exception {
         URI eventoURI = new URI(getBaseUrl() + "/evento");
 
         Evento eventoRequest = new Evento(
@@ -215,7 +215,7 @@ public class MockAlertTests {
         assertEquals("Resposta(categoria) do POST diferente do que foi enviado!", eventoResponse.getCategoria(), eventoRequest.getCategoria());
         assertEquals("Resposta(nome) do POST diferente do que foi enviado!", eventoResponse.getNome(), eventoRequest.getNome());
         assertEquals("Resposta(email) do POST diferente do que foi enviado!", eventoResponse.getEmail(), eventoRequest.getEmail());
-        assertEquals("Resposta(telefone) do POST diferente do que foi enviado!", eventoResponse.getTelefone(), eventoRequest.getTelefone());
+        assertEquals("Resposta(telefone) do POST diferente do que foi enviado!", eventoResponse.getTelefone(), eventoRequest.getTelefone());        
     }
 
     /**
@@ -483,14 +483,14 @@ public class MockAlertTests {
         Alerta alertaResponse = alertaResponseEntity.getBody().getContent();
 
         Alerta alertaRequest = new Alerta(
-                "Alerta de deslizamento",
-                "Perigo de deslizamento na altura do Km 20 da rodovia Tamoios, pista Sao Jose dos Campos/Litoral",
+                "Alagamento",
+                "Deslizamento na na favela do Paraiso",
                 5,
                 5,
                 0,
                 50.0,
                 50.0,
-                1.0);
+                10.0);
 
         assertEquals("Resposta(descricaoResumida)'" + alertaResponse.getDescricaoResumida() + "' do POST diferente do que foi enviado: '" + alertaRequest.getDescricaoResumida() + "'!", alertaResponse.getDescricaoResumida(), alertaRequest.getDescricaoResumida());
         assertEquals("Resposta(descricaoCompleta)'" + alertaResponse.getDescricaoCompleta() + "' do POST diferente do que foi enviado'" + alertaRequest.getDescricaoCompleta() + "'!", alertaResponse.getDescricaoCompleta(), alertaRequest.getDescricaoCompleta());
@@ -557,7 +557,7 @@ public class MockAlertTests {
 
         List<Alerta> alertas = getRestTemplate().getForObject(alertaURL, AlertaResources.class, params).unwrap();
 
-        assertEquals("Resposta(descricaoResumida)'" + alertas.get(0).getDescricaoResumida() + "' do POST diferente do esperado!", alertas.get(0).getDescricaoResumida(), "Alerta de deslizamento");
+        assertEquals("Resposta(descricaoResumida)'" + alertas.get(0).getDescricaoResumida() + "' do POST diferente do esperado!", alertas.get(0).getDescricaoResumida(), "Alagamento");
     }
 
     /**
@@ -671,7 +671,92 @@ public class MockAlertTests {
         assertEquals("Resposta(valor do indicador'" + IND_FINALIZADOS + "'):'" + indicadoresResponse.getIndicador(IND_FINALIZADOS) + "' do POST diferente do que foi enviado: '" + indicadoresRequest.getIndicador(IND_FINALIZADOS) + "'!", indicadoresRequest.getIndicador(IND_FINALIZADOS), indicadoresRequest.getIndicador(IND_FINALIZADOS));
         assertEquals("Resposta(valor do indicador'" + IND_ABERTOS + "'):'" + indicadoresResponse.getIndicador(IND_ABERTOS) + "' do POST diferente do que foi enviado: '" + indicadoresRequest.getIndicador(IND_ABERTOS) + "'!", indicadoresRequest.getIndicador(IND_ABERTOS), indicadoresRequest.getIndicador(IND_ABERTOS));
     }
-    
+    /**
+    *
+    * == Asserção:
+    *
+    * Testa a inclusão de um evento de crise usando o seriço de Alertas.
+    * Verificar se foi gerado um alerta com base nos dados do evento recém inserido.
+    * Observar que em casos reais, existe uma demora significativa entre o cadastramento
+    * do evento e a geração do alerta de crise.
+    *
+    * == Dados:
+    *
+    * Uma estrutura de dados contendo o evento.
+    *
+    * === Estrutura de dados
+    *
+    * [source,java]
+    * --
+    *  Evento eventoRequest = new Evento(
+    *          "Deslizamento na na favela do Paraiso",
+    *          0,
+    *          "Ze das Couves",
+    *          "zedascouves@gmail.com",
+    *          "(12) 99876-1234");
+    * --
+    *
+    * == Execução:
+    *
+    * Uma chamada ao serviço de Alertas.
+    *
+    * ==Resultado esperado:
+    *
+    * Uma estrutura de dados com a mesma informação da estrutura enviada.
+    *
+    * === Estrutura de dados
+    *
+    * [source,java]
+    * --
+    *  Evento eventoRequest = new Evento(
+    *          "Deslizamento na na favela do Paraiso",
+    *          0,
+    *          "Ze das Couves",
+    *          "zedascouves@gmail.com",
+    *          "(12) 99876-1234",
+    *          50.0,
+    *          50.0);
+    * --
+    *
+    */
+   @Test
+   public void test111PostEventoGerarAlerta() throws Exception {
+       URI eventoURI = new URI(getBaseUrl() + "/evento");
+
+       Evento eventoRequest = new Evento(
+               "Deslizamento na na favela do Paraiso",
+               0,
+               "Ze das Couves",
+               "zedascouves@gmail.com",
+               "(12) 99876-1234",
+               50.0,
+               50.0);
+
+       ResponseEntity<EventoResource> eventoResponseEntity =  getRestTemplate().postForEntity(eventoURI, new HttpEntity<Evento>(eventoRequest), EventoResource.class);
+
+       assertThat(eventoResponseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+
+       Evento eventoResponse = eventoResponseEntity.getBody().getContent();
+
+       assertEquals("Resposta(descricao):'" + eventoResponse.getDescricao() + "' do POST diferente do que foi enviado: '" + eventoRequest.getDescricao() + "'!", eventoResponse.getDescricao(), eventoRequest.getDescricao());
+       assertEquals("Resposta(categoria) do POST diferente do que foi enviado!", eventoResponse.getCategoria(), eventoRequest.getCategoria());
+       assertEquals("Resposta(nome) do POST diferente do que foi enviado!", eventoResponse.getNome(), eventoRequest.getNome());
+       assertEquals("Resposta(email) do POST diferente do que foi enviado!", eventoResponse.getEmail(), eventoRequest.getEmail());
+       assertEquals("Resposta(telefone) do POST diferente do que foi enviado!", eventoResponse.getTelefone(), eventoRequest.getTelefone());
+       
+       String alertaURL = getBaseUrl() + "/alerta/latitude/{latitude}/longitude/{longitude}/raio/{raio}";
+
+       Map<String, Double> params = new HashMap<String, Double>();
+       params.put("latitude", 50.0);
+       params.put("longitude", 50.0);
+       params.put("raio", 1D);
+
+       List<Alerta> alertas = getRestTemplate().getForObject(alertaURL, AlertaResources.class, params).unwrap();
+
+       assertEquals("Resposta(latitude)'" + alertas.get(0).getOrigemLatitude() + "' do POST diferente do esperado!", alertas.get(0).getOrigemLatitude(), eventoRequest.getLatitude(), DELTA);
+       assertEquals("Resposta(latitude)'" + alertas.get(0).getOrigemLongitude() + "' do POST diferente do esperado!", alertas.get(0).getOrigemLongitude(), eventoRequest.getLongitude(), DELTA);
+   }
+   
     @Test
     public void test901PostEvento() throws Exception {
         Evento evento = new Evento(
