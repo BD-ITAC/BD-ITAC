@@ -10,6 +10,23 @@ module.exports = function(app){
     return callback(null, {status: 'ok'});
   };
 
+   var _crisis = [];
+	_crisis.push(
+    {
+       name: "Fulano",
+       email: "fulano@ita.edu.br",
+       phone: "12345",
+       place: "São João do Longuinho",
+       title: "Chuva FORTE",
+       type:  8
+    }
+
+  );
+
+  dao.listCrisis = function(callback){
+      return callback(null, _crisis);
+  };
+
 
   var indicators = [];
   indicators.push({
