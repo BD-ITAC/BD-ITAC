@@ -187,7 +187,7 @@ public class MockAlertTests {
      *          "Ze das Couves",
      *          "zedascouves@gmail.com",
      *          "(12) 99876-1234",
-     *          50.0,
+     *          40.0,
      *          50.0);
      * --
      *
@@ -202,7 +202,7 @@ public class MockAlertTests {
                 "Ze das Couves",
                 "zedascouves@gmail.com",
                 "(12) 99876-1234",
-                50.0,
+                40.0,
                 50.0);
 
         ResponseEntity<EventoResource> eventoResponseEntity =  getRestTemplate().postForEntity(eventoURI, new HttpEntity<Evento>(eventoRequest), EventoResource.class);
@@ -246,7 +246,7 @@ public class MockAlertTests {
      *          "Ze das Couves",
      *          "zedascouves@gmail.com",
      *          "(12) 99876-1234",
-     *          50.0,
+     *          40.0,
      *          50.0);
      * --
      *
@@ -270,7 +270,7 @@ public class MockAlertTests {
                 "Ze das Couves",
                 "zedascouves@gmail.com",
                 "(12) 99876-1234",
-                50.0,
+                40.0,
                 50.0);
 
         assertEquals("Resposta(descricao):'" + eventoResponse.getDescricao() + "' do POST diferente do que foi enviado: '" + eventoRequest.getDescricao() + "'!", eventoResponse.getDescricao(), eventoRequest.getDescricao());
@@ -333,7 +333,7 @@ public class MockAlertTests {
      *          5,
      *          5,
      *          0,
-     *          50.0,
+     *          40.0,
      *          50.0,
      *          1.0);
      * --
@@ -356,7 +356,7 @@ public class MockAlertTests {
      *          5,
      *          5,
      *          0,
-     *          50.0,
+     *          40.0,
      *          50.0,
      *          1.0);
      * --
@@ -372,7 +372,7 @@ public class MockAlertTests {
                 5,
                 5,
                 0,
-                50.0,
+                40.0,
                 50.0,
                 1.0);
 
@@ -420,7 +420,7 @@ public class MockAlertTests {
      *          5,
      *          5,
      *          0,
-     *          50.0,
+     *          40.0,
      *          50.0,
      *          1.0);
      * --
@@ -463,7 +463,7 @@ public class MockAlertTests {
      *          5,
      *          5,
      *          0,
-     *          50.0,
+     *          40.0,
      *          50.0,
      *          1.0);
      * --
@@ -488,7 +488,7 @@ public class MockAlertTests {
                 5,
                 5,
                 0,
-                50.0,
+                40.0,
                 50.0,
                 10.0);
 
@@ -517,7 +517,7 @@ public class MockAlertTests {
      * [source,java]
      * --
      *  Map<String, Double> params = new HashMap<String, Double>();
-     *  params.put("latitude", 50.0);
+     *  params.put("latitude", 40.0);
      *  params.put("longitude", 50.0);
      *  params.put("raio", 1D);
      * --
@@ -540,7 +540,7 @@ public class MockAlertTests {
      *          5,
      *          5,
      *          0,
-     *          50.0,
+     *          40.0,
      *          50.0,
      *          1.0);
      * --
@@ -551,7 +551,7 @@ public class MockAlertTests {
         String alertaURL = getBaseUrl() + "/alerta/latitude/{latitude}/longitude/{longitude}/raio/{raio}";
 
         Map<String, Double> params = new HashMap<String, Double>();
-        params.put("latitude", 50.0);
+        params.put("latitude", 40.0);
         params.put("longitude", 50.0);
         params.put("raio", 1D);
 
@@ -714,7 +714,7 @@ public class MockAlertTests {
     *          "Ze das Couves",
     *          "zedascouves@gmail.com",
     *          "(12) 99876-1234",
-    *          50.0,
+    *          40.0,
     *          50.0);
     * --
     *
@@ -729,7 +729,7 @@ public class MockAlertTests {
                "Ze das Couves",
                "zedascouves@gmail.com",
                "(12) 99876-1234",
-               50.0,
+               40.0,
                50.0);
 
        ResponseEntity<EventoResource> eventoResponseEntity =  getRestTemplate().postForEntity(eventoURI, new HttpEntity<Evento>(eventoRequest), EventoResource.class);
@@ -747,7 +747,7 @@ public class MockAlertTests {
        String alertaURL = getBaseUrl() + "/alerta/latitude/{latitude}/longitude/{longitude}/raio/{raio}";
 
        Map<String, Double> params = new HashMap<String, Double>();
-       params.put("latitude", 50.0);
+       params.put("latitude", 40.0);
        params.put("longitude", 50.0);
        params.put("raio", 1D);
 
@@ -765,7 +765,7 @@ public class MockAlertTests {
             "João da Horta",
             "joao.horta@gmail.com",
             "(12) 95678-4321",
-            50.0,
+            40.0,
             50.0);
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
@@ -818,7 +818,7 @@ public class MockAlertTests {
             5,
             5,
             0,
-            50.0D,
+            40.0D,
             50.0D,
             1.0D);
         ObjectMapper mapper = new ObjectMapper();
@@ -868,14 +868,14 @@ public class MockAlertTests {
 
     @Test
     public void test907GetAlertaByCoords() throws Exception {
-        this.mvc.perform(get(getBaseUrl() + "/alerta/latitude/{latitude}/longitude/{longitude}/raio/{raio}", 50.0, 50.0, 1.0D))
+        this.mvc.perform(get(getBaseUrl() + "/alerta/latitude/{latitude}/longitude/{longitude}/raio/{raio}", 40.0, 50.0, 1.0D))
             .andExpect(status().isOk())
             .andDo(document("alerta/locationsCoords",
                 pathParameters(
                     parameterWithName("latitude").description("Latitude do ponto de origem do alerta"),
                     parameterWithName("longitude").description("Longitude do ponto de origem do alerta"),
                     parameterWithName("raio").description("Área de abrangência do alerta em Kms"))));
-        this.mvc.perform(get(getBaseUrl() + "alerta/latitude/50.0/longitude/50.0/raio/1.0")
+        this.mvc.perform(get(getBaseUrl() + "alerta/latitude/40.0/longitude/50.0/raio/1.0")
             .accept(MediaTypes.HAL_JSON_VALUE))
             .andExpect(status().isOk())
             .andDo(document("alerta/getCoords",

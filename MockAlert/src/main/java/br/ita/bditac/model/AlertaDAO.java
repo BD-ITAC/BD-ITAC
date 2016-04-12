@@ -41,7 +41,7 @@ public class AlertaDAO {
         novoAlerta.setFatorRiscoMaterial(alerta.getFatorRiscoMaterial());
         novoAlerta.setCategoriaAlerta(alerta.getCategoriaAlerta());
         novoAlerta.setOrigemLatitude(alerta.getOrigemLatitude());
-        novoAlerta.setOrigemLongitude(alerta.getOrigemLatitude());
+        novoAlerta.setOrigemLongitude(alerta.getOrigemLongitude());
         novoAlerta.setOrigemRaioKms(alerta.getOrigemRaioKms());
         novoAlerta.setId(++_idAlerta);
         

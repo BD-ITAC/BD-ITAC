@@ -253,7 +253,7 @@ public class CadastrarEventoActivity extends AppCompatActivity {
         Evento evento = new Evento();
 
         evento.setDescricao(inputDescricao.getText().toString());
-        evento.setCategoria(inputCategoria.getId());
+        evento.setCategoria(inputCategoria.getSelectedItemPosition());
         evento.setNome(Usuario.getNome());
         evento.setEmail(Usuario.getEmail());
         evento.setTelefone(Usuario.getTelefone());
@@ -281,7 +281,6 @@ public class CadastrarEventoActivity extends AppCompatActivity {
             return ;
 
         ArrayList<String> categoriaArrayList = new ArrayList<>();
-        categoriaArrayList.add("");
         categoriaArrayList.add("Alagamento");
         categoriaArrayList.add("Incêndio");
         categoriaArrayList.add("Acidente Veicular");
