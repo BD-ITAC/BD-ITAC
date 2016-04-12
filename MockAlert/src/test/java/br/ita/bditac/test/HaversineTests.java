@@ -44,6 +44,8 @@ public class HaversineTests {
     Coords inpeCoords = new Coords(-23.211512,-45.8757535);
     
     /**
+     *
+     * = TS02-US09
      * 
      * == Asserção:
      * 
@@ -81,6 +83,8 @@ public class HaversineTests {
     }
     
     /**
+     * 
+     * = TS02-US09
      * 
      * == Asserção:
      * 

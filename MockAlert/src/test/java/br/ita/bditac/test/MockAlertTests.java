@@ -149,6 +149,8 @@ public class MockAlertTests {
 
     /**
      *
+     * = TS02-US09
+     * 
      * == Asserção:
      *
      * Testa a inclusão de um evento de crise usando o seriço de Alertas.
@@ -220,6 +222,8 @@ public class MockAlertTests {
 
     /**
      *
+     * = TS02-US09
+     * 
      * == Asserção:
      *
      * Testa a obtenção de um evento de crise do seriço de Alertas:
@@ -284,6 +288,8 @@ public class MockAlertTests {
 
     /**
      *
+     * = TS02-US09
+     * 
      * == Asserção:
      *
      * Testa a inclusão de um evento de crise usando o seriço de Alertas:
@@ -315,6 +321,8 @@ public class MockAlertTests {
 
     /**
      *
+     * = TS02-US09
+     * 
      * == Asserção:
      *
      * Testa a inclusão de um alerta utilizando o serviço de Alertas.
@@ -394,6 +402,8 @@ public class MockAlertTests {
 
     /**
      *
+     * = TS02-US09
+     * 
      * == Asserção:
      *
      * Testa a obtenção de um alerta de crise do seriço de Alertas:
@@ -437,6 +447,8 @@ public class MockAlertTests {
 
     /**
      *
+     * = TS02-US09
+     * 
      * == Asserção:
      *
      * Testa a obtenção de um determinado alerta identificado pelo *id* do seriço de Alertas:
@@ -504,6 +516,8 @@ public class MockAlertTests {
 
     /**
      *
+     * = TS02-US09
+     * 
      * == Asserção:
      *
      * Testa a obtenção de alertas dentro de uma área identificada por um ponto geográfico e um raio no seriço de Alertas:
@@ -562,6 +576,8 @@ public class MockAlertTests {
 
     /**
      *
+     * = TS02-US09
+     * 
      * == Asserção:
      *
      * Testa a obtenção de alertas dentro de uma área identificada por um ponto geográfico e um raio no seriço de Alertas onde não há alertas:
@@ -602,6 +618,38 @@ public class MockAlertTests {
         assertThat(resources.getStatusCode() == HttpStatus.NOT_FOUND);
     }
 
+
+    /**
+     *
+     * = TS02-US09
+     * 
+     * == Asserção:
+     *
+     * Testa a inclusão de um grupo de indicadores usando o seriço de Alertas:
+     *
+     * == Dados:
+     *
+     * N/A.
+     *
+     * == Execução:
+     *
+     * Uma chamada ao serviço de Alertas.
+     *
+     * == Resultado esperado:
+     *
+     * Uma estrutura de dados com os dados dos indicadores.
+     *
+     * === Estrutura de dados
+     *
+     * [source,java]
+     * --
+     *	Indicadores indicadoresRequest = new Indicadores();
+     *	indicadoresRequest.addIndicador("Cadastrados", 31);
+     *	indicadoresRequest.addIndicador("Finalizados", 19);
+     *	indicadoresRequest.addIndicador("Em andamento", 6);
+     * --
+     *
+     */
     @Test
     public void test109PostIndicadores() throws Exception {
     	String indicadoresURL = getBaseUrl() + "/indicadores/";
@@ -624,6 +672,8 @@ public class MockAlertTests {
     }
     /**
      *
+     * = TS02-US09
+     * 
      * == Asserção:
      *
      * Testa a obtenção dos indicadores de Alertas:
@@ -671,54 +721,57 @@ public class MockAlertTests {
         assertEquals("Resposta(valor do indicador'" + IND_FINALIZADOS + "'):'" + indicadoresResponse.getIndicador(IND_FINALIZADOS) + "' do POST diferente do que foi enviado: '" + indicadoresRequest.getIndicador(IND_FINALIZADOS) + "'!", indicadoresRequest.getIndicador(IND_FINALIZADOS), indicadoresRequest.getIndicador(IND_FINALIZADOS));
         assertEquals("Resposta(valor do indicador'" + IND_ABERTOS + "'):'" + indicadoresResponse.getIndicador(IND_ABERTOS) + "' do POST diferente do que foi enviado: '" + indicadoresRequest.getIndicador(IND_ABERTOS) + "'!", indicadoresRequest.getIndicador(IND_ABERTOS), indicadoresRequest.getIndicador(IND_ABERTOS));
     }
+    
     /**
-    *
-    * == Asserção:
-    *
-    * Testa a inclusão de um evento de crise usando o seriço de Alertas.
-    * Verificar se foi gerado um alerta com base nos dados do evento recém inserido.
-    * Observar que em casos reais, existe uma demora significativa entre o cadastramento
-    * do evento e a geração do alerta de crise.
-    *
-    * == Dados:
-    *
-    * Uma estrutura de dados contendo o evento.
-    *
-    * === Estrutura de dados
-    *
-    * [source,java]
-    * --
-    *  Evento eventoRequest = new Evento(
-    *          "Deslizamento na na favela do Paraiso",
-    *          0,
-    *          "Ze das Couves",
-    *          "zedascouves@gmail.com",
-    *          "(12) 99876-1234");
-    * --
-    *
-    * == Execução:
-    *
-    * Uma chamada ao serviço de Alertas.
-    *
-    * ==Resultado esperado:
-    *
-    * Uma estrutura de dados com a mesma informação da estrutura enviada.
-    *
-    * === Estrutura de dados
-    *
-    * [source,java]
-    * --
-    *  Evento eventoRequest = new Evento(
-    *          "Deslizamento na na favela do Paraiso",
-    *          0,
-    *          "Ze das Couves",
-    *          "zedascouves@gmail.com",
-    *          "(12) 99876-1234",
-    *          40.0,
-    *          50.0);
-    * --
-    *
-    */
+     *
+     * = TS02-US09
+     * 
+     * == Asserção:
+     *
+     * Testa a inclusão de um evento de crise usando o seriço de Alertas.
+     * Verificar se foi gerado um alerta com base nos dados do evento recém inserido.
+     * Observar que em casos reais, existe uma demora significativa entre o cadastramento
+     * do evento e a geração do alerta de crise.
+     *
+     * == Dados:
+     *
+     * Uma estrutura de dados contendo o evento.
+     *
+     * === Estrutura de dados
+     *
+     * [source,java]
+     * --
+     *  Evento eventoRequest = new Evento(
+     *          "Deslizamento na na favela do Paraiso",
+     *          0,
+     *          "Ze das Couves",
+     *          "zedascouves@gmail.com",
+     *          "(12) 99876-1234");
+     * --
+     *
+     * == Execução:
+     *
+     * Uma chamada ao serviço de Alertas.
+     *
+     * ==Resultado esperado:
+     *
+     * Uma estrutura de dados com a mesma informação da estrutura enviada.
+     *
+     * === Estrutura de dados
+     *
+     * [source,java]
+     * --
+     *  Evento eventoRequest = new Evento(
+     *          "Deslizamento na na favela do Paraiso",
+     *          0,
+     *          "Ze das Couves",
+     *          "zedascouves@gmail.com",
+     *          "(12) 99876-1234",
+     *          40.0,
+     *          50.0);
+     * --
+     *
+     */
    @Test
    public void test111PostEventoGerarAlerta() throws Exception {
        URI eventoURI = new URI(getBaseUrl() + "/evento");

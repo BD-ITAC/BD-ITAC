@@ -18,6 +18,8 @@ public class EventoTests extends TestCase {
 
     /**
      *
+     * = TS02-US02
+     *
      * == Asserção:
      *
      * Testa a inclusão de um evento de crise usando o seriço de Alertas.
@@ -87,6 +89,8 @@ public class EventoTests extends TestCase {
 
     /**
      *
+     * = TS02-US02
+     *
      * == Asserção:
      *
      * Testa a obtenção de um evento de crise do seriço de Alertas:
@@ -130,6 +134,8 @@ public class EventoTests extends TestCase {
     }
 
     /**
+     *
+     * = TS02-US02
      *
      * == Asserção:
      *

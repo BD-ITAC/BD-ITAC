@@ -1,5 +1,6 @@
 package br.ita.bditac.ws.client.alerta;
 
+
 import junit.framework.TestCase;
 
 import org.junit.FixMethodOrder;
@@ -309,9 +310,9 @@ public class AlertaTests extends TestCase {
      *
      */
     @Test
-    public void test75GetRegiaoSemAlerta() {
+    public void test07GetRegiaoSemAlerta() {
         AlertaClient alertaClient = new AlertaClient(HOST_URL);
         assertFalse("Alerta inexperado em região sem alertas", alertaClient.hasAlerta(0.6D, 0.6D, 10D));
     }
-    
+
 }
