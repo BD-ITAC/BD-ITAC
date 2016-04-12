@@ -12,10 +12,6 @@ import android.util.Log;
 
 public class AlarmReceiver extends WakefulBroadcastReceiver {
 
-    private static final int DEFAULT_TIME = 600000;
-
-    private static final int DEBUG_TIME = 30000;
-
     private int alarmTimer;
 
     public AlarmReceiver() {
@@ -45,8 +41,8 @@ public class AlarmReceiver extends WakefulBroadcastReceiver {
 
         alarmTimer =
                 Debug.isDebuggerConnected() ?
-                        DEBUG_TIME:
-                        preferences.getInt("alerts.service.alarmTimer", DEFAULT_TIME);
+                        Constants.DEBUG_TIME:
+                        preferences.getInt("alerts.service.alarmTimer", Constants.DEFAULT_TIME);
 
         Intent intent = new Intent(context, AlarmReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);

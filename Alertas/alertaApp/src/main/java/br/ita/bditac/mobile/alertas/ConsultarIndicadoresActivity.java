@@ -37,11 +37,6 @@ import br.ita.bditac.ws.model.Indicadores;
 
 public class ConsultarIndicadoresActivity extends ChartBase implements OnChartValueSelectedListener {
 
-    // TODO Definir a localização padrão do serviço BD-ITAC em produção
-    private static final String DEFAULT_URL = "http://10.0.2.2:8080";
-
-    private static final String DEBUG_URL = "http://10.0.2.2:8080";
-
     private Context context;
 
     private String alertasUrl;
@@ -144,7 +139,7 @@ public class ConsultarIndicadoresActivity extends ChartBase implements OnChartVa
             preferences = PreferenceManager.getDefaultSharedPreferences(context);
         }
 
-        alertasUrl = Debug.isDebuggerConnected() ? DEBUG_URL : preferences.getString("alerts.service.url", DEFAULT_URL);
+        alertasUrl = Debug.isDebuggerConnected() ? Constants.DEBUG_URL : preferences.getString("alerts.service.url", Constants.DEFAULT_URL);
 
         new ConsultarIndicadoresTask().execute();
 

@@ -30,15 +30,6 @@ import br.ita.bditac.ws.model.Usuario;
 
 public class CadastrarEventoActivity extends AppCompatActivity {
 
-    // TODO Definir a localização padrão do serviço BD-ITAC em produção
-    private static final String DEFAULT_URL = "http://10.0.2.2:8080";
-
-    private static final String DEBUG_URL = "http://10.0.2.2:8080";
-
-    private static final int DEFAULT_LOCATION_POLLING_INTERVAL = 120000;
-
-    private static final int DEBUG_LOCATION_POLLING_INTERVAL = 15000;
-
     private Context context;
 
     private Location currentLocation;
@@ -104,8 +95,8 @@ public class CadastrarEventoActivity extends AppCompatActivity {
 
             int locationPollingInterval =
                     Debug.isDebuggerConnected() ?
-                            DEBUG_LOCATION_POLLING_INTERVAL :
-                            preferences.getInt("alerts.service.locationPollingInterval",DEFAULT_LOCATION_POLLING_INTERVAL);
+                            Constants.DEBUG_LOCATION_POLLING_INTERVAL :
+                            preferences.getInt("alerts.service.locationPollingInterval", Constants.DEFAULT_LOCATION_POLLING_INTERVAL);
 
             if(currentLocation == null || !isBetterLocation(location, currentLocation, locationPollingInterval)) {
                 currentLocation = location;
@@ -201,7 +192,7 @@ public class CadastrarEventoActivity extends AppCompatActivity {
             preferences = PreferenceManager.getDefaultSharedPreferences(context);
         }
 
-        alertasUrl = Debug.isDebuggerConnected() ? DEBUG_URL : preferences.getString("alerts.service.url", DEFAULT_URL);
+        alertasUrl = Debug.isDebuggerConnected() ? Constants.DEBUG_URL : preferences.getString("alerts.service.url", Constants.DEFAULT_URL);
 
         try {
             Context context = getApplicationContext();

@@ -19,15 +19,6 @@ import br.ita.bditac.ws.model.Alerta;
 
 public class AlertaGetter {
 
-    // TODO Definir a localização padrão do serviço BD-ITAC em produção
-    private static final String DEFAULT_URL = "http://10.0.2.2:8080";
-
-    private static final String DEBUG_URL = "http://10.0.2.2:8080";
-
-    private static final String DEFAULT_RADIUS_KMS = "10";
-
-    private static final double DEBUG_RADIUS_KMS = 1;
-
     private static List<Integer> notifications = new ArrayList<Integer>();
 
     private String alertasUrl;
@@ -48,13 +39,13 @@ public class AlertaGetter {
 
         alertasUrl =
                 Debug.isDebuggerConnected() ?
-                        DEBUG_URL :
-                        preferences.getString("alerts.service.url", DEFAULT_URL);
+                        Constants.DEBUG_URL :
+                        preferences.getString("alerts.service.url", Constants.DEFAULT_URL);
 
         radiusKms =
                 Debug.isDebuggerConnected() ?
-                        DEBUG_RADIUS_KMS :
-                        new Double(preferences.getString("alerts.service.radiusKms", DEFAULT_RADIUS_KMS)).doubleValue();
+                        Constants.DEBUG_RADIUS_KMS :
+                        new Double(preferences.getString("alerts.service.radiusKms", Constants.DEFAULT_RADIUS_KMS)).doubleValue();
 
     }
 

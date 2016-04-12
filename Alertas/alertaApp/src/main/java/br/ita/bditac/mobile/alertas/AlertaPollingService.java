@@ -17,10 +17,6 @@ import android.util.Log;
 
 public class AlertaPollingService extends IntentService {
 
-    private static final int DEFAULT_LOCATION_POLLING_INTERVAL = 120000;
-
-    private static final int DEBUG_LOCATION_POLLING_INTERVAL = 15000;
-
     private Location currentLocation;
 
     public AlertaPollingService() {
@@ -101,8 +97,8 @@ public class AlertaPollingService extends IntentService {
 
             int locationPollingInterval =
                     Debug.isDebuggerConnected() ?
-                            DEBUG_LOCATION_POLLING_INTERVAL :
-                            preferences.getInt("alerts.service.locationPollingInterval",DEFAULT_LOCATION_POLLING_INTERVAL);
+                            Constants.DEBUG_LOCATION_POLLING_INTERVAL :
+                            preferences.getInt("alerts.service.locationPollingInterval", Constants.DEFAULT_LOCATION_POLLING_INTERVAL);
 
             if(currentLocation == null || !isBetterLocation(location, currentLocation, locationPollingInterval)) {
                 currentLocation = location;

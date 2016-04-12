@@ -15,8 +15,6 @@ import android.view.View;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final int REQUEST_CODE_ACCESS_FINE_LOCATION = 200;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -28,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         if(ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             Log.i(this.getClass().getSimpleName(), "Permission to localization services requested.");
 
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE_ACCESS_FINE_LOCATION);
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, Constants.REQUEST_CODE_ACCESS_FINE_LOCATION);
         }
 
     }
@@ -54,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
 
         switch (requestCode) {
-            case REQUEST_CODE_ACCESS_FINE_LOCATION: {
+            case Constants.REQUEST_CODE_ACCESS_FINE_LOCATION: {
                 if(grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Log.i(this.getClass().getSimpleName(), "Localization services permission granted.");
                 }
