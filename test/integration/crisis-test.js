@@ -1,3 +1,4 @@
+var app = require('../../app');
 var supertest = require("supertest");
 var should = require("should");
 
@@ -113,7 +114,7 @@ describe("Test of Crisis",function(){
       // Error key should havebe false.
       res.body.should.have.property('success');
       res.body.success.should.equal(true);
-     
+
 
       done();
     });
