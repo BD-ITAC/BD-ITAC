@@ -16,12 +16,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.ita.bditac.model.Alerta;
 import br.ita.bditac.model.AlertaDAO;
+import br.ita.bditac.model.Categorias;
 import br.ita.bditac.model.Evento;
 import br.ita.bditac.support.EventoResource;
 import br.ita.bditac.support.EventoResourceAssembler;
 import br.ita.bditac.support.MessageResource;
 import br.ita.bditac.support.MessageResourceAssembler;
+import br.ita.bditac.support.ReverseEnum;
 
 @RestController
 @ExposesResourceFor(Evento.class)
@@ -47,6 +50,21 @@ public class EventoController {
     @RequestMapping(method = RequestMethod.POST, consumes = { MediaTypes.HAL_JSON_VALUE })
     public ResponseEntity<EventoResource> adicionar(@RequestBody Evento body) {
         Evento evento = service.adicionarEvento(body);
+        
+        // TODO - Simulação do gerenciamento de crises - o processo que torna o cadastramento de evento num alerta
+        Alerta alerta = new Alerta();
+        ReverseEnum<Categorias> reverseCategoria = new ReverseEnum<>(Categorias.class);
+        alerta.setDescricaoResumida(reverseCategoria.get(evento.getCategoria()).name());
+        alerta.setDescricaoCompleta(evento.getDescricao());
+        // TODO - Sala de gerenciamento de crises determina os fatores de risco
+        alerta.setFatorRiscoHumano(5);
+        alerta.setFatorRiscoMaterial(5);
+        alerta.setCategoriaAlerta(evento.getCategoria());
+        alerta.setOrigemLatitude(evento.getLatitude());
+        alerta.setOrigemLongitude(evento.getLongitude());
+        // TODO - Sala de gerenciamento de crises determina a área de abrangência do evento
+        alerta.setOrigemRaioKms(10);
+        
         EventoResource resource = resourceAssembler.toResource(evento);
         
         return new ResponseEntity<EventoResource>(resource, HttpStatus.CREATED);
