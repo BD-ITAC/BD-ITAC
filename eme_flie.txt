@@ -1,7 +1,0 @@
-linha 1
-segunda 2
-<<<<<<< HEAD
-linha 3 
-=======
-linha 3s
->>>>>>> EME_B1
