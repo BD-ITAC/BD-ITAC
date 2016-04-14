@@ -1,3 +1,19 @@
 def test_hdfs_listening(Socket):
-    hdfs = Socket('tcp://127.0.0.1:9000')
-    assert hdfs.is_listening
+    assert Socket('tcp://0.0.0.0:50010').is_listening
+    assert Socket('tcp://0.0.0.0:50020').is_listening
+    assert Socket('tcp://0.0.0.0:50070').is_listening
+    assert Socket('tcp://0.0.0.0:50075').is_listening
+    assert Socket('tcp://0.0.0.0:50090').is_listening
+    assert Socket('tcp://127.0.0.1:9000').is_listening
+    assert Socket('tcp://127.0.0.1:48379').is_listening
+
+def test_yarn_listening(Socket):
+    assert Socket('tcp://:::8088').is_listening
+    assert Socket('tcp://:::13562').is_listening
+    assert Socket('tcp://:::8030').is_listening
+    assert Socket('tcp://:::8031').is_listening
+    assert Socket('tcp://:::8032').is_listening
+    assert Socket('tcp://:::8033').is_listening
+    assert Socket('tcp://:::8040').is_listening
+    assert Socket('tcp://:::8042').is_listening
+    assert Socket('tcp://:::52811').is_listening
