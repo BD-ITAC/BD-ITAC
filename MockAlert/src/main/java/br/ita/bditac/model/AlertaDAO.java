@@ -79,6 +79,10 @@ public class AlertaDAO {
         return alertasPorRegiao;
     }
     
+    public void removerAlerta(int id) {
+    	alertas.remove(id);
+    }
+    
     public Evento adicionarEvento(Evento eventoRequest) {
         Evento novoEvento = new Evento();
         

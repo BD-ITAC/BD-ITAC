@@ -98,6 +98,10 @@ public class AlertaController {
         List<Alerta> alertas = service.obterAlertasPorRegiao(dLatitude, dLongitude, dRaio);
         List<AlertaResource> resources = resourceAssembler.toResources(alertas);
         AlertaResources alertaResources = new AlertaResources(resources);
+        // TODO Remover alertas após período de tempo
+//        for(Alerta alerta : alertas) {
+//        	service.removerAlerta(alerta.getId());
+//        }
         if(alertaResources.getContent().size() == 0) {
         	return new ResponseEntity<AlertaResources>(HttpStatus.NOT_FOUND);
         }
