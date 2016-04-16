@@ -1,0 +1,1 @@
+include ':alertaApp', ':alertaWSClient', ':springAndroidRest', ':MPChartLib'
