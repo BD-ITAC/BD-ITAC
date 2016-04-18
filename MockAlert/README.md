@@ -1,6 +1,6 @@
 # Serviço web de Alertas para o [BD-ITAC](https://sites.google.com/site/interdproj2016/)
 
-Aplicação Mock usando [Spring HATEOAS ReST API](http://projects.spring.io/spring-hateoas) e [Spring Boot](http://projects.spring.io/spring-boot) para gerar um serviço web para registrar eventos e emitir alertas.
+Aplicação Mock usando [Spring HATEOAS ReST API](http://projects.spring.io/spring-hateoas) e [Spring Boot](http://projects.spring.io/spring-boot) para gerar um serviço web para registrar crises e emitir alertas.
 
 É um serviço muito simples que não persiste dados. Os dados recebidos ficam armazenados em memória até o sistema ser re-iniciado.
 
@@ -14,11 +14,11 @@ Para usar basta compilar e executar o jar do projeto. Após clonar o projeto no 
 
 O Spring BOOT irá executar um Tomcat já embutido dentro do jar e no console podemos observar a execução do mesmo.
 
-Agora no seu browser basta apontar para [http://localhost:8080/evento](http://localhost:8080/evento) para ter acesso a um dos serviços.
+Agora no seu browser basta apontar para [http://localhost:8080/crise](http://localhost:8080/crise) para ter acesso a um dos serviços.
 
 ## Testes e popular a base *in-memory*
 
-Existe ainda um exemplo (script shell *tests.sh* na raiz do projeto) com uma série de comandos utilizando **curl** na raiz do projeto que irá exercitar o serviço e validar algumas funcionalidades básicas. Após executar o exemplo podemos observar o resultado de uma consulta de um serviço apontando para [http://localhost:8080/evento/1](http://localhost:8080/evento/1) e obtendo o evento gravado pelo script.
+Existe ainda um exemplo (script shell *tests.sh* na raiz do projeto) com uma série de comandos utilizando **curl** na raiz do projeto que irá exercitar o serviço e validar algumas funcionalidades básicas. Após executar o exemplo podemos observar o resultado de uma consulta de um serviço apontando para [http://localhost:8080/crise/1](http://localhost:8080/crise/1) e obtendo o crise gravado pelo script.
 
 O script pode ser extendido para inserir mais dados com o intuito de realizar novos testes.
 
@@ -104,7 +104,7 @@ A documentação gerada e formatada é gravada na pasta *target/generated-docs*,
 
 A função do arquivo *REAMDE.adoc* é "costurar" o conteúdo gerado pelo **Spring ReST Docs** num único documento - o *README.html*. Basicamente neste arquivo inserimos macros para incluir as várias partes:
 
-    include::{snippets}/evento/locations/curl-request.adoc[]
+    include::{snippets}/crise/locations/curl-request.adoc[]
     
 Esse trecho de comando para o **Asciidoctor** instrui a inclusão do documento *curl-request.adoc*  que foi gerado pelo **Spring ReST Docs** durante o teste unitário.
 

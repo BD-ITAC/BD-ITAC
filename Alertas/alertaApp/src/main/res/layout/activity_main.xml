@@ -20,19 +20,19 @@
             android:text ="BD-ITAC: Big Data and IoT for Alerts and Crisis" />
 
         <Button
-            android:id ="@+id/cadastrarEvento"
+            android:id ="@+id/cadastrarCrise"
             android:layout_width ="match_parent"
             android:layout_height ="wrap_content"
-            android:text ="Cadastrar Evento"
-            android:onClick="startCadastrarEvento"
+            android:text ="Cadastrar Crise"
+            android:onClick="startCadastrarCrise"
             />
 
         <Button
-            android:id ="@+id/consultarEvento"
+            android:id ="@+id/consultarCrise"
             android:layout_width ="match_parent"
             android:layout_height ="wrap_content"
-            android:text ="Consultar Evento"
-            android:onClick="startConsultarEvento"
+            android:text ="Consultar Crise"
+            android:onClick="startConsultarCrise"
             />
 
         <Button

@@ -508,7 +508,7 @@ table.CodeRay td.code>pre{padding:0}
 <ul class="sectlevel0">
 <li><a href="#_aplicação_strong_mock_strong_de_serviço_web_de_alertas_para_o_strong_class_big_a_href_https_sites_google_com_site_interdproj2016_bd_itac_a_strong">Aplicação <strong>mock</strong> de serviço web de Alertas para o <strong class="big"><a href="https://sites.google.com/site/interdproj2016/">BD-ITAC</a></strong></a>
 <ul class="sectlevel1">
-<li><a href="#_eventos">Eventos</a>
+<li><a href="#_crises">crises</a>
 <ul class="sectlevel2">
 <li><a href="#_leitura">Leitura</a></li>
 <li><a href="#_gravação">Gravação</a></li>
@@ -533,7 +533,7 @@ table.CodeRay td.code>pre{padding:0}
 <div class="openblock partintro">
 <div class="content">
 <div class="paragraph">
-<p>Aplicação Mock usando <a href="http://projects.spring.io/spring-hateoas/">Spring HATEOAS ReST API</a> e <a href="http://projects.spring.io/spring-boot/">Spring Boot</a> para gerar um serviço web para registrar eventos e emitir alertas</p>
+<p>Aplicação Mock usando <a href="http://projects.spring.io/spring-hateoas/">Spring HATEOAS ReST API</a> e <a href="http://projects.spring.io/spring-boot/">Spring Boot</a> para gerar um serviço web para registrar crises e emitir alertas</p>
 </div>
 <div class="paragraph">
 <p>É um serviço muito simples que não persiste dados. Os dados recebidos ficam armazenados em memória até o sistema ser re-iniciado.</p>
@@ -544,10 +544,10 @@ table.CodeRay td.code>pre{padding:0}
 </div>
 </div>
 <div class="sect1">
-<h2 id="_eventos">Eventos</h2>
+<h2 id="_crises">crises</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Os eventos são cadastrados por um usuário da aplicação móvel e são enviados para o sistema para processamento. A partir dos eventos cadastrados é possível gerar alertas de ocorrências de crises.</p>
+<p>Os crises são cadastrados por um usuário da aplicação móvel e são enviados para o sistema para processamento. A partir das crises cadastrados é possível gerar alertas de ocorrências de crises.</p>
 </div>
 <div class="sect2">
 <h3 id="_leitura">Leitura</h3>
@@ -556,7 +556,7 @@ table.CodeRay td.code>pre{padding:0}
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">$ curl 'http://localhost:8080/evento/1' -i</code></pre>
+<pre class="CodeRay highlight"><code data-lang="bash">$ curl 'http://localhost:8080/crise/1' -i</code></pre>
 </div>
 </div>
 <div class="sect3">
@@ -566,7 +566,7 @@ table.CodeRay td.code>pre{padding:0}
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="http">GET /evento/1 HTTP/1.1
+<pre class="CodeRay highlight"><code data-lang="http">GET /crise/1 HTTP/1.1
 Host: localhost</code></pre>
 </div>
 </div>
@@ -582,7 +582,7 @@ Host: localhost</code></pre>
 Content-Type: application/hal+json
 Content-Length: 243
 
-{&quot;descricao&quot;:&quot;Deslizamento na na favela do Paraiso&quot;,&quot;categoria&quot;:0,&quot;nome&quot;:&quot;Ze das Couves&quot;,&quot;email&quot;:&quot;zedascouves@gmail.com&quot;,&quot;telefone&quot;:&quot;(12) 99876-1234&quot;,&quot;latitude&quot;:50.0,&quot;longitude&quot;:50.0,&quot;_links&quot;:{&quot;self&quot;:{&quot;href&quot;:&quot;http://localhost:8080/evento/1&quot;}}}</code></pre>
+{&quot;descricao&quot;:&quot;Deslizamento na na favela do Paraiso&quot;,&quot;categoria&quot;:0,&quot;nome&quot;:&quot;Ze das Couves&quot;,&quot;email&quot;:&quot;zedascouves@gmail.com&quot;,&quot;telefone&quot;:&quot;(12) 99876-1234&quot;,&quot;latitude&quot;:50.0,&quot;longitude&quot;:50.0,&quot;_links&quot;:{&quot;self&quot;:{&quot;href&quot;:&quot;http://localhost:8080/crise/1&quot;}}}</code></pre>
 </div>
 </div>
 </div>
@@ -590,7 +590,7 @@ Content-Length: 243
 <h4 id="_descrição_da_resposta">Descrição da resposta</h4>
 <div class="paragraph">
 <p>O(s) atributo(s) da resposta são:
-.http://localhost:65460/evento/{id}</p>
+.http://localhost:65460/crise/{id}</p>
 </div>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
@@ -606,7 +606,7 @@ Content-Length: 243
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">id</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Identificação do evento</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Identificação da crise</p></td>
 </tr>
 </tbody>
 </table>
@@ -615,12 +615,12 @@ Content-Length: 243
 <div class="sect2">
 <h3 id="_gravação">Gravação</h3>
 <div class="paragraph">
-<p>Para gravar um evento podemos utilizar o seguinte exemplo (em <code>curl</code>).:</p>
+<p>Para gravar um crise podemos utilizar o seguinte exemplo (em <code>curl</code>).:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">$ curl 'http://localhost:8080/evento' -i -X POST -H 'Content-Type: application/hal+json' -d '{
-  &quot;descricao&quot; : &quot;Evento de teste&quot;,
+<pre class="CodeRay highlight"><code data-lang="bash">$ curl 'http://localhost:8080/crise' -i -X POST -H 'Content-Type: application/hal+json' -d '{
+  &quot;descricao&quot; : &quot;crise de teste&quot;,
   &quot;categoria&quot; : 0,
   &quot;nome&quot; : &quot;João da Horta&quot;,
   &quot;email&quot; : &quot;joao.horta@gmail.com&quot;,
@@ -640,13 +640,13 @@ Content-Length: 243
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="http">POST /evento HTTP/1.1
+<pre class="CodeRay highlight"><code data-lang="http">POST /crise HTTP/1.1
 Content-Type: application/hal+json
 Host: localhost
 Content-Length: 198
 
 {
-  &quot;descricao&quot; : &quot;Evento de teste&quot;,
+  &quot;descricao&quot; : &quot;crise de teste&quot;,
   &quot;categoria&quot; : 0,
   &quot;nome&quot; : &quot;João da Horta&quot;,
   &quot;email&quot; : &quot;joao.horta@gmail.com&quot;,
@@ -668,7 +668,7 @@ Content-Length: 198
 Content-Type: application/hal+json
 Content-Length: 222
 
-{&quot;descricao&quot;:&quot;Evento de teste&quot;,&quot;categoria&quot;:0,&quot;nome&quot;:&quot;João da Horta&quot;,&quot;email&quot;:&quot;joao.horta@gmail.com&quot;,&quot;telefone&quot;:&quot;(12) 95678-4321&quot;,&quot;latitude&quot;:50.0,&quot;longitude&quot;:50.0,&quot;_links&quot;:{&quot;self&quot;:{&quot;href&quot;:&quot;http://localhost:8080/evento/4&quot;}}}</code></pre>
+{&quot;descricao&quot;:&quot;crise de teste&quot;,&quot;categoria&quot;:0,&quot;nome&quot;:&quot;João da Horta&quot;,&quot;email&quot;:&quot;joao.horta@gmail.com&quot;,&quot;telefone&quot;:&quot;(12) 95678-4321&quot;,&quot;latitude&quot;:50.0,&quot;longitude&quot;:50.0,&quot;_links&quot;:{&quot;self&quot;:{&quot;href&quot;:&quot;http://localhost:8080/crise/4&quot;}}}</code></pre>
 </div>
 </div>
 </div>
@@ -694,37 +694,37 @@ Content-Length: 222
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">descricao</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Descrição do evento</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Descrição da crise</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">categoria</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Null</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Categoria do evento</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Categoria da crise</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">nome</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Nome do informante do evento</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Nome do informante da crise</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">email</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Email do informante do evento</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Email do informante da crise</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">telefone</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Telefone do informante do evento</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Telefone do informante da crise</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">latitude</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Number</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Latitude da localização do informante durante o post do evento</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Latitude da localização do informante durante o post da crise</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">longitude</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Longitude da localização do informante durante o post do evento</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Longitude da localização do informante durante o post da crise</p></td>
 </tr>
 </tbody>
 </table>
@@ -737,7 +737,7 @@ Content-Length: 222
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">$ curl 'http://localhost:8080/evento/1' -i -H 'Accept: application/hal+json'</code></pre>
+<pre class="CodeRay highlight"><code data-lang="bash">$ curl 'http://localhost:8080/crise/1' -i -H 'Accept: application/hal+json'</code></pre>
 </div>
 </div>
 <div class="sect3">
@@ -747,7 +747,7 @@ Content-Length: 222
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="http">GET /evento/1 HTTP/1.1
+<pre class="CodeRay highlight"><code data-lang="http">GET /crise/1 HTTP/1.1
 Accept: application/hal+json
 Host: localhost</code></pre>
 </div>
@@ -764,7 +764,7 @@ Host: localhost</code></pre>
 Content-Type: application/hal+json
 Content-Length: 243
 
-{&quot;descricao&quot;:&quot;Deslizamento na na favela do Paraiso&quot;,&quot;categoria&quot;:0,&quot;nome&quot;:&quot;Ze das Couves&quot;,&quot;email&quot;:&quot;zedascouves@gmail.com&quot;,&quot;telefone&quot;:&quot;(12) 99876-1234&quot;,&quot;latitude&quot;:50.0,&quot;longitude&quot;:50.0,&quot;_links&quot;:{&quot;self&quot;:{&quot;href&quot;:&quot;http://localhost:8080/evento/1&quot;}}}</code></pre>
+{&quot;descricao&quot;:&quot;Deslizamento na na favela do Paraiso&quot;,&quot;categoria&quot;:0,&quot;nome&quot;:&quot;Ze das Couves&quot;,&quot;email&quot;:&quot;zedascouves@gmail.com&quot;,&quot;telefone&quot;:&quot;(12) 99876-1234&quot;,&quot;latitude&quot;:50.0,&quot;longitude&quot;:50.0,&quot;_links&quot;:{&quot;self&quot;:{&quot;href&quot;:&quot;http://localhost:8080/crise/1&quot;}}}</code></pre>
 </div>
 </div>
 </div>
@@ -787,7 +787,7 @@ Content-Length: 243
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">self</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Link para o evento</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Link para o crise</p></td>
 </tr>
 </tbody>
 </table>
@@ -814,42 +814,42 @@ Content-Length: 243
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">descricao</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Descrição do evento</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Descrição da crise</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">categoria</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Null</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Categoria do evento</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Categoria da crise</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">nome</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Nome do informante do evento</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Nome do informante da crise</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">email</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Email do informante do evento</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Email do informante da crise</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">telefone</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Telefone do informante do evento</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Telefone do informante da crise</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">latitude</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Latitude da localização do informante durante o post do evento</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Latitude da localização do informante durante o post da crise</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">longitude</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Longitude da localização do informante durante o post do evento</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Longitude da localização do informante durante o post da crise</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">_links.self.href</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">URI do link para o evento</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">URI do link para o crise</p></td>
 </tr>
 </tbody>
 </table>
@@ -929,7 +929,7 @@ Content-Length: 353
 <div class="sect2">
 <h3 id="_gravação_2">Gravação</h3>
 <div class="paragraph">
-<p>Para gravar um evento podemos utilizar o seguinte exemplo (em <code>curl</code>).:</p>
+<p>Para gravar um crise podemos utilizar o seguinte exemplo (em <code>curl</code>).:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1273,7 +1273,7 @@ Content-Length: 353
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">self</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Link para o evento</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Link para o crise</p></td>
 </tr>
 </tbody>
 </table>

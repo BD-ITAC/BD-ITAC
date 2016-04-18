@@ -13,7 +13,7 @@ import br.ita.bditac.ws.model.CriseResource;
 
 public class CriseClient extends AbstractBaseService {
 
-    private static final String SERVICE_URL = "/evento";
+    private static final String SERVICE_URL = "/crise";
 
     private static final String ID_PARM = "/{id}";
 
@@ -21,14 +21,14 @@ public class CriseClient extends AbstractBaseService {
         super(hostURL);
     }
 
-    public Crise addEvento(Crise crise) {
+    public Crise addCrise(Crise crise) {
 
         HttpEntity envio = new HttpEntity(crise, getRequestHeader());
 
-        ResponseEntity<CriseResource> eventoResponseEntity =  getRestTemplate().postForEntity(getHostURL() + SERVICE_URL, envio, CriseResource.class);
+        ResponseEntity<CriseResource> criseResponseEntity =  getRestTemplate().postForEntity(getHostURL() + SERVICE_URL, envio, CriseResource.class);
 
-        if(eventoResponseEntity.getStatusCode() == HttpStatus.CREATED) {
-            return eventoResponseEntity.getBody().getContent();
+        if(criseResponseEntity.getStatusCode() == HttpStatus.CREATED) {
+            return criseResponseEntity.getBody().getContent();
         }
         else {
             return null;
@@ -36,7 +36,7 @@ public class CriseClient extends AbstractBaseService {
 
     }
 
-    public Crise getEventoById(int id) {
+    public Crise getCriseById(int id) {
 
         Map<String, Integer> params = new HashMap<String, Integer>();
         params.put("id", id);
@@ -44,10 +44,10 @@ public class CriseClient extends AbstractBaseService {
         try {
             HttpEntity envio = new HttpEntity(getResponseHeader());
 
-            ResponseEntity<CriseResource> eventoResponseEntity = getRestTemplate().exchange(getHostURL() + SERVICE_URL + ID_PARM, HttpMethod.GET, envio, CriseResource.class, params);
+            ResponseEntity<CriseResource> criseResponseEntity = getRestTemplate().exchange(getHostURL() + SERVICE_URL + ID_PARM, HttpMethod.GET, envio, CriseResource.class, params);
 
-            if(eventoResponseEntity.getStatusCode() == HttpStatus.OK) {
-                return eventoResponseEntity.getBody().getContent();
+            if(criseResponseEntity.getStatusCode() == HttpStatus.OK) {
+                return criseResponseEntity.getBody().getContent();
             }
         }
         catch(Exception ex) {

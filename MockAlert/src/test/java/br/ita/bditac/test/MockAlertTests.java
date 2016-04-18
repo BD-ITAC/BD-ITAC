@@ -61,11 +61,11 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 
 import br.ita.bditac.app.Application;
 import br.ita.bditac.model.Alerta;
-import br.ita.bditac.model.Evento;
+import br.ita.bditac.model.Crise;
 import br.ita.bditac.model.Indicadores;
 import br.ita.bditac.support.AlertaResource;
 import br.ita.bditac.support.AlertaResources;
-import br.ita.bditac.support.EventoResource;
+import br.ita.bditac.support.CriseResource;
 import br.ita.bditac.support.IndicadoresResource;
 
 /**
@@ -153,17 +153,17 @@ public class MockAlertTests {
      * 
      * == Asserção:
      *
-     * Testa a inclusão de um evento de crise usando o seriço de Alertas.
+     * Testa a inclusão de um crise de crise usando o seriço de Alertas.
      *
      * == Dados:
      *
-     * Uma estrutura de dados contendo o evento.
+     * Uma estrutura de dados contendo o crise.
      *
      * === Estrutura de dados
      *
      * [source,java]
      * --
-     *  Evento eventoRequest = new Evento(
+     *  Crise criseRequest = new Crise(
      *          "Deslizamento na na favela do Paraiso",
      *          0,
      *          "Ze das Couves",
@@ -183,7 +183,7 @@ public class MockAlertTests {
      *
      * [source,java]
      * --
-     *  Evento eventoRequest = new Evento(
+     *  Crise criseRequest = new Crise(
      *          "Deslizamento na na favela do Paraiso",
      *          0,
      *          "Ze das Couves",
@@ -195,10 +195,10 @@ public class MockAlertTests {
      *
      */
     @Test
-    public void test101PostEventoGerarAlerta() throws Exception {
-        URI eventoURI = new URI(getBaseUrl() + "/evento");
+    public void test101PostcriseGerarAlerta() throws Exception {
+        URI criseURI = new URI(getBaseUrl() + "/crise");
 
-        Evento eventoRequest = new Evento(
+        Crise criseRequest = new Crise(
                 "Deslizamento na na favela do Paraiso",
                 0,
                 "Ze das Couves",
@@ -207,17 +207,17 @@ public class MockAlertTests {
                 40.0,
                 50.0);
 
-        ResponseEntity<EventoResource> eventoResponseEntity =  getRestTemplate().postForEntity(eventoURI, new HttpEntity<Evento>(eventoRequest), EventoResource.class);
+        ResponseEntity<CriseResource> criseResponseEntity =  getRestTemplate().postForEntity(criseURI, new HttpEntity<Crise>(criseRequest), CriseResource.class);
 
-        assertThat(eventoResponseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+        assertThat(criseResponseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
 
-        Evento eventoResponse = eventoResponseEntity.getBody().getContent();
+        Crise criseResponse = criseResponseEntity.getBody().getContent();
 
-        assertEquals("Resposta(descricao):'" + eventoResponse.getDescricao() + "' do POST diferente do que foi enviado: '" + eventoRequest.getDescricao() + "'!", eventoResponse.getDescricao(), eventoRequest.getDescricao());
-        assertEquals("Resposta(categoria) do POST diferente do que foi enviado!", eventoResponse.getCategoria(), eventoRequest.getCategoria());
-        assertEquals("Resposta(nome) do POST diferente do que foi enviado!", eventoResponse.getNome(), eventoRequest.getNome());
-        assertEquals("Resposta(email) do POST diferente do que foi enviado!", eventoResponse.getEmail(), eventoRequest.getEmail());
-        assertEquals("Resposta(telefone) do POST diferente do que foi enviado!", eventoResponse.getTelefone(), eventoRequest.getTelefone());        
+        assertEquals("Resposta(descricao):'" + criseResponse.getDescricao() + "' do POST diferente do que foi enviado: '" + criseRequest.getDescricao() + "'!", criseResponse.getDescricao(), criseRequest.getDescricao());
+        assertEquals("Resposta(categoria) do POST diferente do que foi enviado!", criseResponse.getCategoria(), criseRequest.getCategoria());
+        assertEquals("Resposta(nome) do POST diferente do que foi enviado!", criseResponse.getNome(), criseRequest.getNome());
+        assertEquals("Resposta(email) do POST diferente do que foi enviado!", criseResponse.getEmail(), criseRequest.getEmail());
+        assertEquals("Resposta(telefone) do POST diferente do que foi enviado!", criseResponse.getTelefone(), criseRequest.getTelefone());        
     }
 
     /**
@@ -226,11 +226,11 @@ public class MockAlertTests {
      * 
      * == Asserção:
      *
-     * Testa a obtenção de um evento de crise do seriço de Alertas:
+     * Testa a obtenção de um crise de crise do seriço de Alertas:
      *
      * == Dados:
      *
-     * Identificação do evento na requisição.
+     * Identificação da crise na requisição.
      *
      * == Execução:
      *
@@ -238,13 +238,13 @@ public class MockAlertTests {
      *
      * == Resultado esperado:
      *
-     * Uma estrutura de dados com os dados do evento.
+     * Uma estrutura de dados com os dados da crise.
      *
      * === Estrutura de dados
      *
      * [source,java]
      * --
-     *  Evento eventoRequest = new Evento(
+     *  Crise criseRequest = new Crise(
      *          "Deslizamento na na favela do Paraiso",
      *          0,
      *          "Ze das Couves",
@@ -256,19 +256,19 @@ public class MockAlertTests {
      *
      */
     @Test
-    public void test102GetEvento() throws Exception {
-        String eventoURL = getBaseUrl() + "/evento/{id}";
+    public void test102Getcrise() throws Exception {
+        String criseURL = getBaseUrl() + "/crise/{id}";
 
         Map<String, Integer> params = new HashMap<String, Integer>();
         params.put("id", 1);
 
-        ResponseEntity<EventoResource> eventoResponseEntity = getRestTemplate().getForEntity(eventoURL, EventoResource.class, params);
+        ResponseEntity<CriseResource> criseResponseEntity = getRestTemplate().getForEntity(criseURL, CriseResource.class, params);
 
-        assertThat(eventoResponseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(criseResponseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
 
-        Evento eventoResponse = eventoResponseEntity.getBody().getContent();
+        Crise criseResponse = criseResponseEntity.getBody().getContent();
 
-        Evento eventoRequest = new Evento(
+        Crise criseRequest = new Crise(
                 "Deslizamento na na favela do Paraiso",
                 0,
                 "Ze das Couves",
@@ -277,13 +277,13 @@ public class MockAlertTests {
                 40.0,
                 50.0);
 
-        assertEquals("Resposta(descricao):'" + eventoResponse.getDescricao() + "' do POST diferente do que foi enviado: '" + eventoRequest.getDescricao() + "'!", eventoResponse.getDescricao(), eventoRequest.getDescricao());
-        assertEquals("Resposta(categoria) do POST diferente do que foi enviado!", eventoResponse.getCategoria(), eventoRequest.getCategoria());
-        assertEquals("Resposta(nome) do POST diferente do que foi enviado!", eventoResponse.getNome(), eventoRequest.getNome());
-        assertEquals("Resposta(email) do POST diferente do que foi enviado!", eventoResponse.getEmail(), eventoRequest.getEmail());
-        assertEquals("Resposta(telefone) do POST diferente do que foi enviado!", eventoResponse.getTelefone(), eventoRequest.getTelefone());
-        assertEquals("Resposta(latitude) do POST diferente do que foi enviado!", eventoResponse.getLatitude(), eventoRequest.getLatitude(), DELTA);
-        assertEquals("Resposta(longitude) do POST diferente do que foi enviado!", eventoResponse.getLongitude(), eventoRequest.getLongitude(), DELTA);
+        assertEquals("Resposta(descricao):'" + criseResponse.getDescricao() + "' do POST diferente do que foi enviado: '" + criseRequest.getDescricao() + "'!", criseResponse.getDescricao(), criseRequest.getDescricao());
+        assertEquals("Resposta(categoria) do POST diferente do que foi enviado!", criseResponse.getCategoria(), criseRequest.getCategoria());
+        assertEquals("Resposta(nome) do POST diferente do que foi enviado!", criseResponse.getNome(), criseRequest.getNome());
+        assertEquals("Resposta(email) do POST diferente do que foi enviado!", criseResponse.getEmail(), criseRequest.getEmail());
+        assertEquals("Resposta(telefone) do POST diferente do que foi enviado!", criseResponse.getTelefone(), criseRequest.getTelefone());
+        assertEquals("Resposta(latitude) do POST diferente do que foi enviado!", criseResponse.getLatitude(), criseRequest.getLatitude(), DELTA);
+        assertEquals("Resposta(longitude) do POST diferente do que foi enviado!", criseResponse.getLongitude(), criseRequest.getLongitude(), DELTA);
     }
 
     /**
@@ -292,11 +292,11 @@ public class MockAlertTests {
      * 
      * == Asserção:
      *
-     * Testa a inclusão de um evento de crise usando o seriço de Alertas:
+     * Testa a inclusão de um crise de crise usando o seriço de Alertas:
      *
      * == Dados:
      *
-     * Identificação do evento na requisição.
+     * Identificação da crise na requisição.
      *
      * == Execução:
      *
@@ -308,15 +308,15 @@ public class MockAlertTests {
      *
      */
     @Test
-    public void test103GetEventoInexistente() throws Exception {
-        String eventoURL = getBaseUrl() + "/evento/{id}";
+    public void test103GetcriseInexistente() throws Exception {
+        String criseURL = getBaseUrl() + "/crise/{id}";
 
         Map<String, Integer> params = new HashMap<String, Integer>();
         params.put("id", 100);
 
-        ResponseEntity<EventoResource> eventoResponseEntity = getRestTemplate().getForEntity(eventoURL, EventoResource.class, params);
+        ResponseEntity<CriseResource> criseResponseEntity = getRestTemplate().getForEntity(criseURL, CriseResource.class, params);
 
-        assertThat(eventoResponseEntity.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+        assertThat(criseResponseEntity.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 
     /**
@@ -728,20 +728,20 @@ public class MockAlertTests {
      * 
      * == Asserção:
      *
-     * Testa a inclusão de um evento de crise usando o seriço de Alertas.
-     * Verificar se foi gerado um alerta com base nos dados do evento recém inserido.
+     * Testa a inclusão de um crise de crise usando o seriço de Alertas.
+     * Verificar se foi gerado um alerta com base nos dados da crise recém inserido.
      * Observar que em casos reais, existe uma demora significativa entre o cadastramento
-     * do evento e a geração do alerta de crise.
+     * da crise e a geração do alerta de crise.
      *
      * == Dados:
      *
-     * Uma estrutura de dados contendo o evento.
+     * Uma estrutura de dados contendo o crise.
      *
      * === Estrutura de dados
      *
      * [source,java]
      * --
-     *  Evento eventoRequest = new Evento(
+     *  Crise criseRequest = new Crise(
      *          "Deslizamento na na favela do Paraiso",
      *          0,
      *          "Ze das Couves",
@@ -761,7 +761,7 @@ public class MockAlertTests {
      *
      * [source,java]
      * --
-     *  Evento eventoRequest = new Evento(
+     *  Crise criseRequest = new Crise(
      *          "Deslizamento na na favela do Paraiso",
      *          0,
      *          "Ze das Couves",
@@ -773,10 +773,10 @@ public class MockAlertTests {
      *
      */
    @Test
-   public void test111PostEventoGerarAlerta() throws Exception {
-       URI eventoURI = new URI(getBaseUrl() + "/evento");
+   public void test111PostcriseGerarAlerta() throws Exception {
+       URI criseURI = new URI(getBaseUrl() + "/crise");
 
-       Evento eventoRequest = new Evento(
+       Crise criseRequest = new Crise(
                "Deslizamento na na favela do Paraiso",
                0,
                "Ze das Couves",
@@ -785,17 +785,17 @@ public class MockAlertTests {
                40.0,
                50.0);
 
-       ResponseEntity<EventoResource> eventoResponseEntity =  getRestTemplate().postForEntity(eventoURI, new HttpEntity<Evento>(eventoRequest), EventoResource.class);
+       ResponseEntity<CriseResource> criseResponseEntity =  getRestTemplate().postForEntity(criseURI, new HttpEntity<Crise>(criseRequest), CriseResource.class);
 
-       assertThat(eventoResponseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+       assertThat(criseResponseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
 
-       Evento eventoResponse = eventoResponseEntity.getBody().getContent();
+       Crise criseResponse = criseResponseEntity.getBody().getContent();
 
-       assertEquals("Resposta(descricao):'" + eventoResponse.getDescricao() + "' do POST diferente do que foi enviado: '" + eventoRequest.getDescricao() + "'!", eventoResponse.getDescricao(), eventoRequest.getDescricao());
-       assertEquals("Resposta(categoria) do POST diferente do que foi enviado!", eventoResponse.getCategoria(), eventoRequest.getCategoria());
-       assertEquals("Resposta(nome) do POST diferente do que foi enviado!", eventoResponse.getNome(), eventoRequest.getNome());
-       assertEquals("Resposta(email) do POST diferente do que foi enviado!", eventoResponse.getEmail(), eventoRequest.getEmail());
-       assertEquals("Resposta(telefone) do POST diferente do que foi enviado!", eventoResponse.getTelefone(), eventoRequest.getTelefone());
+       assertEquals("Resposta(descricao):'" + criseResponse.getDescricao() + "' do POST diferente do que foi enviado: '" + criseRequest.getDescricao() + "'!", criseResponse.getDescricao(), criseRequest.getDescricao());
+       assertEquals("Resposta(categoria) do POST diferente do que foi enviado!", criseResponse.getCategoria(), criseRequest.getCategoria());
+       assertEquals("Resposta(nome) do POST diferente do que foi enviado!", criseResponse.getNome(), criseRequest.getNome());
+       assertEquals("Resposta(email) do POST diferente do que foi enviado!", criseResponse.getEmail(), criseRequest.getEmail());
+       assertEquals("Resposta(telefone) do POST diferente do que foi enviado!", criseResponse.getTelefone(), criseRequest.getTelefone());
        
        String alertaURL = getBaseUrl() + "/alerta/latitude/{latitude}/longitude/{longitude}/raio/{raio}";
 
@@ -806,14 +806,14 @@ public class MockAlertTests {
 
        List<Alerta> alertas = getRestTemplate().getForObject(alertaURL, AlertaResources.class, params).unwrap();
 
-       assertEquals("Resposta(latitude)'" + alertas.get(0).getOrigemLatitude() + "' do POST diferente do esperado!", alertas.get(0).getOrigemLatitude(), eventoRequest.getLatitude(), DELTA);
-       assertEquals("Resposta(latitude)'" + alertas.get(0).getOrigemLongitude() + "' do POST diferente do esperado!", alertas.get(0).getOrigemLongitude(), eventoRequest.getLongitude(), DELTA);
+       assertEquals("Resposta(latitude)'" + alertas.get(0).getOrigemLatitude() + "' do POST diferente do esperado!", alertas.get(0).getOrigemLatitude(), criseRequest.getLatitude(), DELTA);
+       assertEquals("Resposta(latitude)'" + alertas.get(0).getOrigemLongitude() + "' do POST diferente do esperado!", alertas.get(0).getOrigemLongitude(), criseRequest.getLongitude(), DELTA);
    }
    
     @Test
-    public void test901PostEvento() throws Exception {
-        Evento evento = new Evento(
-            "Evento de teste",
+    public void test901Postcrise() throws Exception {
+        Crise crise = new Crise(
+            "Crise de teste",
             0,
             "João da Horta",
             "joao.horta@gmail.com",
@@ -823,44 +823,44 @@ public class MockAlertTests {
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
         ObjectWriter writer = mapper.writer().withDefaultPrettyPrinter();
-        String eventoJson = writer.writeValueAsString(evento);
+        String criseJson = writer.writeValueAsString(crise);
 
-        this.mvc.perform(post(getBaseUrl() + "/evento")
+        this.mvc.perform(post(getBaseUrl() + "/crise")
             .contentType(MediaTypes.HAL_JSON_VALUE)
-            .content(eventoJson))
+            .content(criseJson))
             .andExpect(status().isCreated())
-            .andDo(document("evento/post",
+            .andDo(document("crise/post",
                 requestFields(
-                    fieldWithPath("descricao").type(JsonFieldType.STRING).description("Descrição do evento"),
-                    fieldWithPath("categoria").type(JsonFieldType.NULL).description("Categoria do evento"),
-                    fieldWithPath("nome").type(JsonFieldType.STRING).description("Nome do informante do evento"),
-                    fieldWithPath("email").type(JsonFieldType.STRING).description("Email do informante do evento"),
-                    fieldWithPath("telefone").type(JsonFieldType.STRING).description("Telefone do informante do evento"),
-                    fieldWithPath("latitude").type(JsonFieldType.NUMBER).description("Latitude da localização do informante durante o post do evento"),
-                    fieldWithPath("longitude").type(JsonFieldType.STRING).description("Longitude da localização do informante durante o post do evento"))));
+                    fieldWithPath("descricao").type(JsonFieldType.STRING).description("Descrição da crise"),
+                    fieldWithPath("categoria").type(JsonFieldType.NULL).description("Categoria da crise"),
+                    fieldWithPath("nome").type(JsonFieldType.STRING).description("Nome do informante da crise"),
+                    fieldWithPath("email").type(JsonFieldType.STRING).description("Email do informante da crise"),
+                    fieldWithPath("telefone").type(JsonFieldType.STRING).description("Telefone do informante da crise"),
+                    fieldWithPath("latitude").type(JsonFieldType.NUMBER).description("Latitude da localização do informante durante o post da crise"),
+                    fieldWithPath("longitude").type(JsonFieldType.STRING).description("Longitude da localização do informante durante o post da crise"))));
     }
 
     @Test
-    public void test902GetEvento() throws Exception {
-        this.mvc.perform(get(getBaseUrl() + "/evento/{id}", 1))
+    public void test902Getcrise() throws Exception {
+        this.mvc.perform(get(getBaseUrl() + "/crise/{id}", 1))
             .andExpect(status().isOk())
-            .andDo(document("evento/locations",
-                pathParameters(parameterWithName("id").description("Identificação do evento"))));
-        this.mvc.perform(get(getBaseUrl() + "/evento/1")
+            .andDo(document("crise/locations",
+                pathParameters(parameterWithName("id").description("Identificação da crise"))));
+        this.mvc.perform(get(getBaseUrl() + "/crise/1")
             .accept(MediaTypes.HAL_JSON_VALUE))
             .andExpect(status().isOk())
-            .andDo(document("evento/get",
+            .andDo(document("crise/get",
                 responseFields(
-                    fieldWithPath("descricao").type(JsonFieldType.STRING).description("Descrição do evento"),
-                    fieldWithPath("categoria").type(JsonFieldType.NULL).description("Categoria do evento"),
-                    fieldWithPath("nome").type(JsonFieldType.STRING).description("Nome do informante do evento"),
-                    fieldWithPath("email").type(JsonFieldType.STRING).description("Email do informante do evento"),
-                    fieldWithPath("telefone").type(JsonFieldType.STRING).description("Telefone do informante do evento"),
-                    fieldWithPath("latitude").type(JsonFieldType.STRING).description("Latitude da localização do informante durante o post do evento"),
-                    fieldWithPath("longitude").type(JsonFieldType.STRING).description("Longitude da localização do informante durante o post do evento"),
-                    fieldWithPath("_links.self.href").type(JsonFieldType.STRING).description("URI do link para o evento")),
+                    fieldWithPath("descricao").type(JsonFieldType.STRING).description("Descrição da crise"),
+                    fieldWithPath("categoria").type(JsonFieldType.NULL).description("Categoria da crise"),
+                    fieldWithPath("nome").type(JsonFieldType.STRING).description("Nome do informante da crise"),
+                    fieldWithPath("email").type(JsonFieldType.STRING).description("Email do informante da crise"),
+                    fieldWithPath("telefone").type(JsonFieldType.STRING).description("Telefone do informante da crise"),
+                    fieldWithPath("latitude").type(JsonFieldType.STRING).description("Latitude da localização do informante durante o post da crise"),
+                    fieldWithPath("longitude").type(JsonFieldType.STRING).description("Longitude da localização do informante durante o post da crise"),
+                    fieldWithPath("_links.self.href").type(JsonFieldType.STRING).description("URI do link para o crise")),
                 links(
-                    linkWithRel("self").description("Link para o evento"))));
+                    linkWithRel("self").description("Link para o crise"))));
     }
 
     @Test
@@ -916,7 +916,7 @@ public class MockAlertTests {
                     fieldWithPath("origemRaioKms").type(JsonFieldType.ARRAY).description("Área de abrangência do alerta em Kms"),
                     fieldWithPath("_links.self.href").type(JsonFieldType.STRING).description("URI do link para o alerta")),
                 links(
-                    linkWithRel("self").description("Link para o evento"))));
+                    linkWithRel("self").description("Link para o crise"))));
     }
 
     @Test

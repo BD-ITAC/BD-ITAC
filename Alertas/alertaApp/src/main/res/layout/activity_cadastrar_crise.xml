@@ -17,7 +17,7 @@
         <TextView
             android:layout_width ="wrap_content"
             android:layout_height ="wrap_content"
-            android:text ="BD-ITAC: Cadastro de Crises ou Eventos" />
+            android:text ="BD-ITAC: Cadastro de Crises" />
 
         <Spinner
             android:id ="@+id/categoria"
@@ -30,7 +30,7 @@
             android:layout_width ="match_parent"
             android:layout_height ="wrap_content"
             android:layout_marginBottom="16dp"
-            android:hint ="Descreva o Evento ou Crise"
+            android:hint ="Descreva a Crise"
             android:inputType ="textMultiLine"
             android:lines="10"
             android:minLines="5"

@@ -8,10 +8,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  * 
  * @author BD-ITAC
  * 
- * A classe Evento contém os dados necessários para permitir o cadastramento de um evento ad-hoc
+ * A classe Crise contém os dados necessários para permitir o cadastramento de um crise ad-hoc
  *
  */
-public class Evento implements Serializable {
+public class Crise implements Serializable {
 
     private static final long serialVersionUID = 1L;
     
@@ -30,7 +30,7 @@ public class Evento implements Serializable {
     private String descricao;
     
     /**
-     * Indica o tipo de evento:
+     * Indica o tipo de crise:
      * - Enchente
      * - Incêndio
      * - Deslizamento (de terra ou pedras em encostas, margens de rio, lagos ou mar, etc.)
@@ -52,7 +52,7 @@ public class Evento implements Serializable {
     
     private double longitude;
     
-    public Evento() {
+    public Crise() {
         this.id = 0;
         
         this.descricao = "";
@@ -64,7 +64,7 @@ public class Evento implements Serializable {
         this.longitude = 0D;
     }
     
-    public Evento(
+    public Crise(
             String descricao,
             int categoria,
             String nome,

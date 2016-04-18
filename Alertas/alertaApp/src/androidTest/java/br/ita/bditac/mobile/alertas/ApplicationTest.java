@@ -20,10 +20,10 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 public class ApplicationTest {
 
     @Rule
-    public ActivityTestRule<CadastrarCriseActivity> cadastrarEventoActivityActivityTestRule = new ActivityTestRule<CadastrarCriseActivity>(CadastrarCriseActivity.class);
+    public ActivityTestRule<CadastrarCriseActivity> cadastrarCriseActivityActivityTestRule = new ActivityTestRule<CadastrarCriseActivity>(CadastrarCriseActivity.class);
 
     @Test
-    public void test01CadastrarEvento() {
+    public void test01CadastrarCrise() {
         onView(withId(R.id.categoria)).perform(click());
     }
 

@@ -33,14 +33,14 @@ public class MainActivity extends AppCompatActivity {
 
     // TODO: Fazer uma função que generaliza as funções start
 
-    public void startCadastrarEvento(View view) {
-        Intent itentCadastrarEvento = new Intent(this, CadastrarCriseActivity.class);
-        startActivity(itentCadastrarEvento);
+    public void startCadastrarCrise(View view) {
+        Intent itentCadastrarCrise = new Intent(this, CadastrarCriseActivity.class);
+        startActivity(itentCadastrarCrise);
     }
 
-    public void startConsultarEvento(View view) {
-        Intent itentConsultarEvento = new Intent(this, ConsultaAlertasActivity.class);
-        startActivity(itentConsultarEvento);
+    public void startConsultarCrise(View view) {
+        Intent itentConsultarCrise = new Intent(this, ConsultaAlertasActivity.class);
+        startActivity(itentConsultarCrise);
     }
 
     public void startConsultarIndicador(View view) {

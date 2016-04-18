@@ -16,9 +16,9 @@ public class AlertaDAO {
     
     private int _idAlerta;
     
-    private Map<Integer, Evento> eventos = new HashMap<Integer, Evento>();
+    private Map<Integer, Crise> crises = new HashMap<Integer, Crise>();
     
-    private int _idEvento;
+    private int _idcrise;
 
     private Map<Integer, Message> messages = new HashMap<Integer, Message>();
     
@@ -26,7 +26,7 @@ public class AlertaDAO {
     
     public AlertaDAO() {
         _idAlerta = 0;
-        _idEvento = 0;
+        _idcrise = 0;
 
         messages.put(1, new Message(1, Message.Type.INFO, "001", "Ok", "Everything is all right!"));
         messages.put(2, new Message(2, Message.Type.ERROR, "999", "Error", "Something went very badly"));
@@ -83,27 +83,27 @@ public class AlertaDAO {
     	alertas.remove(id);
     }
     
-    public Evento adicionarEvento(Evento eventoRequest) {
-        Evento novoEvento = new Evento();
+    public Crise adicionarcrise(Crise criseRequest) {
+        Crise novaCrise = new Crise();
         
-        novoEvento.setDescricao(eventoRequest.getDescricao());
-        novoEvento.setCategoria(eventoRequest.getCategoria());
-        novoEvento.setNome(eventoRequest.getNome());
-        novoEvento.setEmail(eventoRequest.getEmail());
-        novoEvento.setTelefone(eventoRequest.getTelefone());
-        novoEvento.setLatitude(eventoRequest.getLatitude());
-        novoEvento.setLongitude(eventoRequest.getLongitude());
-        novoEvento.setId(++_idEvento);
+        novaCrise.setDescricao(criseRequest.getDescricao());
+        novaCrise.setCategoria(criseRequest.getCategoria());
+        novaCrise.setNome(criseRequest.getNome());
+        novaCrise.setEmail(criseRequest.getEmail());
+        novaCrise.setTelefone(criseRequest.getTelefone());
+        novaCrise.setLatitude(criseRequest.getLatitude());
+        novaCrise.setLongitude(criseRequest.getLongitude());
+        novaCrise.setId(++_idcrise);
         
-        eventos.put(novoEvento.getId(), novoEvento);
+        crises.put(novaCrise.getId(), novaCrise);
         
-        return novoEvento;
+        return novaCrise;
     }
     
-    public Evento obterEvento(int id) {
-        Evento evento = eventos.get(id);
+    public Crise obtercrise(int id) {
+        Crise crise = crises.get(id);
         
-        return evento;
+        return crise;
     }
     
     public Indicadores adicionarIndicador(String nome, int valor) {

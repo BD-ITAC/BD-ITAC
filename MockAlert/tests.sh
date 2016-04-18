@@ -28,11 +28,11 @@ curl -i -H "Content-Type: application/hal+json" "http://localhost:8080/alerta/la
 
 curl -i -H "Content-Type: application/hal+json" "http://localhost:8080/alerta/1" -X GET
 
-curl -i -H "Content-Type: application/hal+json" "http://localhost:8080/evento" -X POST -d '{"descricao": "Deslizamento na favela do Paraiso", "categoria": 0, "nome": "Ze das Couves", "email": "zedascouves@gmail.com", "telefone": "(12) 99876-1234", "latitude": 50.0, "longitude": 50.0}'
+curl -i -H "Content-Type: application/hal+json" "http://localhost:8080/crise" -X POST -d '{"descricao": "Deslizamento na favela do Paraiso", "categoria": 0, "nome": "Ze das Couves", "email": "zedascouves@gmail.com", "telefone": "(12) 99876-1234", "latitude": 50.0, "longitude": 50.0}'
 
-curl -i -H "Content-Type: application/hal+json" "http://localhost:8080/evento/1" -X GET
+curl -i -H "Content-Type: application/hal+json" "http://localhost:8080/crise/1" -X GET
 
-curl -i -H "Content-Type: application/hal+json" "http://localhost:8080/evento/2" -X GET
+curl -i -H "Content-Type: application/hal+json" "http://localhost:8080/crise/2" -X GET
 
 curl -i -H "Content-Type: application/hal+json" "http://localhost:8080/indicadores" -X POST -d '{"indicadores": { "Cadastrados":31, "Finalizados":19, "Em andamento":6 } }'
 

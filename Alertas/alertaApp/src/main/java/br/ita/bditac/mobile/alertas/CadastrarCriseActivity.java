@@ -42,7 +42,7 @@ public class CadastrarCriseActivity extends AppCompatActivity {
 
     private LocationListener locationListener;
 
-    private class SalvarEventoTask extends AsyncTask<Crise, Void, Void> {
+    private class SalvarCriseTask extends AsyncTask<Crise, Void, Void> {
 
         private Exception exception;
 
@@ -53,7 +53,7 @@ public class CadastrarCriseActivity extends AppCompatActivity {
                 CriseClient criseClient= new CriseClient(alertasUrl);
 
                 for(Crise crise : crises) {
-                    criseClient.addEvento(crise);
+                    criseClient.addCrise(crise);
                 }
             }
             catch(Exception ex) {
@@ -78,7 +78,7 @@ public class CadastrarCriseActivity extends AppCompatActivity {
 
     }
 
-    private class EventoLocationListener implements LocationListener {
+    private class CriseLocationListener implements LocationListener {
 
         @Override
         public void onLocationChanged(Location location) {
@@ -237,7 +237,7 @@ public class CadastrarCriseActivity extends AppCompatActivity {
 
                 Log.i(this.getClass().getSimpleName(), "Location service registered.");
 
-                locationListener = new EventoLocationListener();
+                locationListener = new CriseLocationListener();
                 locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
 
                 currentLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
@@ -267,7 +267,7 @@ public class CadastrarCriseActivity extends AppCompatActivity {
             crise.setLatitude(currentLocation.getLatitude());
             crise.setLongitude(currentLocation.getLongitude());
 
-            new SalvarEventoTask().execute(crise);
+            new SalvarCriseTask().execute(crise);
         }
 
     }

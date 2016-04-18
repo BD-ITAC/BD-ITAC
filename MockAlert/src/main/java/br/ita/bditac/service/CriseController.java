@@ -19,18 +19,18 @@ import org.springframework.web.bind.annotation.RestController;
 import br.ita.bditac.model.Alerta;
 import br.ita.bditac.model.AlertaDAO;
 import br.ita.bditac.model.Categorias;
-import br.ita.bditac.model.Evento;
-import br.ita.bditac.support.EventoResource;
-import br.ita.bditac.support.EventoResourceAssembler;
+import br.ita.bditac.model.Crise;
+import br.ita.bditac.support.CriseResource;
+import br.ita.bditac.support.CriseResourceAssembler;
 import br.ita.bditac.support.MessageResource;
 import br.ita.bditac.support.MessageResourceAssembler;
 import br.ita.bditac.support.ReverseEnum;
 
 @RestController
-@ExposesResourceFor(Evento.class)
+@ExposesResourceFor(Crise.class)
 @EnableHypermediaSupport(type = { HypermediaType.HAL })
-@RequestMapping("/evento")
-public class EventoController {
+@RequestMapping("/crise")
+public class CriseController {
     
     public interface Request {
         
@@ -39,7 +39,7 @@ public class EventoController {
     }
     
     @Autowired
-    private EventoResourceAssembler resourceAssembler;
+    private CriseResourceAssembler resourceAssembler;
     
     @Autowired
     private MessageResourceAssembler messageResourceAssembler;
@@ -48,39 +48,39 @@ public class EventoController {
     private AlertaDAO service;
     
     @RequestMapping(method = RequestMethod.POST, consumes = { MediaTypes.HAL_JSON_VALUE })
-    public ResponseEntity<EventoResource> adicionar(@RequestBody Evento body) {
-        Evento evento = service.adicionarEvento(body);
+    public ResponseEntity<CriseResource> adicionar(@RequestBody Crise body) {
+        Crise crise = service.adicionarcrise(body);
         
-        // TODO - Simulação do gerenciamento de crises - o processo que torna o cadastramento de evento num alerta
+        // TODO - Simulação do gerenciamento de crises - o processo que torna o cadastramento de crise num alerta
         Alerta alerta = new Alerta();
         ReverseEnum<Categorias> reverseCategoria = new ReverseEnum<>(Categorias.class);
-        alerta.setDescricaoResumida(reverseCategoria.get(evento.getCategoria()).name());
-        alerta.setDescricaoCompleta(evento.getDescricao());
+        alerta.setDescricaoResumida(reverseCategoria.get(crise.getCategoria()).name());
+        alerta.setDescricaoCompleta(crise.getDescricao());
         // TODO - Sala de gerenciamento de crises determina os fatores de risco
         alerta.setFatorRiscoHumano(5);
         alerta.setFatorRiscoMaterial(5);
-        alerta.setCategoriaAlerta(evento.getCategoria());
-        alerta.setOrigemLatitude(evento.getLatitude());
-        alerta.setOrigemLongitude(evento.getLongitude());
-        // TODO - Sala de gerenciamento de crises determina a área de abrangência do evento
+        alerta.setCategoriaAlerta(crise.getCategoria());
+        alerta.setOrigemLatitude(crise.getLatitude());
+        alerta.setOrigemLongitude(crise.getLongitude());
+        // TODO - Sala de gerenciamento de crises determina a área de abrangência da crise
         alerta.setOrigemRaioKms(10);
         service.adicionarAlerta(alerta);
         
-        EventoResource resource = resourceAssembler.toResource(evento);
+        CriseResource resource = resourceAssembler.toResource(crise);
         
-        return new ResponseEntity<EventoResource>(resource, HttpStatus.CREATED);
+        return new ResponseEntity<CriseResource>(resource, HttpStatus.CREATED);
     }
 
     @RequestMapping(method = RequestMethod.GET, produces = { MediaTypes.HAL_JSON_VALUE }, value = Request.ID)
-    public ResponseEntity<EventoResource> obter(@PathVariable("id") int id) {
-        Evento evento = service.obterEvento(id);
-        if(evento == null) {
-            return new ResponseEntity<EventoResource>(HttpStatus.NOT_FOUND);
+    public ResponseEntity<CriseResource> obter(@PathVariable("id") int id) {
+        Crise crise = service.obtercrise(id);
+        if(crise == null) {
+            return new ResponseEntity<CriseResource>(HttpStatus.NOT_FOUND);
         }
         else {
-            EventoResource resource = resourceAssembler.toResource(evento);
+            CriseResource resource = resourceAssembler.toResource(crise);
             
-            return new ResponseEntity<EventoResource>(resource, HttpStatus.OK);
+            return new ResponseEntity<CriseResource>(resource, HttpStatus.OK);
         }
     }
     

@@ -22,18 +22,18 @@ public class CriseTests extends TestCase {
      *
      * == Asserção:
      *
-     * Testa a inclusão de um evento de crise usando o seriço de Alertas.
+     * Testa a inclusão de um crise de crise usando o seriço de Alertas.
      *
      * == Dados:
      *
-     * Uma estrutura de dados contendo o evento.
+     * Uma estrutura de dados contendo o crise.
      *
      * === Estrutura de dados
      *
      * [source,json]
      * --
      *      {
-     *          "evento" : {
+     *          "crise" : {
      *          "descricao" : "Deslizamento na na favela do Paraiso",
      *          "categoria" : 0,
      *          "nome" : "Ze das Couves",
@@ -58,7 +58,7 @@ public class CriseTests extends TestCase {
      * [source,json]
      * --
      *      {
-     *          "evento" : {
+     *          "crise" : {
      *          "descricao" : "Deslizamento na na favela do Paraiso",
      *          "categoria" : 0,
      *          "nome" : "Ze das Couves",
@@ -72,7 +72,7 @@ public class CriseTests extends TestCase {
      *
      */
     @Test
-    public void test01PostEvento() {
+    public void test01PostCrise() {
         CriseClient criseClient= new CriseClient(HOST_URL);
         Crise criseNova= new Crise(
                 "Deslizamento na favela do Paraiso",
@@ -82,7 +82,7 @@ public class CriseTests extends TestCase {
                 "(12) 99876-1234",
                 -25.0D,
                 -45.0D);
-        Crise criseRetorno= criseClient.addEvento(criseNova);
+        Crise criseRetorno= criseClient.addCrise(criseNova);
         assertNotNull(criseRetorno);
         assertEquals("Resposta(descricao):'" + criseRetorno.getDescricao() + "' do POST diferente do que foi enviado: '" + criseNova.getDescricao() + "'!", criseRetorno.getDescricao(), criseNova.getDescricao());
     }
@@ -93,11 +93,11 @@ public class CriseTests extends TestCase {
      *
      * == Asserção:
      *
-     * Testa a obtenção de um evento de crise do seriço de Alertas:
+     * Testa a obtenção de um crise de crise do seriço de Alertas:
      *
      * == Dados:
      *
-     * Identificação do evento na requisição.
+     * Identificação do crise na requisição.
      *
      * == Execução:
      *
@@ -105,14 +105,14 @@ public class CriseTests extends TestCase {
      *
      * == Resultado esperado:
      *
-     * Uma estrutura de dados com os dados do evento.
+     * Uma estrutura de dados com os dados do crise.
      *
      * === Estrutura de dados
      *
      [source,json]
      * --
      *      {
-     *          "evento" : {
+     *          "crise" : {
      *          "descricao" : "Deslizamento na na favela do Paraiso",
      *          "categoria" : 0,
      *          "nome" : "Ze das Couves",
@@ -126,9 +126,9 @@ public class CriseTests extends TestCase {
      *
      */
     @Test
-    public void test02GetEventoById() {
+    public void test02GetCriseById() {
         CriseClient criseClient= new CriseClient(HOST_URL);
-        Crise crise= criseClient.getEventoById(1);
+        Crise crise= criseClient.getCriseById(1);
         assertNotNull(crise);
         assertEquals("Resposta(descricao):'" + crise.getDescricao() + "' do POST diferente do que foi enviado!", crise.getDescricao(), "Deslizamento na favela do Paraiso");
     }
@@ -139,11 +139,11 @@ public class CriseTests extends TestCase {
      *
      * == Asserção:
      *
-     * Testa a inclusão de um evento de crise usando o seriço de Alertas:
+     * Testa a inclusão de um crise de crise usando o seriço de Alertas:
      *
      * == Dados:
      *
-     * Identificação do evento na requisição.
+     * Identificação do crise na requisição.
      *
      * == Execução:
      *
@@ -155,9 +155,9 @@ public class CriseTests extends TestCase {
      *
      */
     @Test
-    public void test03GetEventoByIdInexistente() {
+    public void test03GetCriseByIdInexistente() {
         CriseClient criseClient= new CriseClient(HOST_URL);
-        Crise crise= criseClient.getEventoById(100);
+        Crise crise= criseClient.getCriseById(100);
         assertNull(crise);
     }
     
