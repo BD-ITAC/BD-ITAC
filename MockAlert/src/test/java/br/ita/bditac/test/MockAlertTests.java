@@ -377,8 +377,6 @@ public class MockAlertTests {
         Alerta alertaRequest = new Alerta(
                 "Alerta de deslizamento",
                 "Perigo de deslizamento na altura do Km 20 da rodovia Tamoios, pista Sao Jose dos Campos/Litoral",
-                5,
-                5,
                 0,
                 40.0,
                 50.0,
@@ -495,8 +493,6 @@ public class MockAlertTests {
         Alerta alertaRequest = new Alerta(
                 "Alagamento",
                 "Deslizamento na na favela do Paraiso",
-                5,
-                5,
                 0,
                 40.0,
                 50.0,
@@ -864,8 +860,6 @@ public class MockAlertTests {
         Alerta alerta = new Alerta(
             "Alerta de teste",
             "Teste de alerta para verificar a funcionalidade do sistema",
-            5,
-            5,
             0,
             40.0D,
             50.0D,

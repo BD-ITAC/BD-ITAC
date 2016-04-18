@@ -82,8 +82,6 @@ public class Alerta implements Serializable {
     public Alerta(
             String descricaoResumida, 
             String descricaoCompleta, 
-            int fatorRiscoHumano, 
-            int fatorRiscoMaterial, 
             int categoriaAlerta, 
             double origemLatitude, 
             double origemLongitude, 
