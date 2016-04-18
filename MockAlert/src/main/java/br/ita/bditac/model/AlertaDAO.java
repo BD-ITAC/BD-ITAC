@@ -33,14 +33,15 @@ public class AlertaDAO {
     }
 
     public Alerta adicionarAlerta(Alerta alerta) {
-        Alerta novoAlerta = new Alerta();
+        Alerta novoAlerta = new Alerta(
+        		alerta.getTimestamp(),
+        		alerta.getDescricaoResumida(),
+        		alerta.getDescricaoCompleta(),
+        		alerta.getCategoriaAlerta(),
+        		alerta.getOrigemLatitude(),
+        		alerta.getOrigemLongitude(),
+        		alerta.getOrigemRaioKms());
         
-        novoAlerta.setDescricaoResumida(alerta.getDescricaoResumida());
-        novoAlerta.setDescricaoCompleta(alerta.getDescricaoCompleta());
-        novoAlerta.setCategoriaAlerta(alerta.getCategoriaAlerta());
-        novoAlerta.setOrigemLatitude(alerta.getOrigemLatitude());
-        novoAlerta.setOrigemLongitude(alerta.getOrigemLongitude());
-        novoAlerta.setOrigemRaioKms(alerta.getOrigemRaioKms());
         novoAlerta.setId(++_idAlerta);
         
         alertas.put(novoAlerta.getId(),  novoAlerta);
@@ -82,15 +83,15 @@ public class AlertaDAO {
     }
     
     public Crise adicionarcrise(Crise criseRequest) {
-        Crise novaCrise = new Crise();
-        
-        novaCrise.setDescricao(criseRequest.getDescricao());
-        novaCrise.setCategoria(criseRequest.getCategoria());
-        novaCrise.setNome(criseRequest.getNome());
-        novaCrise.setEmail(criseRequest.getEmail());
-        novaCrise.setTelefone(criseRequest.getTelefone());
-        novaCrise.setLatitude(criseRequest.getLatitude());
-        novaCrise.setLongitude(criseRequest.getLongitude());
+        Crise novaCrise = new Crise(
+        		criseRequest.getDescricao(),
+        		criseRequest.getCategoria(),
+        		criseRequest.getNome(),
+        		criseRequest.getEmail(),
+        		criseRequest.getTelefone(),
+        		criseRequest.getLatitude(),
+        		criseRequest.getLongitude());
+
         novaCrise.setId(++_idcrise);
         
         crises.put(novaCrise.getId(), novaCrise);

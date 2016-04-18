@@ -21,6 +21,8 @@ public class Alerta implements Serializable {
     private static final long serialVersionUID = 1L;
     
     private int id;
+    
+    private String timestamp;
 
     @JsonIgnore
     public Integer getId() {
@@ -71,6 +73,9 @@ public class Alerta implements Serializable {
     private double origemRaioKms;
     
     public Alerta() {
+    	this.id = 0;
+    	
+    	this.timestamp = null;
         this.descricaoResumida = "";
         this.descricaoCompleta = "";
         this.categoriaAlerta = 0;
@@ -80,22 +85,34 @@ public class Alerta implements Serializable {
     }
     
     public Alerta(
+    		String timestamp,
             String descricaoResumida, 
             String descricaoCompleta, 
             int categoriaAlerta, 
             double origemLatitude, 
             double origemLongitude, 
             double origemRaioKms) {
+    	this.timestamp = timestamp;
         this.descricaoResumida = descricaoResumida;
         this.descricaoCompleta = descricaoCompleta;
         this.categoriaAlerta = categoriaAlerta;
         this.origemLatitude = origemLatitude;
         this.origemLongitude = origemLongitude;
         this.origemRaioKms = origemRaioKms;
-    }
+    }   
     
     
-    public String getDescricaoResumida() {
+	public String getTimestamp() {
+		return timestamp;
+	}
+
+	
+	public void setTimestamp(String timestamp) {
+		this.timestamp = timestamp;
+	}
+	
+
+	public String getDescricaoResumida() {
         return descricaoResumida;
     }
 

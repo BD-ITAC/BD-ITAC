@@ -1,5 +1,6 @@
 package br.ita.bditac.service;
 
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.ExposesResourceFor;
 import org.springframework.hateoas.MediaTypes;
@@ -52,15 +53,17 @@ public class CriseController {
         Crise crise = service.adicionarcrise(body);
         
         // TODO - Simulação do gerenciamento de crises - o processo que torna o cadastramento de crise num alerta
-        Alerta alerta = new Alerta();
         ReverseEnum<Categorias> reverseCategoria = new ReverseEnum<>(Categorias.class);
-        alerta.setDescricaoResumida(reverseCategoria.get(crise.getCategoria()).name());
-        alerta.setDescricaoCompleta(crise.getDescricao());
-        alerta.setCategoriaAlerta(crise.getCategoria());
-        alerta.setOrigemLatitude(crise.getLatitude());
-        alerta.setOrigemLongitude(crise.getLongitude());
-        // TODO - Sala de gerenciamento de crises determina a área de abrangência da crise
-        alerta.setOrigemRaioKms(10);
+        Alerta alerta = new Alerta(
+        		DateTime.now().toString(),
+        		reverseCategoria.get(crise.getCategoria()).name(),
+        		crise.getDescricao(),
+        		crise.getCategoria(),
+        		crise.getLatitude(),
+        		crise.getLongitude(),
+                // TODO - Sala de gerenciamento de crises determina a área de abrangência da crise
+        		10);
+
         service.adicionarAlerta(alerta);
         
         CriseResource resource = resourceAssembler.toResource(crise);

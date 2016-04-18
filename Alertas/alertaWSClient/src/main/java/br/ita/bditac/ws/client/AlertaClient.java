@@ -29,17 +29,6 @@ public class AlertaClient extends AbstractBaseService {
         super(hostURL);
     }
 
-    public Alerta addAlerta(Alerta alerta) {
-
-        HttpEntity<Alerta> alertaEnvio = new HttpEntity<Alerta>(alerta, getRequestHeader());
-
-        ResponseEntity<AlertaResource> alertaResponseEntity = getRestTemplate().postForEntity(getHostURL() + SERVICE_URL, alertaEnvio, AlertaResource.class);
-
-        Alerta alertaRetorno = alertaResponseEntity.getBody().getContent();
-
-        return alertaRetorno;
-    }
-
     public Alerta getAlertaById(int id) {
 
         Map<String, Integer> params = new HashMap<String, Integer>();

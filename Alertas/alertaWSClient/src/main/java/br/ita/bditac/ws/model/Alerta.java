@@ -7,6 +7,8 @@ public class Alerta implements Serializable {
     private static final long serialVersionUID = 1L;
     
     private int id;
+
+    private String timestamp;
     
     private String descricaoResumida;
     
@@ -20,7 +22,8 @@ public class Alerta implements Serializable {
 
     private double origemRaioKms;
 
-    public Alerta() {
+    protected Alerta() {
+        this.timestamp = "";
         this.descricaoResumida = "";
         this.descricaoCompleta = "";
         this.categoriaAlerta = 0;
@@ -28,16 +31,16 @@ public class Alerta implements Serializable {
         this.origemLongitude = 0;
         this.origemRaioKms = 0;
     }
-    
-    public Alerta(
+
+    protected Alerta(
+            String timestamp,
             String descricaoResumida, 
             String descricaoCompleta, 
-            int fatorRiscoHumano, 
-            int fatorRiscoMaterial, 
-            int categoriaAlerta, 
+            int categoriaAlerta,
             double origemLatitude, 
             double origemLongitude, 
             double origemRaioKms) {
+        this.timestamp = timestamp;
         this.descricaoResumida = descricaoResumida;
         this.descricaoCompleta = descricaoCompleta;
         this.categoriaAlerta = categoriaAlerta;
@@ -55,15 +58,15 @@ public class Alerta implements Serializable {
     public void setId(int id) {
         this.id = id;
     }
-    
-    
-    public String getDescricaoResumida() {
-        return descricaoResumida;
+
+
+    public String getTimestamp() {
+        return timestamp;
     }
 
-    
-    public void setDescricaoResumida(String descricaoResumida) {
-        this.descricaoResumida = descricaoResumida;
+
+    public String getDescricaoResumida() {
+        return descricaoResumida;
     }
 
     
@@ -72,18 +75,8 @@ public class Alerta implements Serializable {
     }
 
     
-    public void setDescricaoCompleta(String descricaoCompleta) {
-        this.descricaoCompleta = descricaoCompleta;
-    }
-
-    
     public int getCategoriaAlerta() {
         return categoriaAlerta;
-    }
-
-    
-    public void setCategoriaAlerta(int categoriaAlerta) {
-        this.categoriaAlerta = categoriaAlerta;
     }
 
     
@@ -91,29 +84,14 @@ public class Alerta implements Serializable {
         return origemLatitude;
     }
 
-    
-    public void setOrigemLatitude(double origemLatitude) {
-        this.origemLatitude = origemLatitude;
-    }
-
 
     public double getOrigemLongitude() {
         return origemLongitude;
     }
 
-
-    public void setOrigemLongitude(double origemLongitude) {
-        this.origemLongitude = origemLongitude;
-    }
-
     
     public double getOrigemRaioKms() {
         return origemRaioKms;
-    }
-
-    
-    public void setOrigemRaioKms(double origemRaioKms) {
-        this.origemRaioKms = origemRaioKms;
     }
 
 }

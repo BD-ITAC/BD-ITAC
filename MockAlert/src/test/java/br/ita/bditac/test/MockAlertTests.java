@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Rule;
@@ -58,6 +59,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.joda.JodaModule;
 
 import br.ita.bditac.app.Application;
 import br.ita.bditac.model.Alerta;
@@ -109,7 +111,7 @@ public class MockAlertTests {
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        mapper.registerModule(new Jackson2HalModule());
+        mapper.registerModules(new Jackson2HalModule(), new JodaModule());
 
         MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
         converter.setSupportedMediaTypes(Arrays.asList(MediaTypes.HAL_JSON));
@@ -195,7 +197,7 @@ public class MockAlertTests {
      *
      */
     @Test
-    public void test101PostcriseGerarAlerta() throws Exception {
+    public void test101PostCriseGerarAlerta() throws Exception {
         URI criseURI = new URI(getBaseUrl() + "/crise");
 
         Crise criseRequest = new Crise(
@@ -256,7 +258,7 @@ public class MockAlertTests {
      *
      */
     @Test
-    public void test102Getcrise() throws Exception {
+    public void test102GetCrise() throws Exception {
         String criseURL = getBaseUrl() + "/crise/{id}";
 
         Map<String, Integer> params = new HashMap<String, Integer>();
@@ -308,7 +310,7 @@ public class MockAlertTests {
      *
      */
     @Test
-    public void test103GetcriseInexistente() throws Exception {
+    public void test103GetCriseInexistente() throws Exception {
         String criseURL = getBaseUrl() + "/crise/{id}";
 
         Map<String, Integer> params = new HashMap<String, Integer>();
@@ -375,6 +377,7 @@ public class MockAlertTests {
         URI alertaURI = new URI(getBaseUrl() + "/alerta");
 
         Alerta alertaRequest = new Alerta(
+        		DateTime.now().toString(),
                 "Alerta de deslizamento",
                 "Perigo de deslizamento na altura do Km 20 da rodovia Tamoios, pista Sao Jose dos Campos/Litoral",
                 0,
@@ -491,6 +494,7 @@ public class MockAlertTests {
         Alerta alertaResponse = alertaResponseEntity.getBody().getContent();
 
         Alerta alertaRequest = new Alerta(
+        		DateTime.now().toString(),
                 "Alagamento",
                 "Deslizamento na na favela do Paraiso",
                 0,
@@ -765,7 +769,7 @@ public class MockAlertTests {
      *
      */
    @Test
-   public void test111PostcriseGerarAlerta() throws Exception {
+   public void test111PostCriseGerarAlerta() throws Exception {
        URI criseURI = new URI(getBaseUrl() + "/crise");
 
        Crise criseRequest = new Crise(
@@ -858,6 +862,7 @@ public class MockAlertTests {
     @Test
     public void test904PostAlerta() throws Exception {
         Alerta alerta = new Alerta(
+        	DateTime.now().toString(),
             "Alerta de teste",
             "Teste de alerta para verificar a funcionalidade do sistema",
             0,
@@ -875,6 +880,7 @@ public class MockAlertTests {
             .andExpect(status().isCreated())
             .andDo(document("alerta/post",
                 requestFields(
+                	fieldWithPath("timestamp").type(JsonFieldType.STRING).description("Timestamp do registro no sistema"),
                     fieldWithPath("descricaoResumida").type(JsonFieldType.STRING).description("Breve descrição do alerta"),
                     fieldWithPath("descricaoCompleta").type(JsonFieldType.STRING).description("Descrição detalhada do alerta"),
                     fieldWithPath("categoriaAlerta").type(JsonFieldType.STRING).description("Indica o tipo de alerta"),
@@ -894,6 +900,7 @@ public class MockAlertTests {
             .andExpect(status().isOk())
             .andDo(document("alerta/getId",
                 responseFields(
+                	fieldWithPath("timestamp").type(JsonFieldType.STRING).description("Timestamp do registro no sistema"),
                     fieldWithPath("descricaoResumida").type(JsonFieldType.STRING).description("Breve descrição do alerta"),
                     fieldWithPath("descricaoCompleta").type(JsonFieldType.STRING).description("Descrição detalhada do alerta"),
                     fieldWithPath("categoriaAlerta").type(JsonFieldType.STRING).description("Indica o tipo de alerta"),
@@ -919,6 +926,7 @@ public class MockAlertTests {
             .andExpect(status().isOk())
             .andDo(document("alerta/getCoords",
                 responseFields(
+                	fieldWithPath("_embedded.alertaList[].timestamp").type(JsonFieldType.STRING).description("Timestamp do registro no sistema"),
                     fieldWithPath("_embedded.alertaList[].descricaoResumida").type(JsonFieldType.STRING).description("Breve descrição do alerta"),
                     fieldWithPath("_embedded.alertaList[].descricaoCompleta").type(JsonFieldType.STRING).description("Descrição detalhada do alerta"),
                     fieldWithPath("_embedded.alertaList[].categoriaAlerta").type(JsonFieldType.STRING).description("Indica o tipo de alerta"),

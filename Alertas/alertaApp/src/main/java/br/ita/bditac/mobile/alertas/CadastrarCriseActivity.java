@@ -73,6 +73,21 @@ public class CadastrarCriseActivity extends AppCompatActivity {
 
             super.onPostExecute(aVoid);
 
+            try {
+                Context context = getApplicationContext();
+
+                if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                    LocationManager locationManager = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
+
+                    Log.i(this.getClass().getSimpleName(), "Location service deregistered.");
+
+                    locationManager.removeUpdates(locationListener);
+                }
+            }
+            catch(Exception ex) {
+                Log.e(this.getClass().getSimpleName(), ex.getMessage(), ex);
+            }
+
             finish();
         }
 
@@ -192,21 +207,6 @@ public class CadastrarCriseActivity extends AppCompatActivity {
     protected void onDestroy() {
 
         super.onDestroy();
-
-        try {
-            Context context = getApplicationContext();
-
-            if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                LocationManager locationManager = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
-
-                Log.i(this.getClass().getSimpleName(), "Location service deregistered.");
-
-                locationManager.removeUpdates(locationListener);
-            }
-        }
-        catch(Exception ex) {
-            Log.e(this.getClass().getSimpleName(), ex.getMessage(), ex);
-        }
 
     }
 
