@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Alertas</string>
+    <string name="action_settings">Configurações</string>
+    <string name="msg_alert_received">Novo alerta recebido</string>
+    <string name="msg_location_service_unaivalable">Serviço de localização indisponível.\nTente novamente mais tarde.</string>
+    <string name="msg_alerts_service_unaivalable">Serviço de alertas indisponível.\nTente novamente mais tarde.</string>
+    <string name="msg_statistics_service_unaivalable">Estatísticas do serviço indisponíveis.\nTente novamente mais tarde.</string>
+    <string name="open">Abrir</string>
+    <string name="dismiss">Ignorar</string>
+    <string name="msg_location_denied">Serviço de localização não permitido</string>
+</resources>

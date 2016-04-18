@@ -1,0 +1,8 @@
+:doctype: book
+:icons: font
+:toc: left
+:source-highlighter: pygments
+:pygments-style: manni
+:pygments-linenums-mode: inline
+
+= Cliente do Serviço Web de Alertas [big]*https://sites.google.com/site/interdproj2016/[BD-ITAC]* para Android

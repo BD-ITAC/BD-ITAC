@@ -1,0 +1,189 @@
+Mock Alert
+==========
+
+= Aplicação *mock* de serviço web de Alertas para o [big]*https://sites.google.com/site/interdproj2016/[BD-ITAC]*
+
+:doctype: book
+:icons: font
+:toc: left
+:source-highlighter: pygments
+:pygments-style: manni
+:pygments-linenums-mode: inline
+
+Aplicação Mock usando http://projects.spring.io/spring-hateoas/[Spring HATEOAS ReST API] e http://projects.spring.io/spring-boot/[Spring Boot] para gerar um serviço web para registrar eventos e emitir alertas
+
+É um serviço muito simples que não persiste dados. Os dados recebidos ficam armazenados em memória até o sistema ser re-iniciado.
+
+Abaixo documentação atual da API implementada pelo serviço.
+
+== Eventos
+
+Os eventos são cadastrados por um usuário da aplicação móvel e são enviados para o sistema para processamento. A partir dos eventos cadastrados é possível gerar alertas de ocorrências de crises.
+
+=== Leitura
+
+Para testar o serviço pode utilizar o comando +curl+:
+include::{snippets}/evento/locations/curl-request.adoc[]
+
+==== Requisição
+
+A requisição toma a seguinte forma:
+include::{snippets}/evento/locations/http-request.adoc[]
+
+==== Resposta
+
+A resposta irá conter os dados formatados em +JSON+ além do cabeçalho com o resultado da operação:
+include::{snippets}/evento/locations/http-response.adoc[]
+
+==== Descrição da resposta
+
+O(s) atributo(s) da resposta são:
+include::{snippets}/evento/locations/path-parameters.adoc[]
+
+=== Gravação
+
+Para gravar um evento podemos utilizar o seguinte exemplo (em +curl+).:
+include::{snippets}/evento/post/curl-request.adoc[]
+Os dados a serem inseridos devem ser enviados também no formato +JSON+.
+
+==== Requisição
+
+A requisição irá tomar o seguinte formato:
+include::{snippets}/evento/post/http-request.adoc[]
+
+==== Resposta
+
+O serviço irá responder com +Status 201 - Created+ e os dados que acabaram de ser inseridos:
+include::{snippets}/evento/post/http-response.adoc[]
+
+==== Descrição da resposta
+
+A descrição do(s) atributo(s) retornado(s): 
+include::{snippets}/evento/post/request-fields.adoc[]
+
+=== Pesquisa
+
+Para pesquisar um registro específico do serviço podemos utilizar o seguinte comando (em +curl+):
+include::{snippets}/evento/get/curl-request.adoc[]
+
+==== Requisição
+
+A requisição toma a seguinte forma:
+include::{snippets}/evento/get/http-request.adoc[]
+
+==== Resposta
+
+A resposta irá conter os dados formatados em +JSON+ além do cabeçalho com o resultado da operação:
+include::{snippets}/evento/get/http-response.adoc[]
+
+==== Links
+
+O detalhe da seção +_links+ da resposta é a implementação de https://en.wikipedia.org/wiki/Hypertext_Application_Language[HAL - Hypertext Application Language] que poderá ser ignorada no presente desenvolvimento.
+include::{snippets}/evento/get/links.adoc[]
+
+==== Descrição da resposta
+
+A descrição do(s) atributo(s) retornado(s):
+include::{snippets}/evento/get/response-fields.adoc[]
+
+
+== Alertas
+
+Alertas são mensagens enviadas pelo sistema para alertar a população de um problema que estiver ocorrendo em determinada área. Dado o volume presumidamente baixo de alertas enviados pelo sistema, todos os usuários recebem todos os alertas em seus aplicativos móveis e o próprio aplicativo determina se o usuário deve ter sua atenção focada na ocorrência com base em parâmetros definidos pelo próprio como tipos de ocorrências, área da ocorrência, magnitude, etc.
+
+=== Leitura
+
+Para testar o serviço pode utilizar o comando +curl+:
+include::{snippets}/alerta/locationsId/curl-request.adoc[]
+
+==== Requisição
+
+A requisição toma a seguinte forma:
+include::{snippets}/alerta/locationsId/http-request.adoc[]
+
+==== Descrição da resposta
+
+Os parâmetros que devem ser informados na requisição são:
+include::{snippets}/alerta/locationsId/path-parameters.adoc[]
+
+==== Resposta
+
+A resposta irá conter os dados formatados em +JSON+ além do cabeçalho com o resultado da operação:
+include::{snippets}/alerta/locationsId/http-response.adoc[]
+
+=== Gravação
+
+Para gravar um evento podemos utilizar o seguinte exemplo (em +curl+).:
+include::{snippets}/alerta/post/curl-request.adoc[]
+
+Os dados a serem inseridos devem ser enviados também no formato +JSON+.
+
+==== Requisição
+
+A requisição irá tomar o seguinte formato:
+include::{snippets}/alerta/post/http-request.adoc[]
+
+==== Resposta
+
+O serviço irá responder com +Status 201 - Created+ e os dados que acabaram de ser inseridos:
+include::{snippets}/alerta/post/http-response.adoc[]
+
+==== Descrição da resposta
+
+A descrição do(s) atributo(s) retornado(s): 
+include::{snippets}/alerta/post/request-fields.adoc[]
+
+=== Pesquisa por *coordenadas*
+
+Para pesquisar um registro específico do serviço podemos utilizar o seguinte comando (em +curl+):
+include::{snippets}/alerta/getCoords/curl-request.adoc[]
+
+==== Requisição
+
+A requisição toma a seguinte forma:
+include::{snippets}/alerta/getCoords/http-request.adoc[]
+
+==== Parâmetros da requisição
+
+Os parâmetros que devem ser informados na requisição são:
+include::{snippets}/alerta/locationsCoords/path-parameters.adoc[]
+
+==== Resposta
+
+A resposta irá conter os dados formatados em +JSON+ além do cabeçalho com o resultado da operação:
+include::{snippets}/alerta/getCoords/http-response.adoc[]
+
+==== Descrição da resposta
+
+A descrição do(s) atributo(s) retornado(s):
+include::{snippets}/alerta/getCoords/response-fields.adoc[]
+
+=== Pesquisa por *id*
+
+Um alerta também pode ser obtido sabendo-se sua identificação utilizando a seguinte forma:
+include::{snippets}/alerta/getId/curl-request.adoc[]
+
+==== Requisição
+
+A requisição toma a seguinte forma:
+include::{snippets}/alerta/getId/http-request.adoc[]
+
+==== Parâmetros da requisição:
+
+Os parâmetros que devem ser informados na requisição são:
+include::{snippets}/alerta/locationsId/path-parameters.adoc[]
+
+==== Resposta
+A resposta irá conter os dados formatados em +JSON+ além do cabeçalho com o resultado da operação é exatamente idêntica a da requisição feita por coordenadas, porém apenas um alerta é retornado enquanto que a requisição por coordenadas pode retornar **n** alertas.
+include::{snippets}/alerta/getId/http-response.adoc[]
+
+==== Links
+
+O detalhe da seção +_links+ da resposta é a implementação de https://en.wikipedia.org/wiki/Hypertext_Application_Language[HAL - Hypertext Application Language] que poderá ser ignorada no presente desenvolvimento.
+include::{snippets}/alerta/getId/links.adoc[]
+
+==== Descrição da resposta
+
+A descrição do(s) atributo(s) retornado(s) também idêntica a da requisição de alertas por coordenadas, ajustada para um único registro. 
+include::{snippets}/alerta/getId/response-fields.adoc[]
+

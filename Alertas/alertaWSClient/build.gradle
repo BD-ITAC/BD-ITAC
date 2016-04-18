@@ -1,0 +1,70 @@
+apply plugin: 'com.android.library'
+apply plugin: 'org.asciidoctor.gradle.asciidoctor'
+
+configurations {
+    all*.exclude group: 'commons-logging', module: 'commons-logging'
+    asciidoclet
+}
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.3"
+
+    defaultConfig {
+        minSdkVersion 16
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    testCompile 'junit:junit:4.12'
+    androidTestCompile 'junit:junit:4.12'
+    androidTestCompile 'com.android.support.test:runner:0.4'
+    compile 'org.springframework.android:spring-android-rest-template:1.0.1.RELEASE'
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.5.4'
+    compile project(':springAndroidRest')
+    /*
+    compile 'org.apache.httpcomponents:httpclient:4.5.2'
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.5.4'
+    compile 'org.springframework:spring-web:4.1.7.RELEASE'
+    compile 'org.springframework:spring-core:4.1.7.RELEASE'
+    compile 'org.springframework.plugin:spring-plugin-core:1.2.0.RELEASE'
+    compile 'commons-logging:commons-logging:1.2'
+    */
+}
+
+configurations {
+    asciidoclet
+}
+
+dependencies {
+    asciidoclet 'org.asciidoctor:asciidoclet:1.5.3'
+}
+
+task javadoc(type: Javadoc) {
+    source = "${projectDir}/src/test"
+    options.docletpath = configurations.asciidoclet.files.asType(List)
+    options.doclet = 'org.asciidoctor.Asciidoclet'
+    options.overview = "${projectDir}/src/asciidoc/overview.adoc"
+    options.addStringOption "-base-dir", "${projectDir}"
+    options.addStringOption "encoding", "UTF-8"
+    options.addStringOption "-attributes-file", "${projectDir}/src/config/javadoc-attributes.adoc"
+    options.addStringOption "encoding","UTF-8"
+    options.addStringOption "charset","UTF-8"
+    options.addStringOption "-attribute",  "data-uri," +
+            "name=${project.name}," +
+            "version=${project.version}," +
+            "title-link=https://sites.google.com/site/interdproj2016/ [${project.name} ${project.version}]"
+}
