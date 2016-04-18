@@ -2,7 +2,6 @@ package br.ita.bditac.mobile.alertas;
 
 
 import android.Manifest;
-import android.app.ListActivity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -14,21 +13,22 @@ import android.os.Bundle;
 import android.os.Debug;
 import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.TextView;
+import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
-import java.util.List;
+import java.util.ArrayList;
 
-import br.ita.bditac.ws.client.AlertaClient;
-import br.ita.bditac.ws.model.Alerta;
+import br.ita.bditac.ws.client.CriseClient;
+import br.ita.bditac.ws.model.Crise;
+import br.ita.bditac.ws.model.Usuario;
 
 
-public class ConsultaEventoActivity extends ListActivity {
+public class CadastrarCriseActivity extends AppCompatActivity {
 
     private Context context;
 
@@ -36,79 +36,24 @@ public class ConsultaEventoActivity extends ListActivity {
 
     private String alertasUrl;
 
-    private double radiusKms;
+    private EditText inputDescricao;
+
+    private Spinner inputCategoria;
 
     private LocationListener locationListener;
 
-    private class AlertaArrayAdapter extends ArrayAdapter<Alerta> {
-
-        private final Context context;
-
-        private final Alerta[] alertas;
-
-        public AlertaArrayAdapter(Context context, int resourceId, Alerta[] alertas) {
-            super(context, R.layout.list_alertas);
-
-            this.context = context;
-            this.alertas = alertas;
-        }
-
-        @Override
-        public int getCount() {
-
-            if(alertas == null) {
-                return 0;
-            }
-            else {
-                return alertas.length;
-            }
-
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View rowView = inflater.inflate(R.layout.list_alertas, parent, false);
-
-            TextView descricaoResumida = (TextView) rowView.findViewById(R.id.descricaoResumida);
-            descricaoResumida.setText(alertas[position].getDescricaoResumida());
-
-            TextView descricaoCompleta = (TextView) rowView.findViewById(R.id.descricaoCompleta);
-            descricaoCompleta.setText(alertas[position].getDescricaoCompleta());
-
-            return rowView;
-        }
-
-    }
-
-    private class ConsultarAlertasTask extends AsyncTask<Void, Void, Alerta[]> {
+    private class SalvarEventoTask extends AsyncTask<Crise, Void, Void> {
 
         private Exception exception;
 
-        private ListActivity activity;
-
-        protected ConsultarAlertasTask(ListActivity activity) {
-
-            super();
-
-            this.activity = activity;
-
-        }
-
-        protected Alerta[] doInBackground(Void... params) {
-
-            Alerta[] alertasArray = null;
+        @Override
+        protected Void doInBackground(Crise... crises) {
 
             try {
-                if(currentLocation == null) {
-                    CharSequence mensagem = getText(R.string.msg_location_service_unaivalable);
-                    Toast.makeText(context, mensagem, Toast.LENGTH_LONG).show();
-                }
-                else {
-                    AlertaClient alertaClient = new AlertaClient(alertasUrl);
+                CriseClient criseClient= new CriseClient(alertasUrl);
 
-                    List<Alerta> alertas = alertaClient.getAlertaByRegiao(currentLocation.getLatitude(), currentLocation.getLongitude(), radiusKms);
-                    alertasArray = alertas.toArray(new Alerta[alertas.size()]);
+                for(Crise crise : crises) {
+                    criseClient.addEvento(crise);
                 }
             }
             catch(Exception ex) {
@@ -118,24 +63,22 @@ public class ConsultaEventoActivity extends ListActivity {
                 Log.e(this.getClass().getSimpleName(), ex.getMessage(), ex);
             }
             finally {
-                return alertasArray;
+                return null;
             }
 
         }
 
         @Override
-        protected void onPostExecute(Alerta[] alertas) {
+        protected void onPostExecute(Void aVoid) {
 
-            super.onPostExecute(alertas);
+            super.onPostExecute(aVoid);
 
-            AlertaArrayAdapter adapter = new AlertaArrayAdapter(activity, R.layout.list_alertas, alertas);
-            activity.setListAdapter(adapter);
-            adapter.notifyDataSetChanged();
-
+            finish();
         }
+
     }
 
-    private class AlertaLocationListener implements LocationListener {
+    private class EventoLocationListener implements LocationListener {
 
         @Override
         public void onLocationChanged(Location location) {
@@ -235,22 +178,56 @@ public class ConsultaEventoActivity extends ListActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_cadastrar_crise);
+
+        inputDescricao = (EditText) findViewById(R.id.mensagem);
+
+        CarregarCategoria();
+
+    }
+
+    @Override
+    protected void onDestroy() {
+
+        super.onDestroy();
+
+        try {
+            Context context = getApplicationContext();
+
+            if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                LocationManager locationManager = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
+
+                Log.i(this.getClass().getSimpleName(), "Location service deregistered.");
+
+                locationManager.removeUpdates(locationListener);
+            }
+        }
+        catch(Exception ex) {
+            Log.e(this.getClass().getSimpleName(), ex.getMessage(), ex);
+        }
+
+    }
+
+    public void Limpar_Click(View view) {
+
+        inputDescricao.setText("");
+        inputCategoria.setSelection(0);
+
+    }
+
+    public void Salvar_Click(View view) {
 
         SharedPreferences preferences = null;
 
-        this.context = getApplicationContext();
+        context = getApplicationContext();
 
         if (!Debug.isDebuggerConnected()) {
             preferences = PreferenceManager.getDefaultSharedPreferences(context);
         }
 
         alertasUrl = Debug.isDebuggerConnected() ? Constants.DEBUG_URL : preferences.getString("alerts.service.url", Constants.DEFAULT_URL);
-
-        radiusKms =
-                Debug.isDebuggerConnected() ?
-                        Constants.DEBUG_RADIUS_KMS :
-                        new Double(preferences.getString("alerts.service.radiusKms", Constants.DEFAULT_RADIUS_KMS)).doubleValue();
 
         try {
             Context context = getApplicationContext();
@@ -260,7 +237,7 @@ public class ConsultaEventoActivity extends ListActivity {
 
                 Log.i(this.getClass().getSimpleName(), "Location service registered.");
 
-                locationListener = new AlertaLocationListener();
+                locationListener = new EventoLocationListener();
                 locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
 
                 currentLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
@@ -273,7 +250,51 @@ public class ConsultaEventoActivity extends ListActivity {
             Log.e(this.getClass().getSimpleName(), ex.getMessage(), ex);
         }
 
-        new ConsultarAlertasTask(this).execute();
+        Crise crise= new Crise();
+
+        crise.setDescricao(inputDescricao.getText().toString());
+        crise.setCategoria(inputCategoria.getSelectedItemPosition());
+        crise.setNome(Usuario.getNome());
+        crise.setEmail(Usuario.getEmail());
+        crise.setTelefone(Usuario.getTelefone());
+        if(currentLocation == null) {
+            CharSequence mensagem = getText(R.string.msg_location_service_unaivalable);
+            Toast.makeText(context, mensagem, Toast.LENGTH_LONG).show();
+
+            Log.i(this.getClass().getSimpleName(), getText(R.string.msg_location_service_unaivalable).toString());
+        }
+        else {
+            crise.setLatitude(currentLocation.getLatitude());
+            crise.setLongitude(currentLocation.getLongitude());
+
+            new SalvarEventoTask().execute(crise);
+        }
+
+    }
+
+
+    private void CarregarCategoria(){
+
+        // TODO: Criar essa lista em resources e alterar quando a API estiver pronta para cadastrar esse dominio dinamicamente
+
+        inputCategoria = (Spinner) findViewById(R.id.categoria);
+
+        if (inputCategoria == null)
+            return ;
+
+        ArrayList<String> categoriaArrayList = new ArrayList<>();
+        categoriaArrayList.add("Alagamento");
+        categoriaArrayList.add("Incêndio");
+        categoriaArrayList.add("Acidente Veicular");
+        categoriaArrayList.add("Acidente Aéreo");
+        categoriaArrayList.add("Assassinato");
+        categoriaArrayList.add("Roubo");
+        categoriaArrayList.add("Terremoto");
+        categoriaArrayList.add("Desmoronamento");
+        categoriaArrayList.add("Tiroteio");
+
+        ArrayAdapter<String> adapter = new ArrayAdapter <String>(this, android.R.layout.simple_dropdown_item_1line, categoriaArrayList);
+        inputCategoria.setAdapter(adapter);
 
     }
 

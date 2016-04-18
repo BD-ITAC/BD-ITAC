@@ -2,7 +2,7 @@ package br.ita.bditac.ws.model;
 
 import java.io.Serializable;
 
-public class Evento implements Serializable {
+public class Crise implements Serializable {
 
     private static final long serialVersionUID = 1L;
     
@@ -22,7 +22,7 @@ public class Evento implements Serializable {
 
     private double longitude;
     
-    public Evento() {
+    public Crise() {
         this.id = 0;
         
         this.descricao = "";
@@ -32,7 +32,7 @@ public class Evento implements Serializable {
         this.telefone = "";
     }
     
-    public Evento(
+    public Crise(
             String descricao,
             int categoria,
             String nome,

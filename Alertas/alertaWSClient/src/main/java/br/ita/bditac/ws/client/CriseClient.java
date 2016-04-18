@@ -8,24 +8,24 @@ import org.springframework.http.ResponseEntity;
 import java.util.HashMap;
 import java.util.Map;
 
-import br.ita.bditac.ws.model.Evento;
-import br.ita.bditac.ws.model.EventoResource;
+import br.ita.bditac.ws.model.Crise;
+import br.ita.bditac.ws.model.CriseResource;
 
-public class EventoClient extends AbstractBaseService {
+public class CriseClient extends AbstractBaseService {
 
     private static final String SERVICE_URL = "/evento";
 
     private static final String ID_PARM = "/{id}";
 
-    public EventoClient(String hostURL) {
+    public CriseClient(String hostURL) {
         super(hostURL);
     }
 
-    public Evento addEvento(Evento evento) {
+    public Crise addEvento(Crise crise) {
 
-        HttpEntity envio = new HttpEntity(evento, getRequestHeader());
+        HttpEntity envio = new HttpEntity(crise, getRequestHeader());
 
-        ResponseEntity<EventoResource> eventoResponseEntity =  getRestTemplate().postForEntity(getHostURL() + SERVICE_URL, envio, EventoResource.class);
+        ResponseEntity<CriseResource> eventoResponseEntity =  getRestTemplate().postForEntity(getHostURL() + SERVICE_URL, envio, CriseResource.class);
 
         if(eventoResponseEntity.getStatusCode() == HttpStatus.CREATED) {
             return eventoResponseEntity.getBody().getContent();
@@ -36,7 +36,7 @@ public class EventoClient extends AbstractBaseService {
 
     }
 
-    public Evento getEventoById(int id) {
+    public Crise getEventoById(int id) {
 
         Map<String, Integer> params = new HashMap<String, Integer>();
         params.put("id", id);
@@ -44,7 +44,7 @@ public class EventoClient extends AbstractBaseService {
         try {
             HttpEntity envio = new HttpEntity(getResponseHeader());
 
-            ResponseEntity<EventoResource> eventoResponseEntity = getRestTemplate().exchange(getHostURL() + SERVICE_URL + ID_PARM, HttpMethod.GET, envio, EventoResource.class, params);
+            ResponseEntity<CriseResource> eventoResponseEntity = getRestTemplate().exchange(getHostURL() + SERVICE_URL + ID_PARM, HttpMethod.GET, envio, CriseResource.class, params);
 
             if(eventoResponseEntity.getStatusCode() == HttpStatus.OK) {
                 return eventoResponseEntity.getBody().getContent();

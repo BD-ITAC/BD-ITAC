@@ -22,11 +22,11 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".CadastrarEventoActivity"/>
+        <activity android:name=".CadastrarCriseActivity"/>
 
         <activity android:name=".ConsultarIndicadoresActivity" />
 
-        <activity android:name=".ConsultaEventoActivity"/>
+        <activity android:name=".ConsultaAlertasActivity"/>
 
         <receiver android:name=".AutoStartReceiver">
             <intent-filter>

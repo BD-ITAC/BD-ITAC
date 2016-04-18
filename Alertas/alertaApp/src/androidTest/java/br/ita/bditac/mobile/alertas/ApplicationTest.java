@@ -20,7 +20,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 public class ApplicationTest {
 
     @Rule
-    public ActivityTestRule<CadastrarEventoActivity> cadastrarEventoActivityActivityTestRule = new ActivityTestRule<CadastrarEventoActivity>(CadastrarEventoActivity.class);
+    public ActivityTestRule<CadastrarCriseActivity> cadastrarEventoActivityActivityTestRule = new ActivityTestRule<CadastrarCriseActivity>(CadastrarCriseActivity.class);
 
     @Test
     public void test01CadastrarEvento() {
