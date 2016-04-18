@@ -41,47 +41,7 @@ public class Alerta implements Serializable {
      * Descrição completa da crise com detalhes de causas e conseqüências
      */
     private String descricaoCompleta;
-    
-    /**
-     * Fator de risco para a vida humana:
-     * - Crítico:
-     *      Pode causar mortes ou ferimentos gravíssimos que impossibilitem a sobrevivência de 
-     *      indivíduos envolvidos e não podem ser tratados no local da crise - os indivíduos 
-     *      devem ser imediamente deslocados e receberem tratamento durante o transporte
-     * - Sério:
-     *      Pode causar ferimentos maiores que impossibilitem a locomoção porém sem risco 
-     *      imediato de vida para os indivícuos envolvidos e não podem ser tratados no local 
-     *      da crise - os indivíduos devem receber tratamento prévio e imediatamente deslocados
-     * - Moderado:
-     *      Pode causar ferimentos graves mas que possibilitam os indivídus a se locomoverem por 
-     *      conta própria do local de risco e devem ser tratados em curto prazo no local da crise
-     * - Menor:
-     *      Pode causar ferimentos leves que podem ser tratados em médio prazo fora do local da crise
-     * - Negligenciável:
-     *      Pode causar pequenos ferimentos que não precisam ser tratados no local da crise
-     */
-    private int fatorRiscoHumano;
-    
-    /**
-     * Fator de risco para instalações e equipamentos:
-     * - Crítico:
-     *      Pode causar destruição completa ou irrecuperável de instalações e equipamentos no local
-     *      da crise e terão de ser reconstruídos ou reinstalados
-     * - Sério:
-     *      Pode causar destruição parcial mas reparável às instalações e equipmentos no local do 
-     *      crise e seu uso ficará impossibilitado durante os reparos
-     * - Moderado:
-     *      Pode causar danos moderados mas reparáveis às instalações e equipamentos no local e seu uso 
-     *      ficará impossibilitado durante os reparos
-     * - Menor:
-     *      Pode causar danos moderados mas reparáveis às instalações e equipamentos no local mas
-     *      seu uso poderá prosseguir durante os reparos
-     * - Negligenciável:
-     *      Pode causar pequenos danos às instalações e equipamentos no local e seu uso poderá prosseguir
-     *      durante os reparos
-     */
-    private int fatorRiscoMaterial;
-    
+   
     /**
      * Indica o tipo de alerta:
      * - Enchente
@@ -113,8 +73,6 @@ public class Alerta implements Serializable {
     public Alerta() {
         this.descricaoResumida = "";
         this.descricaoCompleta = "";
-        this.fatorRiscoHumano = 0;
-        this.fatorRiscoMaterial = 0;
         this.categoriaAlerta = 0;
         this.origemLatitude = 0;
         this.origemLongitude = 0;
@@ -132,8 +90,6 @@ public class Alerta implements Serializable {
             double origemRaioKms) {
         this.descricaoResumida = descricaoResumida;
         this.descricaoCompleta = descricaoCompleta;
-        this.fatorRiscoHumano = fatorRiscoHumano;
-        this.fatorRiscoMaterial = fatorRiscoMaterial;
         this.categoriaAlerta = categoriaAlerta;
         this.origemLatitude = origemLatitude;
         this.origemLongitude = origemLongitude;
@@ -158,26 +114,6 @@ public class Alerta implements Serializable {
     
     public void setDescricaoCompleta(String descricaoCompleta) {
         this.descricaoCompleta = descricaoCompleta;
-    }
-
-    
-    public int getFatorRiscoHumano() {
-        return fatorRiscoHumano;
-    }
-
-    
-    public void setFatorRiscoHumano(int fatorRiscoHumano) {
-        this.fatorRiscoHumano = fatorRiscoHumano;
-    }
-
-    
-    public int getFatorRiscoMaterial() {
-        return fatorRiscoMaterial;
-    }
-
-    
-    public void setFatorRiscoMaterial(int fatorRiscoMaterial) {
-        this.fatorRiscoMaterial = fatorRiscoMaterial;
     }
 
     

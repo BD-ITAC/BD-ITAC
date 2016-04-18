@@ -37,8 +37,6 @@ public class AlertaDAO {
         
         novoAlerta.setDescricaoResumida(alerta.getDescricaoResumida());
         novoAlerta.setDescricaoCompleta(alerta.getDescricaoCompleta());
-        novoAlerta.setFatorRiscoHumano(alerta.getFatorRiscoHumano());
-        novoAlerta.setFatorRiscoMaterial(alerta.getFatorRiscoMaterial());
         novoAlerta.setCategoriaAlerta(alerta.getCategoriaAlerta());
         novoAlerta.setOrigemLatitude(alerta.getOrigemLatitude());
         novoAlerta.setOrigemLongitude(alerta.getOrigemLongitude());

@@ -392,8 +392,6 @@ public class MockAlertTests {
 
         assertEquals("Resposta(descricaoResumida)'" + alertasResponse.getDescricaoResumida() + "' do POST diferente do que foi enviado: '" + alertaRequest.getDescricaoResumida() + "'!", alertasResponse.getDescricaoResumida(), alertaRequest.getDescricaoResumida());
         assertEquals("Resposta(descricaoCompleta)'" + alertasResponse.getDescricaoCompleta() + "' do POST diferente do que foi enviado'" + alertaRequest.getDescricaoCompleta() + "'!", alertasResponse.getDescricaoCompleta(), alertaRequest.getDescricaoCompleta());
-        assertEquals("Resposta(fatorRiscoHumano)'" + alertasResponse.getFatorRiscoHumano() + "' do POST diferente do que foi enviado'" + alertaRequest.getFatorRiscoHumano() + "'!", alertasResponse.getFatorRiscoHumano(), alertaRequest.getFatorRiscoHumano());
-        assertEquals("Resposta(fatorRiscoMaterial)'" + alertasResponse.getFatorRiscoMaterial() + "' do POST diferente do que foi enviado'" + alertaRequest.getFatorRiscoMaterial() + "'!", alertasResponse.getFatorRiscoMaterial(), alertaRequest.getFatorRiscoMaterial());
         assertEquals("Resposta(categoriaAlerta)'" + alertasResponse.getCategoriaAlerta() + "' do POST diferente do que foi enviado'" + alertaRequest.getCategoriaAlerta() + "'!", alertasResponse.getCategoriaAlerta(), alertaRequest.getCategoriaAlerta());
         assertEquals("Resposta(origemLatitude)'" + alertasResponse.getOrigemLatitude() + "' do POST diferente do que foi enviado'" + alertaRequest.getOrigemLatitude() + "'!", alertasResponse.getOrigemLatitude(), alertaRequest.getOrigemLatitude(), DELTA);
         assertEquals("Resposta(origemLongitude)'" + alertasResponse.getOrigemLongitude() + "' do POST diferente do que foi enviado'" + alertaRequest.getOrigemLongitude() + "'!", alertasResponse.getOrigemLongitude(), alertaRequest.getOrigemLongitude(), DELTA);
@@ -506,8 +504,6 @@ public class MockAlertTests {
 
         assertEquals("Resposta(descricaoResumida)'" + alertaResponse.getDescricaoResumida() + "' do POST diferente do que foi enviado: '" + alertaRequest.getDescricaoResumida() + "'!", alertaResponse.getDescricaoResumida(), alertaRequest.getDescricaoResumida());
         assertEquals("Resposta(descricaoCompleta)'" + alertaResponse.getDescricaoCompleta() + "' do POST diferente do que foi enviado'" + alertaRequest.getDescricaoCompleta() + "'!", alertaResponse.getDescricaoCompleta(), alertaRequest.getDescricaoCompleta());
-        assertEquals("Resposta(fatorRiscoHumano)'" + alertaResponse.getFatorRiscoHumano() + "' do POST diferente do que foi enviado'" + alertaRequest.getFatorRiscoHumano() + "'!", alertaResponse.getFatorRiscoHumano(), alertaRequest.getFatorRiscoHumano());
-        assertEquals("Resposta(fatorRiscoMaterial)'" + alertaResponse.getFatorRiscoMaterial() + "' do POST diferente do que foi enviado'" + alertaRequest.getFatorRiscoMaterial() + "'!", alertaResponse.getFatorRiscoMaterial(), alertaRequest.getFatorRiscoMaterial());
         assertEquals("Resposta(categoriaAlerta)'" + alertaResponse.getCategoriaAlerta() + "' do POST diferente do que foi enviado'" + alertaRequest.getCategoriaAlerta() + "'!", alertaResponse.getCategoriaAlerta(), alertaRequest.getCategoriaAlerta());
         assertEquals("Resposta(origemLatitude)'" + alertaResponse.getOrigemLatitude() + "' do POST diferente do que foi enviado'" + alertaRequest.getOrigemLatitude() + "'!", alertaResponse.getOrigemLatitude(), alertaRequest.getOrigemLatitude(), DELTA);
         assertEquals("Resposta(origemLongitude)'" + alertaResponse.getOrigemLongitude() + "' do POST diferente do que foi enviado'" + alertaRequest.getOrigemLongitude() + "'!", alertaResponse.getOrigemLongitude(), alertaRequest.getOrigemLongitude(), DELTA);
@@ -887,8 +883,6 @@ public class MockAlertTests {
                 requestFields(
                     fieldWithPath("descricaoResumida").type(JsonFieldType.STRING).description("Breve descrição do alerta"),
                     fieldWithPath("descricaoCompleta").type(JsonFieldType.STRING).description("Descrição detalhada do alerta"),
-                    fieldWithPath("fatorRiscoHumano").type(JsonFieldType.STRING).description("Fator de risco para a vida humana"),
-                    fieldWithPath("fatorRiscoMaterial").type(JsonFieldType.STRING).description("Fator de risco para instalações e equipamentos"),
                     fieldWithPath("categoriaAlerta").type(JsonFieldType.STRING).description("Indica o tipo de alerta"),
                     fieldWithPath("origemLatitude").type(JsonFieldType.ARRAY).description("Latitude do ponto de origem do alerta"),
                     fieldWithPath("origemLongitude").type(JsonFieldType.ARRAY).description("Longitude do ponto de origem do alerta"),
@@ -908,8 +902,6 @@ public class MockAlertTests {
                 responseFields(
                     fieldWithPath("descricaoResumida").type(JsonFieldType.STRING).description("Breve descrição do alerta"),
                     fieldWithPath("descricaoCompleta").type(JsonFieldType.STRING).description("Descrição detalhada do alerta"),
-                    fieldWithPath("fatorRiscoHumano").type(JsonFieldType.STRING).description("Fator de risco para a vida humana"),
-                    fieldWithPath("fatorRiscoMaterial").type(JsonFieldType.STRING).description("Fator de risco para instalações e equipamentos"),
                     fieldWithPath("categoriaAlerta").type(JsonFieldType.STRING).description("Indica o tipo de alerta"),
                     fieldWithPath("origemLatitude").type(JsonFieldType.ARRAY).description("Latitude do ponto de origem do alerta"),
                     fieldWithPath("origemLongitude").type(JsonFieldType.ARRAY).description("Longitude do ponto de origem do alerta"),
@@ -935,8 +927,6 @@ public class MockAlertTests {
                 responseFields(
                     fieldWithPath("_embedded.alertaList[].descricaoResumida").type(JsonFieldType.STRING).description("Breve descrição do alerta"),
                     fieldWithPath("_embedded.alertaList[].descricaoCompleta").type(JsonFieldType.STRING).description("Descrição detalhada do alerta"),
-                    fieldWithPath("_embedded.alertaList[].fatorRiscoHumano").type(JsonFieldType.STRING).description("Fator de risco para a vida humana"),
-                    fieldWithPath("_embedded.alertaList[].fatorRiscoMaterial").type(JsonFieldType.STRING).description("Fator de risco para instalações e equipamentos"),
                     fieldWithPath("_embedded.alertaList[].categoriaAlerta").type(JsonFieldType.STRING).description("Indica o tipo de alerta"),
                     fieldWithPath("_embedded.alertaList[].origemLatitude").type(JsonFieldType.ARRAY).description("Latitude do ponto de origem do alerta"),
                     fieldWithPath("_embedded.alertaList[].origemLongitude").type(JsonFieldType.ARRAY).description("Longitude do ponto de origem do alerta"),

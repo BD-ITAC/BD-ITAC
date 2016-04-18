@@ -56,9 +56,6 @@ public class CriseController {
         ReverseEnum<Categorias> reverseCategoria = new ReverseEnum<>(Categorias.class);
         alerta.setDescricaoResumida(reverseCategoria.get(crise.getCategoria()).name());
         alerta.setDescricaoCompleta(crise.getDescricao());
-        // TODO - Sala de gerenciamento de crises determina os fatores de risco
-        alerta.setFatorRiscoHumano(5);
-        alerta.setFatorRiscoMaterial(5);
         alerta.setCategoriaAlerta(crise.getCategoria());
         alerta.setOrigemLatitude(crise.getLatitude());
         alerta.setOrigemLongitude(crise.getLongitude());
