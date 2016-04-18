@@ -47,6 +47,8 @@ public class Evento implements Serializable {
         this.nome = nome;
         this.email = email;
         this.telefone = telefone;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
     
     

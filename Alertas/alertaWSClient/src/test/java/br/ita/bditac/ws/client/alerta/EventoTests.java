@@ -39,8 +39,8 @@ public class EventoTests extends TestCase {
      *          "nome" : "Ze das Couves",
      *          "email" : "zedascouves@gmail.com",
      *          "telefone" : "(12) 99876-1234",
-     *          "latitude": 50,
-     *          "longitude": 50,
+     *          "latitude": -25,
+     *          "longitude": -45,
      *          }
      *      }
      * --
@@ -64,8 +64,8 @@ public class EventoTests extends TestCase {
      *          "nome" : "Ze das Couves",
      *          "email" : "zedascouves@gmail.com",
      *          "telefone" : "(12) 99876-1234",
-     *          "latitude": 50,
-     *          "longitude": 50,
+     *          "latitude": -25,
+     *          "longitude": -45,
      *          }
      *      }
      * --
@@ -80,8 +80,8 @@ public class EventoTests extends TestCase {
                 "Ze das Couves",
                 "zedascouves@gmail.com",
                 "(12) 99876-1234",
-                50.0D,
-                50.0D);
+                -25.0D,
+                -45.0D);
         Evento eventoRetorno = eventoClient.addEvento(eventoNovo);
         assertNotNull(eventoRetorno);
         assertEquals("Resposta(descricao):'" + eventoRetorno.getDescricao() + "' do POST diferente do que foi enviado: '" + eventoNovo.getDescricao() + "'!", eventoRetorno.getDescricao(), eventoNovo.getDescricao());

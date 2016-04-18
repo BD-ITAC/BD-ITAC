@@ -1,8 +1,5 @@
 package br.ita.bditac.ws.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Resources;
 
@@ -10,19 +7,16 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class AlertaResources extends Resources<AlertaResource> {
 
     public AlertaResources() {
         super();
     }
 
-    @JsonIgnore
     public AlertaResources(Iterable<AlertaResource> alertas, Iterable<Link> links) {
         super(alertas, links);
     }
 
-    @JsonIgnore
     public AlertaResources(Iterable<AlertaResource> alertas, Link... links) {
         super(alertas, links);
     }

@@ -23,7 +23,12 @@ public class IndicadoresClient extends AbstractBaseService {
 
         ResponseEntity<IndicadoresResource> response = getRestTemplate().exchange(getHostURL() + SERVICE_URL, HttpMethod.GET, envio, IndicadoresResource.class);
 
-        return response.getBody().getContent();
+        if(response.getBody() == null) {
+            return null;
+        }
+        else {
+            return response.getBody().getContent();
+        }
 
     }
 

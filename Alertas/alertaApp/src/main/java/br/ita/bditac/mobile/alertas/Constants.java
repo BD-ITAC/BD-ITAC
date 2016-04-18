@@ -7,7 +7,7 @@ public interface Constants {
 
     public static final int DEBUG_TIME = 30000;
 
-    public static final String DEFAULT_URL = "http://192.168.99.100:8080";
+    public static final String DEFAULT_URL = "http://192.168.43.94:8080";
 
     public static final String DEBUG_URL = "http://10.0.2.2:8080";
 

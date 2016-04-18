@@ -39,8 +39,8 @@ public class AlertaTests extends TestCase {
      *          "fatorRiscoHumano" : 5,
      *          "fatorRiscoMaterial" : 5,
      *          "categoriaAlerta" : 0,
-     *          "origemLongitude" : 0.5,
-     *          "origemLatitude" : 0.5,
+     *          "origemLatitude" : -25.0,
+     *          "origemLongitude" : -45.0,
      *          "origemRaioKms" : 1.0,
      *          }
      *      }
@@ -65,8 +65,8 @@ public class AlertaTests extends TestCase {
      *          "fatorRiscoHumano" : 5,
      *          "fatorRiscoMaterial" : 5,
      *          "categoriaAlerta" : 0,
-     *          "origemLongitude" : 0.5,
-     *          "origemLatitude" : 0.5,
+     *          "origemLatitude" : -25.0,
+     *          "origemLongitude" : -45.0,
      *          "origemRaioKms" : 1.0,
      *          }
      *      }
@@ -82,8 +82,8 @@ public class AlertaTests extends TestCase {
                 5,
                 5,
                 0,
-                0.50,
-                0.50,
+                -25.0D,
+                -45.0D,
                 1.0);
         Alerta alertaRetorno = alertaClient.addAlerta(alertaNovo);
         assertNotNull(alertaRetorno);
@@ -119,8 +119,8 @@ public class AlertaTests extends TestCase {
      *          "fatorRiscoHumano" : 5,
      *          "fatorRiscoMaterial" : 5,
      *          "categoriaAlerta" : 0,
-     *          "origemLongitude" : 0.5,
-     *          "origemLatitude" : 0.5,
+     *          "origemLatitude" : -25.0,
+     *          "origemLongitude" : -45.0,
      *          "origemRaioKms" : 1.0,
      *          }
      *      }
@@ -132,7 +132,7 @@ public class AlertaTests extends TestCase {
         AlertaClient alertaClient = new AlertaClient(HOST_URL);
         Alerta alerta = alertaClient.getAlertaById(1);
         assertNotNull(alerta);
-        assertEquals("Resposta(descricao):'" + alerta.getDescricaoResumida() + "' do POST diferente do que foi enviado!", alerta.getDescricaoResumida(), "Alerta de deslizamento");
+        assertEquals("Resposta(descricao):'" + alerta.getDescricaoResumida() + "' do POST diferente do que foi enviado!", alerta.getDescricaoResumida(), "Alagamento");
     }
 
     /**
@@ -200,8 +200,8 @@ public class AlertaTests extends TestCase {
      *          "fatorRiscoHumano" : 5,
      *          "fatorRiscoMaterial" : 5,
      *          "categoriaAlerta" : 0,
-     *          "origemLongitude" : 0.5,
-     *          "origemLatitude" : 0.5,
+     *          "origemLatitude" : -25.0,
+     *          "origemLongitude" : -45.0,
      *          "origemRaioKms" : 1.0,
      *          }
      *      }
@@ -211,10 +211,11 @@ public class AlertaTests extends TestCase {
     @Test
     public void test04GetAlertaByRegiao() {
         AlertaClient alertaClient = new AlertaClient(HOST_URL);
-        List<Alerta> alertas = alertaClient.getAlertaByRegiao(0.5D, 0.5D, 1D);
-        if(alertas.size() == 0) {
-            fail("Não localizou os alertas experados na região!");
+        List<Alerta> alertas = alertaClient.getAlertaByRegiao(-25.0, -45.0, 10);
+        if(alertas != null && alertas.size() == 0) {
+            fail("Não localizou os alertas esperados na região!");
         }
+        assertNotNull(alertas);
         assertEquals("Resposta(descricao):'" + alertas.get(0).getDescricaoResumida() + "' do POST diferente do que foi enviado!", alertas.get(0).getDescricaoResumida(), "Alerta de deslizamento");
     }
 
@@ -265,7 +266,7 @@ public class AlertaTests extends TestCase {
      *
      * [source,http]
      * --
-     *  /latitude/0.60/longitude/0.60/raio/1
+     *  /latitude/-25.0/longitude/-45.0/raio/1
      * --
      *
      * == Execução:
@@ -280,7 +281,7 @@ public class AlertaTests extends TestCase {
     @Test
     public void test06GetRegiaoComAlerta() {
         AlertaClient alertaClient = new AlertaClient(HOST_URL);
-        assertTrue("Falta de alerta inexperado em região com alertas", alertaClient.hasAlerta(0.5D, 0.5D, 1D));
+        assertTrue("Falta de alerta inexperado em região com alertas", alertaClient.hasAlerta(-25.0D, -45.0D, 1D));
     }
 
     /**

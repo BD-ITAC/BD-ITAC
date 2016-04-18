@@ -17,11 +17,11 @@ public class Alerta implements Serializable {
     private int fatorRiscoMaterial;
     
     private int categoriaAlerta;
-    
-    private double origemLongitude;
-    
+
     private double origemLatitude;
-    
+
+    private double origemLongitude;
+
     private double origemRaioKms;
 
     public Alerta() {
@@ -115,16 +115,6 @@ public class Alerta implements Serializable {
     }
 
     
-    public double getOrigemLongitude() {
-        return origemLongitude;
-    }
-
-    
-    public void setOrigemLongitude(double origemLongitude) {
-        this.origemLongitude = origemLongitude;
-    }
-
-    
     public double getOrigemLatitude() {
         return origemLatitude;
     }
@@ -132,6 +122,16 @@ public class Alerta implements Serializable {
     
     public void setOrigemLatitude(double origemLatitude) {
         this.origemLatitude = origemLatitude;
+    }
+
+
+    public double getOrigemLongitude() {
+        return origemLongitude;
+    }
+
+
+    public void setOrigemLongitude(double origemLongitude) {
+        this.origemLongitude = origemLongitude;
     }
 
     

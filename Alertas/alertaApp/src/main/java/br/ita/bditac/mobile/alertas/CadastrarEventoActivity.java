@@ -184,37 +184,6 @@ public class CadastrarEventoActivity extends AppCompatActivity {
 
         inputDescricao = (EditText) findViewById(R.id.mensagem);
 
-        SharedPreferences preferences = null;
-
-        context = getApplicationContext();
-
-        if (!Debug.isDebuggerConnected()) {
-            preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        }
-
-        alertasUrl = Debug.isDebuggerConnected() ? Constants.DEBUG_URL : preferences.getString("alerts.service.url", Constants.DEFAULT_URL);
-
-        try {
-            Context context = getApplicationContext();
-
-            if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-
-                Log.i(this.getClass().getSimpleName(), "Location service registered.");
-
-                locationListener = new EventoLocationListener();
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
-
-                currentLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            }
-        }
-        catch(Exception ex) {
-            CharSequence mensagem = getText(R.string.msg_alerts_service_unaivalable);
-            Toast.makeText(context, mensagem, Toast.LENGTH_LONG).show();
-
-            Log.e(this.getClass().getSimpleName(), ex.getMessage(), ex);
-        }
-
         CarregarCategoria();
 
     }
@@ -249,6 +218,37 @@ public class CadastrarEventoActivity extends AppCompatActivity {
     }
 
     public void Salvar_Click(View view) {
+
+        SharedPreferences preferences = null;
+
+        context = getApplicationContext();
+
+        if (!Debug.isDebuggerConnected()) {
+            preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        }
+
+        alertasUrl = Debug.isDebuggerConnected() ? Constants.DEBUG_URL : preferences.getString("alerts.service.url", Constants.DEFAULT_URL);
+
+        try {
+            Context context = getApplicationContext();
+
+            if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+
+                Log.i(this.getClass().getSimpleName(), "Location service registered.");
+
+                locationListener = new EventoLocationListener();
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+
+                currentLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            }
+        }
+        catch(Exception ex) {
+            CharSequence mensagem = getText(R.string.msg_alerts_service_unaivalable);
+            Toast.makeText(context, mensagem, Toast.LENGTH_LONG).show();
+
+            Log.e(this.getClass().getSimpleName(), ex.getMessage(), ex);
+        }
 
         Evento evento = new Evento();
 

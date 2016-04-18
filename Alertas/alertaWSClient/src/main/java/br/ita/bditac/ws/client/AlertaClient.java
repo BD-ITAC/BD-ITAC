@@ -1,6 +1,8 @@
 package br.ita.bditac.ws.client;
 
 
+import android.util.Log;
+
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -53,7 +55,7 @@ public class AlertaClient extends AbstractBaseService {
             }
         }
         catch(Exception ex) {
-
+            Log.e(this.getClass().getSimpleName(), ex.getMessage());
         }
 
         return null;
