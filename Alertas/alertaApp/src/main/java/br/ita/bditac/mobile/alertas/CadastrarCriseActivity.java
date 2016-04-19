@@ -42,19 +42,23 @@ public class CadastrarCriseActivity extends AppCompatActivity {
 
     private LocationListener locationListener;
 
+    protected boolean saving = false;
+
     private class SalvarCriseTask extends AsyncTask<Crise, Void, Void> {
 
-        private Exception exception;
+        private boolean saved = false;
 
         @Override
         protected Void doInBackground(Crise... crises) {
 
             try {
-                CriseClient criseClient= new CriseClient(alertasUrl);
+                CriseClient criseClient = new CriseClient(alertasUrl);
 
                 for(Crise crise : crises) {
                     criseClient.addCrise(crise);
                 }
+
+                saved = true;
             }
             catch(Exception ex) {
                 CharSequence mensagem = getText(R.string.msg_alerts_service_unaivalable);
@@ -83,8 +87,20 @@ public class CadastrarCriseActivity extends AppCompatActivity {
 
                     locationManager.removeUpdates(locationListener);
                 }
+
+                if(saved) {
+                    Toast.makeText(context, getText(R.string.msg_crisis_saved), Toast.LENGTH_LONG).show();
+                }
+                else {
+                    Toast.makeText(context, getText(R.string.msg_alerts_service_unaivalable), Toast.LENGTH_LONG).show();
+                }
+
+                saved = false;
+                saving = false;
             }
             catch(Exception ex) {
+                Toast.makeText(context, ex.getMessage(), Toast.LENGTH_LONG).show();
+
                 Log.e(this.getClass().getSimpleName(), ex.getMessage(), ex);
             }
 
@@ -199,6 +215,8 @@ public class CadastrarCriseActivity extends AppCompatActivity {
 
         inputDescricao = (EditText) findViewById(R.id.mensagem);
 
+        saving = false;
+
         CarregarCategoria();
 
     }
@@ -219,55 +237,61 @@ public class CadastrarCriseActivity extends AppCompatActivity {
 
     public void Salvar_Click(View view) {
 
-        SharedPreferences preferences = null;
-
-        context = getApplicationContext();
-
-        if (!Debug.isDebuggerConnected()) {
-            preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        }
-
-        alertasUrl = Debug.isDebuggerConnected() ? Constants.DEBUG_URL : preferences.getString("alerts.service.url", Constants.DEFAULT_URL);
-
-        try {
-            Context context = getApplicationContext();
-
-            if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-
-                Log.i(this.getClass().getSimpleName(), "Location service registered.");
-
-                locationListener = new CriseLocationListener();
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
-
-                currentLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            }
-        }
-        catch(Exception ex) {
-            CharSequence mensagem = getText(R.string.msg_alerts_service_unaivalable);
-            Toast.makeText(context, mensagem, Toast.LENGTH_LONG).show();
-
-            Log.e(this.getClass().getSimpleName(), ex.getMessage(), ex);
-        }
-
-        Crise crise= new Crise();
-
-        crise.setDescricao(inputDescricao.getText().toString());
-        crise.setCategoria(inputCategoria.getSelectedItemPosition());
-        crise.setNome(Usuario.getNome());
-        crise.setEmail(Usuario.getEmail());
-        crise.setTelefone(Usuario.getTelefone());
-        if(currentLocation == null) {
-            CharSequence mensagem = getText(R.string.msg_location_service_unaivalable);
-            Toast.makeText(context, mensagem, Toast.LENGTH_LONG).show();
-
-            Log.i(this.getClass().getSimpleName(), getText(R.string.msg_location_service_unaivalable).toString());
+        if(saving) {
+            Toast.makeText(context, getText(R.string.msg_crisis_being_saved), Toast.LENGTH_LONG).show();
         }
         else {
-            crise.setLatitude(currentLocation.getLatitude());
-            crise.setLongitude(currentLocation.getLongitude());
+            SharedPreferences preferences=null;
 
-            new SalvarCriseTask().execute(crise);
+            context=getApplicationContext();
+
+            if(!Debug.isDebuggerConnected()) {
+                preferences=PreferenceManager.getDefaultSharedPreferences(context);
+            }
+
+            alertasUrl=Debug.isDebuggerConnected() ? Constants.DEBUG_URL : preferences.getString("alerts.service.url", Constants.DEFAULT_URL);
+
+            try {
+                Context context=getApplicationContext();
+
+                if(ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                    LocationManager locationManager=(LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+
+                    Log.i(this.getClass().getSimpleName(), "Location service registered.");
+
+                    locationListener=new CriseLocationListener();
+                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+
+                    currentLocation=locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                }
+            } catch(Exception ex) {
+                CharSequence mensagem=getText(R.string.msg_alerts_service_unaivalable);
+                Toast.makeText(context, mensagem, Toast.LENGTH_LONG).show();
+
+                Log.e(this.getClass().getSimpleName(), ex.getMessage(), ex);
+            }
+
+            Crise crise=new Crise();
+
+            crise.setDescricao(inputDescricao.getText().toString());
+            crise.setCategoria(inputCategoria.getSelectedItemPosition());
+            crise.setNome(Usuario.getNome());
+            crise.setEmail(Usuario.getEmail());
+            crise.setTelefone(Usuario.getTelefone());
+            if(currentLocation == null) {
+                Toast.makeText(context, getText(R.string.msg_location_service_unaivalable), Toast.LENGTH_LONG).show();
+
+                Log.i(this.getClass().getSimpleName(), getText(R.string.msg_location_service_unaivalable).toString());
+            } else {
+                crise.setLatitude(currentLocation.getLatitude());
+                crise.setLongitude(currentLocation.getLongitude());
+
+                new SalvarCriseTask().execute(crise);
+
+                Toast.makeText(context, getText(R.string.msg_crisis_being_saved), Toast.LENGTH_LONG).show();
+
+                saving = true;
+            }
         }
 
     }

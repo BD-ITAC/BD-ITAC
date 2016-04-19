@@ -6,7 +6,9 @@
     <string name="msg_location_service_unaivalable">Serviço de localização indisponível.\nTente novamente mais tarde.</string>
     <string name="msg_alerts_service_unaivalable">Serviço de alertas indisponível.\nTente novamente mais tarde.</string>
     <string name="msg_statistics_service_unaivalable">Estatísticas do serviço indisponíveis.\nTente novamente mais tarde.</string>
+    <string name="msg_crisis_saved">Notificação de crise salva.</string>
     <string name="open">Abrir</string>
     <string name="dismiss">Ignorar</string>
     <string name="msg_location_denied">Serviço de localização não permitido</string>
+    <string name="msg_crisis_being_saved">Notificação de crise enviada.\nPor favor aguarde.</string>
 </resources>

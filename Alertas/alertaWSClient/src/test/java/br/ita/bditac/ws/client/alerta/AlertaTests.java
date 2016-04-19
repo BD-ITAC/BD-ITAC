@@ -16,78 +16,7 @@ import br.ita.bditac.ws.model.Alerta;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class AlertaTests extends TestCase {
 
-    private static final String HOST_URL = "http://localhost:8080";
-
-    /**
-     *
-     * == Asserção:
-     *
-     * Testa a obtenção de um alerta de crise do seriço de Alertas:
-     *
-     * == Dados:
-     *
-     * Identificação do alerta na requisição.
-     *
-     * == Execução:
-     *
-     * Uma chamada ao serviço de Alertas.
-     *
-     * == Resultado esperado:
-     *
-     * Uma estrutura de dados com os dados do alerta.
-     *
-     * === Estrutura de dados
-     *
-     * [source,json]
-     * --
-     *      {
-     *          "alerta": {
-     *          "descricaoResumida" : "Alerta de deslizamento",
-     *          "descricaoCompleta" : "Perigo de deslizamento na altura do Km 20 da rodovia Tamoios, pista Sao Jose dos Campos/Litoral",
-     *          "fatorRiscoHumano" : 5,
-     *          "fatorRiscoMaterial" : 5,
-     *          "categoriaAlerta" : 0,
-     *          "origemLatitude" : -25.0,
-     *          "origemLongitude" : -45.0,
-     *          "origemRaioKms" : 1.0,
-     *          }
-     *      }
-     * --
-     *
-     */
-    @Test
-    public void test02GetAlertaById() {
-        AlertaClient alertaClient = new AlertaClient(HOST_URL);
-        Alerta alerta = alertaClient.getAlertaById(1);
-        assertNotNull(alerta);
-        assertEquals("Resposta(descricao):'" + alerta.getDescricaoResumida() + "' do POST diferente do que foi enviado!", alerta.getDescricaoResumida(), "Alagamento");
-    }
-
-    /**
-     *
-     * == Asserção:
-     *
-     * Testa a obtenção de um alerta de crise do seriço de Alertas:
-     *
-     * == Dados:
-     *
-     * Identificação do alerta na requisição.
-     *
-     * == Execução:
-     *
-     * Uma chamada ao serviço de Alertas.
-     *
-     * == Resultado esperado:
-     *
-     * O código de estado da chamada deve ser o código HTTP 404 (NOT FOUND).
-     *
-     */
-    @Test
-    public void test03GetAlertaByIdInexistente() {
-        AlertaClient alertaClient = new AlertaClient(HOST_URL);
-        Alerta alerta = alertaClient.getAlertaById(100);
-        assertNull(alerta);
-    }
+    private static final String HOST_URL = "http://172.16.1.107:8080";
 
     /**
      *

@@ -6,7 +6,9 @@
     <string name="msg_location_service_unaivalable">Location service unaivalable.\nTray again later.</string>
     <string name="msg_alerts_service_unaivalable">Alerts service unaivalable.\nTray again later.</string>
     <string name="msg_statistics_service_unaivalable">Statistics unaivalable.\nTray again later.</string>
+    <string name="msg_crisis_saved">Crisis notification saved.</string>
     <string name="open">Open</string>
     <string name="dismiss">Dismiss</string>
     <string name="msg_location_denied">Location services disabled.</string>
+    <string name="msg_crisis_being_saved">Crisis notification sent.\nPlease wait.</string>
 </resources>
