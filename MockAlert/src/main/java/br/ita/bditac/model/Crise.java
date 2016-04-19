@@ -15,6 +15,8 @@ public class Crise implements Serializable {
 
     private static final long serialVersionUID = 1L;
     
+    private static int _id;
+    
     private int id;
 
     @JsonIgnore
@@ -52,6 +54,10 @@ public class Crise implements Serializable {
     
     private double longitude;
     
+    static {
+    	_id = 0;
+    }
+    
     public Crise() {
         this.id = 0;
         
@@ -72,7 +78,8 @@ public class Crise implements Serializable {
             String telefone,
             double latitude,
             double longitude) {
-        this.id = 0;
+    	
+        this.id = ++_id;
         
         this.descricao = descricao;
         this.categoria = categoria;

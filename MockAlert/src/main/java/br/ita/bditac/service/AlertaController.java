@@ -40,7 +40,7 @@ public class AlertaController {
         
         String ID = "/{id}";
         
-        String BY_REGIAO = "/latitude/{latitude:" + COORD_REGEX + "}" + "/longitude/{longitude:" + COORD_REGEX + "}" + "/raio/{raio:" + DIST_REGEX + "}";
+        String BY_REGIAO = "/timestamp/{timestamp}/latitude/{latitude:" + COORD_REGEX + "}" + "/longitude/{longitude:" + COORD_REGEX + "}" + "/raio/{raio:" + DIST_REGEX + "}";
 
     }
 
@@ -61,26 +61,13 @@ public class AlertaController {
         return new ResponseEntity<AlertaResource>(resource, HttpStatus.CREATED);
     }
     
-    @RequestMapping(method = RequestMethod.GET, produces = { MediaTypes.HAL_JSON_VALUE }, value = Request.ID)
-    public ResponseEntity<AlertaResource> alerta(@PathVariable("id") int id) {
-        Alerta alerta = service.obterAlerta(id);
-        if(alerta == null) {
-            return new ResponseEntity<AlertaResource>(HttpStatus.NOT_FOUND);
-        }
-        else {
-            AlertaResource resource = resourceAssembler.toResource(alerta);
-            
-            return new ResponseEntity<AlertaResource>(resource, HttpStatus.OK);
-        }
-    }
-    
     @RequestMapping(method = RequestMethod.HEAD, produces = { MediaTypes.HAL_JSON_VALUE }, value = Request.BY_REGIAO)
-    public ResponseEntity<AlertaResource> alerta(@PathVariable("latitude") String latitude, @PathVariable("longitude") String longitude, @PathVariable("raio") String raio) {
+    public ResponseEntity<AlertaResource> alerta(@PathVariable("timestamp") long timestamp, @PathVariable("latitude") String latitude, @PathVariable("longitude") String longitude, @PathVariable("raio") String raio) {
         Double dLatitude = Double.valueOf(latitude);
         Double dLongitude = Double.valueOf(longitude);
         Double dRaio = Double.valueOf(raio);
 
-        boolean hasAlertas = service.obterAlerta(dLatitude, dLongitude, dRaio);
+        boolean hasAlertas = service.obterAlerta(timestamp, dLatitude, dLongitude, dRaio);
         if(hasAlertas) {
             return new ResponseEntity<AlertaResource>(HttpStatus.OK);
         }
@@ -90,12 +77,12 @@ public class AlertaController {
     }
     
     @RequestMapping(method = RequestMethod.GET, produces = { MediaTypes.HAL_JSON_VALUE }, value = Request.BY_REGIAO)
-    public ResponseEntity<AlertaResources> alertasPorRegiao(@PathVariable("latitude") String latitude, @PathVariable("longitude") String longitude, @PathVariable("raio") String raio) {
+    public ResponseEntity<AlertaResources> alertasPorRegiao(@PathVariable("timestamp") long timestamp, @PathVariable("latitude") String latitude, @PathVariable("longitude") String longitude, @PathVariable("raio") String raio) {
         Double dLatitude = Double.valueOf(latitude);
         Double dLongitude = Double.valueOf(longitude);
         Double dRaio = Double.valueOf(raio);
         
-        List<Alerta> alertas = service.obterAlertasPorRegiao(dLatitude, dLongitude, dRaio);
+        List<Alerta> alertas = service.obterAlertasPorRegiao(timestamp, dLatitude, dLongitude, dRaio);
         List<AlertaResource> resources = resourceAssembler.toResources(alertas);
         AlertaResources alertaResources = new AlertaResources(resources);
         // TODO Remover alertas após período de tempo

@@ -1,6 +1,5 @@
 package br.ita.bditac.service;
 
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.ExposesResourceFor;
 import org.springframework.hateoas.MediaTypes;
@@ -55,7 +54,6 @@ public class CriseController {
         // TODO - Simulação do gerenciamento de crises - o processo que torna o cadastramento de crise num alerta
         ReverseEnum<Categorias> reverseCategoria = new ReverseEnum<>(Categorias.class);
         Alerta alerta = new Alerta(
-        		DateTime.now().toString(),
         		reverseCategoria.get(crise.getCategoria()).name(),
         		crise.getDescricao(),
         		crise.getCategoria(),

@@ -3,12 +3,12 @@ package br.ita.bditac.test;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.linkWithRel;
-import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.links;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
@@ -25,7 +25,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Rule;
@@ -107,10 +106,11 @@ public class MockAlertTests {
 
     }
 
-    public RestTemplate getRestTemplate() {
+    RestTemplate getRestTemplate() {
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        mapper.configure(SerializationFeature.INDENT_OUTPUT, true);
         mapper.registerModules(new Jackson2HalModule(), new JodaModule());
 
         MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
@@ -123,7 +123,7 @@ public class MockAlertTests {
         return restTemplate;
 
     }
-
+    
     @Value("${local.server.port}")
     private int port;
 
@@ -134,6 +134,7 @@ public class MockAlertTests {
     public RestDocumentation restDocumentation = new RestDocumentation("target/generated-docs");
 
     protected MockMvc mvc;
+
 
     protected String getBaseUrl() {
         return "http://localhost:" + port;
@@ -228,72 +229,6 @@ public class MockAlertTests {
      * 
      * == Asserção:
      *
-     * Testa a obtenção de um crise de crise do seriço de Alertas:
-     *
-     * == Dados:
-     *
-     * Identificação da crise na requisição.
-     *
-     * == Execução:
-     *
-     * Uma chamada ao serviço de Alertas.
-     *
-     * == Resultado esperado:
-     *
-     * Uma estrutura de dados com os dados da crise.
-     *
-     * === Estrutura de dados
-     *
-     * [source,java]
-     * --
-     *  Crise criseRequest = new Crise(
-     *          "Deslizamento na na favela do Paraiso",
-     *          0,
-     *          "Ze das Couves",
-     *          "zedascouves@gmail.com",
-     *          "(12) 99876-1234",
-     *          40.0,
-     *          50.0);
-     * --
-     *
-     */
-    @Test
-    public void test102GetCrise() throws Exception {
-        String criseURL = getBaseUrl() + "/crise/{id}";
-
-        Map<String, Integer> params = new HashMap<String, Integer>();
-        params.put("id", 1);
-
-        ResponseEntity<CriseResource> criseResponseEntity = getRestTemplate().getForEntity(criseURL, CriseResource.class, params);
-
-        assertThat(criseResponseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
-
-        Crise criseResponse = criseResponseEntity.getBody().getContent();
-
-        Crise criseRequest = new Crise(
-                "Deslizamento na na favela do Paraiso",
-                0,
-                "Ze das Couves",
-                "zedascouves@gmail.com",
-                "(12) 99876-1234",
-                40.0,
-                50.0);
-
-        assertEquals("Resposta(descricao):'" + criseResponse.getDescricao() + "' do POST diferente do que foi enviado: '" + criseRequest.getDescricao() + "'!", criseResponse.getDescricao(), criseRequest.getDescricao());
-        assertEquals("Resposta(categoria) do POST diferente do que foi enviado!", criseResponse.getCategoria(), criseRequest.getCategoria());
-        assertEquals("Resposta(nome) do POST diferente do que foi enviado!", criseResponse.getNome(), criseRequest.getNome());
-        assertEquals("Resposta(email) do POST diferente do que foi enviado!", criseResponse.getEmail(), criseRequest.getEmail());
-        assertEquals("Resposta(telefone) do POST diferente do que foi enviado!", criseResponse.getTelefone(), criseRequest.getTelefone());
-        assertEquals("Resposta(latitude) do POST diferente do que foi enviado!", criseResponse.getLatitude(), criseRequest.getLatitude(), DELTA);
-        assertEquals("Resposta(longitude) do POST diferente do que foi enviado!", criseResponse.getLongitude(), criseRequest.getLongitude(), DELTA);
-    }
-
-    /**
-     *
-     * = TS02-US09
-     * 
-     * == Asserção:
-     *
      * Testa a inclusão de um crise de crise usando o seriço de Alertas:
      *
      * == Dados:
@@ -377,7 +312,6 @@ public class MockAlertTests {
         URI alertaURI = new URI(getBaseUrl() + "/alerta");
 
         Alerta alertaRequest = new Alerta(
-        		DateTime.now().toString(),
                 "Alerta de deslizamento",
                 "Perigo de deslizamento na altura do Km 20 da rodovia Tamoios, pista Sao Jose dos Campos/Litoral",
                 0,
@@ -450,72 +384,6 @@ public class MockAlertTests {
      * 
      * == Asserção:
      *
-     * Testa a obtenção de um determinado alerta identificado pelo *id* do seriço de Alertas:
-     *
-     * == Dados:
-     *
-     * Identificação do alerta na requisição.
-     *
-     * == Execução:
-     *
-     * Uma chamada ao serviço de Alertas.
-     *
-     * == Resultado esperado:
-     *
-     * Uma estrutura de dados com os dados do alerta.
-     *
-     * === Estrutura de dados
-     *
-     * [source,java]
-     * --
-     *  Alerta alertaRequest = new Alerta(
-     *          "Alerta de deslizamento",
-     *          "Perigo de deslizamento na altura do Km 20 da rodovia Tamoios, pista Sao Jose dos Campos/Litoral",
-     *          5,
-     *          5,
-     *          0,
-     *          40.0,
-     *          50.0,
-     *          1.0);
-     * --
-     *
-     */
-    @Test
-    public void test106GetAlertaById() throws URISyntaxException {
-        String alertaURL = getBaseUrl() + "/alerta/{id}";
-
-        Map<String, Integer> params = new HashMap<String, Integer>();
-        params.put("id", 1);
-
-        ResponseEntity<AlertaResource> alertaResponseEntity = getRestTemplate().getForEntity(alertaURL, AlertaResource.class, params);
-
-        assertThat(alertaResponseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
-
-        Alerta alertaResponse = alertaResponseEntity.getBody().getContent();
-
-        Alerta alertaRequest = new Alerta(
-        		DateTime.now().toString(),
-                "Alagamento",
-                "Deslizamento na na favela do Paraiso",
-                0,
-                40.0,
-                50.0,
-                10.0);
-
-        assertEquals("Resposta(descricaoResumida)'" + alertaResponse.getDescricaoResumida() + "' do POST diferente do que foi enviado: '" + alertaRequest.getDescricaoResumida() + "'!", alertaResponse.getDescricaoResumida(), alertaRequest.getDescricaoResumida());
-        assertEquals("Resposta(descricaoCompleta)'" + alertaResponse.getDescricaoCompleta() + "' do POST diferente do que foi enviado'" + alertaRequest.getDescricaoCompleta() + "'!", alertaResponse.getDescricaoCompleta(), alertaRequest.getDescricaoCompleta());
-        assertEquals("Resposta(categoriaAlerta)'" + alertaResponse.getCategoriaAlerta() + "' do POST diferente do que foi enviado'" + alertaRequest.getCategoriaAlerta() + "'!", alertaResponse.getCategoriaAlerta(), alertaRequest.getCategoriaAlerta());
-        assertEquals("Resposta(origemLatitude)'" + alertaResponse.getOrigemLatitude() + "' do POST diferente do que foi enviado'" + alertaRequest.getOrigemLatitude() + "'!", alertaResponse.getOrigemLatitude(), alertaRequest.getOrigemLatitude(), DELTA);
-        assertEquals("Resposta(origemLongitude)'" + alertaResponse.getOrigemLongitude() + "' do POST diferente do que foi enviado'" + alertaRequest.getOrigemLongitude() + "'!", alertaResponse.getOrigemLongitude(), alertaRequest.getOrigemLongitude(), DELTA);
-        assertEquals("Resposta(origemRaioKms)'" + alertaResponse.getOrigemRaioKms() + "' do POST diferente do que foi enviado'" + alertaRequest.getOrigemRaioKms() + "'!", alertaResponse.getOrigemRaioKms(), alertaRequest.getOrigemRaioKms(), DELTA);
-    }
-
-    /**
-     *
-     * = TS02-US09
-     * 
-     * == Asserção:
-     *
      * Testa a obtenção de alertas dentro de uma área identificada por um ponto geográfico e um raio no seriço de Alertas:
      *
      * == Dados:
@@ -558,12 +426,13 @@ public class MockAlertTests {
      */
     @Test
     public void test107GetAlertasByCoords() throws Exception {
-        String alertaURL = getBaseUrl() + "/alerta/latitude/{latitude}/longitude/{longitude}/raio/{raio}";
+        String alertaURL = getBaseUrl() + "/alerta/timestamp/{timestamp}/latitude/{latitude}/longitude/{longitude}/raio/{raio}";
 
-        Map<String, Double> params = new HashMap<String, Double>();
-        params.put("latitude", 40.0);
-        params.put("longitude", 50.0);
-        params.put("raio", 1D);
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("timestamp", "0");
+        params.put("latitude", "40.0");
+        params.put("longitude", "50.0");
+        params.put("raio", "1.0");
 
         List<Alerta> alertas = getRestTemplate().getForObject(alertaURL, AlertaResources.class, params).unwrap();
 
@@ -603,12 +472,13 @@ public class MockAlertTests {
      */
     @Test
     public void test108GetAlertaByCoordsInexistente() throws Exception {
-        String alertaURL = getBaseUrl() + "/alerta/latitude/{latitude}/longitude/{longitude}/raio/{raio}";
+        String alertaURL = getBaseUrl() + "/alerta/timestamp/{timestamp}/latitude/{latitude}/longitude/{longitude}/raio/{raio}";
 
-        Map<String, Double> params = new HashMap<String, Double>();
-        params.put("latitude", 0.6D);
-        params.put("longitude", 0.6D);
-        params.put("raio", 1D);
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("timestamp", "0");
+        params.put("latitude", "0.6");
+        params.put("longitude", "0.6");
+        params.put("raio", "1.0");
 
         ResponseEntity<AlertaResources> resources = getRestTemplate().getForEntity(alertaURL, AlertaResources.class, params);
         assertThat(resources.getStatusCode() == HttpStatus.NOT_FOUND);
@@ -793,12 +663,13 @@ public class MockAlertTests {
        assertEquals("Resposta(email) do POST diferente do que foi enviado!", criseResponse.getEmail(), criseRequest.getEmail());
        assertEquals("Resposta(telefone) do POST diferente do que foi enviado!", criseResponse.getTelefone(), criseRequest.getTelefone());
        
-       String alertaURL = getBaseUrl() + "/alerta/latitude/{latitude}/longitude/{longitude}/raio/{raio}";
+       String alertaURL = getBaseUrl() + "/alerta/timestamp/{timestamp}/latitude/{latitude}/longitude/{longitude}/raio/{raio}";
 
-       Map<String, Double> params = new HashMap<String, Double>();
-       params.put("latitude", 40.0);
-       params.put("longitude", 50.0);
-       params.put("raio", 1D);
+       Map<String, String> params = new HashMap<String, String>();
+       params.put("timestamp", "0");
+       params.put("latitude", "40.0");
+       params.put("longitude", "50.0");
+       params.put("raio", "1.0");
 
        List<Alerta> alertas = getRestTemplate().getForObject(alertaURL, AlertaResources.class, params).unwrap();
 
@@ -807,7 +678,7 @@ public class MockAlertTests {
    }
    
     @Test
-    public void test901Postcrise() throws Exception {
+    public void test901PostCrise() throws Exception {
         Crise crise = new Crise(
             "Crise de teste",
             0,
@@ -826,6 +697,7 @@ public class MockAlertTests {
             .content(criseJson))
             .andExpect(status().isCreated())
             .andDo(document("crise/post",
+            	preprocessResponse(prettyPrint()),
                 requestFields(
                     fieldWithPath("descricao").type(JsonFieldType.STRING).description("Descrição da crise"),
                     fieldWithPath("categoria").type(JsonFieldType.NULL).description("Categoria da crise"),
@@ -837,32 +709,8 @@ public class MockAlertTests {
     }
 
     @Test
-    public void test902Getcrise() throws Exception {
-        this.mvc.perform(get(getBaseUrl() + "/crise/{id}", 1))
-            .andExpect(status().isOk())
-            .andDo(document("crise/locations",
-                pathParameters(parameterWithName("id").description("Identificação da crise"))));
-        this.mvc.perform(get(getBaseUrl() + "/crise/1")
-            .accept(MediaTypes.HAL_JSON_VALUE))
-            .andExpect(status().isOk())
-            .andDo(document("crise/get",
-                responseFields(
-                    fieldWithPath("descricao").type(JsonFieldType.STRING).description("Descrição da crise"),
-                    fieldWithPath("categoria").type(JsonFieldType.NULL).description("Categoria da crise"),
-                    fieldWithPath("nome").type(JsonFieldType.STRING).description("Nome do informante da crise"),
-                    fieldWithPath("email").type(JsonFieldType.STRING).description("Email do informante da crise"),
-                    fieldWithPath("telefone").type(JsonFieldType.STRING).description("Telefone do informante da crise"),
-                    fieldWithPath("latitude").type(JsonFieldType.STRING).description("Latitude da localização do informante durante o post da crise"),
-                    fieldWithPath("longitude").type(JsonFieldType.STRING).description("Longitude da localização do informante durante o post da crise"),
-                    fieldWithPath("_links.self.href").type(JsonFieldType.STRING).description("URI do link para o crise")),
-                links(
-                    linkWithRel("self").description("Link para o crise"))));
-    }
-
-    @Test
     public void test904PostAlerta() throws Exception {
         Alerta alerta = new Alerta(
-        	DateTime.now().toString(),
             "Alerta de teste",
             "Teste de alerta para verificar a funcionalidade do sistema",
             0,
@@ -876,11 +724,11 @@ public class MockAlertTests {
 
         this.mvc.perform(post(getBaseUrl() + "/alerta")
             .contentType(MediaTypes.HAL_JSON_VALUE)
-            .content(alertaJson))
+        	.content(alertaJson))
             .andExpect(status().isCreated())
             .andDo(document("alerta/post",
+            	preprocessResponse(prettyPrint()),
                 requestFields(
-                	fieldWithPath("timestamp").type(JsonFieldType.STRING).description("Timestamp do registro no sistema"),
                     fieldWithPath("descricaoResumida").type(JsonFieldType.STRING).description("Breve descrição do alerta"),
                     fieldWithPath("descricaoCompleta").type(JsonFieldType.STRING).description("Descrição detalhada do alerta"),
                     fieldWithPath("categoriaAlerta").type(JsonFieldType.STRING).description("Indica o tipo de alerta"),
@@ -890,43 +738,21 @@ public class MockAlertTests {
     }
 
     @Test
-    public void test906GetAlertaById() throws Exception {
-        this.mvc.perform(get(getBaseUrl() + "/alerta/{id}", 1))
-            .andExpect(status().isOk())
-            .andDo(document("alerta/locationsId",
-                pathParameters(parameterWithName("id").description("Identificação do alerta"))));
-        this.mvc.perform(get(getBaseUrl() + "/alerta/1")
-            .accept(MediaTypes.HAL_JSON_VALUE))
-            .andExpect(status().isOk())
-            .andDo(document("alerta/getId",
-                responseFields(
-                	fieldWithPath("timestamp").type(JsonFieldType.STRING).description("Timestamp do registro no sistema"),
-                    fieldWithPath("descricaoResumida").type(JsonFieldType.STRING).description("Breve descrição do alerta"),
-                    fieldWithPath("descricaoCompleta").type(JsonFieldType.STRING).description("Descrição detalhada do alerta"),
-                    fieldWithPath("categoriaAlerta").type(JsonFieldType.STRING).description("Indica o tipo de alerta"),
-                    fieldWithPath("origemLatitude").type(JsonFieldType.ARRAY).description("Latitude do ponto de origem do alerta"),
-                    fieldWithPath("origemLongitude").type(JsonFieldType.ARRAY).description("Longitude do ponto de origem do alerta"),
-                    fieldWithPath("origemRaioKms").type(JsonFieldType.ARRAY).description("Área de abrangência do alerta em Kms"),
-                    fieldWithPath("_links.self.href").type(JsonFieldType.STRING).description("URI do link para o alerta")),
-                links(
-                    linkWithRel("self").description("Link para o crise"))));
-    }
-
-    @Test
     public void test907GetAlertaByCoords() throws Exception {
-        this.mvc.perform(get(getBaseUrl() + "/alerta/latitude/{latitude}/longitude/{longitude}/raio/{raio}", 40.0, 50.0, 1.0D))
+        this.mvc.perform(get(getBaseUrl() + "/alerta/timestamp/{timestamp}/latitude/{latitude}/longitude/{longitude}/raio/{raio}", 0, 40.0, 50.0, 1.0D))
             .andExpect(status().isOk())
             .andDo(document("alerta/locationsCoords",
                 pathParameters(
+                	parameterWithName("timestamp").description("Timestamp desde a última consulta"),
                     parameterWithName("latitude").description("Latitude do ponto de origem do alerta"),
                     parameterWithName("longitude").description("Longitude do ponto de origem do alerta"),
                     parameterWithName("raio").description("Área de abrangência do alerta em Kms"))));
-        this.mvc.perform(get(getBaseUrl() + "alerta/latitude/40.0/longitude/50.0/raio/1.0")
+        this.mvc.perform(get(getBaseUrl() + "alerta/timestamp/0/latitude/40.0/longitude/50.0/raio/1.0")
             .accept(MediaTypes.HAL_JSON_VALUE))
             .andExpect(status().isOk())
             .andDo(document("alerta/getCoords",
+            	preprocessResponse(prettyPrint()),
                 responseFields(
-                	fieldWithPath("_embedded.alertaList[].timestamp").type(JsonFieldType.STRING).description("Timestamp do registro no sistema"),
                     fieldWithPath("_embedded.alertaList[].descricaoResumida").type(JsonFieldType.STRING).description("Breve descrição do alerta"),
                     fieldWithPath("_embedded.alertaList[].descricaoCompleta").type(JsonFieldType.STRING).description("Descrição detalhada do alerta"),
                     fieldWithPath("_embedded.alertaList[].categoriaAlerta").type(JsonFieldType.STRING).description("Indica o tipo de alerta"),

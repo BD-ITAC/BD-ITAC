@@ -2,6 +2,8 @@ package br.ita.bditac.model;
 
 import java.io.Serializable;
 
+import org.joda.time.DateTime;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
@@ -20,9 +22,11 @@ public class Alerta implements Serializable {
 
     private static final long serialVersionUID = 1L;
     
+    private static int _id;
+    
     private int id;
     
-    private String timestamp;
+    private long timestamp;
 
     @JsonIgnore
     public Integer getId() {
@@ -72,10 +76,14 @@ public class Alerta implements Serializable {
      */
     private double origemRaioKms;
     
+    static {
+    	_id = 0;
+    }
+    
     public Alerta() {
     	this.id = 0;
     	
-    	this.timestamp = null;
+    	this.timestamp = 0;
         this.descricaoResumida = "";
         this.descricaoCompleta = "";
         this.categoriaAlerta = 0;
@@ -85,14 +93,16 @@ public class Alerta implements Serializable {
     }
     
     public Alerta(
-    		String timestamp,
             String descricaoResumida, 
             String descricaoCompleta, 
             int categoriaAlerta, 
             double origemLatitude, 
             double origemLongitude, 
             double origemRaioKms) {
-    	this.timestamp = timestamp;
+        
+        this.id = ++_id;
+    	
+    	this.timestamp = DateTime.now().getMillis();
         this.descricaoResumida = descricaoResumida;
         this.descricaoCompleta = descricaoCompleta;
         this.categoriaAlerta = categoriaAlerta;
@@ -102,16 +112,12 @@ public class Alerta implements Serializable {
     }   
     
     
-	public String getTimestamp() {
+    @JsonIgnore
+	public long getTimestamp() {
 		return timestamp;
 	}
 
 	
-	public void setTimestamp(String timestamp) {
-		this.timestamp = timestamp;
-	}
-	
-
 	public String getDescricaoResumida() {
         return descricaoResumida;
     }
