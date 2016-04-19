@@ -19,6 +19,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -89,6 +92,8 @@ public class MockAlertTests {
     private static final String IND_FINALIZADOS = "Finalizados";
 
     private static final String IND_ABERTOS = "Em andamento";
+    
+    private static String _foto = null;
 
     public class ClientErrorHandler implements ResponseErrorHandler {
 
@@ -122,6 +127,17 @@ public class MockAlertTests {
 
         return restTemplate;
 
+    }
+    
+    String getFoto() throws IOException {
+    	
+    	if(_foto == null) {
+	        byte[] binaryFile = Files.readAllBytes(Paths.get(Thread.currentThread().getContextClassLoader().getResource("foto.png").getPath()));
+	        _foto = new String (binaryFile, StandardCharsets.UTF_8); 
+    	}
+	
+		return _foto;
+    	
     }
     
     @Value("${local.server.port}")
@@ -193,14 +209,15 @@ public class MockAlertTests {
      *          "zedascouves@gmail.com",
      *          "(12) 99876-1234",
      *          40.0,
-     *          50.0);
+     *          50.0
+     *          foto);
      * --
      *
      */
     @Test
     public void test101PostCriseGerarAlerta() throws Exception {
         URI criseURI = new URI(getBaseUrl() + "/crise");
-
+        
         Crise criseRequest = new Crise(
                 "Deslizamento na na favela do Paraiso",
                 0,
@@ -208,19 +225,12 @@ public class MockAlertTests {
                 "zedascouves@gmail.com",
                 "(12) 99876-1234",
                 40.0,
-                50.0);
+                50.0,
+                getFoto());
 
         ResponseEntity<CriseResource> criseResponseEntity =  getRestTemplate().postForEntity(criseURI, new HttpEntity<Crise>(criseRequest), CriseResource.class);
 
         assertThat(criseResponseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
-
-        Crise criseResponse = criseResponseEntity.getBody().getContent();
-
-        assertEquals("Resposta(descricao):'" + criseResponse.getDescricao() + "' do POST diferente do que foi enviado: '" + criseRequest.getDescricao() + "'!", criseResponse.getDescricao(), criseRequest.getDescricao());
-        assertEquals("Resposta(categoria) do POST diferente do que foi enviado!", criseResponse.getCategoria(), criseRequest.getCategoria());
-        assertEquals("Resposta(nome) do POST diferente do que foi enviado!", criseResponse.getNome(), criseRequest.getNome());
-        assertEquals("Resposta(email) do POST diferente do que foi enviado!", criseResponse.getEmail(), criseRequest.getEmail());
-        assertEquals("Resposta(telefone) do POST diferente do que foi enviado!", criseResponse.getTelefone(), criseRequest.getTelefone());        
     }
 
     /**
@@ -322,15 +332,6 @@ public class MockAlertTests {
         ResponseEntity<AlertaResource> alertaResponseEntity = getRestTemplate().postForEntity(alertaURI, new HttpEntity<Alerta>(alertaRequest), AlertaResource.class);
 
         assertThat(alertaResponseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
-
-        Alerta alertasResponse = alertaResponseEntity.getBody().getContent();
-
-        assertEquals("Resposta(descricaoResumida)'" + alertasResponse.getDescricaoResumida() + "' do POST diferente do que foi enviado: '" + alertaRequest.getDescricaoResumida() + "'!", alertasResponse.getDescricaoResumida(), alertaRequest.getDescricaoResumida());
-        assertEquals("Resposta(descricaoCompleta)'" + alertasResponse.getDescricaoCompleta() + "' do POST diferente do que foi enviado'" + alertaRequest.getDescricaoCompleta() + "'!", alertasResponse.getDescricaoCompleta(), alertaRequest.getDescricaoCompleta());
-        assertEquals("Resposta(categoriaAlerta)'" + alertasResponse.getCategoriaAlerta() + "' do POST diferente do que foi enviado'" + alertaRequest.getCategoriaAlerta() + "'!", alertasResponse.getCategoriaAlerta(), alertaRequest.getCategoriaAlerta());
-        assertEquals("Resposta(origemLatitude)'" + alertasResponse.getOrigemLatitude() + "' do POST diferente do que foi enviado'" + alertaRequest.getOrigemLatitude() + "'!", alertasResponse.getOrigemLatitude(), alertaRequest.getOrigemLatitude(), DELTA);
-        assertEquals("Resposta(origemLongitude)'" + alertasResponse.getOrigemLongitude() + "' do POST diferente do que foi enviado'" + alertaRequest.getOrigemLongitude() + "'!", alertasResponse.getOrigemLongitude(), alertaRequest.getOrigemLongitude(), DELTA);
-        assertEquals("Resposta(origemRaioKms)'" + alertasResponse.getOrigemRaioKms() + "' do POST diferente do que foi enviado'" + alertaRequest.getOrigemRaioKms() + "'!", alertasResponse.getOrigemRaioKms(), alertaRequest.getOrigemRaioKms(), DELTA);
     }
 
     /**
@@ -634,7 +635,8 @@ public class MockAlertTests {
      *          "zedascouves@gmail.com",
      *          "(12) 99876-1234",
      *          40.0,
-     *          50.0);
+     *          50.0,
+     *          foto);
      * --
      *
      */
@@ -649,19 +651,12 @@ public class MockAlertTests {
                "zedascouves@gmail.com",
                "(12) 99876-1234",
                40.0,
-               50.0);
+               50.0,
+               getFoto());
 
        ResponseEntity<CriseResource> criseResponseEntity =  getRestTemplate().postForEntity(criseURI, new HttpEntity<Crise>(criseRequest), CriseResource.class);
 
        assertThat(criseResponseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
-
-       Crise criseResponse = criseResponseEntity.getBody().getContent();
-
-       assertEquals("Resposta(descricao):'" + criseResponse.getDescricao() + "' do POST diferente do que foi enviado: '" + criseRequest.getDescricao() + "'!", criseResponse.getDescricao(), criseRequest.getDescricao());
-       assertEquals("Resposta(categoria) do POST diferente do que foi enviado!", criseResponse.getCategoria(), criseRequest.getCategoria());
-       assertEquals("Resposta(nome) do POST diferente do que foi enviado!", criseResponse.getNome(), criseRequest.getNome());
-       assertEquals("Resposta(email) do POST diferente do que foi enviado!", criseResponse.getEmail(), criseRequest.getEmail());
-       assertEquals("Resposta(telefone) do POST diferente do que foi enviado!", criseResponse.getTelefone(), criseRequest.getTelefone());
        
        String alertaURL = getBaseUrl() + "/alerta/timestamp/{timestamp}/latitude/{latitude}/longitude/{longitude}/raio/{raio}";
 
@@ -686,7 +681,8 @@ public class MockAlertTests {
             "joao.horta@gmail.com",
             "(12) 95678-4321",
             40.0,
-            50.0);
+            50.0,
+            getFoto());
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
         ObjectWriter writer = mapper.writer().withDefaultPrettyPrinter();
@@ -705,7 +701,8 @@ public class MockAlertTests {
                     fieldWithPath("email").type(JsonFieldType.STRING).description("Email do informante da crise"),
                     fieldWithPath("telefone").type(JsonFieldType.STRING).description("Telefone do informante da crise"),
                     fieldWithPath("latitude").type(JsonFieldType.NUMBER).description("Latitude da localização do informante durante o post da crise"),
-                    fieldWithPath("longitude").type(JsonFieldType.STRING).description("Longitude da localização do informante durante o post da crise"))));
+                    fieldWithPath("longitude").type(JsonFieldType.STRING).description("Longitude da localização do informante durante o post da crise"),
+                    fieldWithPath("fotografia").type(JsonFieldType.STRING).description("Fotografia capturada no local"))));
     }
 
     @Test

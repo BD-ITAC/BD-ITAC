@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.ita.bditac.model.Alerta;
 import br.ita.bditac.model.AlertaDAO;
+import br.ita.bditac.model.Message;
 import br.ita.bditac.support.AlertaResource;
 import br.ita.bditac.support.AlertaResourceAssembler;
 import br.ita.bditac.support.AlertaResources;
@@ -54,25 +55,27 @@ public class AlertaController {
     private AlertaDAO service;
 
     @RequestMapping(method = RequestMethod.POST, consumes = { MediaTypes.HAL_JSON_VALUE }, produces = { MediaTypes.HAL_JSON_VALUE })
-    public ResponseEntity<AlertaResource> adicionar(@RequestBody Alerta body) {
-        Alerta alerta = service.adicionarAlerta(body);
-        AlertaResource resource = resourceAssembler.toResource(alerta);
+    public ResponseEntity<MessageResource> adicionar(@RequestBody Alerta body) {
+        service.adicionarAlerta(body);
         
-        return new ResponseEntity<AlertaResource>(resource, HttpStatus.CREATED);
+        Message message = new Message(1, Message.Type.INFO, HttpStatus.OK.getReasonPhrase(), "Alerta registrado", "BD-ITAC");
+        MessageResource resource = new MessageResource(message);
+        
+        return new ResponseEntity<MessageResource>(resource, HttpStatus.CREATED);
     }
     
     @RequestMapping(method = RequestMethod.HEAD, produces = { MediaTypes.HAL_JSON_VALUE }, value = Request.BY_REGIAO)
-    public ResponseEntity<AlertaResource> alerta(@PathVariable("timestamp") long timestamp, @PathVariable("latitude") String latitude, @PathVariable("longitude") String longitude, @PathVariable("raio") String raio) {
+    public ResponseEntity<MessageResource> alerta(@PathVariable("timestamp") long timestamp, @PathVariable("latitude") String latitude, @PathVariable("longitude") String longitude, @PathVariable("raio") String raio) {
         Double dLatitude = Double.valueOf(latitude);
         Double dLongitude = Double.valueOf(longitude);
         Double dRaio = Double.valueOf(raio);
 
         boolean hasAlertas = service.obterAlerta(timestamp, dLatitude, dLongitude, dRaio);
         if(hasAlertas) {
-            return new ResponseEntity<AlertaResource>(HttpStatus.OK);
+            return new ResponseEntity<MessageResource>(HttpStatus.OK);
         }
         else {
-            return new ResponseEntity<AlertaResource>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<MessageResource>(HttpStatus.NOT_FOUND);
         }
     }
     

@@ -72,7 +72,8 @@ public class AlertaDAO {
     	alertas.remove(id);
     }
     
-    public Crise adicionarcrise(Crise criseRequest) {
+    public Crise adicionarCrise(Crise criseRequest) {
+    	
         Crise novaCrise = new Crise(
         		criseRequest.getDescricao(),
         		criseRequest.getCategoria(),
@@ -80,7 +81,8 @@ public class AlertaDAO {
         		criseRequest.getEmail(),
         		criseRequest.getTelefone(),
         		criseRequest.getLatitude(),
-        		criseRequest.getLongitude());
+        		criseRequest.getLongitude(),
+        		criseRequest.getFotografia());
 
         crises.put(novaCrise.getId(), novaCrise);
         

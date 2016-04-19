@@ -20,6 +20,7 @@ import br.ita.bditac.model.Alerta;
 import br.ita.bditac.model.AlertaDAO;
 import br.ita.bditac.model.Categorias;
 import br.ita.bditac.model.Crise;
+import br.ita.bditac.model.Message;
 import br.ita.bditac.support.CriseResource;
 import br.ita.bditac.support.CriseResourceAssembler;
 import br.ita.bditac.support.MessageResource;
@@ -48,8 +49,8 @@ public class CriseController {
     private AlertaDAO service;
     
     @RequestMapping(method = RequestMethod.POST, consumes = { MediaTypes.HAL_JSON_VALUE })
-    public ResponseEntity<CriseResource> adicionar(@RequestBody Crise body) {
-        Crise crise = service.adicionarcrise(body);
+    public ResponseEntity<MessageResource> adicionar(@RequestBody Crise body) {
+        Crise crise = service.adicionarCrise(body);
         
         // TODO - Simulação do gerenciamento de crises - o processo que torna o cadastramento de crise num alerta
         ReverseEnum<Categorias> reverseCategoria = new ReverseEnum<>(Categorias.class);
@@ -61,12 +62,12 @@ public class CriseController {
         		crise.getLongitude(),
                 // TODO - Sala de gerenciamento de crises determina a área de abrangência da crise
         		10);
-
         service.adicionarAlerta(alerta);
         
-        CriseResource resource = resourceAssembler.toResource(crise);
+        Message message = new Message(1, Message.Type.INFO, HttpStatus.OK.getReasonPhrase(), "Crise registrada", "BD-ITAC");
+        MessageResource resource = new MessageResource(message);
         
-        return new ResponseEntity<CriseResource>(resource, HttpStatus.CREATED);
+        return new ResponseEntity<MessageResource>(resource, HttpStatus.CREATED);
     }
 
     @RequestMapping(method = RequestMethod.GET, produces = { MediaTypes.HAL_JSON_VALUE }, value = Request.ID)

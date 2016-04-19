@@ -2,6 +2,8 @@ package br.ita.bditac.model;
 
 import java.io.Serializable;
 
+import org.apache.commons.codec.binary.Base64;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
@@ -54,6 +56,8 @@ public class Crise implements Serializable {
     
     private double longitude;
     
+    private byte[] fotografia;
+    
     static {
     	_id = 0;
     }
@@ -68,6 +72,7 @@ public class Crise implements Serializable {
         this.telefone = "";
         this.latitude = 0D;
         this.longitude = 0D;
+        this.fotografia = null;
     }
     
     public Crise(
@@ -77,7 +82,8 @@ public class Crise implements Serializable {
             String email,
             String telefone,
             double latitude,
-            double longitude) {
+            double longitude,
+            String fotografia) {
     	
         this.id = ++_id;
         
@@ -88,6 +94,7 @@ public class Crise implements Serializable {
         this.telefone = telefone;
         this.latitude = latitude;
         this.longitude = longitude;
+    	this.fotografia = Base64.encodeBase64(fotografia.getBytes());
     }
 
     
@@ -144,21 +151,35 @@ public class Crise implements Serializable {
     public static long getSerialversionuid() {
         return serialVersionUID;
     }
+    
 
 	public double getLatitude() {
 		return latitude;
 	}
+	
 
 	public void setLatitude(double latitude) {
 		this.latitude = latitude;
 	}
+	
 
 	public double getLongitude() {
 		return longitude;
 	}
+	
 
 	public void setLongitude(double longitude) {
 		this.longitude = longitude;
+	}
+	
+	
+	public String getFotografia() {
+		return new String(fotografia);
+	}
+	
+	
+	public void setFotografia(String fotografia) {
+		this.fotografia = fotografia.getBytes();
 	}
     
 }
