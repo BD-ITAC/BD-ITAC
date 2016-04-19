@@ -10,7 +10,6 @@ import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuild
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
@@ -36,8 +35,11 @@ import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.hateoas.hal.Jackson2HalModule;
 import org.springframework.http.HttpEntity;
@@ -95,7 +97,20 @@ public class MockAlertTests {
     
     private static String _foto = null;
 
-    public class ClientErrorHandler implements ResponseErrorHandler {
+    @Configuration
+    @EnableConfigurationProperties
+    @ConfigurationProperties(prefix="info.build")
+    class MockSettings {
+    	
+    	private String version;
+		
+		public String getVersion() {
+			return version;
+		}
+    	
+    }
+    
+    class ClientErrorHandler implements ResponseErrorHandler {
 
         public void handleError(ClientHttpResponse response) throws IOException {
 
@@ -694,15 +709,12 @@ public class MockAlertTests {
             .andExpect(status().isCreated())
             .andDo(document("crise/post",
             	preprocessResponse(prettyPrint()),
-                requestFields(
-                    fieldWithPath("descricao").type(JsonFieldType.STRING).description("Descrição da crise"),
-                    fieldWithPath("categoria").type(JsonFieldType.NULL).description("Categoria da crise"),
-                    fieldWithPath("nome").type(JsonFieldType.STRING).description("Nome do informante da crise"),
-                    fieldWithPath("email").type(JsonFieldType.STRING).description("Email do informante da crise"),
-                    fieldWithPath("telefone").type(JsonFieldType.STRING).description("Telefone do informante da crise"),
-                    fieldWithPath("latitude").type(JsonFieldType.NUMBER).description("Latitude da localização do informante durante o post da crise"),
-                    fieldWithPath("longitude").type(JsonFieldType.STRING).description("Longitude da localização do informante durante o post da crise"),
-                    fieldWithPath("fotografia").type(JsonFieldType.STRING).description("Fotografia capturada no local"))));
+                responseFields(
+                    fieldWithPath("message.id").type(JsonFieldType.NUMBER).description("Identificação da mensagem"),
+                    fieldWithPath("message.type").type(JsonFieldType.STRING).description("Tipo da mensagem (INFO, WARNING, ERROR)"),
+                    fieldWithPath("message.status").type(JsonFieldType.STRING).description("Código de estado do sistema"),
+                    fieldWithPath("message.description").type(JsonFieldType.STRING).description("Descrição da mensagem"),
+                    fieldWithPath("message.info").type(JsonFieldType.STRING).description("Informações adicionais"))));
     }
 
     @Test
@@ -725,13 +737,12 @@ public class MockAlertTests {
             .andExpect(status().isCreated())
             .andDo(document("alerta/post",
             	preprocessResponse(prettyPrint()),
-                requestFields(
-                    fieldWithPath("descricaoResumida").type(JsonFieldType.STRING).description("Breve descrição do alerta"),
-                    fieldWithPath("descricaoCompleta").type(JsonFieldType.STRING).description("Descrição detalhada do alerta"),
-                    fieldWithPath("categoriaAlerta").type(JsonFieldType.STRING).description("Indica o tipo de alerta"),
-                    fieldWithPath("origemLatitude").type(JsonFieldType.ARRAY).description("Latitude do ponto de origem do alerta"),
-                    fieldWithPath("origemLongitude").type(JsonFieldType.ARRAY).description("Longitude do ponto de origem do alerta"),
-                    fieldWithPath("origemRaioKms").type(JsonFieldType.ARRAY).description("Área de abrangência do alerta em Kms"))));
+                responseFields(
+                        fieldWithPath("message.id").type(JsonFieldType.NUMBER).description("Identificação da mensagem"),
+                        fieldWithPath("message.type").type(JsonFieldType.STRING).description("Tipo da mensagem (INFO, WARNING, ERROR)"),
+                        fieldWithPath("message.status").type(JsonFieldType.STRING).description("Código de estado do sistema"),
+                        fieldWithPath("message.description").type(JsonFieldType.STRING).description("Descrição da mensagem"),
+                        fieldWithPath("message.info").type(JsonFieldType.STRING).description("Informações adicionais"))));
     }
 
     @Test
@@ -753,9 +764,9 @@ public class MockAlertTests {
                     fieldWithPath("_embedded.alertaList[].descricaoResumida").type(JsonFieldType.STRING).description("Breve descrição do alerta"),
                     fieldWithPath("_embedded.alertaList[].descricaoCompleta").type(JsonFieldType.STRING).description("Descrição detalhada do alerta"),
                     fieldWithPath("_embedded.alertaList[].categoriaAlerta").type(JsonFieldType.STRING).description("Indica o tipo de alerta"),
-                    fieldWithPath("_embedded.alertaList[].origemLatitude").type(JsonFieldType.ARRAY).description("Latitude do ponto de origem do alerta"),
-                    fieldWithPath("_embedded.alertaList[].origemLongitude").type(JsonFieldType.ARRAY).description("Longitude do ponto de origem do alerta"),
-                    fieldWithPath("_embedded.alertaList[].origemRaioKms").type(JsonFieldType.ARRAY).description("Área de abrangência do alerta em Kms"),
+                    fieldWithPath("_embedded.alertaList[].origemLatitude").type(JsonFieldType.NUMBER).description("Latitude do ponto de origem do alerta"),
+                    fieldWithPath("_embedded.alertaList[].origemLongitude").type(JsonFieldType.NUMBER).description("Longitude do ponto de origem do alerta"),
+                    fieldWithPath("_embedded.alertaList[].origemRaioKms").type(JsonFieldType.NUMBER).description("Área de abrangência do alerta em Kms"),
                     fieldWithPath("_embedded.alertaList[]._links.self.href").type(JsonFieldType.STRING).description("URI do link para o alerta"))));
     }
 
