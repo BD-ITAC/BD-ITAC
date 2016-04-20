@@ -39,8 +39,6 @@ public class AlertaController {
     
     public interface Request {
         
-        String ID = "/{id}";
-        
         String BY_REGIAO = "/timestamp/{timestamp}/latitude/{latitude:" + COORD_REGEX + "}" + "/longitude/{longitude:" + COORD_REGEX + "}" + "/raio/{raio:" + DIST_REGEX + "}";
 
     }
@@ -56,48 +54,69 @@ public class AlertaController {
 
     @RequestMapping(method = RequestMethod.POST, consumes = { MediaTypes.HAL_JSON_VALUE }, produces = { MediaTypes.HAL_JSON_VALUE })
     public ResponseEntity<MessageResource> adicionar(@RequestBody Alerta body) {
-        service.adicionarAlerta(body);
-        
-        Message message = new Message(1, Message.Type.INFO, HttpStatus.OK.getReasonPhrase(), "Alerta registrado", "BD-ITAC");
-        MessageResource resource = new MessageResource(message);
-        
-        return new ResponseEntity<MessageResource>(resource, HttpStatus.CREATED);
+    	try {
+	        service.adicionarAlerta(body);
+	        
+	        Message message = new Message(1, Message.Type.INFO, HttpStatus.OK.getReasonPhrase(), "Alerta registrado", "BD-ITAC");
+	        MessageResource resource = new MessageResource(message);
+	        
+	        return new ResponseEntity<MessageResource>(resource, HttpStatus.CREATED);
+    	}
+    	catch(Exception ex) {
+	        Message message = new Message(1, Message.Type.INFO, HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), ex.getMessage(), ex.getCause().getMessage());
+	        MessageResource resource = new MessageResource(message);
+	        
+	        return new ResponseEntity<MessageResource>(resource, HttpStatus.INTERNAL_SERVER_ERROR);	        
+    	}
     }
     
     @RequestMapping(method = RequestMethod.HEAD, produces = { MediaTypes.HAL_JSON_VALUE }, value = Request.BY_REGIAO)
     public ResponseEntity<MessageResource> alerta(@PathVariable("timestamp") long timestamp, @PathVariable("latitude") String latitude, @PathVariable("longitude") String longitude, @PathVariable("raio") String raio) {
-        Double dLatitude = Double.valueOf(latitude);
-        Double dLongitude = Double.valueOf(longitude);
-        Double dRaio = Double.valueOf(raio);
-
-        boolean hasAlertas = service.obterAlerta(timestamp, dLatitude, dLongitude, dRaio);
-        if(hasAlertas) {
-            return new ResponseEntity<MessageResource>(HttpStatus.OK);
-        }
-        else {
-            return new ResponseEntity<MessageResource>(HttpStatus.NOT_FOUND);
-        }
+    	try {
+	        Double dLatitude = Double.valueOf(latitude);
+	        Double dLongitude = Double.valueOf(longitude);
+	        Double dRaio = Double.valueOf(raio);
+	
+	        boolean hasAlertas = service.obterAlerta(timestamp, dLatitude, dLongitude, dRaio);
+	        if(hasAlertas) {
+	            return new ResponseEntity<MessageResource>(HttpStatus.OK);
+	        }
+	        else {
+	            return new ResponseEntity<MessageResource>(HttpStatus.NOT_FOUND);
+	        }
+    	}
+    	catch(Exception ex) {
+	        Message message = new Message(1, Message.Type.INFO, HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), ex.getMessage(), ex.getCause().getMessage());
+	        MessageResource resource = new MessageResource(message);
+	        
+	        return new ResponseEntity<MessageResource>(resource, HttpStatus.INTERNAL_SERVER_ERROR);	        
+    	}
     }
     
     @RequestMapping(method = RequestMethod.GET, produces = { MediaTypes.HAL_JSON_VALUE }, value = Request.BY_REGIAO)
     public ResponseEntity<AlertaResources> alertasPorRegiao(@PathVariable("timestamp") long timestamp, @PathVariable("latitude") String latitude, @PathVariable("longitude") String longitude, @PathVariable("raio") String raio) {
-        Double dLatitude = Double.valueOf(latitude);
-        Double dLongitude = Double.valueOf(longitude);
-        Double dRaio = Double.valueOf(raio);
-        
-        List<Alerta> alertas = service.obterAlertasPorRegiao(timestamp, dLatitude, dLongitude, dRaio);
-        List<AlertaResource> resources = resourceAssembler.toResources(alertas);
-        AlertaResources alertaResources = new AlertaResources(resources);
-        // TODO Remover alertas após período de tempo
-//        for(Alerta alerta : alertas) {
-//        	service.removerAlerta(alerta.getId());
-//        }
-        if(alertaResources.getContent().size() == 0) {
-        	return new ResponseEntity<AlertaResources>(HttpStatus.NOT_FOUND);
-        }
-        else {
-        	return new ResponseEntity<AlertaResources>(alertaResources, HttpStatus.OK);
-        }
+    	try {
+	        Double dLatitude = Double.valueOf(latitude);
+	        Double dLongitude = Double.valueOf(longitude);
+	        Double dRaio = Double.valueOf(raio);
+	        
+	        List<Alerta> alertas = service.obterAlertasPorRegiao(timestamp, dLatitude, dLongitude, dRaio);
+	        List<AlertaResource> resources = resourceAssembler.toResources(alertas);
+	        AlertaResources alertaResources = new AlertaResources(resources);
+	        // TODO Remover alertas após período de tempo
+	//        for(Alerta alerta : alertas) {
+	//        	service.removerAlerta(alerta.getId());
+	//        }
+	        if(alertaResources.getContent().size() == 0) {
+	        	return new ResponseEntity<AlertaResources>(HttpStatus.NOT_FOUND);
+	        }
+	        else {
+	        	return new ResponseEntity<AlertaResources>(alertaResources, HttpStatus.OK);
+	        }
+    	}
+    	catch(Exception ex) {
+	        return new ResponseEntity<AlertaResources>(HttpStatus.INTERNAL_SERVER_ERROR);	        
+    	}
     }
 
     @ExceptionHandler(Exception.class)

@@ -8,7 +8,6 @@ import org.springframework.hateoas.config.EnableHypermediaSupport.HypermediaType
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -21,8 +20,6 @@ import br.ita.bditac.model.AlertaDAO;
 import br.ita.bditac.model.Categorias;
 import br.ita.bditac.model.Crise;
 import br.ita.bditac.model.Message;
-import br.ita.bditac.support.CriseResource;
-import br.ita.bditac.support.CriseResourceAssembler;
 import br.ita.bditac.support.MessageResource;
 import br.ita.bditac.support.MessageResourceAssembler;
 import br.ita.bditac.support.ReverseEnum;
@@ -33,15 +30,6 @@ import br.ita.bditac.support.ReverseEnum;
 @RequestMapping("/crise")
 public class CriseController {
     
-    public interface Request {
-        
-        String ID = "/{id}";
-        
-    }
-    
-    @Autowired
-    private CriseResourceAssembler resourceAssembler;
-    
     @Autowired
     private MessageResourceAssembler messageResourceAssembler;
     
@@ -50,37 +38,32 @@ public class CriseController {
     
     @RequestMapping(method = RequestMethod.POST, consumes = { MediaTypes.HAL_JSON_VALUE })
     public ResponseEntity<MessageResource> adicionar(@RequestBody Crise body) {
-        Crise crise = service.adicionarCrise(body);
-        
-        // TODO - Simulação do gerenciamento de crises - o processo que torna o cadastramento de crise num alerta
-        ReverseEnum<Categorias> reverseCategoria = new ReverseEnum<>(Categorias.class);
-        Alerta alerta = new Alerta(
-        		reverseCategoria.get(crise.getCategoria()).name(),
-        		crise.getDescricao(),
-        		crise.getCategoria(),
-        		crise.getLatitude(),
-        		crise.getLongitude(),
-                // TODO - Sala de gerenciamento de crises determina a área de abrangência da crise
-        		10);
-        service.adicionarAlerta(alerta);
-        
-        Message message = new Message(1, Message.Type.INFO, HttpStatus.OK.getReasonPhrase(), "Crise registrada", "BD-ITAC");
-        MessageResource resource = new MessageResource(message);
-        
-        return new ResponseEntity<MessageResource>(resource, HttpStatus.CREATED);
-    }
-
-    @RequestMapping(method = RequestMethod.GET, produces = { MediaTypes.HAL_JSON_VALUE }, value = Request.ID)
-    public ResponseEntity<CriseResource> obter(@PathVariable("id") int id) {
-        Crise crise = service.obtercrise(id);
-        if(crise == null) {
-            return new ResponseEntity<CriseResource>(HttpStatus.NOT_FOUND);
-        }
-        else {
-            CriseResource resource = resourceAssembler.toResource(crise);
-            
-            return new ResponseEntity<CriseResource>(resource, HttpStatus.OK);
-        }
+    	try {
+	        Crise crise = service.adicionarCrise(body);
+	        
+	        // TODO - Simulação do gerenciamento de crises - o processo que torna o cadastramento de crise num alerta
+	        ReverseEnum<Categorias> reverseCategoria = new ReverseEnum<>(Categorias.class);
+	        Alerta alerta = new Alerta(
+	        		reverseCategoria.get(crise.getCategoria()).name(),
+	        		crise.getDescricao(),
+	        		crise.getCategoria(),
+	        		crise.getLatitude(),
+	        		crise.getLongitude(),
+	                // TODO - Sala de gerenciamento de crises determina a área de abrangência da crise
+	        		10);
+	        service.adicionarAlerta(alerta);
+	        
+	        Message message = new Message(1, Message.Type.INFO, HttpStatus.OK.getReasonPhrase(), "Crise registrada", "Crise registrada");
+	        MessageResource resource = new MessageResource(message);
+	        
+	        return new ResponseEntity<MessageResource>(resource, HttpStatus.CREATED);
+    	}
+    	catch(Exception ex) {
+	        Message message = new Message(1, Message.Type.INFO, HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), ex.getMessage(), ex.getCause().getMessage());
+	        MessageResource resource = new MessageResource(message);
+	        
+	        return new ResponseEntity<MessageResource>(resource, HttpStatus.INTERNAL_SERVER_ERROR);	        
+    	}
     }
     
     @ExceptionHandler(Exception.class)

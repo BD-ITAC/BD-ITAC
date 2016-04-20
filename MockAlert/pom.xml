@@ -97,7 +97,7 @@
 		  <artifactId>jackson-datatype-joda</artifactId>
 		</dependency>   
 		
-		<!-- Apache Commons -->
+		<!-- Apache Commons Codec -->
 		
 		<dependency>
 		  <groupId>commons-codec</groupId>
