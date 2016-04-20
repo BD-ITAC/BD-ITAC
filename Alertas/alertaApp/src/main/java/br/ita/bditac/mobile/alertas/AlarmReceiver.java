@@ -41,8 +41,8 @@ public class AlarmReceiver extends WakefulBroadcastReceiver {
 
         alarmTimer =
                 Debug.isDebuggerConnected() ?
-                        Constants.DEBUG_TIME:
-                        preferences.getInt("alerts.service.alarmTimer", Constants.DEFAULT_TIME);
+                        Constants.DEBUG_TIMER :
+                        preferences.getInt("alerts.service.alarmTimer", Constants.DEFAULT_TIMER);
 
         Intent intent = new Intent(context, AlarmReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);

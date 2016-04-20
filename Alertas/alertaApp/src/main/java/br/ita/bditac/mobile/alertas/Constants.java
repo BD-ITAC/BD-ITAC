@@ -3,9 +3,9 @@ package br.ita.bditac.mobile.alertas;
 
 public interface Constants {
 
-    public static final int DEFAULT_TIME = 600000;
+    public static final int DEFAULT_TIMER = 600000;
 
-    public static final int DEBUG_TIME = 30000;
+    public static final int DEBUG_TIMER = 30000;
 
     public static final String DEFAULT_URL = "http://10.0.2.2:8080";
 
