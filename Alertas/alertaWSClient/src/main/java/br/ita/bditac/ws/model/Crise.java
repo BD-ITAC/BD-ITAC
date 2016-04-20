@@ -1,5 +1,7 @@
 package br.ita.bditac.ws.model;
 
+import org.apache.commons.codec.binary.Base64;
+
 import java.io.Serializable;
 
 public class Crise implements Serializable {
@@ -21,6 +23,8 @@ public class Crise implements Serializable {
     private double latitude;
 
     private double longitude;
+
+    private byte[] fotografia;
     
     public Crise() {
         this.id = 0;
@@ -30,6 +34,7 @@ public class Crise implements Serializable {
         this.nome = "";
         this.email = "";
         this.telefone = "";
+        this.fotografia = null;
     }
     
     public Crise(
@@ -39,7 +44,8 @@ public class Crise implements Serializable {
             String email,
             String telefone,
             double latitude,
-            double longitude) {
+            double longitude,
+            String fotografia) {
         this.id = 0;
         
         this.descricao = descricao;
@@ -49,16 +55,12 @@ public class Crise implements Serializable {
         this.telefone = telefone;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.fotografia = Base64.encodeBase64(fotografia.getBytes());
     }
     
     
     public int getId() {
         return id;
-    }
-
-    
-    public void setId(int id) {
-        this.id = id;
     }
 
 
@@ -67,28 +69,13 @@ public class Crise implements Serializable {
     }
 
     
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
-    
-    
     public int getCategoria() {
         return categoria;
     }
 
-    
-    public void setCategoria(int categoria) {
-        this.categoria = categoria;
-    }
-    
 
     public String getNome() {
         return nome;
-    }
-
-    
-    public void setNome(String nome) {
-        this.nome = nome;
     }
 
     
@@ -97,28 +84,8 @@ public class Crise implements Serializable {
     }
 
     
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    
     public String getTelefone() {
         return telefone;
-    }
-
-    
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
-    }
-
-    
-    public static long getSerialversionuid() {
-        return serialVersionUID;
-    }
-
-
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
     }
 
 
@@ -127,13 +94,13 @@ public class Crise implements Serializable {
     }
 
 
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
+    public double getLongitude() {
+        return longitude;
     }
 
 
-    public double getLongitude() {
-        return longitude;
+    public String getFotografia() {
+        return new String(fotografia);
     }
 
 }
