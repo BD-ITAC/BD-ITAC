@@ -264,27 +264,30 @@ public class CadastrarCriseActivity extends AppCompatActivity {
 
                     currentLocation=locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                 }
-            } catch(Exception ex) {
+            }
+            catch(Exception ex) {
                 CharSequence mensagem=getText(R.string.msg_alerts_service_unaivalable);
                 Toast.makeText(context, mensagem, Toast.LENGTH_LONG).show();
 
                 Log.e(this.getClass().getSimpleName(), ex.getMessage(), ex);
             }
 
-            Crise crise=new Crise();
-
-            crise.setDescricao(inputDescricao.getText().toString());
-            crise.setCategoria(inputCategoria.getSelectedItemPosition());
-            crise.setNome(Usuario.getNome());
-            crise.setEmail(Usuario.getEmail());
-            crise.setTelefone(Usuario.getTelefone());
             if(currentLocation == null) {
                 Toast.makeText(context, getText(R.string.msg_location_service_unaivalable), Toast.LENGTH_LONG).show();
 
                 Log.i(this.getClass().getSimpleName(), getText(R.string.msg_location_service_unaivalable).toString());
-            } else {
-                crise.setLatitude(currentLocation.getLatitude());
-                crise.setLongitude(currentLocation.getLongitude());
+            }
+            else {
+            Crise crise=new Crise(
+                    inputDescricao.getText().toString(),
+                    inputCategoria.getSelectedItemPosition(),
+                    Usuario.getNome(),
+                    Usuario.getEmail(),
+                    Usuario.getTelefone(),
+                    currentLocation.getLatitude(),
+                    currentLocation.getLongitude(),
+                    // TODO Adicionar fotografia
+                    "");
 
                 new SalvarCriseTask().execute(crise);
 

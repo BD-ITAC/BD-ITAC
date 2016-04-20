@@ -3,7 +3,6 @@ apply plugin: 'org.asciidoctor.gradle.asciidoctor'
 apply plugin: 'jacoco'
 
 configurations {
-    /* all*.exclude group: 'commons-logging', module: 'commons-logging' */
     asciidoclet
 }
 
@@ -44,6 +43,7 @@ dependencies {
     compile 'org.springframework.android:spring-android-rest-template:1.0.1.RELEASE'
     compile 'com.fasterxml.jackson.core:jackson-databind:2.5.4'
     compile 'joda-time:joda-time:2.8.2'
+    compile 'commons-codec:commons-codec:1.10'
     compile project(':springAndroidRest')
 
     testCompile 'org.apache.httpcomponents:httpclient:4.5.2'

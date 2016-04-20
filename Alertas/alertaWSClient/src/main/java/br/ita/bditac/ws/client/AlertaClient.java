@@ -1,19 +1,18 @@
 package br.ita.bditac.ws.client;
 
 
-import android.util.Log;
-
+import org.joda.time.DateTime;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import br.ita.bditac.ws.model.Alerta;
-import br.ita.bditac.ws.model.AlertaResource;
 import br.ita.bditac.ws.model.AlertaResources;
 
 
@@ -21,42 +20,22 @@ public class AlertaClient extends AbstractBaseService {
 
     private static final String SERVICE_URL = "/alerta";
 
-    private static final String ID_PARM = "/{id}";
+    private static final String COORDS_PARM = "/timestamp/{timestamp}/latitude/{latitude}/longitude/{longitude}/raio/{raio}";
 
-    private static final String COORDS_PARM = "/latitude/{latitude}/longitude/{longitude}/raio/{raio}";
+    private static long lastTimestamp = 0;
 
     public AlertaClient(String hostURL) {
         super(hostURL);
     }
 
-    public Alerta getAlertaById(int id) {
-
-        Map<String, Integer> params = new HashMap<String, Integer>();
-        params.put("id", id);
-
-        try {
-            HttpEntity envio = new HttpEntity(getResponseHeader());
-
-            ResponseEntity<AlertaResource> alertaResponseEntity = getRestTemplate().exchange(getHostURL() + SERVICE_URL + ID_PARM, HttpMethod.GET, envio, AlertaResource.class, params);
-
-            if(alertaResponseEntity.getStatusCode() == HttpStatus.OK) {
-                return alertaResponseEntity.getBody().getContent();
-            }
-        }
-        catch(Exception ex) {
-            Log.e(this.getClass().getSimpleName(), ex.getMessage());
-        }
-
-        return null;
-
-    }
-
     public boolean hasAlerta(double latitude, double longitude, double raio) {
 
-        Map<String, Double> params = new HashMap<String, Double>();
-        params.put("latitude", latitude);
-        params.put("longitude", longitude);
-        params.put("raio", raio);
+        Map<String, String> params = new HashMap<String, String>();
+        DecimalFormat df = new DecimalFormat("#0.000000");
+        params.put("timestamp", Long.toString(lastTimestamp));
+        params.put("latitude", df.format(latitude));
+        params.put("longitude", df.format(longitude));
+        params.put("raio", df.format(raio));
 
         HttpEntity envio = new HttpEntity(getResponseHeader());
 
@@ -71,16 +50,44 @@ public class AlertaClient extends AbstractBaseService {
 
     }
 
-    public List<Alerta> getAlertaByRegiao(double latitude, double longitude, double raio) {
+    public List<Alerta> getAlertaByRegiaoRecentes(double latitude, double longitude, double raio) {
 
-        Map<String, Double> params = new HashMap<String, Double>();
-        params.put("latitude", latitude);
-        params.put("longitude", longitude);
-        params.put("raio", raio);
+        Map<String, String> params = new HashMap<String, String>();
+        DecimalFormat df = new DecimalFormat("#0.000000");
+        params.put("timestamp", Long.toString(lastTimestamp));
+        params.put("latitude", df.format(latitude));
+        params.put("longitude", df.format(longitude));
+        params.put("raio", df.format(raio));
 
         HttpEntity envio = new HttpEntity(getResponseHeader());
 
         ResponseEntity<AlertaResources> response = getRestTemplate().exchange(getHostURL() + SERVICE_URL + COORDS_PARM, HttpMethod.GET, envio, AlertaResources.class, params);
+
+        lastTimestamp = DateTime.now().getMillis();
+
+        if(response.getStatusCode() == HttpStatus.OK) {
+            return response.getBody().unwrap();
+        }
+        else {
+            return null;
+        }
+
+    }
+
+    public List<Alerta> getAlertaByRegiao(double latitude, double longitude, double raio) {
+
+        Map<String, String> params = new HashMap<String, String>();
+        DecimalFormat df = new DecimalFormat("#0.000000");
+        params.put("timestamp", "0");
+        params.put("latitude", df.format(latitude));
+        params.put("longitude", df.format(longitude));
+        params.put("raio", df.format(raio));
+
+        HttpEntity envio = new HttpEntity(getResponseHeader());
+
+        ResponseEntity<AlertaResources> response = getRestTemplate().exchange(getHostURL() + SERVICE_URL + COORDS_PARM, HttpMethod.GET, envio, AlertaResources.class, params);
+
+        lastTimestamp = DateTime.now().getMillis();
 
         if(response.getStatusCode() == HttpStatus.OK) {
             return response.getBody().unwrap();
