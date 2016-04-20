@@ -57,7 +57,7 @@ public class AlertaGetter {
             Log.i(this.getClass().getSimpleName(), "Location not informed.");
         }
         else {
-            List<Alerta> alertas = alertaClient.getAlertaByRegiao(location.getLatitude(), location.getLongitude(), radiusKms);
+            List<Alerta> alertas = alertaClient.getAlertaByRegiaoRecentes(location.getLatitude(), location.getLongitude(), radiusKms);
 
             if (alertas == null) {
                 Log.i(this.getClass().getSimpleName(), "Alerts not found for now.");
