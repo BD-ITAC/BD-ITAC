@@ -7,22 +7,49 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
+import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.List;
 
 import br.ita.bditac.ws.client.AlertaClient;
+import br.ita.bditac.ws.client.CriseClient;
 import br.ita.bditac.ws.model.Alerta;
+import br.ita.bditac.ws.model.Crise;
 
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class AlertaTests extends TestCase {
 
-    private static final String HOST_URL = "http://172.16.1.107:8080";
+    private static final String HOST_URL = "http://localhost:8080";
+
+    private static String _foto = null;
+
+    public static String getFoto() {
+
+        try {
+            if(_foto == null) {
+                File file=new File(Thread.currentThread().getContextClassLoader().getResource("foto.png").getPath());
+                DataInputStream dataInputStream=new DataInputStream(new FileInputStream(file));
+                byte[] binaryFile=new byte[(int) file.length()];
+                dataInputStream.readFully(binaryFile);
+                _foto=new String(binaryFile, "UTF-8");
+                dataInputStream.close();
+            }
+        }
+        catch(Exception ex) {
+            _foto = "";
+        }
+
+        return _foto;
+
+    }
 
     /**
      *
      * == Asserção:
      *
-     * Testa a obtenção de alertas dentro de uma área identificada por um ponto geográfico e um raio no seriço de Alertas:
+     * Testa a obtenção de todos alertas dentro de uma área identificada por um ponto geográfico e um raio no seriço de Alertas:
      *
      * == Dados:
      *
@@ -32,10 +59,9 @@ public class AlertaTests extends TestCase {
      *
      * [source,java]
      * --
-     *  Map<String, Double> params = new HashMap<String, Double>();
-     *  params.put("latitude", 50.0);
-     *  params.put("longitude", 50.0);
-     *  params.put("raio", 1D);
+     *  double latitude = -25.0;
+     *  double longitude = -45.0;
+     *  double raio = 1.0;
      * --
      *
      * == Execução:
@@ -66,14 +92,95 @@ public class AlertaTests extends TestCase {
      *
      */
     @Test
-    public void test04GetAlertaByRegiao() {
+    public void test04GetAlertaByRegiaoTodos() {
+        CriseClient criseClient = new CriseClient(HOST_URL);
+
+        Crise criseNova = new Crise(
+                "Deslizamento na favela do Paraiso",
+                0,
+                "Ze das Couves",
+                "zedascouves@gmail.com",
+                "(12) 99876-1234",
+                -25.0D,
+                -45.0D,
+                getFoto());
+        criseClient.addCrise(criseNova);
+
         AlertaClient alertaClient = new AlertaClient(HOST_URL);
         List<Alerta> alertas = alertaClient.getAlertaByRegiao(-25.0, -45.0, 10);
-        if(alertas != null && alertas.size() == 0) {
+        if(alertas == null || alertas.size() == 0) {
             fail("Não localizou os alertas esperados na região!");
         }
-        assertNotNull(alertas);
-        assertEquals("Resposta(descricao):'" + alertas.get(0).getDescricaoResumida() + "' do POST diferente do que foi enviado!", alertas.get(0).getDescricaoResumida(), "Alerta de deslizamento");
+        assertEquals("Resposta(descricao):'" + criseNova.getDescricao() + "' do POST diferente do que foi enviado!", alertas.get(0).getDescricaoResumida(), "Alerta de deslizamento");
+    }
+
+    /**
+     *
+     * == Asserção:
+     *
+     * Testa a obtenção de todos alertas recentes de uma área identificada por um ponto geográfico e um raio no seriço de Alertas:
+     *
+     * == Dados:
+     *
+     * Identificação da área de pesquisa desejada.
+     *
+     * === Dados informados:
+     *
+     * [source,java]
+     * --
+     *  double latitude = -25.0;
+     *  double longitude = -45.0;
+     *  double raio = 1.0;
+     * --
+     *
+     * == Execução:
+     *
+     * Uma chamada ao serviço de Alertas.
+     *
+     * == Resultado esperado:
+     *
+     * Uma lista de dados com os dados dos alertas na área informada.
+     *
+     * === Estrutura de dados
+     *
+     * [source,json]
+     * --
+     *      {
+     *          "alerta": {
+     *          "descricaoResumida" : "Alerta de deslizamento",
+     *          "descricaoCompleta" : "Perigo de deslizamento na altura do Km 20 da rodovia Tamoios, pista Sao Jose dos Campos/Litoral",
+     *          "fatorRiscoHumano" : 5,
+     *          "fatorRiscoMaterial" : 5,
+     *          "categoriaAlerta" : 0,
+     *          "origemLatitude" : -25.0,
+     *          "origemLongitude" : -45.0,
+     *          "origemRaioKms" : 1.0,
+     *          }
+     *      }
+     * --
+     *
+     */
+    @Test
+    public void test04GetAlertaByRegiaoRecentes() {
+        CriseClient criseClient = new CriseClient(HOST_URL);
+
+        Crise criseNova = new Crise(
+                "Deslizamento na favela do Paraiso",
+                0,
+                "Ze das Couves",
+                "zedascouves@gmail.com",
+                "(12) 99876-1234",
+                -25.0D,
+                -45.0D,
+                getFoto());
+        criseClient.addCrise(criseNova);
+
+        AlertaClient alertaClient = new AlertaClient(HOST_URL);
+        List<Alerta> alertas = alertaClient.getAlertaByRegiaoRecentes(-25.0, -45.0, 10);
+        if(alertas == null || alertas.size() == 0) {
+            fail("Não localizou os alertas esperados na região!");
+        }
+        assertEquals("Resposta(descricao):'" + criseNova.getDescricao() + "' do POST diferente do que foi enviado!", alertas.get(0).getDescricaoResumida(), "Alerta de deslizamento");
     }
 
     /**
@@ -138,7 +245,7 @@ public class AlertaTests extends TestCase {
     @Test
     public void test06GetRegiaoComAlerta() {
         AlertaClient alertaClient = new AlertaClient(HOST_URL);
-        assertTrue("Falta de alerta inexperado em região com alertas", alertaClient.hasAlerta(-25.0D, -45.0D, 1D));
+        assertTrue("Falta de alerta inexperado em região com alertas", alertaClient.hasAlerta(-25.0D, -45.0D, 10D));
     }
 
     /**
