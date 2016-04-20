@@ -6,7 +6,7 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
-import br.ita.bditac.support.Haversine;
+import br.ita.bditac.ws.support.Haversine;
 
 /**
  * 

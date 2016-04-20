@@ -7,7 +7,7 @@
 	</configSuffixes>
 	<enableImports><![CDATA[false]]></enableImports>
 	<configs>
-		<config>java:br.ita.bditac.app.Application</config>
+		<config>java:br.ita.bditac.ws.app.Application</config>
 	</configs>
 	<autoconfigs>
 	</autoconfigs>

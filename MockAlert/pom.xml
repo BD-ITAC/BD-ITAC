@@ -22,7 +22,7 @@
     <properties>
 
 		<!-- Boot -->
-		<start-class>br.ita.bditac.app.Application</start-class>
+		<start-class>br.ita.bditac.ws.app.Application</start-class>
 
 		<!-- Generic properties -->
 		<java.version>1.6</java.version>

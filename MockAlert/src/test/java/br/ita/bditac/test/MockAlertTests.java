@@ -65,14 +65,14 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
 
-import br.ita.bditac.app.Application;
-import br.ita.bditac.model.Alerta;
-import br.ita.bditac.model.Crise;
-import br.ita.bditac.model.Indicadores;
-import br.ita.bditac.support.AlertaResource;
-import br.ita.bditac.support.AlertaResources;
-import br.ita.bditac.support.CriseResource;
-import br.ita.bditac.support.IndicadoresResource;
+import br.ita.bditac.ws.app.Application;
+import br.ita.bditac.ws.model.Alerta;
+import br.ita.bditac.ws.model.Crise;
+import br.ita.bditac.ws.model.Indicadores;
+import br.ita.bditac.ws.support.AlertaResource;
+import br.ita.bditac.ws.support.AlertaResources;
+import br.ita.bditac.ws.support.CriseResource;
+import br.ita.bditac.ws.support.IndicadoresResource;
 
 /**
  *
