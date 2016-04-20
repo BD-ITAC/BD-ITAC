@@ -34,6 +34,11 @@
 
         <!-- Docker hub -->
         <docker.image.prefix>bditac</docker.image.prefix>
+        
+        <!-- Versões de outras dependências  -->
+        <apache.commons.codec.version>1.10</apache.commons.codec.version>
+        <eclipse.paho.version>1.0.2</eclipse.paho.version>
+        <assertj.version>3.3.0</assertj.version>
 
 	</properties>
 
@@ -98,20 +103,28 @@
 		</dependency>   
 		
 		<!-- Apache Commons Codec -->
-		
 		<dependency>
 		  <groupId>commons-codec</groupId>
 		  <artifactId>commons-codec</artifactId>
-		  <version>1.10</version>
-		</dependency>   
+		  <version>${apache.commons.codec.version}</version>
+		</dependency>
+		
+		<!-- Eclipse Paho MQTT -->
+		<dependency>
+		    <groupId>org.eclipse.paho</groupId>
+		    <artifactId>org.eclipse.paho.client.mqttv3</artifactId>
+		    <version>${eclipse.paho.version}</version>
+		</dependency>
 
+        <!-- AssertJ -->
         <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
-            <version>3.3.0</version>
+            <version>${assertj.version}</version>
             <scope>test</scope>
         </dependency>
 
+        <!-- Spring HATEOAS/Jackson addon -->
 		<dependency>
 		    <groupId>com.jayway.jsonpath</groupId>
 		    <artifactId>json-path</artifactId>
