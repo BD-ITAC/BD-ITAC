@@ -20,14 +20,13 @@ import org.springframework.messaging.MessageHandler;
 import br.ita.bditac.mqtt.model.Credencial;
 import br.ita.bditac.mqtt.model.Topico;
 import br.ita.bditac.mqtt.service.DiagnosticoMessageHandler;
+import br.ita.bditac.mqtt.support.Constants;
 
 
 @Configuration
 @SpringBootApplication
 @IntegrationComponentScan(basePackages = "br.ita.bditac")
 public class MqttApplication {
-
-	private static final String MQTT_HOST = "tcp://localhost:1883";
 	
     public static void main(String[] args) {
     	new SpringApplicationBuilder(MqttApplication.class).web(false).run(args);
@@ -36,7 +35,7 @@ public class MqttApplication {
     @Bean
     public MqttPahoClientFactory mqttClientFactory() {
       DefaultMqttPahoClientFactory factory = new DefaultMqttPahoClientFactory();
-      factory.setServerURIs(MQTT_HOST);
+      factory.setServerURIs(Constants.MQTT_HOST);
       factory.setUserName(Credencial.getNome());
       factory.setPassword(Credencial.getSenha());
       
@@ -55,9 +54,9 @@ public class MqttApplication {
     public MessageProducerSupport inbound() {
     	MqttPahoMessageDrivenChannelAdapter adapter =
     			new MqttPahoMessageDrivenChannelAdapter(Credencial.getNome(), mqttClientFactory(), Topico.Diagnosticos.toString());
-    	adapter.setCompletionTimeout(5000);
+    	adapter.setCompletionTimeout(Constants.MQTT_CHANNEL_ADAPTER_COMPLETION_TIMEOUT);
     	adapter.setConverter(new DefaultPahoMessageConverter());
-    	adapter.setQos(1);
+    	adapter.setQos(Constants.MQTT_CHANNEL_ADAPTER_QOS);
     	adapter.setOutputChannel(channel());
     	
     	return adapter;
