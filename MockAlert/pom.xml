@@ -37,7 +37,6 @@
         
         <!-- Versões de outras dependências  -->
         <apache.commons.codec.version>1.10</apache.commons.codec.version>
-        <eclipse.paho.version>1.0.2</eclipse.paho.version>
         <assertj.version>3.3.0</assertj.version>
 
 	</properties>
@@ -109,13 +108,6 @@
 		  <version>${apache.commons.codec.version}</version>
 		</dependency>
 		
-		<!-- Eclipse Paho MQTT -->
-		<dependency>
-		    <groupId>org.eclipse.paho</groupId>
-		    <artifactId>org.eclipse.paho.client.mqttv3</artifactId>
-		    <version>${eclipse.paho.version}</version>
-		</dependency>
-
         <!-- AssertJ -->
         <dependency>
             <groupId>org.assertj</groupId>
