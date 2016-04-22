@@ -1,8 +1,7 @@
 package br.ita.bditac.test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.assertj.core.api.Assertions.offset;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
@@ -178,7 +177,7 @@ public class MockAlertTests {
 
     @Test
     public void _000BootstrapsWebApp() {
-        assertNotNull(mvc);
+        assertThat(mvc).isNotNull();
     }
 
     /**
@@ -452,7 +451,7 @@ public class MockAlertTests {
 
         List<Alerta> alertas = getRestTemplate().getForObject(alertaURL, AlertaResources.class, params).unwrap();
 
-        assertEquals("Resposta(descricaoResumida)'" + alertas.get(0).getDescricaoResumida() + "' do POST diferente do esperado!", alertas.get(0).getDescricaoResumida(), "Alagamento");
+        assertThat(alertas.get(0).getDescricaoResumida()).isEqualTo("Alagamento");
     }
 
     /**
@@ -547,10 +546,10 @@ public class MockAlertTests {
 
         Indicadores indicadoresResponse = indicadoresResponseEntity.getBody().getContent();
 
-        assertEquals("Resposta(itens):'" + indicadoresResponse.getIndicadores().size() + "' do POST diferente do que foi enviado: '" + indicadoresRequest.getIndicadores().size() + "'!", indicadoresRequest.getIndicadores().size(), indicadoresRequest.getIndicadores().size());
-        assertEquals("Resposta(valor do indicador'" + IND_CADASTRADO + "'):'" + indicadoresResponse.getIndicador(IND_CADASTRADO) + "' do POST diferente do que foi enviado: '" + indicadoresRequest.getIndicador(IND_CADASTRADO) + "'!", indicadoresRequest.getIndicador(IND_CADASTRADO), indicadoresRequest.getIndicador(IND_CADASTRADO));
-        assertEquals("Resposta(valor do indicador'" + IND_FINALIZADOS + "'):'" + indicadoresResponse.getIndicador(IND_FINALIZADOS) + "' do POST diferente do que foi enviado: '" + indicadoresRequest.getIndicador(IND_FINALIZADOS) + "'!", indicadoresRequest.getIndicador(IND_FINALIZADOS), indicadoresRequest.getIndicador(IND_FINALIZADOS));
-        assertEquals("Resposta(valor do indicador'" + IND_ABERTOS + "'):'" + indicadoresResponse.getIndicador(IND_ABERTOS) + "' do POST diferente do que foi enviado: '" + indicadoresRequest.getIndicador(IND_ABERTOS) + "'!", indicadoresRequest.getIndicador(IND_ABERTOS), indicadoresRequest.getIndicador(IND_ABERTOS));
+        assertThat(indicadoresResponse.getIndicadores().size()).isEqualTo(indicadoresRequest.getIndicadores().size());
+        assertThat(indicadoresResponse.getIndicador(IND_CADASTRADO)).isEqualTo(indicadoresRequest.getIndicador(IND_CADASTRADO));
+        assertThat(indicadoresResponse.getIndicador(IND_FINALIZADOS)).isEqualTo(indicadoresRequest.getIndicador(IND_FINALIZADOS));
+        assertThat(indicadoresResponse.getIndicador(IND_ABERTOS)).isEqualTo(indicadoresRequest.getIndicador(IND_ABERTOS));
     }
     /**
      *
@@ -598,10 +597,10 @@ public class MockAlertTests {
     	indicadoresRequest.addIndicador("Finalizados", 19);
     	indicadoresRequest.addIndicador("Em andamento", 6);
 
-        assertEquals("Resposta(itens):'" + indicadoresResponse.getIndicadores().size() + "' do POST diferente do que foi enviado: '" + indicadoresRequest.getIndicadores().size() + "'!", indicadoresRequest.getIndicadores().size(), indicadoresRequest.getIndicadores().size());
-        assertEquals("Resposta(valor do indicador'" + IND_CADASTRADO + "'):'" + indicadoresResponse.getIndicador(IND_CADASTRADO) + "' do POST diferente do que foi enviado: '" + indicadoresRequest.getIndicador(IND_CADASTRADO) + "'!", indicadoresRequest.getIndicador(IND_CADASTRADO), indicadoresRequest.getIndicador(IND_CADASTRADO));
-        assertEquals("Resposta(valor do indicador'" + IND_FINALIZADOS + "'):'" + indicadoresResponse.getIndicador(IND_FINALIZADOS) + "' do POST diferente do que foi enviado: '" + indicadoresRequest.getIndicador(IND_FINALIZADOS) + "'!", indicadoresRequest.getIndicador(IND_FINALIZADOS), indicadoresRequest.getIndicador(IND_FINALIZADOS));
-        assertEquals("Resposta(valor do indicador'" + IND_ABERTOS + "'):'" + indicadoresResponse.getIndicador(IND_ABERTOS) + "' do POST diferente do que foi enviado: '" + indicadoresRequest.getIndicador(IND_ABERTOS) + "'!", indicadoresRequest.getIndicador(IND_ABERTOS), indicadoresRequest.getIndicador(IND_ABERTOS));
+    	assertThat(indicadoresResponse.getIndicadores().size()).isEqualTo(indicadoresRequest.getIndicadores().size());
+    	assertThat(indicadoresResponse.getIndicador(IND_CADASTRADO)).isEqualTo(indicadoresRequest.getIndicador(IND_CADASTRADO));
+        assertThat(indicadoresResponse.getIndicador(IND_FINALIZADOS)).isEqualTo(indicadoresRequest.getIndicador(IND_FINALIZADOS));
+        assertThat(indicadoresResponse.getIndicador(IND_ABERTOS)).isEqualTo(indicadoresRequest.getIndicador(IND_ABERTOS));
     }
     
     /**
@@ -683,8 +682,8 @@ public class MockAlertTests {
 
        List<Alerta> alertas = getRestTemplate().getForObject(alertaURL, AlertaResources.class, params).unwrap();
 
-       assertEquals("Resposta(latitude)'" + alertas.get(0).getOrigemLatitude() + "' do POST diferente do esperado!", alertas.get(0).getOrigemLatitude(), criseRequest.getLatitude(), DELTA);
-       assertEquals("Resposta(latitude)'" + alertas.get(0).getOrigemLongitude() + "' do POST diferente do esperado!", alertas.get(0).getOrigemLongitude(), criseRequest.getLongitude(), DELTA);
+       assertThat(alertas.get(0).getOrigemLatitude()).isEqualTo(criseRequest.getLatitude(), offset(DELTA));
+       assertThat(alertas.get(0).getOrigemLongitude()).isEqualTo(criseRequest.getLongitude(), offset(DELTA));
    }
    
     @Test
