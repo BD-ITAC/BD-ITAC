@@ -6,18 +6,22 @@ public enum Topico {
 	Diagnosticos("br.ita.bditac/diagnostico"),
 	NivelAgua("br.ita.bditac/nivel.agua");
 	
-	private final String nome;
+	private final String id;
 	
-	private Topico(String nome) {
-		this.nome = nome;
+	private Topico(String id) {
+		this.id = id;
 	}
 	
-	public boolean equalsName(String nome) {
-		return (nome == null) ? false : nome.equals(nome);
+	public String getId() {
+		return this.id;
+	}
+	
+	public boolean equalsName(String id) {
+		return (id == null) ? false : id.equals(id);
 	}
 	
 	public String toString() {
-		return this.nome;
+		return this.id;
 	}
 
 }

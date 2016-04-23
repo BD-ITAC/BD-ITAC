@@ -69,18 +69,18 @@ public enum Tipo {
 	Pressao("Pressão"),
 	Temperatura("Temperatura");
 	
-	private final String nome;
+	private final String id;
 	
-	private Tipo(String name) {
-		this.nome = name;
+	private Tipo(String id) {
+		this.id = id;
 	}
 	
-	public boolean equalsName(String nome) {
-		return (nome == null) ? false : nome.equals(nome);
+	public boolean equalsName(String id) {
+		return (id == null) ? false : id.equals(id);
 	}
 	
 	public String toString() {
-		return this.nome;
+		return this.id;
 	}
 	
 }
