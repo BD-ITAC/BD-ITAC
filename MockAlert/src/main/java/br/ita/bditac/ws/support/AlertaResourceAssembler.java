@@ -3,7 +3,7 @@ package br.ita.bditac.ws.support;
 import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
 import org.springframework.stereotype.Component;
 
-import br.ita.bditac.ws.model.Alerta;
+import br.ita.bditac.model.Alerta;
 import br.ita.bditac.ws.service.AlertaController;
 
 @Component

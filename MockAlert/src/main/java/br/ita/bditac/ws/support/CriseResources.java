@@ -7,7 +7,7 @@ import java.util.List;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Resources;
 
-import br.ita.bditac.ws.model.Crise;
+import br.ita.bditac.model.Crise;
 
 public class CriseResources extends Resources<CriseResource> {
 

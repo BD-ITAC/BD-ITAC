@@ -2,7 +2,7 @@ package br.ita.bditac.ws.support;
 
 import org.springframework.hateoas.ResourceSupport;
 
-import br.ita.bditac.ws.model.Option;
+import br.ita.bditac.model.Option;
 
 public class OptionResource extends ResourceSupport {
     

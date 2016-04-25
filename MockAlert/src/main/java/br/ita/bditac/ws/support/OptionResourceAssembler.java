@@ -2,7 +2,7 @@ package br.ita.bditac.ws.support;
 
 import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
 
-import br.ita.bditac.ws.model.Option;
+import br.ita.bditac.model.Option;
 import br.ita.bditac.ws.service.OptionController;
 
 

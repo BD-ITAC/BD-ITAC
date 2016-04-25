@@ -1,4 +1,4 @@
-package br.ita.bditac.ws.app;
+package br.ita.bditac.app;
 
 import java.util.List;
 

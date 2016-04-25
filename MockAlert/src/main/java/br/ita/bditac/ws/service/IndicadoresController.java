@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.ita.bditac.ws.model.AlertaDAO;
-import br.ita.bditac.ws.model.Indicadores;
-import br.ita.bditac.ws.model.Message;
+import br.ita.bditac.model.AlertaDAO;
+import br.ita.bditac.model.Indicadores;
+import br.ita.bditac.model.Message;
 import br.ita.bditac.ws.support.IndicadoresResource;
 import br.ita.bditac.ws.support.IndicadoresResourceAssembler;
 import br.ita.bditac.ws.support.MessageResource;

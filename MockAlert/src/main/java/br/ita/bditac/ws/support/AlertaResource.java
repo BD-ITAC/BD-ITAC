@@ -3,7 +3,7 @@ package br.ita.bditac.ws.support;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Resource;
 
-import br.ita.bditac.ws.model.Alerta;
+import br.ita.bditac.model.Alerta;
 
 public class AlertaResource extends Resource<Alerta> {
     

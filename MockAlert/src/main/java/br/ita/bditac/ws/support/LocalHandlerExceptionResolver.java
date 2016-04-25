@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
 
-import br.ita.bditac.ws.model.AlertaDAO;
+import br.ita.bditac.model.AlertaDAO;
 
 @Component
 public class LocalHandlerExceptionResolver implements HandlerExceptionResolver, Ordered {

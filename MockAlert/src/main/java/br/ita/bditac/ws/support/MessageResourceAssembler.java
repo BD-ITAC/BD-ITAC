@@ -6,8 +6,8 @@ import java.util.List;
 import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
 import org.springframework.stereotype.Component;
 
-import br.ita.bditac.ws.model.AlertaDAO;
-import br.ita.bditac.ws.model.Message;
+import br.ita.bditac.model.AlertaDAO;
+import br.ita.bditac.model.Message;
 import br.ita.bditac.ws.service.MessageController;
 
 @Component

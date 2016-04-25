@@ -1,4 +1,4 @@
-package br.ita.bditac.ws.model;
+package br.ita.bditac.model;
 
 import java.util.ArrayList;
 import java.util.HashMap;

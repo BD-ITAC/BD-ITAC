@@ -3,7 +3,7 @@ package br.ita.bditac.ws.support;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Resource;
 
-import br.ita.bditac.ws.model.Crise;
+import br.ita.bditac.model.Crise;
 
 public class CriseResource extends Resource<Crise> {
 

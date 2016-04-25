@@ -7,7 +7,7 @@ import java.util.List;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Resources;
 
-import br.ita.bditac.ws.model.Alerta;
+import br.ita.bditac.model.Alerta;
 
 public class AlertaResources extends Resources<AlertaResource> {
 

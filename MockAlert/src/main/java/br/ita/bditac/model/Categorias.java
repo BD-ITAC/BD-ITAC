@@ -1,4 +1,4 @@
-package br.ita.bditac.ws.model;
+package br.ita.bditac.model;
 
 
 public enum Categorias {

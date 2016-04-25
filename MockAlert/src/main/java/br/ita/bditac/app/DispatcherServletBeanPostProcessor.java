@@ -1,4 +1,4 @@
-package br.ita.bditac.ws.app;
+package br.ita.bditac.app;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;

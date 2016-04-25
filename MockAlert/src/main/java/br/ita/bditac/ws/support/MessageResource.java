@@ -3,7 +3,7 @@ package br.ita.bditac.ws.support;
 
 import org.springframework.hateoas.Resource;
 
-import br.ita.bditac.ws.model.Message;
+import br.ita.bditac.model.Message;
 
 
 public class MessageResource extends Resource<Message> {
