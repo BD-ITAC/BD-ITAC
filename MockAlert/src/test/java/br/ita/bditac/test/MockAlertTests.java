@@ -72,6 +72,7 @@ import br.ita.bditac.ws.support.AlertaResource;
 import br.ita.bditac.ws.support.AlertaResources;
 import br.ita.bditac.ws.support.CriseResource;
 import br.ita.bditac.ws.support.IndicadoresResource;
+import br.ita.bditac.ws.support.MessageResource;
 
 /**
  *
@@ -242,7 +243,7 @@ public class MockAlertTests {
                 50.0,
                 getFoto());
 
-        ResponseEntity<CriseResource> criseResponseEntity =  getRestTemplate().postForEntity(criseURI, new HttpEntity<Crise>(criseRequest), CriseResource.class);
+        ResponseEntity<MessageResource> criseResponseEntity =  getRestTemplate().postForEntity(criseURI, new HttpEntity<Crise>(criseRequest), MessageResource.class);
 
         assertThat(criseResponseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
     }
@@ -343,7 +344,7 @@ public class MockAlertTests {
                 50.0,
                 1.0);
 
-        ResponseEntity<AlertaResource> alertaResponseEntity = getRestTemplate().postForEntity(alertaURI, new HttpEntity<Alerta>(alertaRequest), AlertaResource.class);
+        ResponseEntity<MessageResource> alertaResponseEntity = getRestTemplate().postForEntity(alertaURI, new HttpEntity<Alerta>(alertaRequest), MessageResource.class);
 
         assertThat(alertaResponseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
     }
@@ -540,16 +541,9 @@ public class MockAlertTests {
     	indicadoresRequest.addIndicador("Finalizados", 19);
     	indicadoresRequest.addIndicador("Em andamento", 6);
 
-        ResponseEntity<IndicadoresResource> indicadoresResponseEntity =  getRestTemplate().postForEntity(indicadoresURL, new HttpEntity<Indicadores>(indicadoresRequest), IndicadoresResource.class);
+        ResponseEntity<MessageResource> indicadoresResponseEntity =  getRestTemplate().postForEntity(indicadoresURL, new HttpEntity<Indicadores>(indicadoresRequest), MessageResource.class);
 
         assertThat(indicadoresResponseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
-
-        Indicadores indicadoresResponse = indicadoresResponseEntity.getBody().getContent();
-
-        assertThat(indicadoresResponse.getIndicadores().size()).isEqualTo(indicadoresRequest.getIndicadores().size());
-        assertThat(indicadoresResponse.getIndicador(IND_CADASTRADO)).isEqualTo(indicadoresRequest.getIndicador(IND_CADASTRADO));
-        assertThat(indicadoresResponse.getIndicador(IND_FINALIZADOS)).isEqualTo(indicadoresRequest.getIndicador(IND_FINALIZADOS));
-        assertThat(indicadoresResponse.getIndicador(IND_ABERTOS)).isEqualTo(indicadoresRequest.getIndicador(IND_ABERTOS));
     }
     /**
      *
@@ -709,11 +703,11 @@ public class MockAlertTests {
             .andDo(document("crise/post",
             	preprocessResponse(prettyPrint()),
                 responseFields(
-                    fieldWithPath("message.id").type(JsonFieldType.NUMBER).description("Identificação da mensagem"),
-                    fieldWithPath("message.type").type(JsonFieldType.STRING).description("Tipo da mensagem (INFO, WARNING, ERROR)"),
-                    fieldWithPath("message.status").type(JsonFieldType.STRING).description("Código de estado do sistema"),
-                    fieldWithPath("message.description").type(JsonFieldType.STRING).description("Descrição da mensagem"),
-                    fieldWithPath("message.info").type(JsonFieldType.STRING).description("Informações adicionais"))));
+                    fieldWithPath("id").type(JsonFieldType.NUMBER).description("Identificação da mensagem"),
+                    fieldWithPath("type").type(JsonFieldType.STRING).description("Tipo da mensagem (INFO, WARNING, ERROR)"),
+                    fieldWithPath("status").type(JsonFieldType.STRING).description("Código de estado do sistema"),
+                    fieldWithPath("description").type(JsonFieldType.STRING).description("Descrição da mensagem"),
+                    fieldWithPath("info").type(JsonFieldType.STRING).description("Informações adicionais"))));
     }
 
     @Test
@@ -737,11 +731,11 @@ public class MockAlertTests {
             .andDo(document("alerta/post",
             	preprocessResponse(prettyPrint()),
                 responseFields(
-                        fieldWithPath("message.id").type(JsonFieldType.NUMBER).description("Identificação da mensagem"),
-                        fieldWithPath("message.type").type(JsonFieldType.STRING).description("Tipo da mensagem (INFO, WARNING, ERROR)"),
-                        fieldWithPath("message.status").type(JsonFieldType.STRING).description("Código de estado do sistema"),
-                        fieldWithPath("message.description").type(JsonFieldType.STRING).description("Descrição da mensagem"),
-                        fieldWithPath("message.info").type(JsonFieldType.STRING).description("Informações adicionais"))));
+                        fieldWithPath("id").type(JsonFieldType.NUMBER).description("Identificação da mensagem"),
+                        fieldWithPath("type").type(JsonFieldType.STRING).description("Tipo da mensagem (INFO, WARNING, ERROR)"),
+                        fieldWithPath("status").type(JsonFieldType.STRING).description("Código de estado do sistema"),
+                        fieldWithPath("description").type(JsonFieldType.STRING).description("Descrição da mensagem"),
+                        fieldWithPath("info").type(JsonFieldType.STRING).description("Informações adicionais"))));
     }
 
     @Test

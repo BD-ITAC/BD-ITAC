@@ -1,21 +1,19 @@
 package br.ita.bditac.ws.support;
 
-import org.springframework.hateoas.ResourceSupport;
+
+import org.springframework.hateoas.Resource;
 
 import br.ita.bditac.ws.model.Message;
 
-public class MessageResource extends ResourceSupport {
 
-    private Message message;
-
-    public MessageResource(Message message) {
-        super();
-
-        this.message = message;
+public class MessageResource extends Resource<Message> {
+    
+    public MessageResource() {
+    	super(new Message());
     }
 
-    public Message getMessage() {
-        return message;
+    public MessageResource(Message message) {
+        super(message);
     }
 
 }

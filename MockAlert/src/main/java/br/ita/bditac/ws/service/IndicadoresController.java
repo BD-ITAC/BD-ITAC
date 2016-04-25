@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.ita.bditac.ws.model.AlertaDAO;
 import br.ita.bditac.ws.model.Indicadores;
+import br.ita.bditac.ws.model.Message;
 import br.ita.bditac.ws.support.IndicadoresResource;
 import br.ita.bditac.ws.support.IndicadoresResourceAssembler;
 import br.ita.bditac.ws.support.MessageResource;
@@ -35,11 +36,20 @@ public class IndicadoresController {
 	private MessageResourceAssembler messageResourceAssembler;
 	
 	@RequestMapping(method = RequestMethod.POST, consumes = { MediaTypes.HAL_JSON_VALUE }, produces = { MediaTypes.HAL_JSON_VALUE })
-	public ResponseEntity<IndicadoresResource> adicionar(@RequestBody Indicadores body) {
-		Indicadores indicadores = AlertaDAO.adicionarIndicadores(body);
-		IndicadoresResource resource = resourceAssembler.toResource(indicadores);
-		
-		return new ResponseEntity<IndicadoresResource>(resource, HttpStatus.CREATED);
+	public ResponseEntity<MessageResource> adicionar(@RequestBody Indicadores body) {
+		try {
+			AlertaDAO.adicionarIndicadores(body);
+
+			return new ResponseEntity<MessageResource>(
+					new MessageResource(
+							new Message(1, Message.Type.INFO, HttpStatus.OK.getReasonPhrase(), "Indicadores adicionados", "Indicadores adicionados")), HttpStatus.CREATED);
+		}
+		catch(Exception ex) {
+	        Message message = new Message(1, Message.Type.INFO, HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), ex.getMessage(), ex.getCause().getMessage());
+	        MessageResource resource = new MessageResource(message);
+	        
+	        return new ResponseEntity<MessageResource>(resource, HttpStatus.INTERNAL_SERVER_ERROR);	        
+		}
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, produces = { MediaTypes.HAL_JSON_VALUE })
