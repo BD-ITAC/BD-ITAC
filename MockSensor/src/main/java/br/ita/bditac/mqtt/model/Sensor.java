@@ -1,30 +1,27 @@
 package br.ita.bditac.mqtt.model;
 
+
 import java.io.Serializable;
 import java.util.UUID;
 
-/**
- * 
- * @author BD-ITAC
- * 
- */
+
 public class Sensor implements Serializable {
 
     private static final long serialVersionUID = 1L;
     
     private UUID uuid;
     
-    private Tipo tipo;
+    private SensorTipo sensorTipo;
     
     public Sensor() {
     	uuid = UUID.randomUUID();
-    	tipo = Tipo.Desconhecido;
+    	sensorTipo = SensorTipo.Desconhecido;
     }
     
     
-    public Sensor(Tipo tipo) {
+    public Sensor(SensorTipo sensorTipo) {
     	uuid = UUID.randomUUID();
-    	this.tipo = tipo;
+    	this.sensorTipo = sensorTipo;
     }
 
 	
@@ -33,8 +30,8 @@ public class Sensor implements Serializable {
 	}
 
 	
-	public Tipo getTipo() {
-		return tipo;
+	public SensorTipo getTipo() {
+		return sensorTipo;
 	}
     
     

@@ -1,27 +1,26 @@
 package br.ita.bditac.mqtt.model;
 
 
-public enum Topico {
-	
-	Diagnosticos("br.ita.bditac/diagnostico"),
-	NivelAgua("br.ita.bditac/nivel.agua");
-	
-	private final String id;
-	
-	private Topico(String id) {
-		this.id = id;
-	}
-	
-	public String getId() {
-		return this.id;
-	}
-	
-	public boolean equalsName(String id) {
-		return (id == null) ? false : id.equals(id);
-	}
-	
-	public String toString() {
-		return this.id;
-	}
+public class Topico {
 
+	private int id;
+	private String descricao;
+	
+	private static int _id = 0;
+	
+	public Topico(String descricao) {
+		this.id = ++_id;
+		this.descricao = descricao;
+	}
+	
+	
+	public int getId() {
+		return id;
+	}
+	
+	
+	public String getDescricao() {
+		return descricao;
+	}
+	
 }

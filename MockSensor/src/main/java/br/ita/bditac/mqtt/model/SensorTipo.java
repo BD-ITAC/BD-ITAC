@@ -52,7 +52,7 @@ In the current and future applications, sensors can be classified into groups as
 ·        Motion Detectors - These are based on the Infra Red, Ultrasonic, and Microwave / radar technology. They are used in videogames and simulations, light activation and security detection. 
  *
  */
-public enum Tipo {
+public enum SensorTipo {
 
 	Desconhecido("Desconhecido"),
 	AceleracaoVibracao("Aceleração/Vibração"),
@@ -71,7 +71,7 @@ public enum Tipo {
 	
 	private final String id;
 	
-	private Tipo(String id) {
+	private SensorTipo(String id) {
 		this.id = id;
 	}
 	

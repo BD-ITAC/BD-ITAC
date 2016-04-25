@@ -18,7 +18,7 @@ import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageHandler;
 
 import br.ita.bditac.mqtt.model.Credencial;
-import br.ita.bditac.mqtt.model.Topico;
+import br.ita.bditac.mqtt.model.TopicoTipo;
 import br.ita.bditac.mqtt.service.DiagnosticoMessageHandler;
 import br.ita.bditac.mqtt.support.Constants;
 
@@ -29,7 +29,7 @@ import br.ita.bditac.mqtt.support.Constants;
 public class MqttApplication {
 	
     public static void main(String[] args) {
-    	new SpringApplicationBuilder(MqttApplication.class).web(false).run(args);
+    	new SpringApplicationBuilder(MqttApplication.class).web(true).run(args);
     }
     
     @Bean
@@ -53,7 +53,7 @@ public class MqttApplication {
     @Bean
     public MessageProducerSupport inbound() {
     	MqttPahoMessageDrivenChannelAdapter adapter =
-    			new MqttPahoMessageDrivenChannelAdapter(Credencial.getNome(), mqttClientFactory(), Topico.Diagnosticos.toString());
+    			new MqttPahoMessageDrivenChannelAdapter(Credencial.getNome(), mqttClientFactory(), TopicoTipo.Diagnosticos.toString());
     	adapter.setCompletionTimeout(Constants.MQTT_CHANNEL_ADAPTER_COMPLETION_TIMEOUT);
     	adapter.setConverter(new DefaultPahoMessageConverter());
     	adapter.setQos(Constants.MQTT_CHANNEL_ADAPTER_QOS);
