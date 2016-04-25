@@ -34,12 +34,9 @@ public class IndicadoresController {
 	@Autowired
 	private MessageResourceAssembler messageResourceAssembler;
 	
-	@Autowired
-	private AlertaDAO service;
-	
 	@RequestMapping(method = RequestMethod.POST, consumes = { MediaTypes.HAL_JSON_VALUE }, produces = { MediaTypes.HAL_JSON_VALUE })
 	public ResponseEntity<IndicadoresResource> adicionar(@RequestBody Indicadores body) {
-		Indicadores indicadores = service.adicionarIndicadores(body);
+		Indicadores indicadores = AlertaDAO.adicionarIndicadores(body);
 		IndicadoresResource resource = resourceAssembler.toResource(indicadores);
 		
 		return new ResponseEntity<IndicadoresResource>(resource, HttpStatus.CREATED);
@@ -47,7 +44,7 @@ public class IndicadoresController {
 	
 	@RequestMapping(method = RequestMethod.GET, produces = { MediaTypes.HAL_JSON_VALUE })
 	public ResponseEntity<IndicadoresResource> indicadores() {
-		Indicadores indicadores = service.obterIndicadores();
+		Indicadores indicadores = AlertaDAO.obterIndicadores();
 		if(indicadores == null) {
 			return new ResponseEntity<IndicadoresResource>(HttpStatus.NOT_FOUND);
 		}

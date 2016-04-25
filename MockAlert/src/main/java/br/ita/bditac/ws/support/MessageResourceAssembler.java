@@ -3,7 +3,6 @@ package br.ita.bditac.ws.support;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
 import org.springframework.stereotype.Component;
 
@@ -14,15 +13,12 @@ import br.ita.bditac.ws.service.MessageController;
 @Component
 public class MessageResourceAssembler extends ResourceAssemblerSupport<Message, MessageResource> {
 
-    @Autowired
-    private AlertaDAO service;
-
     public MessageResourceAssembler() {
         super(MessageController.class, MessageResource.class);
     }
 
     public MessageResource toResource(int id, String info) {
-        Message message = service.obterMessageInfo(id, info);
+        Message message = AlertaDAO.obterMessageInfo(id, info);
         MessageResource resource = createResourceWithId(message, message);
 
         return resource;

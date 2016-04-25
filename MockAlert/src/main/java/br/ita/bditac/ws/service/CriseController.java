@@ -33,13 +33,10 @@ public class CriseController {
     @Autowired
     private MessageResourceAssembler messageResourceAssembler;
     
-    @Autowired
-    private AlertaDAO service;
-    
     @RequestMapping(method = RequestMethod.POST, consumes = { MediaTypes.HAL_JSON_VALUE })
     public ResponseEntity<MessageResource> adicionar(@RequestBody Crise body) {
     	try {
-	        Crise crise = service.adicionarCrise(body);
+	        Crise crise = AlertaDAO.adicionarCrise(body);
 	        
 	        // TODO - Simulação do gerenciamento de crises - o processo que torna o cadastramento de crise num alerta
 	        ReverseEnum<Categorias> reverseCategoria = new ReverseEnum<>(Categorias.class);
@@ -51,7 +48,7 @@ public class CriseController {
 	        		crise.getLongitude(),
 	                // TODO - Sala de gerenciamento de crises determina a área de abrangência da crise
 	        		10);
-	        service.adicionarAlerta(alerta);
+	        AlertaDAO.adicionarAlerta(alerta);
 	        
 	        Message message = new Message(1, Message.Type.INFO, HttpStatus.OK.getReasonPhrase(), "Crise registrada", "Crise registrada");
 	        MessageResource resource = new MessageResource(message);

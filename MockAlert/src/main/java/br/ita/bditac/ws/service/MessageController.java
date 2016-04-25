@@ -38,9 +38,6 @@ public class MessageController {
     @Autowired
     private MessageResourceAssembler resourceAssembler;
 
-    @Autowired
-    private AlertaDAO service;
-
     @RequestMapping(method = RequestMethod.OPTIONS, produces = { MediaTypes.HAL_JSON_VALUE })
     public ResponseEntity<MessageResource> options(@RequestHeader(value = "Version", required = false) String version) {
         MessageResource resource = resourceAssembler.toResource(2, "Not implemented");
@@ -50,7 +47,7 @@ public class MessageController {
 
     @RequestMapping(method = RequestMethod.GET, produces = { MediaTypes.HAL_JSON_VALUE })
     public ResponseEntity<List<MessageResource>> messages(@RequestHeader(value = "Version", required = false) String version) {
-        List<Message> messages = service.obterMessages();
+        List<Message> messages = AlertaDAO.obterMessages();
         List<MessageResource> resource = resourceAssembler.toResources(messages);
 
         return new ResponseEntity<List<MessageResource>>(resource, HttpStatus.OK);
@@ -58,7 +55,7 @@ public class MessageController {
 
     @RequestMapping(method = RequestMethod.GET, produces = { MediaTypes.HAL_JSON_VALUE }, value = Request.ID)
     public ResponseEntity<MessageResource> message(@PathVariable("id") int id) {
-        Message message = service.obterMessage(id);
+        Message message = AlertaDAO.obterMessage(id);
         MessageResource resource = resourceAssembler.toResource(message);
 
         return new ResponseEntity<MessageResource>(resource, HttpStatus.OK);

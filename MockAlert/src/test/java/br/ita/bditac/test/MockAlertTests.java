@@ -176,7 +176,7 @@ public class MockAlertTests {
     }
 
     @Test
-    public void _000BootstrapsWebApp() {
+    public void test000BootstrapsWebApp() {
         assertThat(mvc).isNotNull();
     }
 

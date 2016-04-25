@@ -12,20 +12,20 @@ import br.ita.bditac.ws.support.Haversine;
 @Component
 public class AlertaDAO {
     
-    private Map<Integer, Alerta> alertas = new HashMap<Integer, Alerta>();
+    private static Map<Integer, Alerta> _alertas = new HashMap<Integer, Alerta>();
     
-    private Map<Integer, Crise> crises = new HashMap<Integer, Crise>();
+    private static Map<Integer, Crise> _crises = new HashMap<Integer, Crise>();
 
-    private Map<Integer, Message> messages = new HashMap<Integer, Message>();
+    private static Map<Integer, Message> _messages = new HashMap<Integer, Message>();
     
-    private Indicadores indicadores;
+    private static Indicadores _indicadores;
     
-    public AlertaDAO() {
-        messages.put(1, new Message(1, Message.Type.INFO, "001", "Ok", "Everything is all right!"));
-        messages.put(2, new Message(2, Message.Type.ERROR, "999", "Error", "Something went very badly"));
+    static {
+        _messages.put(1, new Message(1, Message.Type.INFO, "001", "Ok", "Everything is all right!"));
+        _messages.put(2, new Message(2, Message.Type.ERROR, "999", "Error", "Something went very badly"));
     }
 
-    public Alerta adicionarAlerta(Alerta alerta) {
+    public static Alerta adicionarAlerta(Alerta alerta) {
         Alerta novoAlerta = new Alerta(
         		alerta.getDescricaoResumida(),
         		alerta.getDescricaoCompleta(),
@@ -34,15 +34,15 @@ public class AlertaDAO {
         		alerta.getOrigemLongitude(),
         		alerta.getOrigemRaioKms());
         
-        alertas.put(novoAlerta.getId(),  novoAlerta);
+        _alertas.put(novoAlerta.getId(),  novoAlerta);
         
         return novoAlerta;
     }
     
-    public boolean obterAlerta(long timestamp, double latitude, double longitude, double raio) {
+    public static boolean obterAlerta(long timestamp, double latitude, double longitude, double raio) {
         List<Alerta> alertasPorRegiao = new ArrayList<Alerta>();
         
-        for (Alerta alerta : alertas.values()) {
+        for (Alerta alerta : _alertas.values()) {
             if (alerta.getTimestamp() > timestamp && Haversine.distance(alerta.getOrigemLatitude(), alerta.getOrigemLongitude(), latitude, longitude) <= raio) {
                 alertasPorRegiao.add(alerta);
                 break;
@@ -52,14 +52,14 @@ public class AlertaDAO {
         return alertasPorRegiao.size() != 0;
     }
     
-    public Alerta obterAlerta(int id) {
-        return alertas.get(id);
+    public static Alerta obterAlerta(int id) {
+        return _alertas.get(id);
     }
     
-    public List<Alerta> obterAlertasPorRegiao(long timestamp, double latitude, double longitude, double raio) {
+    public static List<Alerta> obterAlertasPorRegiao(long timestamp, double latitude, double longitude, double raio) {
         List<Alerta> alertasPorRegiao = new ArrayList<Alerta>();
         
-        for (Alerta alerta : alertas.values()) {
+        for (Alerta alerta : _alertas.values()) {
             if (alerta.getTimestamp() > timestamp && Haversine.distance(alerta.getOrigemLatitude(), alerta.getOrigemLongitude(), latitude, longitude) <= raio) {
                 alertasPorRegiao.add(alerta);
             }
@@ -68,11 +68,11 @@ public class AlertaDAO {
         return alertasPorRegiao;
     }
     
-    public void removerAlerta(int id) {
-    	alertas.remove(id);
+    public static void removerAlerta(int id) {
+    	_alertas.remove(id);
     }
     
-    public Crise adicionarCrise(Crise criseRequest) {
+    public static Crise adicionarCrise(Crise criseRequest) {
     	
         Crise novaCrise = new Crise(
         		criseRequest.getDescricao(),
@@ -84,49 +84,49 @@ public class AlertaDAO {
         		criseRequest.getLongitude(),
         		criseRequest.getFotografia());
 
-        crises.put(novaCrise.getId(), novaCrise);
+        _crises.put(novaCrise.getId(), novaCrise);
         
         return novaCrise;
     }
     
-    public Crise obtercrise(int id) {
-        Crise crise = crises.get(id);
+    public static Crise obtercrise(int id) {
+        Crise crise = _crises.get(id);
         
         return crise;
     }
     
-    public Indicadores adicionarIndicador(String nome, int valor) {
-    	this.indicadores.addIndicador(nome, valor);
+    public static Indicadores adicionarIndicador(String nome, int valor) {
+    	_indicadores.addIndicador(nome, valor);
     	
-    	return this.indicadores;
+    	return _indicadores;
     }
     
-    public Indicadores adicionarIndicadores(Indicadores indicadores) {
-    	this.indicadores = indicadores;
+    public static Indicadores adicionarIndicadores(Indicadores indicadores) {
+    	_indicadores = indicadores;
     	
-    	return this.indicadores;
+    	return _indicadores;
     }
     
-    public Indicadores obterIndicadores() {
-    	return this.indicadores;
+    public static Indicadores obterIndicadores() {
+    	return _indicadores;
     }
     
     
-    public Message obterMessage(int id) {
-        Message message = messages.get(id);
+    public static Message obterMessage(int id) {
+        Message message = _messages.get(id);
 
         return message;
     }
 
-    public Message obterMessageInfo(int id, String info) {
-        Message message = messages.get(id);
+    public static Message obterMessageInfo(int id, String info) {
+        Message message = _messages.get(id);
         Message resourceMessage = new Message(message.getId(), message.getType(), message.getStatus(), message.getDescription(), info);
 
         return resourceMessage;
     }
 
-    public List<Message> obterMessages() {
-        return new ArrayList<Message>(messages.values());
+    public static List<Message> obterMessages() {
+        return new ArrayList<Message>(_messages.values());
     }
 
 }

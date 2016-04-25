@@ -49,13 +49,10 @@ public class AlertaController {
     @Autowired
     private MessageResourceAssembler messageResourceAssembler;
 
-    @Autowired
-    private AlertaDAO service;
-
     @RequestMapping(method = RequestMethod.POST, consumes = { MediaTypes.HAL_JSON_VALUE }, produces = { MediaTypes.HAL_JSON_VALUE })
     public ResponseEntity<MessageResource> adicionar(@RequestBody Alerta body) {
     	try {
-	        service.adicionarAlerta(body);
+    		AlertaDAO.adicionarAlerta(body);
 	        
 	        Message message = new Message(1, Message.Type.INFO, HttpStatus.OK.getReasonPhrase(), "Alerta registrado", "BD-ITAC");
 	        MessageResource resource = new MessageResource(message);
@@ -77,7 +74,7 @@ public class AlertaController {
 	        Double dLongitude = Double.valueOf(longitude);
 	        Double dRaio = Double.valueOf(raio);
 	
-	        boolean hasAlertas = service.obterAlerta(timestamp, dLatitude, dLongitude, dRaio);
+	        boolean hasAlertas = AlertaDAO.obterAlerta(timestamp, dLatitude, dLongitude, dRaio);
 	        if(hasAlertas) {
 	            return new ResponseEntity<MessageResource>(HttpStatus.OK);
 	        }
@@ -100,7 +97,7 @@ public class AlertaController {
 	        Double dLongitude = Double.valueOf(longitude);
 	        Double dRaio = Double.valueOf(raio);
 	        
-	        List<Alerta> alertas = service.obterAlertasPorRegiao(timestamp, dLatitude, dLongitude, dRaio);
+	        List<Alerta> alertas = AlertaDAO.obterAlertasPorRegiao(timestamp, dLatitude, dLongitude, dRaio);
 	        List<AlertaResource> resources = resourceAssembler.toResources(alertas);
 	        AlertaResources alertaResources = new AlertaResources(resources);
 	        // TODO Remover alertas após período de tempo
