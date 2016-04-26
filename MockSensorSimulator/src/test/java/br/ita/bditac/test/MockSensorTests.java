@@ -188,7 +188,7 @@ public class MockSensorTests {
     	String payload = "Mensagem de diagnóstico";
 		Message<byte[]> message = MessageBuilder.withPayload(payload.getBytes()).setHeader(MqttHeaders.TOPIC, "br.ita.bditac/diagnosticos").build();
 		
-		MessageChannel messageChannel = context.getBean("channel", MessageChannel.class);
+		MessageChannel messageChannel = context.getBean("mqttOutboundChannel", MessageChannel.class);
 		
 		assertThat(messageChannel.send(message));
 
@@ -240,7 +240,7 @@ public class MockSensorTests {
     	String payload = "Mensagem de diagnóstico";
 		Message<byte[]> message = MessageBuilder.withPayload(payload.getBytes()).setHeader(MqttHeaders.TOPIC, "br.ita.bditac/diagnosticos").build();
 		
-		MessageChannel messageChannel = context.getBean("channel", MessageChannel.class);
+		MessageChannel messageChannel = context.getBean("mqttOutboundChannel", MessageChannel.class);
 		
 		assertThat(messageChannel.send(message));
 
@@ -333,7 +333,6 @@ public class MockSensorTests {
     @Test
     public void test105CriaTopico() throws Exception {
     	
-    	URI topicoURI = new URI(getBaseUrl() + "/topico");
     	URI sensorURI = new URI(getBaseUrl() + "/sensor");
     	ObjectMapper mapper = new ObjectMapper();
     	
@@ -352,7 +351,7 @@ public class MockSensorTests {
     			random.nextDouble());
     	String humidadeJson = mapper.writeValueAsString(humidade);
 		Message<byte[]> message = MessageBuilder.withPayload(humidadeJson.getBytes()).setHeader(MqttHeaders.TOPIC, "br.ita.bditac/diagnosticos").build();
-		MessageChannel messageChannel = context.getBean("channel", MessageChannel.class);
+		MessageChannel messageChannel = context.getBean("mqttOutboundChannel", MessageChannel.class);
 		assertThat(messageChannel.send(message));
 		
     }
