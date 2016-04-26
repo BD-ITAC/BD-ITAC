@@ -24,7 +24,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import br.ita.bditac.model.IOTFPayload;
-import br.ita.bditac.model.IOTFPayloadMessageHandler;
+import br.ita.bditac.mqtt.support.IOTFPayloadMessageHandler;
 import br.ita.bditac.mqtt.support.MQTTConstants;
 
 
@@ -61,8 +61,7 @@ public class Application {
 
     	MqttPahoMessageDrivenChannelAdapter adapter =
     			new MqttPahoMessageDrivenChannelAdapter("bditac", mqttClientFactory());
-    	//adapter.addTopic("br.ita.bditac/test", MQTTConstants.MQTTQoS.MQTT_QOS_AT_LEAST_ONCE);
-    	adapter.addTopic("#", MQTTConstants.MQTTQoS.MQTT_QOS_AT_LEAST_ONCE);
+    	adapter.addTopic(MQTTConstants.MQTT_GENERAL_TOPIC, MQTTConstants.MQTTQoS.MQTT_QOS_AT_MOST_ONCE);
     	adapter.setCompletionTimeout(MQTTConstants.MQTT_CHANNEL_ADAPTER_COMPLETION_TIMEOUT);
     	adapter.setConverter(new DefaultPahoMessageConverter());
     	adapter.setOutputChannel(channel());

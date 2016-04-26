@@ -1,8 +1,10 @@
-package br.ita.bditac.model;
+package br.ita.bditac.mqtt.support;
 
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHandler;
 import org.springframework.messaging.MessagingException;
+
+import br.ita.bditac.model.IOTFPayload;
 
 
 public class IOTFPayloadMessageHandler implements MessageHandler {
