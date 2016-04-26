@@ -9,7 +9,7 @@
 	<name>Sensor Service</name>
 
 	<groupId>br.ita.bditac</groupId>
-	<artifactId>MockSensor</artifactId>
+	<artifactId>MockSensorSimulator</artifactId>
 	<version>0.0.1</version>
 	<packaging>jar</packaging>
 
@@ -91,7 +91,7 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-jersey</artifactId>
         </dependency>
-        
+
         <!-- Spring Integration -->
 		<dependency>
 			<groupId>org.springframework.integration</groupId>
@@ -113,11 +113,11 @@
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
         </dependency>
-        
+
         <dependency>
           <groupId>com.fasterxml.jackson.datatype</groupId>
           <artifactId>jackson-datatype-joda</artifactId>
-        </dependency>   
+        </dependency>
 
         <!-- AssertJ -->
         <dependency>
@@ -126,11 +126,6 @@
             <version>${assertj.version}</version>
         </dependency>
 
-        <dependency>
-        	<groupId>org.neo4j</groupId>
-        	<artifactId>neo4j-cypher-compiler-2.2</artifactId>
-        	<version>2.2.5</version>
-        </dependency>
 	</dependencies>
 
     <build>

@@ -9,20 +9,23 @@ import org.springframework.integration.annotation.IntegrationComponentScan;
 import org.springframework.integration.channel.DirectChannel;
 import org.springframework.integration.dsl.IntegrationFlow;
 import org.springframework.integration.dsl.IntegrationFlows;
+import org.springframework.integration.dsl.support.Transformers;
 import org.springframework.integration.endpoint.MessageProducerSupport;
 import org.springframework.integration.mqtt.core.DefaultMqttPahoClientFactory;
 import org.springframework.integration.mqtt.core.MqttPahoClientFactory;
 import org.springframework.integration.mqtt.inbound.MqttPahoMessageDrivenChannelAdapter;
 import org.springframework.integration.mqtt.support.DefaultPahoMessageConverter;
-import org.springframework.messaging.Message;
+import org.springframework.integration.support.json.Jackson2JsonObjectMapper;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageHandler;
-import org.springframework.messaging.MessagingException;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import br.ita.bditac.model.Credencial;
-import br.ita.bditac.model.TopicoTipo;
-import br.ita.bditac.ws.support.Constants;
+import br.ita.bditac.model.IOTFPayload;
+import br.ita.bditac.mqtt.service.IOTFPayloadMessageHandler;
+import br.ita.bditac.mqtt.support.MQTTConstants;
 
 
 @SpringBootApplication
@@ -30,7 +33,7 @@ import br.ita.bditac.ws.support.Constants;
 @ComponentScan(basePackages = "br.ita.bditac")
 @EnableScheduling
 public class Application {
-
+	
     @Bean
     public DispatcherServletBeanPostProcessor dispatcherServletBeanPostProcessor() {
     	
@@ -39,10 +42,10 @@ public class Application {
     }
     
     @Bean
-    public MqttPahoClientFactory mqttClientFactory() {
+    public MqttPahoClientFactory clientFactory() {
     	
       DefaultMqttPahoClientFactory factory = new DefaultMqttPahoClientFactory();
-      factory.setServerURIs(Constants.MQTT_HOST);
+      factory.setServerURIs(MQTTConstants.MQTT_HOST);
       factory.setUserName(Credencial.getNome());
       factory.setPassword(Credencial.getSenha());
       
@@ -51,45 +54,39 @@ public class Application {
     }
 
 	@Bean
-	public IntegrationFlow mqttInFlow() {
+	public IntegrationFlow sensorFlow() {
 		
-		return IntegrationFlows.from(inbound())
-				.transform(p -> p)
-				.handle(handler())
+		ObjectMapper mapper = new ObjectMapper();
+		return IntegrationFlows.from(sensorInbound())
+				.transform(Transformers.fromJson(IOTFPayload.class, new Jackson2JsonObjectMapper(mapper)))
+				.handle(payloadHandler())
 				.get();
 		
 	}
 
     @Bean
-    public MessageProducerSupport inbound() {
+    public MessageProducerSupport sensorInbound() {
     	
     	MqttPahoMessageDrivenChannelAdapter adapter =
-    			new MqttPahoMessageDrivenChannelAdapter(Credencial.getNome(), mqttClientFactory());
-    	adapter.addTopic(TopicoTipo.Diagnosticos.toString(), Constants.MQTT_CHANNEL_ADAPTER_QOS);
-    	adapter.setCompletionTimeout(Constants.MQTT_CHANNEL_ADAPTER_COMPLETION_TIMEOUT);
+    			new MqttPahoMessageDrivenChannelAdapter(Credencial.getNome(), clientFactory());
+    	adapter.addTopic("br.ita.bditac/test", MQTTConstants.MQTT_CHANNEL_ADAPTER_QOS);
+    	adapter.setCompletionTimeout(MQTTConstants.MQTT_CHANNEL_ADAPTER_COMPLETION_TIMEOUT);
     	adapter.setConverter(new DefaultPahoMessageConverter());
-    	adapter.setOutputChannel(channel());
+    	adapter.setOutputChannel(sensorChannel());
     	
     	return adapter;
     	
     }
 
     @Bean
-    public MessageHandler handler() {
+    public MessageHandler payloadHandler() {
     	
-    	return new MessageHandler() {
-
-    		@Override
-    		public void handleMessage(Message<?> message) throws MessagingException {
-    			System.out.println(message.getPayload());
-    		}
-
-    	};
+    	return new IOTFPayloadMessageHandler();
     	
     }
 
     @Bean
-    public MessageChannel channel() {
+    public MessageChannel sensorChannel() {
     	
     	return new DirectChannel();
     	

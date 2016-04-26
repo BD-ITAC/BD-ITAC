@@ -8,6 +8,6 @@ Para usar basta compilar e executar o jar do projeto. Após clonar o projeto no 
 
     mvn clean
     mvn install
-    java -jar target/MockSensor-0.0.1.jar
+    java -jar target/MockSensorSimulator-0.0.1.jar
 
 O Spring BOOT irá tentar conectar com um broker MQTT que deverá estar rodando na máquina local - recomendamos utilizar o [Mosquitto](http://mosquitto.org).

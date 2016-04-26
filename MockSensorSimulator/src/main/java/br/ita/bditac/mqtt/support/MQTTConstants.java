@@ -1,7 +1,7 @@
-package br.ita.bditac.ws.support;
+package br.ita.bditac.mqtt.support;
 
 
-public interface Constants {
+public interface MQTTConstants {
 
 	public static final String MQTT_HOST = "tcp://localhost:1883";
 	
