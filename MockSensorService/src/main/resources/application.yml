@@ -1,0 +1,6 @@
+server:
+    port: 8091
+    address: 0.0.0.0
+info:
+  build.version: "@project.version@"
+    
