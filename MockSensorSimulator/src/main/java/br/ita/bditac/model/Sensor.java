@@ -16,23 +16,23 @@ public class Sensor implements Serializable {
     
     private int tipo;
     
-    private List<Topico> topicos = new ArrayList<Topico>();
+    private List<String> topicos = new ArrayList<String>();
     
     public Sensor() {
     	uuid = UUID.randomUUID().toString();
     	tipo = SensorTipo.Desconhecido.ordinal();
     }
     
-    public Sensor(SensorTipo sensorTipo, Iterable<Topico> topicos) {
+    public Sensor(SensorTipo sensorTipo, Iterable<String> topicos) {
     	uuid = UUID.randomUUID().toString();
     	this.tipo = sensorTipo.ordinal();
     	
-    	for(Topico topico : topicos) {
+    	for(String topico : topicos) {
     		this.topicos.add(topico);
     	}
     }
     
-    public Sensor(SensorTipo sensorTipo, Topico... topicos) {
+    public Sensor(SensorTipo sensorTipo, String... topicos) {
     	this(sensorTipo, Arrays.asList(topicos));
     }
     
@@ -60,12 +60,12 @@ public class Sensor implements Serializable {
 	}
     
 	
-	public List<Topico> getTopicos() {
+	public List<String> getTopicos() {
 		return this.topicos;
 	}
     
 	
-	public void setTopicos(List<Topico> topicos) {
+	public void setTopicos(List<String> topicos) {
 		this.topicos = topicos;
 	}
 	

@@ -55,8 +55,6 @@ import br.ita.bditac.model.IOTFPayload;
 import br.ita.bditac.model.Sensor;
 import br.ita.bditac.model.SensorDAO;
 import br.ita.bditac.model.SensorTipo;
-import br.ita.bditac.model.Topico;
-import br.ita.bditac.model.TopicoTipo;
 import br.ita.bditac.ws.support.MessageResource;
 
 
@@ -188,7 +186,7 @@ public class MockSensorTests {
     	assertThat(sensor.getTipo()).isEqualTo(SensorTipo.AceleracaoVibracao.ordinal());
     	
     	String payload = "Mensagem de diagnóstico";
-		Message<byte[]> message = MessageBuilder.withPayload(payload.getBytes()).setHeader(MqttHeaders.TOPIC, TopicoTipo.Diagnosticos.toString()).build();
+		Message<byte[]> message = MessageBuilder.withPayload(payload.getBytes()).setHeader(MqttHeaders.TOPIC, "br.ita.bditac/diagnosticos").build();
 		
 		MessageChannel messageChannel = context.getBean("channel", MessageChannel.class);
 		
@@ -240,71 +238,12 @@ public class MockSensorTests {
     	assertThat(sensor.getTipo()).isEqualTo(SensorTipo.AceleracaoVibracao.ordinal());
     	
     	String payload = "Mensagem de diagnóstico";
-		Message<byte[]> message = MessageBuilder.withPayload(payload.getBytes()).setHeader(MqttHeaders.TOPIC, TopicoTipo.Diagnosticos.toString()).build();
+		Message<byte[]> message = MessageBuilder.withPayload(payload.getBytes()).setHeader(MqttHeaders.TOPIC, "br.ita.bditac/diagnosticos").build();
 		
 		MessageChannel messageChannel = context.getBean("channel", MessageChannel.class);
 		
 		assertThat(messageChannel.send(message));
 
-    }
-
-
-    /**
-     *
-     * = TS02-US10
-     * 
-     * == Asserção:
-     *
-     * Testa a inclusão de um tópico no broker de mensagens e envia uma mensagem para um sensor utilizando o tópico criado.
-     *
-     * == Dados:
-     *
-     * Uma estrutura de dados JSON contendo os atributos do tópico.
-     *
-     * === Estrutura de dados @see br.bditac.mqtt.model.TopicoTipo.
-     *
-     * [source,json]
-     * --
-     * {
-     * 		"descrica": STRING
-     * }
-     * --
-     *
-     * == Execução:
-     *
-     * Uma chamada ao serviço de Sensores.
-     *
-     * ==Resultado esperado:
-     *
-     * Um número inteiro positivo do tópico adicionado.
-     *
-     * === Estrutura de dados
-     *
-     * [source,java]
-     * --
-     * int novoTopico;
-     * --
-     *
-     */
-    @Test
-    public void test103CriaTopico() throws Exception {
-    	
-    	int novoTopico = SensorDAO.adicionarTopico(TopicoTipo.Diagnosticos.toString());
-    	assertThat(novoTopico).isNotZero();
-    	
-    	Topico topico = SensorDAO.obterTopico(novoTopico);
-    	assertThat(topico.getDescricao()).isEqualTo(TopicoTipo.Diagnosticos.toString());
-    	
-    	String uuid = SensorDAO.adicionarSensor(SensorTipo.AceleracaoVibracao);
-    	Sensor sensor = SensorDAO.obterSensor(uuid);
-    	assertThat(sensor).isNotNull();
-    	assertThat(sensor.getTipo()).isEqualTo(SensorTipo.AceleracaoVibracao.ordinal());
-    	
-    	String payload = "Mensagem de diagnóstico";
-		Message<byte[]> message = MessageBuilder.withPayload(payload.getBytes()).setHeader(MqttHeaders.TOPIC, topico.getDescricao()).build();
-		MessageChannel messageChannel = context.getBean("channel", MessageChannel.class);
-		assertThat(messageChannel.send(message));
-		
     }
 
     
@@ -397,12 +336,8 @@ public class MockSensorTests {
     	URI topicoURI = new URI(getBaseUrl() + "/topico");
     	URI sensorURI = new URI(getBaseUrl() + "/sensor");
     	ObjectMapper mapper = new ObjectMapper();
- 	
-    	Topico topicoRequest = new Topico("br.ita.bditac/tests");
-    	ResponseEntity<MessageResource> topicoResponseEntity = getRestTemplate().postForEntity(topicoURI, new HttpEntity<Topico>(topicoRequest), MessageResource.class);
-    	assertThat(topicoResponseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
     	
-    	Sensor sensorRequest = new Sensor(SensorTipo.HumidadeVapor, topicoRequest);
+    	Sensor sensorRequest = new Sensor(SensorTipo.HumidadeVapor, "br.ita.bditac/diagnosticos");
     	@SuppressWarnings("unused")
 		String sensorJson = mapper.writeValueAsString(sensorRequest);
     	ResponseEntity<MessageResource> sensorResponseEntity = getRestTemplate().postForEntity(sensorURI, new HttpEntity<Sensor>(sensorRequest), MessageResource.class);
@@ -416,7 +351,7 @@ public class MockSensorTests {
     			random.nextDouble(),
     			random.nextDouble());
     	String humidadeJson = mapper.writeValueAsString(humidade);
-		Message<byte[]> message = MessageBuilder.withPayload(humidadeJson.getBytes()).setHeader(MqttHeaders.TOPIC, topicoRequest.getDescricao()).build();
+		Message<byte[]> message = MessageBuilder.withPayload(humidadeJson.getBytes()).setHeader(MqttHeaders.TOPIC, "br.ita.bditac/diagnosticos").build();
 		MessageChannel messageChannel = context.getBean("channel", MessageChannel.class);
 		assertThat(messageChannel.send(message));
 		

@@ -11,22 +11,18 @@ import org.joda.time.DateTime;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.integration.mqtt.support.MqttHeaders;
-import org.springframework.integration.support.MessageBuilder;
-import org.springframework.messaging.Message;
-import org.springframework.messaging.MessageChannel;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import br.ita.bditac.app.Application.BDITACGateway;
 
 
 @Component
 public class SensorDAO implements ApplicationContextAware {
 
 	private static Map<String, Sensor> _sensores = new HashMap<String, Sensor>();
-	
-	private static Map<Integer, Topico> _topicos = new HashMap<Integer, Topico>();
 
     private static Map<Integer, Mensagem> _messages = new HashMap<Integer, Mensagem>();
 
@@ -60,21 +56,8 @@ public class SensorDAO implements ApplicationContextAware {
 	public static Sensor obterSensor(String uuid) {
 		return _sensores.get(uuid);
 	}
+
 	
-	
-	public static int adicionarTopico(String descricao) {
-		Topico novoTopico = new Topico(descricao);
-		
-		_topicos.put(novoTopico.getId(), novoTopico);
-		
-		return novoTopico.getId();
-	}
-	
-	
-	public static Topico obterTopico(int id) {
-		return _topicos.get(id);
-	}
-    
     public static Mensagem obterMessage(int id) {
         Mensagem mensagem = _messages.get(id);
 
@@ -91,27 +74,23 @@ public class SensorDAO implements ApplicationContextAware {
     public static List<Mensagem> obterMessages() {
         return new ArrayList<Mensagem>(_messages.values());
     }
-	
-	@Scheduled(fixedRate = 1000)
+    
+    @Scheduled(fixedRate = 1000)
 	private static void runSensors() {
 		for(Sensor sensor : _sensores.values()) {
-			for(Topico topico : sensor.getTopicos()) {
+			for(String topico : sensor.getTopicos()) {
 				try {
 					Random random = new Random(DateTime.now().getMillis());
-					IOTFPayload iotfPayload = new IOTFPayload(
+					IOTFPayload payload = new IOTFPayload(
 							SensorTipo.Fluxo.ordinal(),
 							random.nextDouble(),
 							random.nextDouble(),
 							random.nextDouble(),
 							random.nextDouble());
-			    	ObjectMapper mapper = new ObjectMapper();
-			    	String medicaoJson = mapper.writeValueAsString(iotfPayload);
-			    	Message<byte[]> message = MessageBuilder
-			    			.withPayload(medicaoJson.getBytes())
-			    			.setHeader(MqttHeaders.TOPIC, topico.getDescricao())
-			    			.build();
-			    	MessageChannel messageChannel = context.getBean("channel", MessageChannel.class);
-			    	messageChannel.send(message);
+					ObjectMapper mapper = new ObjectMapper();
+					String payloadJson = mapper.writeValueAsString(payload);
+					BDITACGateway gateway = context.getBean(BDITACGateway.class);
+					gateway.sendToMqtt(payloadJson, topico);
 				}
 				catch(Exception ex) {
 					throw new RuntimeException(ex);
