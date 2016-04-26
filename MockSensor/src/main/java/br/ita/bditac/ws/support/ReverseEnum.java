@@ -1,4 +1,4 @@
-package br.ita.bditac.mqtt.support;
+package br.ita.bditac.ws.support;
 
 import java.util.HashMap;
 import java.util.Map;

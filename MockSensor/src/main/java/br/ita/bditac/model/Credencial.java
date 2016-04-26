@@ -1,4 +1,4 @@
-package br.ita.bditac.mqtt.model;
+package br.ita.bditac.model;
 
 
 public class Credencial {

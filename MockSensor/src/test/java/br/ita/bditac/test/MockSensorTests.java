@@ -5,8 +5,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 
 import java.io.IOException;
-import java.util.UUID;
+import java.net.URI;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Random;
 
+import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Rule;
@@ -20,8 +24,14 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.hateoas.MediaTypes;
+import org.springframework.hateoas.hal.Jackson2HalModule;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.ClientHttpResponse;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.integration.mqtt.support.MqttHeaders;
 import org.springframework.integration.support.MessageBuilder;
 import org.springframework.messaging.Message;
@@ -32,14 +42,22 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.client.ResponseErrorHandler;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.context.WebApplicationContext;
 
-import br.ita.bditac.mqtt.app.MqttApplication;
-import br.ita.bditac.mqtt.model.Sensor;
-import br.ita.bditac.mqtt.model.SensorDAO;
-import br.ita.bditac.mqtt.model.SensorTipo;
-import br.ita.bditac.mqtt.model.Topico;
-import br.ita.bditac.mqtt.model.TopicoTipo;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.joda.JodaModule;
+
+import br.ita.bditac.app.Application;
+import br.ita.bditac.model.IOTFPayload;
+import br.ita.bditac.model.Sensor;
+import br.ita.bditac.model.SensorDAO;
+import br.ita.bditac.model.SensorTipo;
+import br.ita.bditac.model.Topico;
+import br.ita.bditac.model.TopicoTipo;
+import br.ita.bditac.ws.support.MessageResource;
 
 
 /**
@@ -48,7 +66,7 @@ import br.ita.bditac.mqtt.model.TopicoTipo;
  *
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = MqttApplication.class)
+@SpringApplicationConfiguration(classes = Application.class)
 @IntegrationTest("server.port:0")
 @WebAppConfiguration
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
@@ -82,12 +100,30 @@ public class MockSensorTests {
         }
 
     }
+
+    RestTemplate getRestTemplate() {
+
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        mapper.configure(SerializationFeature.INDENT_OUTPUT, true);
+        mapper.registerModules(new Jackson2HalModule(), new JodaModule());
+
+        MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
+        converter.setSupportedMediaTypes(Arrays.asList(MediaTypes.HAL_JSON));
+        converter.setObjectMapper(mapper);
+
+        RestTemplate restTemplate = new RestTemplate(Collections.<HttpMessageConverter<?>> singletonList(converter));
+        restTemplate.setErrorHandler(new ClientErrorHandler());
+
+        return restTemplate;
+
+    }
     
     @Value("${local.server.port}")
     private int port;
 
     @Autowired
-    WebApplicationContext context;
+    private WebApplicationContext context;
 
     @Rule
     public RestDocumentation restDocumentation = new RestDocumentation("target/generated-docs");
@@ -144,12 +180,12 @@ public class MockSensorTests {
     @Test
     public void test101CriaSensor() throws Exception {
     	
-    	UUID uuid = SensorDAO.adicionaSensor(SensorTipo.AceleracaoVibracao);
+    	String uuid = SensorDAO.adicionarSensor(SensorTipo.AceleracaoVibracao);
     	
     	Sensor sensor = SensorDAO.obterSensor(uuid);
     	
     	assertThat(sensor).isNotNull();
-    	assertThat(sensor.getTipo()).isEqualTo(SensorTipo.AceleracaoVibracao);
+    	assertThat(sensor.getTipo()).isEqualTo(SensorTipo.AceleracaoVibracao.ordinal());
     	
     	String payload = "Mensagem de diagnóstico";
 		Message<byte[]> message = MessageBuilder.withPayload(payload.getBytes()).setHeader(MqttHeaders.TOPIC, TopicoTipo.Diagnosticos.toString()).build();
@@ -196,12 +232,12 @@ public class MockSensorTests {
     @Test
     public void test102CriaSensor() throws Exception {
     	
-    	UUID uuid = SensorDAO.adicionaSensor(SensorTipo.AceleracaoVibracao);
+    	String uuid = SensorDAO.adicionarSensor(SensorTipo.AceleracaoVibracao);
     	
     	Sensor sensor = SensorDAO.obterSensor(uuid);
     	
     	assertThat(sensor).isNotNull();
-    	assertThat(sensor.getTipo()).isEqualTo(SensorTipo.AceleracaoVibracao);
+    	assertThat(sensor.getTipo()).isEqualTo(SensorTipo.AceleracaoVibracao.ordinal());
     	
     	String payload = "Mensagem de diagnóstico";
 		Message<byte[]> message = MessageBuilder.withPayload(payload.getBytes()).setHeader(MqttHeaders.TOPIC, TopicoTipo.Diagnosticos.toString()).build();
@@ -230,7 +266,7 @@ public class MockSensorTests {
      * [source,json]
      * --
      * {
-     * 		"descrica": <descricao>
+     * 		"descrica": STRING
      * }
      * --
      *
@@ -259,10 +295,10 @@ public class MockSensorTests {
     	Topico topico = SensorDAO.obterTopico(novoTopico);
     	assertThat(topico.getDescricao()).isEqualTo(TopicoTipo.Diagnosticos.toString());
     	
-    	UUID uuid = SensorDAO.adicionaSensor(SensorTipo.AceleracaoVibracao);
+    	String uuid = SensorDAO.adicionarSensor(SensorTipo.AceleracaoVibracao);
     	Sensor sensor = SensorDAO.obterSensor(uuid);
     	assertThat(sensor).isNotNull();
-    	assertThat(sensor.getTipo()).isEqualTo(SensorTipo.AceleracaoVibracao);
+    	assertThat(sensor.getTipo()).isEqualTo(SensorTipo.AceleracaoVibracao.ordinal());
     	
     	String payload = "Mensagem de diagnóstico";
 		Message<byte[]> message = MessageBuilder.withPayload(payload.getBytes()).setHeader(MqttHeaders.TOPIC, topico.getDescricao()).build();
@@ -286,9 +322,11 @@ public class MockSensorTests {
      *
      * === Estrutura de dados
      *
-     * [source,java]
+     * [source,json]
      * --
-     *  SensorTipo tipo;
+     * 	{
+     * 		"descricao": STRING
+     *  }
      * --
      *
      * == Execução:
@@ -306,7 +344,13 @@ public class MockSensorTests {
      */
     @Test
     public void test104CriaSensor() throws Exception {
-
+    	
+    	URI sensorURI = new URI(getBaseUrl() + "/sensor");
+    	
+    	Sensor sensorRequest = new Sensor(SensorTipo.Fluxo);
+    	ResponseEntity<MessageResource> sensorResponseEntity = getRestTemplate().postForEntity(sensorURI, new HttpEntity<Sensor>(sensorRequest), MessageResource.class);
+    	assertThat(sensorResponseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+    	
     }
 
 
@@ -327,7 +371,7 @@ public class MockSensorTests {
      * [source,json]
      * --
      * {
-     * 		"descrica": <descricao>
+     * 		"tipo": NUMBER
      * }
      * --
      *
@@ -349,7 +393,33 @@ public class MockSensorTests {
      */
     @Test
     public void test105CriaTopico() throws Exception {
+    	
+    	URI topicoURI = new URI(getBaseUrl() + "/topico");
+    	URI sensorURI = new URI(getBaseUrl() + "/sensor");
+    	ObjectMapper mapper = new ObjectMapper();
+ 	
+    	Topico topicoRequest = new Topico("br.ita.bditac/tests");
+    	ResponseEntity<MessageResource> topicoResponseEntity = getRestTemplate().postForEntity(topicoURI, new HttpEntity<Topico>(topicoRequest), MessageResource.class);
+    	assertThat(topicoResponseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+    	
+    	Sensor sensorRequest = new Sensor(SensorTipo.HumidadeVapor, topicoRequest);
+    	@SuppressWarnings("unused")
+		String sensorJson = mapper.writeValueAsString(sensorRequest);
+    	ResponseEntity<MessageResource> sensorResponseEntity = getRestTemplate().postForEntity(sensorURI, new HttpEntity<Sensor>(sensorRequest), MessageResource.class);
+    	assertThat(sensorResponseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
 
+    	Random random = new Random(DateTime.now().getMillis());
+    	IOTFPayload humidade = new IOTFPayload(
+    			SensorTipo.HumidadeVapor.ordinal(),
+    			random.nextDouble(),
+    			random.nextDouble(),
+    			random.nextDouble(),
+    			random.nextDouble());
+    	String humidadeJson = mapper.writeValueAsString(humidade);
+		Message<byte[]> message = MessageBuilder.withPayload(humidadeJson.getBytes()).setHeader(MqttHeaders.TOPIC, topicoRequest.getDescricao()).build();
+		MessageChannel messageChannel = context.getBean("channel", MessageChannel.class);
+		assertThat(messageChannel.send(message));
+		
     }
     
     

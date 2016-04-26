@@ -1,4 +1,4 @@
-package br.ita.bditac.mqtt.model;
+package br.ita.bditac.model;
 
 /**
  * 
@@ -19,7 +19,7 @@ The sensors are classified into the following criteria:
 2.     Transduction principles (Using physical and chemical effects)
 3.     Material and Technology
 4.     Property
-5.     MqttApplication
+5.     Application
  
 Transduction principle is the fundamental criteria which are followed for an efficient approach. Usually, material and technology criteria are chosen by the development engineering group.
  
@@ -37,7 +37,7 @@ Classification based on property is as given below:
  
 Surface Plasmon resonance and Light addressable potentio-metric from the Bio-sensors group are the new optical technology based sensors. CMOS Image sensors have low resolution as compared to charge coupled devices. CMOS has the advantages of small size, cheap, less power consumption and hence are better substitutes for Charge coupled devices. Accelerometers are independently grouped because of their vital role in future applications like aircraft, automobiles, etc and in fields of videogames, toys, etc. Magnetometers are those sensors which measure magnetic flux intensity B (in units of Tesla or As/m2).
  
-Classification based on MqttApplication is as given below:
+Classification based on Application is as given below:
 ·        Industrial process control, measurement and automation
 ·        Non-industrial use – Aircraft, Medical products, Automobiles, Consumer electronics, other type of sensors.
  

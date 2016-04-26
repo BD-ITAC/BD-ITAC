@@ -1,4 +1,4 @@
-package br.ita.bditac.mqtt.model;
+package br.ita.bditac.model;
 
 
 public class Topico {
@@ -7,6 +7,13 @@ public class Topico {
 	private String descricao;
 	
 	private static int _id = 0;
+	
+	
+	public Topico() {
+		this.id = ++_id;
+		this.descricao = "";
+	}
+	
 	
 	public Topico(String descricao) {
 		this.id = ++_id;
