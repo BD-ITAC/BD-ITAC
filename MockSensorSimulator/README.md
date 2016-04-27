@@ -1,4 +1,4 @@
-# Serviço MQTT recebimento de sinais de sensores digitais [BD-ITAC](https://sites.google.com/site/interdproj2016/)
+# Serviço MQTT de simulação de envio de sinais de sensores analógicos/digitais [BD-ITAC](https://sites.google.com/site/interdproj2016/)
 
 Aplicação Mock usando [Spring Integration](http://projects.spring.io/spring-integration/) e [Spring Boot](http://projects.spring.io/spring-boot) para gerar um serviço MQTT que irá simular a emissão de sinais por sensores analógicos/digitais para a internet.
 
@@ -14,6 +14,7 @@ O Spring BOOT irá tentar conectar com um broker MQTT que poderá estar rodando 
 
 Para gerar um simulador podemos executar um POST no endereço [http://localhost:8082/sensor](http://localhost:8082/sensor) com os dados do sensor no corpo da requisição:
 
+```json
     {
         "tipo":7,
         "topicos":[
@@ -22,6 +23,7 @@ Para gerar um simulador podemos executar um POST no endereço [http://localhost:
             "bditac/humidade"
         ]
     }
+```
 
 ![POST de sensor](./images/POSTSensor.png)
 
