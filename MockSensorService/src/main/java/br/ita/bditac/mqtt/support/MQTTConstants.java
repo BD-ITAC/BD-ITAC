@@ -7,7 +7,7 @@ public interface MQTTConstants {
 	
 	public static final String MQTT_BACKUP_HOST = "tcp://iot.eclipse.org:1883";
 	
-	public static final String MQTT_GENERAL_TOPIC = "#";
+	public static final String MQTT_GENERAL_TOPIC = "bditac/#";
 	
 	public static final int MQTT_CHANNEL_ADAPTER_COMPLETION_TIMEOUT = 5000;
 	
