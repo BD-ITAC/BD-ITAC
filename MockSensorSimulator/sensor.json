@@ -1,14 +1,8 @@
 {
     "tipo":7,
     "topicos":[
-        {
-            "descricao":"br.ita.bditac/temperatura"
-        },
-        {
-            "descricao":"br.ita.bditac/pressao"
-        },
-        {
-            "descricao":"br.ita.bditac/humidade"
-        }
+        "bditac/temperatura",
+        "bditac/pressao",
+        "bditac/humidade"
     ]
 }
