@@ -3,7 +3,9 @@ package br.ita.bditac.mqtt.support;
 
 public interface MQTTConstants {
 
-	public static final String MQTT_HOST = "tcp://localhost:1883";
+	public static final String MQTT_DEFAULT_HOST = "tcp://143.107.235.40:1883";
+	
+	public static final String MQTT_BACKUP_HOST = "tcp://200.133.224.28:1883";
 	
 	public static final String MQTT_GENERAL_TOPIC = "#";
 	

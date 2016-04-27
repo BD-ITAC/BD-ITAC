@@ -56,7 +56,7 @@ public class Application {
 	public MqttPahoClientFactory mqttClientFactory() {
 	
     	DefaultMqttPahoClientFactory factory = new DefaultMqttPahoClientFactory();
-    	factory.setServerURIs(MQTTConstants.MQTT_DEFAULT_HOST);
+    	factory.setServerURIs(MQTTConstants.MQTT_DEFAULT_HOST, MQTTConstants.MQTT_BACKUP_HOST);
     	factory.setUserName(Credencial.getNome());
     	factory.setPassword(Credencial.getSenha());
   

@@ -1,6 +1,8 @@
 package br.ita.bditac.app;
 
 
+import java.util.UUID;
+
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.Bean;
@@ -38,7 +40,7 @@ public class Application {
     public MqttPahoClientFactory mqttClientFactory() {
 
       DefaultMqttPahoClientFactory factory = new DefaultMqttPahoClientFactory();
-      factory.setServerURIs(MQTTConstants.MQTT_HOST);
+      factory.setServerURIs(MQTTConstants.MQTT_DEFAULT_HOST, MQTTConstants.MQTT_BACKUP_HOST);
 
       return factory;
 
@@ -60,7 +62,7 @@ public class Application {
     public MessageProducerSupport inbound() {
 
     	MqttPahoMessageDrivenChannelAdapter adapter =
-    			new MqttPahoMessageDrivenChannelAdapter("bditac", mqttClientFactory());
+    			new MqttPahoMessageDrivenChannelAdapter(UUID.randomUUID().toString(), mqttClientFactory());
     	adapter.addTopic(MQTTConstants.MQTT_GENERAL_TOPIC, MQTTConstants.MQTTQoS.MQTT_QOS_AT_MOST_ONCE);
     	adapter.setCompletionTimeout(MQTTConstants.MQTT_CHANNEL_ADAPTER_COMPLETION_TIMEOUT);
     	adapter.setConverter(new DefaultPahoMessageConverter());

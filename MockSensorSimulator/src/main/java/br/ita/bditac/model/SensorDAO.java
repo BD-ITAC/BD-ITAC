@@ -21,6 +21,10 @@ import br.ita.bditac.app.Application.BDITACGateway;
 
 @Component
 public class SensorDAO implements ApplicationContextAware {
+	
+	private final static int SCHEDULLER_INTERVAL_1SECOND = 1000;
+
+	private final static int SCHEDULLER_INTERVAL_1MINUTE = SCHEDULLER_INTERVAL_1SECOND * 60;
 
 	private static Map<String, Sensor> _sensores = new HashMap<String, Sensor>();
 
@@ -30,7 +34,7 @@ public class SensorDAO implements ApplicationContextAware {
     
     static {
         _messages.put(1, new Mensagem(1, Mensagem.Type.INFO, "001", "Ok", "Everything is all right!"));
-        _messages.put(2, new Mensagem(2, Mensagem.Type.ERROR, "999", "Error", "Something went very badly"));
+        _messages.put(2, new Mensagem(2, Mensagem.Type.ERROR, "999", "Error", "I have a bad feeling about this!"));
     }
     
     @Override
@@ -75,7 +79,7 @@ public class SensorDAO implements ApplicationContextAware {
         return new ArrayList<Mensagem>(_messages.values());
     }
     
-    @Scheduled(fixedRate = 1000)
+    @Scheduled(fixedRate = SCHEDULLER_INTERVAL_1MINUTE)
 	private static void runSensors() {
 		for(Sensor sensor : _sensores.values()) {
 			for(String topico : sensor.getTopicos()) {
