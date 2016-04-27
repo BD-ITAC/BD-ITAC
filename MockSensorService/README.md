@@ -30,7 +30,7 @@ A implementação de recebimento está pronta para ser refatorada com um propós
     public IOTFPayload getPayload() {
         return this.payload;
     }
-```java 
+```
 
 O formato do `payload` é o mesmo adotado nos modelos de aplicativos IoT da IBM no projeto [Bluemix](http://www.ibm.com/cloud-computing/bluemix/internet-of-things/). Dentro desta estrutura incluimos os atributos para a nossa aplicação
 
