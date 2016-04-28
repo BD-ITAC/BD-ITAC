@@ -9,7 +9,7 @@ public class AutoStartReceiver extends WakefulBroadcastReceiver {
 
     public AutoStartReceiver() {
 
-        Log.i(this.getClass().getSimpleName(), "Auto start receiver constructed.");
+        Log.i(this.getClass().getSimpleName(), "Auto start receiver built.");
 
     }
 

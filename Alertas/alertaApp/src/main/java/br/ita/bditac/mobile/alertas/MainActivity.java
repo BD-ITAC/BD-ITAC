@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
 
         Context context = getApplicationContext();
 
-        if(ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+        if(ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             Log.i(this.getClass().getSimpleName(), "Permission to localization services requested.");
 
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, Constants.REQUEST_CODE_ACCESS_FINE_LOCATION);
