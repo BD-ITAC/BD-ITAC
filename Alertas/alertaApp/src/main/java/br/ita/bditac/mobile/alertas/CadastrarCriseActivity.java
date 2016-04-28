@@ -3,6 +3,7 @@ package br.ita.bditac.mobile.alertas;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -201,6 +202,12 @@ public class CadastrarCriseActivity extends AppCompatActivity {
 
     }
 
+
+    public void Imagem_Click(View view) {
+
+        startActivity(new Intent(this, CaptureImageActivity.class));
+
+    }
 
     private void CarregarCategoria(){
 
