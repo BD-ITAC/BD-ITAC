@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".CadastrarCriseActivity">
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context="br.ita.bditac.mobile.alertas.MainActivity">
 
     <LinearLayout
         android:layout_width ="match_parent"
@@ -17,41 +17,30 @@
         <TextView
             android:layout_width ="wrap_content"
             android:layout_height ="wrap_content"
-            android:text ="Crises Report" />
+            android:text ="Alertas e Crises" />
 
-        <Spinner
-            android:id ="@+id/categoria"
+        <Button
+            android:id ="@+id/cadastrarCrise"
             android:layout_width ="match_parent"
             android:layout_height ="wrap_content"
-            android:layout_marginBottom ="16dp"/>
-
-        <EditText
-            android:id ="@+id/mensagem"
-            android:layout_width ="match_parent"
-            android:layout_height ="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:hint ="Describe the Crisis"
-            android:inputType ="textMultiLine"
-            android:lines="10"
-            android:minLines="5"
-            android:maxLines="20"
-            android:scrollbars="vertical"
+            android:text ="Cadastrar"
+            android:onClick="startCadastrarCrise"
             />
 
         <Button
-            android:id ="@+id/salvar"
+            android:id ="@+id/consultarCrise"
             android:layout_width ="match_parent"
             android:layout_height ="wrap_content"
-            android:text ="Save"
-            android:onClick="Salvar_Click"
+            android:text ="Consultar"
+            android:onClick="startConsultarCrise"
             />
 
         <Button
-            android:id ="@+id/limpar"
+            android:id ="@+id/consultarIndicador"
             android:layout_width ="match_parent"
             android:layout_height ="wrap_content"
-            android:text ="Clear"
-            android:onClick="Limpar_Click"
+            android:text ="Indicadores"
+            android:onClick="startConsultarIndicador"
             />
 
     </LinearLayout>

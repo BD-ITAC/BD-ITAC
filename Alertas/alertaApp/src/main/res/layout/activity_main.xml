@@ -17,13 +17,13 @@
         <TextView
             android:layout_width ="wrap_content"
             android:layout_height ="wrap_content"
-            android:text ="BD-ITAC: Big Data and IoT for Alerts and Crisis" />
+            android:text ="Alerts and Crises" />
 
         <Button
             android:id ="@+id/cadastrarCrise"
             android:layout_width ="match_parent"
             android:layout_height ="wrap_content"
-            android:text ="Cadastrar Crise"
+            android:text ="Report"
             android:onClick="startCadastrarCrise"
             />
 
@@ -31,7 +31,7 @@
             android:id ="@+id/consultarCrise"
             android:layout_width ="match_parent"
             android:layout_height ="wrap_content"
-            android:text ="Consultar Crise"
+            android:text ="Browse"
             android:onClick="startConsultarCrise"
             />
 
@@ -39,7 +39,7 @@
             android:id ="@+id/consultarIndicador"
             android:layout_width ="match_parent"
             android:layout_height ="wrap_content"
-            android:text ="Consultar Indicadores"
+            android:text ="Status"
             android:onClick="startConsultarIndicador"
             />
 

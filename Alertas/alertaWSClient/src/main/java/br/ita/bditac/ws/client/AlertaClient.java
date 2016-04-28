@@ -8,8 +8,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import br.ita.bditac.ws.model.Alerta;
@@ -32,6 +34,7 @@ public class AlertaClient extends AbstractBaseService {
 
         Map<String, String> params = new HashMap<String, String>();
         DecimalFormat df = new DecimalFormat("#0.000000");
+        df.setDecimalFormatSymbols(DecimalFormatSymbols.getInstance(Locale.US));
         params.put("timestamp", Long.toString(lastTimestamp));
         params.put("latitude", df.format(latitude));
         params.put("longitude", df.format(longitude));
@@ -54,6 +57,7 @@ public class AlertaClient extends AbstractBaseService {
 
         Map<String, String> params = new HashMap<String, String>();
         DecimalFormat df = new DecimalFormat("#0.000000");
+        df.setDecimalFormatSymbols(DecimalFormatSymbols.getInstance(Locale.US));
         params.put("timestamp", Long.toString(lastTimestamp));
         params.put("latitude", df.format(latitude));
         params.put("longitude", df.format(longitude));
@@ -78,6 +82,7 @@ public class AlertaClient extends AbstractBaseService {
 
         Map<String, String> params = new HashMap<String, String>();
         DecimalFormat df = new DecimalFormat("#0.000000");
+        df.setDecimalFormatSymbols(DecimalFormatSymbols.getInstance(Locale.US));
         params.put("timestamp", "0");
         params.put("latitude", df.format(latitude));
         params.put("longitude", df.format(longitude));

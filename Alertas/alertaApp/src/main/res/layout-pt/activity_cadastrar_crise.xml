@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".CadastrarCriseActivity">
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".CadastrarCriseActivity">
 
     <LinearLayout
         android:layout_width ="match_parent"
@@ -17,7 +17,7 @@
         <TextView
             android:layout_width ="wrap_content"
             android:layout_height ="wrap_content"
-            android:text ="Crises Report" />
+            android:text ="Cadastro de Crise" />
 
         <Spinner
             android:id ="@+id/categoria"
@@ -30,7 +30,7 @@
             android:layout_width ="match_parent"
             android:layout_height ="wrap_content"
             android:layout_marginBottom="16dp"
-            android:hint ="Describe the Crisis"
+            android:hint ="Descreva a Crise"
             android:inputType ="textMultiLine"
             android:lines="10"
             android:minLines="5"
@@ -42,7 +42,7 @@
             android:id ="@+id/salvar"
             android:layout_width ="match_parent"
             android:layout_height ="wrap_content"
-            android:text ="Save"
+            android:text ="Salvar"
             android:onClick="Salvar_Click"
             />
 
@@ -50,7 +50,7 @@
             android:id ="@+id/limpar"
             android:layout_width ="match_parent"
             android:layout_height ="wrap_content"
-            android:text ="Clear"
+            android:text ="Limpar"
             android:onClick="Limpar_Click"
             />
 
