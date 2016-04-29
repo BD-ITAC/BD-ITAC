@@ -17,29 +17,26 @@
         <TextView
             android:layout_width ="wrap_content"
             android:layout_height ="wrap_content"
-            android:text ="Alerts and Crises" />
+            android:text ="@string/alerts_and_crises" />
 
         <Button
-            android:id ="@+id/cadastrarCrise"
             android:layout_width ="match_parent"
             android:layout_height ="wrap_content"
-            android:text ="Report"
+            android:text ="@string/report"
             android:onClick="startCadastrarCrise"
             />
 
         <Button
-            android:id ="@+id/consultarCrise"
             android:layout_width ="match_parent"
             android:layout_height ="wrap_content"
-            android:text ="Browse"
+            android:text ="@string/browse"
             android:onClick="startConsultarCrise"
             />
 
         <Button
-            android:id ="@+id/consultarIndicador"
             android:layout_width ="match_parent"
             android:layout_height ="wrap_content"
-            android:text ="Status"
+            android:text ="@string/status"
             android:onClick="startConsultarIndicador"
             />
 

@@ -17,7 +17,7 @@
         <TextView
             android:layout_width ="wrap_content"
             android:layout_height ="wrap_content"
-            android:text ="Crises Report" />
+            android:text ="@string/crises_report" />
 
         <Spinner
             android:id ="@+id/categoria"
@@ -30,7 +30,7 @@
             android:layout_width ="match_parent"
             android:layout_height ="wrap_content"
             android:layout_marginBottom="16dp"
-            android:hint ="Describe the Crisis"
+            android:hint ="@string/describe_the_crisis"
             android:inputType ="textMultiLine"
             android:lines="10"
             android:minLines="5"
@@ -39,18 +39,16 @@
             />
 
         <Button
-            android:id ="@+id/salvar"
             android:layout_width ="match_parent"
             android:layout_height ="wrap_content"
-            android:text ="Save"
+            android:text ="@string/save"
             android:onClick="Salvar_Click"
             />
 
         <Button
-            android:id ="@+id/limpar"
             android:layout_width ="match_parent"
             android:layout_height ="wrap_content"
-            android:text ="Clear"
+            android:text ="@string/clear"
             android:onClick="Limpar_Click"
             />
 
@@ -58,7 +56,7 @@
             android:id ="@+id/image"
             android:layout_width ="match_parent"
             android:layout_height ="wrap_content"
-            android:text ="Image"
+            android:text ="@string/image"
             android:onClick="Imagem_Click"
             />
 

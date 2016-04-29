@@ -1,14 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Alertas</string>
-    <string name="action_settings">Configurações</string>
     <string name="msg_alert_received">Novo alerta recebido</string>
     <string name="msg_location_service_unaivalable">Serviço de localização indisponível.\nTente novamente mais tarde.</string>
-    <string name="msg_alerts_service_unaivalable">Serviço de alertas indisponível.\nTente novamente mais tarde.</string>
-    <string name="msg_statistics_service_unaivalable">Estatísticas do serviço indisponíveis.\nTente novamente mais tarde.</string>
+    <string name="msg_alerts_service_unaivalable">Servico de alertas indisponível.\nTente novamente mais tarde.</string>
+    <string name="msg_statistics_service_unaivalable">Estatísticas indisponíveis.\nTente novamente mais tarde.</string>
     <string name="msg_crisis_saved">Notificação de crise salva.</string>
     <string name="open">Abrir</string>
-    <string name="dismiss">Ignorar</string>
-    <string name="msg_location_denied">Serviço de localização não permitido</string>
-    <string name="msg_crisis_being_saved">Notificação de crise enviada.\nPor favor aguarde.</string>
+    <string name="msg_crisis_being_saved">Notificação de crise enviada.\nPor favor, aguarde.</string>
+    <string name="title_activity_capture_image">Capturar Foto</string>
+    <string name="crises_report">Relatório de Crises</string>
+    <string name="describe_the_crisis">Descreva a Crise</string>
+    <string name="save">Salvar</string>
+    <string name="clear">Limpar</string>
+    <string name="image">Foto</string>
+    <string name="click_the_below_button_to_take_photo">Pressione o botão abaixo para tirar foto</string>
+    <string name="take_photo">Tirar foto</string>
+    <string name="alerts_and_crises">Alertas e Crises</string>
+    <string name="report">Relatório</string>
+    <string name="browse">Listar</string>
+    <string name="status">Situação</string>
+    <string name="this_is_the_result_activity_opened_from_the_notification_here_we_can_put_a_map">Resultado da notificação - aqui podemos colocar um mapa.</string>
 </resources>
