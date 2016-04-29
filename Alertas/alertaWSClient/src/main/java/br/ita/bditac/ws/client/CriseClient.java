@@ -10,8 +10,6 @@ public class CriseClient extends AbstractBaseService {
 
     private static final String SERVICE_URL = "/crise";
 
-    private static final String ID_PARM = "/{id}";
-
     public CriseClient(String hostURL) {
         super(hostURL);
     }

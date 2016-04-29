@@ -6,13 +6,6 @@ import org.apache.commons.codec.binary.Base64;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-/**
- * 
- * @author BD-ITAC
- * 
- * A classe Crise contém os dados necessários para permitir o cadastramento de um crise ad-hoc
- *
- */
 public class Crise implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -33,17 +26,6 @@ public class Crise implements Serializable {
     
     private String descricao;
     
-    /**
-     * Indica o tipo de crise:
-     * - Enchente
-     * - Incêndio
-     * - Deslizamento (de terra ou pedras em encostas, margens de rio, lagos ou mar, etc.)
-     * - Desmoronamento (prédios, equipamentos públicos (torres, etc.) e instalações industriais
-     * - Terremotos
-     * - Epidemias
-     * - Apocalipse Zumbi
-     * - etc.
-     */
     private int categoria;
     
     private String nome;

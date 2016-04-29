@@ -40,11 +40,6 @@
         <service android:name=".AlertaPollingService"/>
 
         <activity android:name=".NotificationReceiverActivity"/>
-        <activity
-            android:name=".CaptureImageActivity"
-            android:label="@string/title_activity_capture_image"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
     </application>
 
 </manifest>

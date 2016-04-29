@@ -1,7 +1,8 @@
 package br.ita.bditac.ws.model;
 
-import org.apache.commons.codec.binary.Base64;
+import android.graphics.Bitmap;
 
+import java.io.ByteArrayOutputStream;
 import java.io.Serializable;
 
 public class Crise implements Serializable {
@@ -45,7 +46,7 @@ public class Crise implements Serializable {
             String telefone,
             double latitude,
             double longitude,
-            String fotografia) {
+            Bitmap bitmap) {
         this.id = 0;
         
         this.descricao = descricao;
@@ -55,7 +56,10 @@ public class Crise implements Serializable {
         this.telefone = telefone;
         this.latitude = latitude;
         this.longitude = longitude;
-        this.fotografia = Base64.encodeBase64(fotografia.getBytes());
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG,100,outputStream);
+        byte[] byteArray = outputStream.toByteArray();
+        this.fotografia = byteArray;
     }
     
     

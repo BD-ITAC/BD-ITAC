@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -13,12 +15,14 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Debug;
 import android.preference.PreferenceManager;
+import android.provider.MediaStore;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -31,6 +35,8 @@ import br.ita.bditac.ws.model.Usuario;
 
 public class CadastrarCriseActivity extends AppCompatActivity {
 
+    private static final int CAMERA_REQUEST = 1000;
+
     private Context context;
 
     private Location currentLocation;
@@ -42,6 +48,8 @@ public class CadastrarCriseActivity extends AppCompatActivity {
     private Spinner inputCategoria;
 
     private LocationListener locationListener;
+
+    private ImageView imageView;
 
     protected boolean saving = false;
 
@@ -118,6 +126,8 @@ public class CadastrarCriseActivity extends AppCompatActivity {
 
         inputDescricao = (EditText) findViewById(R.id.mensagem);
 
+        imageView = (ImageView) findViewById(R.id.camera_image);
+
         saving = false;
 
         CarregarCategoria();
@@ -135,6 +145,7 @@ public class CadastrarCriseActivity extends AppCompatActivity {
 
         inputDescricao.setText("");
         inputCategoria.setSelection(0);
+        imageView = null;
 
     }
 
@@ -181,7 +192,7 @@ public class CadastrarCriseActivity extends AppCompatActivity {
                 Log.i(this.getClass().getSimpleName(), getText(R.string.msg_location_service_unaivalable).toString());
             }
             else {
-            Crise crise=new Crise(
+                Crise crise=new Crise(
                     inputDescricao.getText().toString(),
                     inputCategoria.getSelectedItemPosition(),
                     Usuario.getNome(),
@@ -189,8 +200,7 @@ public class CadastrarCriseActivity extends AppCompatActivity {
                     Usuario.getTelefone(),
                     currentLocation.getLatitude(),
                     currentLocation.getLongitude(),
-                    // TODO Adicionar fotografia
-                    "");
+                    ((BitmapDrawable) imageView.getDrawable()).getBitmap());
 
                 new SalvarCriseTask().execute(crise);
 
@@ -202,11 +212,11 @@ public class CadastrarCriseActivity extends AppCompatActivity {
 
     }
 
-
-    public void Imagem_Click(View view) {
-
-        startActivity(new Intent(this, CaptureImageActivity.class));
-
+    public void Capture_Click(View view) {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if(intent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(intent, CAMERA_REQUEST);
+        }
     }
 
     private void CarregarCategoria(){
@@ -232,6 +242,12 @@ public class CadastrarCriseActivity extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter <String>(this, android.R.layout.simple_dropdown_item_1line, categoriaArrayList);
         inputCategoria.setAdapter(adapter);
 
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {
+            imageView.setImageBitmap((Bitmap) data.getExtras().get("data"));
+        }
     }
 
 }
