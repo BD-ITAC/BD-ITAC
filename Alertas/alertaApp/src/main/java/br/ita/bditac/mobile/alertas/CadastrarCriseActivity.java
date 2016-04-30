@@ -200,7 +200,7 @@ public class CadastrarCriseActivity extends AppCompatActivity {
                     Usuario.getTelefone(),
                     currentLocation.getLatitude(),
                     currentLocation.getLongitude(),
-                    ((BitmapDrawable) imageView.getDrawable()).getBitmap());
+                    imageView.getDrawable() == null ? null : ((BitmapDrawable) imageView.getDrawable()).getBitmap());
 
                 new SalvarCriseTask().execute(crise);
 

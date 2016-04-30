@@ -89,7 +89,7 @@ public class AlertaDAO {
         return novaCrise;
     }
     
-    public static Crise obtercrise(int id) {
+    public static Crise obterCrise(int id) {
         Crise crise = _crises.get(id);
         
         return crise;

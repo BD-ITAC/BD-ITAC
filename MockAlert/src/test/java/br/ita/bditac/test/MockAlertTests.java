@@ -731,11 +731,11 @@ public class MockAlertTests {
             .andDo(document("alerta/post",
             	preprocessResponse(prettyPrint()),
                 responseFields(
-                        fieldWithPath("id").type(JsonFieldType.NUMBER).description("Identificação da mensagem"),
-                        fieldWithPath("type").type(JsonFieldType.STRING).description("Tipo da mensagem (INFO, WARNING, ERROR)"),
-                        fieldWithPath("status").type(JsonFieldType.STRING).description("Código de estado do sistema"),
-                        fieldWithPath("description").type(JsonFieldType.STRING).description("Descrição da mensagem"),
-                        fieldWithPath("info").type(JsonFieldType.STRING).description("Informações adicionais"))));
+                    fieldWithPath("id").type(JsonFieldType.NUMBER).description("Identificação da mensagem"),
+                    fieldWithPath("type").type(JsonFieldType.STRING).description("Tipo da mensagem (INFO, WARNING, ERROR)"),
+                    fieldWithPath("status").type(JsonFieldType.STRING).description("Código de estado do sistema"),
+                    fieldWithPath("description").type(JsonFieldType.STRING).description("Descrição da mensagem"),
+                    fieldWithPath("info").type(JsonFieldType.STRING).description("Informações adicionais"))));
     }
 
     @Test
