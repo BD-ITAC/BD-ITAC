@@ -37,7 +37,6 @@ module.exports = function(app){
       }
  };
 
-
   var indicatorsDAO = app.dao.crisis;
 
   /**
@@ -57,6 +56,25 @@ module.exports = function(app){
     });
  };
 
+controller.saveNearbyCrisis = function(req, res, next){
+
+    if(!req.body.hasOwnProperty('place') ||
+        !req.body.hasOwnProperty('type')) {
+          res.status(404).json({success: false, message: 'Required fields not informed.'});
+      }else{
+        crisis = {          
+          place: req.body.place,
+          type: req.body.type
+        };
+        crisisBusiness.alerts(crisis, function(err, data) {
+          if(err) {
+              res.status(500).json(err);
+          }else{
+              res.json(data);
+          }
+        });
+      }
+ };
 
   return controller;
 

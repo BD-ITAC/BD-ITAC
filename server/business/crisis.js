@@ -27,5 +27,25 @@ module.exports = function(app){
       }
   };
 
+/**
+  * Pesquisa alertas proximos a localidade do usuario
+*/
+
+ business.alerts = function(crisis, callback){
+
+    //valida preenchimento de campos obrigatório
+    if(!crisis.place){
+        callback({success: false, message: 'Invalid value data fields.'});
+      }else{
+        crisisDAO.alerts(crisis, function(err, result){
+            if(err){
+              callback({success: false, message: err}, null);
+            }else{
+              callback(null, {success: true, data: result});
+            }
+        });
+      }
+  };
+
   return business;
 };
