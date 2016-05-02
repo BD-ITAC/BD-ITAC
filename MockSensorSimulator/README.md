@@ -27,7 +27,12 @@ Para gerar um simulador podemos executar um POST no endereço [http://localhost:
 
 ![POST de sensor](./images/POSTSensor.png)
 
+## Tipos de sensores
+
+Atualmente estão previstos os seguintes tipos de sensores:
+
+![Tipos de sensor](./images/TiposSensoresBD-ITAC.png)
+
 Também temos uma imagem [Docker](https://hub.docker.com/search/?isAutomated=0&isOfficial=0&page=1&pullCount=0&q=bditac&starCount=0) disponível para executar este serviço sem a necessidade de instalar, compilar e configurar coisa alguma exceto o próprio [Docker](http://www.docker.com).
 
     docker run -t -d -p 8082:8082 bditac/mocksensorsimulator:sp2
-    
