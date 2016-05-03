@@ -12,7 +12,7 @@ module.exports = function(){
     // all environments
   app.set('port', process.env.PORT || 3000);
 
-  app.use('/bower_components',  express.static(__dirname + '/bower_components'));
+  app.use('/bower_components',  express.static('./bower_components'));
   app.use(express.static('./public/'));
   app.set('views', './views');
   app.set('view engine', 'ejs');
