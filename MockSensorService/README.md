@@ -50,7 +50,34 @@ O formato do `payload` é o mesmo adotado nos modelos de aplicativos IoT da IBM 
 
 Depois de obtido da mensagem MQTT, o `payload` poderá receber o tratamento desejado para o sistema.
 
+## Docker
+
 Também temos uma imagem [Docker](https://hub.docker.com/search/?isAutomated=0&isOfficial=0&page=1&pullCount=0&q=bditac&starCount=0) disponível para executar este serviço sem a necessidade de instalar, compilar e configurar coisa alguma exceto o próprio [Docker](http://www.docker.com).
 
     docker run -t -d bditac/mocksensorservice:sp2
+  
+>Se você tentar usar o plugin maven do docker:
+>
+>    mvn docker:build -DpushImageTag
+>    
+>Ele irá:
+>
+>* Copiar os arquivos *src/main/docker/Dockerfile* e *target/MockAlerta-0.0.1.jar* para a pasta *target/docker*;
+>* Executar **docker buil**;
+>* Enviar a imagem para o Docker Hub
+>
+
+### Gerar imagem Docker
+
+Para gerar uma imagem Docker basta executar a seguinte seqüência de comandos na janela do **Docker Quickstart Terminal**:
+
+    mvn docker:build -DpushImageTag
+    
+>Aqui estamos deduzindo que você já tenha criado uma conta no site [Docker](https://www.docker.com) e também no [Hub Docker](https://hub.docker.com).
+
+Pronto! Seus colegas poderão executar a sua versão com o seguinte comando (observar que aqui vai o ":devel"):
+
+    docker run -d <seu id no docker>/<seu repositório no docker hub>:devel
+    
+O Docker na máquina vai baixar a imagem e executá-la logo em seguida. Se ele for executar uma segunda vez basta repetir o comando: a imagem não será baixada novamente e o Docker vai usar o repositório local.
     
