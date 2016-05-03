@@ -1,7 +1,8 @@
 module.exports = function(app){
   var controller = {};
   var crisisBusiness = app.business.crisis;
-
+  var indicatorsDAO = app.dao.crisis;
+  
   /**
   * Registra uma nova crise
   * @author Danilo Ramalho
@@ -37,7 +38,29 @@ module.exports = function(app){
       }
  };
 
-  var indicatorsDAO = app.dao.crisis;
+
+  /***
+   * Retorno das crisis
+   */
+   controller.listCrisis = function(req,res,next)
+   {
+	   indicatorsDAO.listCrisis(function(err, data) {
+		   if(err)
+		   {
+			   res.status(500).json(err);
+		   }
+		   else
+		   {
+			   if(data !== null && data.length >= 0){
+				   res.json(data);
+			   }
+			   else
+			   {
+				   res.status(404).json({message:'Something went wrong. Please Try again later.'});
+			   }
+		   }
+	   });
+   };
 
   /**
   * Retorno indicadores
@@ -62,7 +85,7 @@ controller.saveNearbyCrisis = function(req, res, next){
         !req.body.hasOwnProperty('type')) {
           res.status(404).json({success: false, message: 'Required fields not informed.'});
       }else{
-        crisis = {          
+        crisis = {
           place: req.body.place,
           type: req.body.type
         };

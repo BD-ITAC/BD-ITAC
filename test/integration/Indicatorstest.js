@@ -18,12 +18,12 @@ describe("Teste de Indicadores",function(){
       // HTTP status should be 200
       res.status.should.equal(200);
       res.should.be.json;
-      // Error key should havebe false.      
+      // Error key should havebe false.
       res.body[0].should.have.property('cadastrados');
       res.body[0].should.have.property('finalizados');
       res.body[0].should.have.property('emcurso');
 
-      
+
 
       res.body.should.be.instanceof(Array).and.have.lengthOf(1);
 
