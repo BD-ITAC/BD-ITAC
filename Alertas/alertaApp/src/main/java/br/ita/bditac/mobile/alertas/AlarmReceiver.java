@@ -14,16 +14,10 @@ public class AlarmReceiver extends WakefulBroadcastReceiver {
 
     private int alarmTimer;
 
-    public AlarmReceiver() {
-
-        Log.i(this.getClass().getSimpleName(), "Alerm initialized.");
-
-    }
-
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        Log.i(this.getClass().getSimpleName(), "Alert request triggered.");
+        Log.i(this.getClass().getSimpleName(), "Alerta alarm request triggered.");
 
         Intent alertaPollingService = new Intent(context, AlertaPollingService.class);
 
@@ -50,19 +44,7 @@ public class AlarmReceiver extends WakefulBroadcastReceiver {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), alarmTimer, pendingIntent);
 
-        Log.i(this.getClass().getSimpleName(), "Alarm set to trigger at " + alarmTimer + "ms.");
-
-    }
-
-    public void cancelAlarm(Context context) {
-
-        Intent intent = new Intent(context, AlarmReceiver.class);
-        PendingIntent sender = PendingIntent.getBroadcast(context, 0, intent, 0);
-
-        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        alarmManager.cancel(sender);
-
-        Log.i(this.getClass().getSimpleName(), "Alarm canceled.");
+        Log.i(this.getClass().getSimpleName(), "Alerta alarm set to trigger at " + alarmTimer + "ms.");
 
     }
 

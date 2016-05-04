@@ -21,5 +21,4 @@
     <string name="report">Report</string>
     <string name="browse">Browse</string>
     <string name="status">Status</string>
-    <string name="this_is_the_result_activity_opened_from_the_notification_here_we_can_put_a_map">This is the result activity opened from the notification - here we can put a map!</string>
 </resources>

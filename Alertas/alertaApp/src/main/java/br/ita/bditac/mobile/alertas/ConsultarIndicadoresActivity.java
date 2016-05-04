@@ -145,14 +145,11 @@ public class ConsultarIndicadoresActivity extends ChartBase implements OnChartVa
 
         try {
             if(indicadores == null || indicadores.getIndicadores().size() == 0 ) {
-                CharSequence mensagem = getText(R.string.msg_statistics_service_unaivalable);
-
-                Log.i(this.getClass().getSimpleName(), "Statistics unaivalable.");
+                Log.i(this.getClass().getSimpleName(), getText(R.string.msg_statistics_service_unaivalable).toString());
             }
         }
         catch(Exception ex) {
-            CharSequence mensagem = getText(R.string.msg_alerts_service_unaivalable);
-            Toast.makeText(context, mensagem, Toast.LENGTH_LONG).show();
+            Toast.makeText(context, getText(R.string.msg_alerts_service_unaivalable), Toast.LENGTH_LONG).show();
 
             Log.e(this.getClass().getSimpleName(), ex.getMessage(), ex);
         }
@@ -313,7 +310,6 @@ public class ConsultarIndicadoresActivity extends ChartBase implements OnChartVa
 
     @Override
     public void onNothingSelected() {
-
         Log.i("PieChart", "nothing selected");
     }
 

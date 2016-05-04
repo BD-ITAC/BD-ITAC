@@ -5,10 +5,15 @@
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
+
     <uses-feature android:name="android.hardware.camera"
-                  android:required="false" />
+                  android:required="false"/>
 
     <application
         android:allowBackup="true"
@@ -19,18 +24,19 @@
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
-
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
         <activity android:name=".CadastrarCriseActivity"/>
         <activity android:name=".ConsultarIndicadoresActivity"/>
         <activity android:name=".ConsultaAlertasActivity"/>
+        <activity android:name=".NotificationReceiverActivity"/>
 
-        <receiver android:name=".AutoStartReceiver">
+        <receiver android:name=".AutoStartReceiver"
+                  android:enabled="true"
+                  android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
-
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </receiver>
@@ -38,8 +44,6 @@
 
         <service android:name=".AlertaService"/>
         <service android:name=".AlertaPollingService"/>
-
-        <activity android:name=".NotificationReceiverActivity"/>
     </application>
 
 </manifest>

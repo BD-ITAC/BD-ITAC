@@ -7,19 +7,13 @@ import android.util.Log;
 
 public class AutoStartReceiver extends WakefulBroadcastReceiver {
 
-    public AutoStartReceiver() {
-
-        Log.i(this.getClass().getSimpleName(), "Auto start receiver built.");
-
-    }
-
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        Intent alertaServiceIntent = new Intent(context, AlertaService.class);
-        context.startService(alertaServiceIntent);
+        Log.i(this.getClass().getSimpleName(), "Alerta auto-start service registered.");
 
-        Log.i(this.getClass().getSimpleName(), "Service registered.");
+        Intent alertaServiceIntent = new Intent(context, AlertaService.class);
+        startWakefulService(context, alertaServiceIntent);
 
     }
 

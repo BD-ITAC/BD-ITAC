@@ -17,9 +17,11 @@ public class AlertaLocationListener implements LocationListener {
     private Context context;
 
     public AlertaLocationListener(Context context) {
+
         super();
 
         this.context = context;
+
     }
 
     @Override

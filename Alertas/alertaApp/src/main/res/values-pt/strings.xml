@@ -21,5 +21,4 @@
     <string name="report">Relatório</string>
     <string name="browse">Listar</string>
     <string name="status">Situação</string>
-    <string name="this_is_the_result_activity_opened_from_the_notification_here_we_can_put_a_map">Resultado da notificação - aqui podemos colocar um mapa.</string>
 </resources>

@@ -24,7 +24,8 @@ public class ApplicationTest {
 
     @Test
     public void test01CadastrarCrise() {
-        onView(withId(R.id.categoria)).perform(click());
+        onView(withId(R.id.categoria))
+                .perform(click());
     }
 
 }

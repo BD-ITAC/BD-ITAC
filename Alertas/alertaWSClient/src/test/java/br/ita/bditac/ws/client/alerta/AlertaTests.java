@@ -1,15 +1,15 @@
 package br.ita.bditac.ws.client.alerta;
 
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
 import junit.framework.TestCase;
 
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
-import java.io.DataInputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.util.List;
 
 import br.ita.bditac.ws.client.AlertaClient;
@@ -23,22 +23,17 @@ public class AlertaTests extends TestCase {
 
     private static final String HOST_URL = "http://localhost:8080";
 
-    private static String _foto = null;
+    private static Bitmap _foto = null;
 
-    public static String getFoto() {
+    public static Bitmap getFoto() {
 
         try {
             if(_foto == null) {
-                File file=new File(Thread.currentThread().getContextClassLoader().getResource("foto.png").getPath());
-                DataInputStream dataInputStream=new DataInputStream(new FileInputStream(file));
-                byte[] binaryFile=new byte[(int) file.length()];
-                dataInputStream.readFully(binaryFile);
-                _foto=new String(binaryFile, "UTF-8");
-                dataInputStream.close();
+                _foto = BitmapFactory.decodeFile(Thread.currentThread().getContextClassLoader().getResource("foto.png").getPath());
             }
         }
         catch(Exception ex) {
-            _foto = "";
+            _foto = null;
         }
 
         return _foto;
