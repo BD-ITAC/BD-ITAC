@@ -1,4 +1,23 @@
-module.exports = function(app){
+var db = require("./db");
+
+var crisisDAO = null;
+
+// Inicialização do objeto, obrigando passagem de POOL como parametro.
+// Retorna um objeto crisisDAO implementado logo em seguida.
+module.exports = function (pool) {
+    if (pool != null && crisisDAO == null) {
+        crisisDAO = new CrisisDAO(pool);
+    }
+    return crisisDAO;
+};
+
+
+function CrisisDAO(pool) {
+    var self = this;
+    if (pool != null) {
+        this.pool = pool;
+    }
+
   var dao = {};
 
   /**
@@ -6,9 +25,33 @@ module.exports = function(app){
   * @author Danilo Ramalho
   * @param objeto crisis
   */
+<<<<<<< 98e14d43220f99ec58f69d6b5b6497a8ed5b4bc1
 
   dao.save = function(crisis, callback){
     return callback(null, {status: 'ok'});
+=======
+  dao.save = function(crisis, callback){
+    var query = self.pool.query(
+          "insert into crisis(descricao, categoria, nome, email, telefone, latitude, longitude) values (?,?,?,?,?,?,?)",
+          [
+            crisis.descricao,
+            crisis.categoria,
+            crisis.nome,
+            crisis.email,
+            crisis.telefone,
+            crisis.latitude,
+            crisis.longitude
+          ], function (err, rows) {
+          if(err)
+          {
+            callback(err, {});
+          }
+          else
+          {
+            return callback(null, {status: 'ok'});
+          }
+        });
+>>>>>>> Criação das conexões DAO
   };
 
    var _crisis = [];
