@@ -132,6 +132,16 @@ public class ConsultaAlertasActivity extends ListActivity {
             activity.setListAdapter(adapter);
             adapter.notifyDataSetChanged();
 
+            Context context = getApplicationContext();
+
+            if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                LocationManager locationManager = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
+
+                Log.i(this.getClass().getSimpleName(), "Alerta location service deregistered.");
+
+                locationManager.removeUpdates(locationListener);
+            }
+
         }
     }
 
@@ -160,7 +170,7 @@ public class ConsultaAlertasActivity extends ListActivity {
             if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
 
-                Log.i(this.getClass().getSimpleName(), "Location service registered.");
+                Log.i(this.getClass().getSimpleName(), "Alerta location service registered.");
 
                 locationListener = new AlertaLocationListener(context);
                 locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
