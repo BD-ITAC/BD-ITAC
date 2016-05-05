@@ -3,15 +3,9 @@ package br.ita.bditac.mobile.alertas;
 
 public interface Constants {
 
-    static final int SECOND = 1000;
+    public static final int DEFAULT_TIMER = 15000;
 
-    static final int MINUTE = SECOND * 60;
-
-    static final int HOUR = MINUTE * 60;
-
-    public static final int DEFAULT_TIMER = HOUR;
-
-    public static final int DEBUG_TIMER = MINUTE * 5;
+    public static final int DEBUG_TIMER = 15000;
 
     public static final String DEFAULT_URL = "http://10.0.2.2:8081";
 
@@ -25,7 +19,11 @@ public interface Constants {
 
     public static final int DEBUG_LOCATION_POLLING_INTERVAL = 15000;
 
+    public static final int REQUEST_CODE_INTERNET = 100;
+
     public static final int REQUEST_CODE_ACCESS_FINE_LOCATION = 200;
+
+    public static final int REQUEST_CODE_WRITE_EXTERNAL_STORAGE = 300;
 
     public static final String EXTRA_NOTIFICATION_LATITUDE = "br.ita.bditac.EXTRA_LATITUDE";
 
