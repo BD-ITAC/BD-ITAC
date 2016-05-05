@@ -3,9 +3,9 @@
     <string name="app_name">Alerts</string>
     <string name="action_settings">Settings</string>
     <string name="msg_alert_received">New alert received</string>
-    <string name="msg_location_service_unaivalable">Location service unaivalable.\nTray again later.</string>
-    <string name="msg_alerts_service_unaivalable">Alerts service unaivalable.\nTray again later.</string>
-    <string name="msg_statistics_service_unaivalable">Statistics unaivalable.\nTray again later.</string>
+    <string name="msg_location_service_unaivalable">Location service unaivalable.\nTry again later.</string>
+    <string name="msg_alerts_service_unaivalable">Alerts service unaivalable.\nTry again later.</string>
+    <string name="msg_statistics_service_unaivalable">Statistics unaivalable.\nTry again later.</string>
     <string name="msg_crisis_saved">Crisis notification saved.</string>
     <string name="open">Open</string>
     <string name="msg_crisis_being_saved">Crisis notification sent.\nPlease wait.</string>
