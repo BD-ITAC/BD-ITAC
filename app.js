@@ -33,7 +33,7 @@ app.use(
 );
 
 // inicia os DAOs.
-require("./dao/crisis")(pool);
+require("./server/dao/crisis")(pool);
 
 
 http.createServer(app).listen(app.get('port'), function(){

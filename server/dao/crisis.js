@@ -25,11 +25,7 @@ function CrisisDAO(pool) {
   * @author Danilo Ramalho
   * @param objeto crisis
   */
-<<<<<<< 98e14d43220f99ec58f69d6b5b6497a8ed5b4bc1
 
-  dao.save = function(crisis, callback){
-    return callback(null, {status: 'ok'});
-=======
   dao.save = function(crisis, callback){
     var query = self.pool.query(
           "insert into crisis(descricao, categoria, nome, email, telefone, latitude, longitude) values (?,?,?,?,?,?,?)",
@@ -51,7 +47,6 @@ function CrisisDAO(pool) {
             return callback(null, {status: 'ok'});
           }
         });
->>>>>>> Criação das conexões DAO
   };
 
    var _crisis = [];
