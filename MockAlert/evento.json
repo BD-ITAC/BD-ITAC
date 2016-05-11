@@ -1,0 +1,16 @@
+{
+    "evento" : {
+        "descricao" : "Deslizamento na na favela do Paraiso",
+        "categoria" : 0,
+        "nome" : "Ze das Couves",
+        "email" : "zedascouves@gmail.com",
+        "telefone" : "(12) 99876-1234",
+        "latitude": 50,
+        "longitude": 50,
+    },
+    "_links" : {
+        "self" : {
+            "href" : "http://localhost:8080/evento/15"
+        }
+    }
+}

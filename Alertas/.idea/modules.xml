@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/Alertas.iml" filepath="$PROJECT_DIR$/Alertas.iml" />
+      <module fileurl="file://$PROJECT_DIR$/MPChartLib/MPChartLib.iml" filepath="$PROJECT_DIR$/MPChartLib/MPChartLib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/alertaApp/alertaApp.iml" filepath="$PROJECT_DIR$/alertaApp/alertaApp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/alertaWSClient/alertaWSClient.iml" filepath="$PROJECT_DIR$/alertaWSClient/alertaWSClient.iml" />
+      <module fileurl="file://$PROJECT_DIR$/springAndroidRest/springAndroidRest.iml" filepath="$PROJECT_DIR$/springAndroidRest/springAndroidRest.iml" />
+    </modules>
+  </component>
+</project>

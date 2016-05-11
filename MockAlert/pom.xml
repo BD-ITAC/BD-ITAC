@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<name>Alert Service</name>
+
+	<groupId>br.ita.bditac</groupId>
+	<artifactId>MockAlert</artifactId>
+	<version>0.0.1</version>
+	<packaging>jar</packaging>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>1.3.3.RELEASE</version>
+    </parent>
+
+    <properties>
+
+		<!-- Boot -->
+		<start-class>br.ita.bditac.app.Application</start-class>
+
+		<!-- Generic properties -->
+		<java.version>1.6</java.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <!-- Spring REST API Documentation -->
+        <snippetsDirectory>${project.build.directory}/generated-docs</snippetsDirectory>
+
+        <!-- Docker hub -->
+        <docker.image.prefix>bditac</docker.image.prefix>
+
+	</properties>
+
+	<dependencies>
+
+		<!-- Spring Boot -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Spring REST API Documentation -->
+		<dependency>
+		    <groupId>org.springframework.restdocs</groupId>
+		    <artifactId>spring-restdocs-mockmvc</artifactId>
+		    <scope>test</scope>
+		</dependency>
+
+		<!-- Spring HATEOAS -->
+        <dependency>
+            <groupId>org.springframework.hateoas</groupId>
+            <artifactId>spring-hateoas</artifactId>
+        </dependency>
+
+		<dependency>
+			<groupId>org.springframework.plugin</groupId>
+			<artifactId>spring-plugin-core</artifactId>
+		</dependency>
+
+        <dependency>
+        	<groupId>org.springframework.boot</groupId>
+        	<artifactId>spring-boot-starter-ws</artifactId>
+        </dependency>
+        <dependency>
+        	<groupId>org.springframework.boot</groupId>
+        	<artifactId>spring-boot-starter-jersey</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>3.3.0</version>
+            <scope>test</scope>
+        </dependency>
+
+		<dependency>
+		    <groupId>com.jayway.jsonpath</groupId>
+		    <artifactId>json-path</artifactId>
+		</dependency>
+
+	</dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+          		<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+					<debug>true</debug>
+					<debuglevel>lines,vars,source</debuglevel>
+				</configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<doclet>org.asciidoctor.Asciidoclet</doclet>
+						<docletArtifact>
+						<groupId>org.asciidoctor</groupId>
+						<artifactId>asciidoclet</artifactId>
+						<version>1.5.4</version>
+					</docletArtifact>
+			        <additionalparam>
+			            --base-dir ${project.basedir}
+			            --attribute "name=${project.name}"
+			            --attribute "version=${project.version}"
+			        </additionalparam>
+				</configuration>
+			</plugin>
+
+	        <plugin>
+	            <groupId>org.apache.maven.plugins</groupId>
+	            <artifactId>maven-surefire-plugin</artifactId>
+	            <configuration>
+                    <includes>
+                        <include>**/*Tests.java</include>
+                    </includes>
+                    <excludes>
+                        <exclude>**/Abstract*.java</exclude>
+                    </excludes>
+	                <systemPropertyVariables>
+	                    <org.springframework.restdocs.outputDir>
+	                        ${snippetsDirectory}
+	                    </org.springframework.restdocs.outputDir>
+	                </systemPropertyVariables>
+	            </configuration>
+	        </plugin>
+
+	        <plugin>
+	            <groupId>org.asciidoctor</groupId>
+	            <artifactId>asciidoctor-maven-plugin</artifactId>
+	            <version>1.5.2</version>
+	            <executions>
+	                <execution>
+	                    <id>generate-docs</id>
+	                    <phase>package</phase>
+	                    <goals>
+	                        <goal>process-asciidoc</goal>
+	                    </goals>
+	                    <configuration>
+	                        <backend>html</backend>
+	                        <doctype>book</doctype>
+	                        <attributes>
+                                <toc>left</toc>
+	                            <snippets>${snippetsDirectory}</snippets>
+	                        </attributes>
+	                    </configuration>
+	                </execution>
+	            </executions>
+	        </plugin>
+
+			<plugin>
+			    <artifactId>maven-resources-plugin</artifactId>
+			    <executions>
+			        <execution>
+			            <id>copy-resources</id>
+			            <phase>prepare-package</phase>
+			            <goals>
+			                <goal>copy-resources</goal>
+			            </goals>
+			            <configuration>
+			                <outputDirectory>
+			                    ${project.build.outputDirectory}/static/docs
+			                </outputDirectory>
+			                <resources>
+			                    <resource>
+			                        <directory>
+			                            ${project.build.directory}/generated-docs
+			                        </directory>
+			                    </resource>
+			                </resources>
+			            </configuration>
+			        </execution>
+			    </executions>
+			</plugin>
+
+            <!-- Plugin to generate a Docker image for running this app -->
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>0.4.3</version>
+                <configuration>
+                    <imageName>${docker.image.prefix}/${project.artifactId}</imageName>
+                    <dockerDirectory>src/main/docker</dockerDirectory>
+                    <!-- copy the service's jar file from target into the root directory of the image -->
+                    <resources>
+                        <resource>
+                            <targetPath>/</targetPath>
+                            <directory>${project.build.directory}</directory>
+                            <include>${project.build.finalName}.jar</include>
+                        </resource>
+                    </resources>
+                </configuration>
+            </plugin>
+
+        </plugins>
+    </build>
+
+    <repositories>
+        <repository>
+            <id>spring-snapshots</id>
+            <url>http://repo.spring.io/snapshot</url>
+            <snapshots><enabled>true</enabled></snapshots>
+        </repository>
+        <repository>
+            <id>spring-milestones</id>
+            <url>http://repo.spring.io/milestone</url>
+        </repository>
+    </repositories>
+
+	<pluginRepositories>
+	    <pluginRepository>
+	        <id>spring-snapshots</id>
+	        <url>http://repo.spring.io/snapshot</url>
+	        <snapshots><enabled>true</enabled></snapshots>
+	    </pluginRepository>
+	    <pluginRepository>
+	        <id>spring-milestones</id>
+	        <url>http://repo.spring.io/milestone</url>
+	    </pluginRepository>
+	</pluginRepositories>
+
+</project>
