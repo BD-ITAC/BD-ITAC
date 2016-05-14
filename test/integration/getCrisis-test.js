@@ -9,7 +9,7 @@ describe("Teste de Listagem de Alertas de Crises",function(){
 
     // calling home page api
     server
-    .get("/rest/crisis/getCrisis")
+    .get("/rest/crisis")
     .expect("Content-type",/json/)
     .expect(200) // THis is HTTP response
     .end(function(err,res){

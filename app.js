@@ -20,9 +20,9 @@ var mysql = require('mysql');
 var connConfig = {
     connectionLimit    : 10,
     multipleStatements : true,
-    host               : 'edizon.onmypc.net',
+    host               : 'localhost',
     user               : 'root',
-    password           : '@Senha01',
+    password           : 'root',
     database           : 'bditac'
 };
 

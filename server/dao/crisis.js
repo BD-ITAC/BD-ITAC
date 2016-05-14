@@ -84,7 +84,15 @@ function CrisisDAO(pool) {
   );
 
   dao.listCrisis = function(callback){
-      return callback(null, _crisis);
+    self.pool.query("select * from crisis", function(err, rows){
+    if(err){
+      return callback(err,{});
+    }else{
+      var result = (rows ? rows[0]:{});
+      return callback(null, result);
+    }
+
+  })
   };
 
 
@@ -118,7 +126,16 @@ function CrisisDAO(pool) {
   * Realiza as query de consulta de alertas no BD
   */
   dao.alerts = function(crisis, callback){
-    return callback(null, nearbyAlerts);
+    self.pool.query("select * from crisis", function(err, rows){
+    if(err){
+      return callback(err,{});
+    }else{
+      var result = (rows ? rows[0]:{});
+      return callback(null, result);
+    }
+
+  })
+  //return callback(null, nearbyAlerts);
   };
 
   return dao;
