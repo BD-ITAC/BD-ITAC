@@ -1,4 +1,4 @@
-var app = angular.module('bditac', ['ngRoute', 'ngStorage']);
+var app = angular.module('bditac', ['ngRoute', 'ngStorage','toastr']);
 
 app.config(['$routeProvider','$httpProvider',
 function ($routeProvider, $httpProvider) {
@@ -8,6 +8,11 @@ function ($routeProvider, $httpProvider) {
             templateUrl: 'part-views/login.html',
             controller: 'LoginController',
             requireLogin: false
+        })
+        .when('/dash-board', {
+            templateUrl: 'part-views/dash-board.html',
+            controller: 'DashBoardController',
+            requireLogin: true
         })
 /*        .when('/situation-room', {
             templateUrl: 'views/situation-room.html',

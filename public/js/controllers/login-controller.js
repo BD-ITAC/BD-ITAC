@@ -1,23 +1,32 @@
 /*global app*/
 'use strict';
 
-app.controller('LoginController', ['$scope', '$rootScope', '$location', '$http','$localStorage',
- function($scope,$rootScope,$location,$http,$localStorage) {
+app.controller('LoginController', ['$scope', '$rootScope', '$location', '$http','$localStorage','toastr','UtilService',
+ function($scope,$rootScope,$location,$http,$localStorage, toastr, UtilService) {
     var vm = this;
-/*
+    vm.form = {submitted : false};
+
     vm.login = function (form){
-        //vm.formProject.submitted = true;
-        //if (form.$valid) {
+
+        vm.form.submitted = true;
+        if (form.$valid) {
           var param = {
-              user: 'danl',
-              password: 'teste'
+              email: form.email.$viewValue,
+              password: form.password.$viewValue
          };
-          $http.get('/rest/user/login/',param).then(function(response){
-              console.log(response);
+          $http.post('/rest/users/login/',param).then(function(res){
+              if(res.data.success === true){
+                  UtilService.setSessionUser(res.data.detail);
+                  $rootScope.$broadcast('headerMenuBroadcast');
+                  $location.path('/dash-board');
+              }
           },function(err){
             console.error(err.data);
+            toastr.error(err.data.statusText);
           });
-     // }
+      }else {
+          toastr.info('Required fields not informed!');
+      }
     };
-*/
+
 }]);

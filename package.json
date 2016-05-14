@@ -12,6 +12,7 @@
     "express": "^4.13.4",
     "express-load": "^1.1.15",
     "express-myconnection": "^1.0.4",
+    "express-session": "^1.13.0",
     "jade": "*",
     "mysql": "^2.10.2",
     "string-validator": "^1.0.5"
