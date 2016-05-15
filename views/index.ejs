@@ -4,17 +4,54 @@
   		<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
   		<meta name="viewport" content="width=device-width, initial-scale=1"/>
       <title>BD-ITAC - Situation Room</title>
-      <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous"/>
+      <link rel="stylesheet" type="text/css" href="/bower_components/bootstrap/dist/css/bootstrap.min.css" />
+      <link rel="stylesheet" type="text/css" href="/bower_components/angular-toastr/dist/angular-toastr.min.css" />
       <link rel="stylesheet" type="text/css" href="/css/app.css"/>
     </head>
 <body>
+    <div ng-controller="HeaderMenuController as vm">
+        <nav class="navbar navbar-default navbar-static-top" ng-show="vm.showMenu">
+          <div class="container">
 
+                  <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                      <span class="sr-only">Toggle navigation</span>
+                      <span class="icon-bar"></span>
+                      <span class="icon-bar"></span>
+                      <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">BD ITAC</a>
+                  </div>
+
+                  <!-- Collect the nav links, forms, and other content for toggling -->
+                  <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                      <li class="active"><a href="#">Home <span class="sr-only">(current)</span></a></li>
+                      <li><a href="#">Crisis</a></li>
+                      <li><a href="#">Events</a></li>
+                      <li><a href="#">Occurrence</a></li>
+                      <li><a href="#">Users</a></li>
+                    </ul>
+
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href ng-click="vm.logout();">{{vm.user.name}}, <span class="glyphicon glyphicon-off" aria-hidden="true"></span> Logoff</a></li>
+                    </ul>
+                </div>
+
+          </div>
+        </nav>
+    </div>
     <div ng-view></div>
 
 </body>
     <script type="text/javascript" src="/bower_components/angular/angular.min.js"> </script>
     <script type="text/javascript" src="/bower_components/angular-route/angular-route.min.js"> </script>
     <script type="text/javascript" src="/bower_components/ngstorage/ngStorage.min.js"> </script>
+    <script type="text/javascript" src="/bower_components/angular-toastr/dist/angular-toastr.tpls.js"> </script>
     <script type="text/javascript" src="/js/app.js"></script> <!-- módulos angular -->
+    <script type="text/javascript" src="/js/authorization-run.js"></script>
+    <script type="text/javascript" src="/js/service/util-service.js"></script>
     <script type="text/javascript" src="/js/controllers/login-controller.js"></script>
+    <script type="text/javascript" src="/js/controllers/dash-board-controller.js"></script>
+    <script type="text/javascript" src="/js/controllers/headermenu-controller.js"></script>
 </html>

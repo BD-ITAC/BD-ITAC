@@ -9,10 +9,10 @@
     </div>
     <div class="form">
       <h3>Login to your account</h3>
-      <form>
-        <input type="text" placeholder="Username"/>
-        <input type="password" placeholder="Password"/>
-        <button>Login</button>
+      <form id="form" name="form" novalidate>
+          <input name="email" type="email" ng-model="vm.form.email" placeholder="E-mail" required="" ng-class="{'form-input-error': (vm.form.submitted == true && form.email.$invalid == true)}"/>
+          <input name="password" type="password" ng-model="vm.form.password" placeholder="Password" required="" ng-class="{'form-input-error': (vm.form.submitted == true && form.password.$invalid == true)}"/>
+        <button ng-click="vm.login(form);">Login</button>
       </form>
     </div>
     </div>
