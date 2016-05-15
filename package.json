@@ -2,6 +2,11 @@
   "name": "bditac",
   "version": "0.0.1",
   "private": true,
+  "description": "TEAM 3 - Api BD-ITAC",
+  "apidoc": {
+    "title": "Api doc BD-ITAC",
+    "url" : "https://api.bditac.com"
+  },
   "scripts": {
     "start": "node app.js",
     "test": "./node_modules/.bin/mocha --recursive --reporter spec"
