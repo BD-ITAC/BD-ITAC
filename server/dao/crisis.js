@@ -76,30 +76,60 @@ crisisDAO = function(pool) {
   **/
   var nearbyAlerts = [];
   nearbyAlerts.push({
-               place: "São José dos Campos",
-               categoria: "5",
-               descricao: "Chuva Forte"
+              "_embedded" : {
+                  "alertaList" : [ {
+                     descricaoResumida: "Alerta de deslizamento",
+                     descricaoCompleta: "Perigo de deslizamento na altura do Km 20 da rodovia Tamoios, pista Sao Jose dos Campos/Litoral",
+                     categoriaAlerta: "0",
+                     origemLatitude:  "40.0",
+                     origemLongitude: "50.0",
+                     origemRaioKms: "10.0",
+                     "_links" : {
+                       "self" : {
+                          href: "http://localhost:3000/rest/crisis/nearbycrisis/2"
+                                }
+                              }
+                            }]
+                          }
             });
   nearbyAlerts.push({
-               place: "São José dos Campos",
-               categoria: "4",
-               descricao: "Barragem"
+               "_embedded" : {
+                 "alertaList" : [ {
+                   descricaoResumida: "Alagamento",
+                   descricaoCompleta: "Deslizamento na na favela do Paraiso",
+                   categoriaAlerta: "0",
+                   origemLatitude:  "40.0",
+                   origemLongitude: "50.0",
+                   origemRaioKms: "1.0",
+                   "_links" : {
+                           "self" : {
+                              href: "http://localhost:3000/rest/crisis/nearbycrisis/16"
+                               }
+                              }
+                            }]
+                           }
             });
 
   /**
   * Realiza as query de consulta de alertas no BD
   */
-  dao.alerts = function(crisis, callback){
-    self.pool.query("select * from crisis", function(err, rows){
-    if(err){
-      return callback(err,{});
-    }else{
-      var result = (rows ? rows[0]:{});
-      return callback(null, result);
-    }
+  dao.nearbyAlerts = function(crisis, callback){
+    return callback(null, nearbyAlerts);
+  };
+
+  /**
+  * Realiza as query de consulta de alertas no BD
+  */
+   dao.alerts = function(crisis, callback){
+     self.pool.query("select * from crisis", function(err, rows){
+     if(err){
+       return callback(err,{});
+      }else{
+       var result = (rows ? rows[0]:{});
+       return callback(null, result);
+  }
 
   })
-  //return callback(null, nearbyAlerts);
   };
 
   return dao;

@@ -90,7 +90,7 @@ module.exports = function(app){
    *
    */
   app.get(uri, controller.listCrisis);
-  app.post(uri+'/nearbycrisis', controller.saveNearbyCrisis);
+  app.get(uri+'/nearbycrisis', controller.nearbyCrisis);
   app.get(uri+'/indicators', controller.listIndicators);
 
 };
