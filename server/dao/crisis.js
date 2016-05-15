@@ -25,17 +25,7 @@ crisisDAO = function(pool) {
 
   dao.save = function(crisis, callback){//callback(null, {status: 'ok'});
     var query = self.pool.query(
-          "insert into crisis(descricao, categoria, nome, email, telefone, latitude, longitude, fotografia) values (?,?,?,?,?,?,?,?)",
-          [
-            crisis.descricao,
-            crisis.categoria,
-            crisis.nome,
-            crisis.email,
-            crisis.telefone,
-            crisis.latitude,
-            crisis.longitude,
-            crisis.fotografia
-          ], function (err, result) {
+          "insert into crisis set ?", crisis, function (err, result) {
           if(err)
           {
             callback(err, {});
