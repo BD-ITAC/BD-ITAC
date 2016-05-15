@@ -63,17 +63,19 @@ module.exports = function(app){
     });
  };
 
-controller.saveNearbyCrisis = function(req, res, next){
-
-    if(!req.body.hasOwnProperty('place') ||
-        !req.body.hasOwnProperty('type')) {
-          res.status(400).json({success: false, message: 'Required fields not informed.'});
+  controller.nearbyCrisis = function(req, res, next){
+    
+     if(!req.query.hasOwnProperty('latitude') ||
+      !req.query.hasOwnProperty('longitude') ||
+        !req.query.hasOwnProperty('raio')) {
+         res.status(404).json({success: false, message: 'Required fields not informed.'});
       }else{
         crisis = {
-          place: req.body.place,
-          type: req.body.type
+          latitude: req.query.latitude,
+          longitude: req.query.longitude,
+          raio: req.query.raio
         };
-        crisisBusiness.alerts(crisis, function(err, data) {
+        crisisBusiness.nearbyAlerts(crisis, function(err, data) {
           if(err) {
               res.status(500).json(err);
           }else{
@@ -82,6 +84,7 @@ controller.saveNearbyCrisis = function(req, res, next){
         });
       }
  };
+ 
 
   return controller;
 
