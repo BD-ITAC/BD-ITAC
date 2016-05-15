@@ -21,6 +21,7 @@ module.exports = function(){
 
   load('models', {cwd: 'server'})
 //    .then('helpers')
+    .then('db')
     .then('dao')
     .then('business')
     .then('controllers')

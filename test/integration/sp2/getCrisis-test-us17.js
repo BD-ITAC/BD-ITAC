@@ -9,7 +9,7 @@ describe("API for Crises by geolocation",function(){
 
     // calling home page api
     server
-    .get("/rest/crisis/getCrisis")
+    .get("/rest/crisis")
     .expect("Content-type",/json/)
     .expect(200) // THis is HTTP response
     .end(function(err,res){
@@ -19,13 +19,15 @@ describe("API for Crises by geolocation",function(){
       res.status.should.equal(200);
       res.should.be.json;
       // Error key should have be false.
-      res.body[0].should.have.property('name');
+      res.body[0].should.have.property('categoria');
+      res.body[0].should.have.property('descricao');
+      res.body[0].should.have.property('nome');
       res.body[0].should.have.property('email');
-      res.body[0].should.have.property('phone');
-      res.body[0].should.have.property('place');
-      res.body[0].should.have.property('type');
-      res.body[0].should.have.property('title');
-      res.body[0].should.have.property('note');
+      res.body[0].should.have.property('telefone');
+      res.body[0].should.have.property('latitude');
+      res.body[0].should.have.property('longitude');
+
+
 
       done();
     });

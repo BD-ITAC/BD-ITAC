@@ -1,18 +1,15 @@
-var db = require("./db");
+var db = require("../db/transacao");
 
 var crisisDAO = null;
 
 // Inicialização do objeto, obrigando passagem de POOL como parametro.
 // Retorna um objeto crisisDAO implementado logo em seguida.
-module.exports = function (pool) {
-    if (pool != null && crisisDAO == null) {
-        crisisDAO = new CrisisDAO(pool);
-    }
-    return crisisDAO;
+module.exports = function(app) {
+    return crisisDAO(app.db.conexao);
 };
 
 
-function CrisisDAO(pool) {
+crisisDAO = function(pool) {
     var self = this;
     if (pool != null) {
         this.pool = pool;
@@ -26,9 +23,9 @@ function CrisisDAO(pool) {
   * @param objeto crisis
   */
 
-  dao.save = function(crisis, callback){
+  dao.save = function(crisis, callback){//callback(null, {status: 'ok'});
     var query = self.pool.query(
-          "insert into crisis(descricao, categoria, nome, email, telefone, latitude, longitude) values (?,?,?,?,?,?,?)",
+          "insert into crisis(descricao, categoria, nome, email, telefone, latitude, longitude, fotografia) values (?,?,?,?,?,?,?,?)",
           [
             crisis.descricao,
             crisis.categoria,
@@ -36,63 +33,40 @@ function CrisisDAO(pool) {
             crisis.email,
             crisis.telefone,
             crisis.latitude,
-            crisis.longitude
-          ], function (err, rows) {
+            crisis.longitude,
+            crisis.fotografia
+          ], function (err, result) {
           if(err)
           {
             callback(err, {});
+            console.log(err);
           }
           else
           {
-            return callback(null, {status: 'ok'});
+            var message = {
+                "message" : {
+                  "id" : result.insertId,
+                  "type" : "INFO",
+                  "status" : "OK",
+                  "description" : "Crise registrada",
+                  "info" : "BD-ITAC"
+                }
+              }
+
+            return callback(null, message);
           }
         });
   };
 
-   var _crisis = [];
-
-  _crisis.push(
-    {
-     name: "Danilo",
-     email: "daniloramalho@ita.edu.br",
-     phone: "12345",
-     place: "São João do Longuinho",
-     type:  8,
-     title: "Chuva FORTE",
-     note: "Possível alerta de alagamento."
-    },
-
-    {
-      name: "Edizon",
-      email: "edizonbasseto@ita.edu.br",
-      phone: "12345",
-      place: "São João do Longuinho",
-      type:  8,
-      title: "Chuva FORTE",
-      note: "Possível alerta de alagamento."
-    },
-
-    {
-      name: "Fernando",
-      email: "fernandojmiguel@ita.edu.br",
-      phone: "12345",
-      place: "São João do Longuinho",
-      type:  8,
-      title: "Chuva FORTE",
-      note: "Possível alerta de alagamento."
-    }
-  );
 
   dao.listCrisis = function(callback){
     self.pool.query("select * from crisis", function(err, rows){
-    if(err){
-      return callback(err,{});
-    }else{
-      var result = (rows ? rows[0]:{});
-      return callback(null, result);
-    }
-
-  })
+      if(err){
+        callback(err,{});
+      }else{
+        callback(null, rows);
+      }
+    });
   };
 
 
@@ -113,13 +87,13 @@ function CrisisDAO(pool) {
   var nearbyAlerts = [];
   nearbyAlerts.push({
                place: "São José dos Campos",
-               type: "5",
-               title: "Chuva Forte"
+               categoria: "5",
+               descricao: "Chuva Forte"
             });
   nearbyAlerts.push({
                place: "São José dos Campos",
-               type: "4",
-               title: "Barragem"
+               categoria: "4",
+               descricao: "Barragem"
             });
 
   /**

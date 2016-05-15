@@ -19,13 +19,16 @@ describe("Teste de Listagem de Alertas de Crises",function(){
       res.status.should.equal(200);
       res.should.be.json;
       // Error key should have be false.
-      res.body[0].should.have.property('name');
+      res.body[0].should.have.property('descricao');
+      res.body[0].should.have.property('categoria');
+      res.body[0].should.have.property('nome');
       res.body[0].should.have.property('email');
-      res.body[0].should.have.property('phone');
-      res.body[0].should.have.property('place');
-      res.body[0].should.have.property('type');
-      res.body[0].should.have.property('title');
-      res.body[0].should.have.property('note');
+      res.body[0].should.have.property('telefone');
+      res.body[0].should.have.property('latitude');
+      res.body[0].should.have.property('longitude');
+      res.body[0].should.have.property('fotografia');
+
+
 
       done();
     });

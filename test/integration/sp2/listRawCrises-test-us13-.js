@@ -5,11 +5,11 @@ var server = supertest.agent("http://localhost:3000");
 
 describe("Crises list test",function(){
 
-  it("Returns HTTP status == 200, '/crises/list'",function(done){
+  it("Returns HTTP status == 200, '/rest/crises'",function(done){
 
     // calling crises list page
     server
-    .get("/crises/list")
+    .get("/rest/crisis")
     .expect(200) // This is HTTP response
     .end(function(err,res){
 
