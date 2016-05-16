@@ -23,13 +23,21 @@ module.exports = function(app){
  };
 
  controller.login = function(req, res, next){
+   console.log('CONTROLLER');
    if(!req.body.hasOwnProperty('email') ||
       !req.body.hasOwnProperty('password')) {
+        console.log('VALID');
          res.status(404).json({success: false, message: 'Required fields not informed.'});
      }else{
-       var user = {id: 1, name: 'Danilo', email: 'email@email.com'};
-       setSession(req,user);
-       res.json({success:true, detail: user});
+       console.log('CALL DAO');
+       userDAO.login(req.body, function(err, data){
+         if(err){
+           setSession(req,user);
+           res.json({success:true, detail: user});
+         }else{
+           res.status(404).json({success: false, message: e});
+         }
+       });
      }
  };
 

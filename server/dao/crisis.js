@@ -11,7 +11,7 @@ module.exports = function(app) {
 
 crisisDAO = function(pool) {
     var self = this;
-    if (pool != null) {
+    if (pool !== null) {
         this.pool = pool;
     }
 
