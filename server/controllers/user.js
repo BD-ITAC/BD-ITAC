@@ -30,13 +30,18 @@ module.exports = function(app){
          res.status(404).json({success: false, message: 'Required fields not informed.'});
      }else{
        console.log('CALL DAO');
-       userDAO.login(req.body, function(err, data){
-         if(err){
-           setSession(req,user);
-           res.json({success:true, detail: user});
-         }else{
-           res.status(404).json({success: false, message: 'User or password is invalid'});
-         }
+       userDAO.login(req.body, function(err, user){
+           if(err) {
+               res.status(500).json(err);
+           }else{
+               if(user){
+                 setSession(req,user);
+                 res.json({success:true, detail: user});
+               }else{
+                 res.status(400).json({success: false, message: 'User or password is invalid'});
+               }
+           }
+
        });
      }
  };

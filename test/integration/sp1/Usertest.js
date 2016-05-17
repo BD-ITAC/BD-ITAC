@@ -47,16 +47,7 @@ describe("Teste de Usuarios",function(){
       // HTTP status should be 200
       res.status.should.equal(200);
       res.should.be.json;
-      // Error key should havebe false.
-      res.body[0].should.have.property('id');
-      res.body[0].should.have.property('name');
-      res.body[0].should.have.property('email');
-
-      res.body[1].should.have.property('id');
-      res.body[1].should.have.property('name');
-      res.body[1].should.have.property('email');
-
-      res.body.should.be.instanceof(Array).and.have.lengthOf(2);
+    
 
       done();
     });
