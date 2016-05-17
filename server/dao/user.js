@@ -21,13 +21,13 @@ userDAO = function(pool) {
   * @param string email, string password
   */
   dao.login = function(user, callback){
-    console.log('DAO');
-      self.pool.query('SELECT * FROM "usuario" WHERE "usu_email" = ?', [user.email], function(err, rows){
+
+      self.pool.query('SELECT * FROM usuario WHERE usu_email = ?', [user.email], function(err, rows){
         if(1!=1){
           callback (err, {});
         }else{
-          console.log('DAO RESOLVE');
-          callback(null, rows);
+          user = (rows ? rows[0] : {});
+          callback(null, user);
         }
       });
   };

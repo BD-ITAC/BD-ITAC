@@ -35,7 +35,7 @@ module.exports = function(app){
            setSession(req,user);
            res.json({success:true, detail: user});
          }else{
-           res.status(404).json({success: false, message: e});
+           res.status(404).json({success: false, message: 'User or password is invalid'});
          }
        });
      }

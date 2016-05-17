@@ -1,15 +1,7 @@
-//var b=  require('../server/business/business')();
 var sinon = require('sinon');
-//var app = require('../../../../config/express')();
-var app = {dao:{crisis:function(conexao){
-    var dao;
-  dao.save =  function(crisis, callback){}
-  return dao;
- }
-}
-   ,business:{crisis:{}}}
-
-
+var crisis = {save:function(err,data){}};
+var dao = {crisis: crisis};
+var app = {dao:dao};
 var crisisBusiness = require('../../../../server/business/crisis')(app);
 var should = require("should");
 
@@ -18,7 +10,7 @@ describe('Crisis business', function() {
   describe('#save()', function() {
 
     it('should save without error', function(done) {
-     // var business = app.business.crisis;
+
       var crisis = {
         descricao: 'Teste',
         categoria: 3,
