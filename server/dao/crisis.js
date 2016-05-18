@@ -22,10 +22,9 @@ crisisDAO = function(pool) {
   * @author Danilo Ramalho
   * @param objeto crisis
   */
-
   dao.save = function(crisis, callback){//callback(null, {status: 'ok'});
     var query = self.pool.query(
-          "insert into crisis set ?", crisis, function (err, result) {
+          "insert into crise set ?", getDados(crisis), function (err, result) {
           if(err)
           {
             callback(err, {});
@@ -48,16 +47,55 @@ crisisDAO = function(pool) {
         });
   };
 
+  function getDados(crisis){
+    var dados={
+              cri_nome: crisis.nome,
+              cri_telefone: crisis.telefone,
+              cri_email: crisis.email,
+              cri_descricao: crisis.descricao,
+              cri_categoria: crisis.categoria,
+              cri_latitude: crisis.latitude,
+              cri_longitude: crisis.longitude,
+              cri_dh_inicio: new Date(),
+              cri_ativo: true,
+              cri_fotografia: crisis.fotografia
+            }
+    return dados;
+  }
 
   dao.listCrisis = function(callback){
-    self.pool.query("select * from crisis", function(err, rows){
+    self.pool.query("select * from crise", function(err, rows){
       if(err){
         callback(err,{});
       }else{
-        callback(null, rows);
+        callback(null, getCrises(rows));
       }
     });
   };
+
+  function getCrises(rows){
+    var crises = [];
+    for(c in rows){
+      var crise={
+                id: rows[c].cri_id,
+                nome: rows[c].cri_nome,
+                telefone: rows[c].cri_telefone,
+                email: rows[c].cri_email,
+                descricao: rows[c].cri_descricao,
+                categoria: rows[c].cri_categoria,
+                latitude: rows[c].cri_latitude,
+                longitude: rows[c].cri_longitude,
+                dataInicial: rows[c].cri_dh_inicio,
+                dataFinal: rows[c].cri_dh_inicio,
+                ativo: rows[c].cri_ativo,
+                fotografia:   rows[c].cri_fotografia
+              };
+              crises.push(crise);
+
+    }
+
+    return crises;
+  }
 
 
   var indicators = [];

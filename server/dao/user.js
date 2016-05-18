@@ -22,11 +22,12 @@ userDAO = function(pool) {
   */
   dao.login = function(user, callback){
 
-      self.pool.query('SELECT * FROM usuario WHERE email = ?', [user.email], function(err, rows){
-        if(1!=1){
+      self.pool.query('SELECT * FROM usuario WHERE usu_email = ?', [user.email], function(err, rows){
+        if(err){
           callback (err, {});
         }else{
-          user = (rows ? rows[0] : {});
+          user = (rows ? rows[0] : null);
+          console.log(rows);
           callback(null, user);
         }
       });

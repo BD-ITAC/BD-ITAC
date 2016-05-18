@@ -38,7 +38,7 @@ describe("Teste de Usuarios",function(){
     // calling home page api
     server
     .post("/rest/users/login")
-    .send({'password': 'teste', 'email': 'teste@teste.com'})
+    .send({'password': 'teste', 'email': 'adm@gmail.com'})
     .expect("Content-type",/json/)
     .expect(200) // THis is HTTP response
     .end(function(err,res){
@@ -47,7 +47,7 @@ describe("Teste de Usuarios",function(){
       // HTTP status should be 200
       res.status.should.equal(200);
       res.should.be.json;
-    
+
 
       done();
     });
