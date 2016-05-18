@@ -14,6 +14,11 @@ function ($routeProvider, $httpProvider) {
             controller: 'DashBoardController',
             requireLogin: true
         })
+        .when('/crisis', {
+            templateUrl: 'part-views/crisis.html',
+            controller: 'CrisisController',
+            requireLogin: true
+        })
 /*        .when('/situation-room', {
             templateUrl: 'views/situation-room.html',
             controller: 'SituationRoomController',

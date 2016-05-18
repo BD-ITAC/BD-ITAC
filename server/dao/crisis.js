@@ -22,10 +22,9 @@ crisisDAO = function(pool) {
   * @author Danilo Ramalho
   * @param objeto crisis
   */
-
   dao.save = function(crisis, callback){//callback(null, {status: 'ok'});
     var query = self.pool.query(
-          "insert into crisis set ?", crisis, function (err, result) {
+          "insert into crise set ?", getDados(crisis), function (err, result) {
           if(err)
           {
             callback(err, {});
@@ -48,16 +47,55 @@ crisisDAO = function(pool) {
         });
   };
 
+  function getDados(crisis){
+    var dados={
+              cri_nome: crisis.nome,
+              cri_telefone: crisis.telefone,
+              cri_email: crisis.email,
+              cri_descricao: crisis.descricao,
+              cri_categoria: crisis.categoria,
+              cri_latitude: crisis.latitude,
+              cri_longitude: crisis.longitude,
+              cri_dh_inicio: new Date(),
+              cri_ativo: true,
+              cri_fotografia: crisis.fotografia
+            }
+    return dados;
+  }
 
   dao.listCrisis = function(callback){
-    self.pool.query("select * from crisis", function(err, rows){
+    self.pool.query("select * from crise", function(err, rows){
       if(err){
         callback(err,{});
       }else{
-        callback(null, rows);
+        callback(null, getCrises(rows));
       }
     });
   };
+
+  function getCrises(rows){
+    var crises = [];
+    for(c in rows){
+      var crise={
+                id: rows[c].cri_id,
+                nome: rows[c].cri_nome,
+                telefone: rows[c].cri_telefone,
+                email: rows[c].cri_email,
+                descricao: rows[c].cri_descricao,
+                categoria: rows[c].cri_categoria,
+                latitude: rows[c].cri_latitude,
+                longitude: rows[c].cri_longitude,
+                dataInicial: rows[c].cri_dh_inicio,
+                dataFinal: rows[c].cri_dh_fim,
+                ativo: rows[c].cri_ativo,
+                fotografia:   rows[c].cri_fotografia
+              };
+              crises.push(crise);
+
+    }
+
+    return crises;
+  }
 
 
   var indicators = [];
@@ -76,60 +114,22 @@ crisisDAO = function(pool) {
   **/
 
   dao.nearbyAlerts = function(crisis, callback){
+     var nearbyAlerts = [];
      self.pool.query("select * from crisis", function(err, rows){
      if(err){
        return callback(err,{});
-      }else{
-       var result = (rows ? rows[0]:{});
-       
-  var nearbyAlerts = [];
-  nearbyAlerts.push({
-              "_embedded" : {
-                  "alertaList" : [ {
-                     descricaoResumida: result.descricao,
-                     descricaoCompleta: result.descricao,
-                     categoriaAlerta: result.categoria,
-                     origemLatitude:  result.latitude,
-                     origemLongitude: result.longitude,
-                     origemRaioKms: "" ,
-                     "_links" : {
-                       "self" : {
-                          href: "http://localhost:3000/rest/crisis/nearbycrisis/" 
-                                }
-                              }
-                            }]
-                          }
-            });
-  nearbyAlerts.push({
-               "_embedded" : {
-                 "alertaList" : [ {
-                   descricaoResumida: "Alagamento",
-                   descricaoCompleta: "Deslizamento na na favela do Paraiso",
-                   categoriaAlerta: "0",
-                   origemLatitude:  "40.0",
-                   origemLongitude: "50.0",
-                   origemRaioKms: "1.0",
-                   "_links" : {
-                           "self" : {
-                              href: "http://localhost:3000/rest/crisis/nearbycrisis/16"
-                               }
-                              }
-                            }]
-                           }
-            });
- 
-       return callback(null, nearbyAlerts);
-  /**
-  * Realiza as query de consulta de alertas no BD
-  */
-//  dao.nearbyAlerts = function(crisis, callback){
-//    return callback(null, result);
-//  };
+      }else{   
 
-  /**
-  * Realiza as query de consulta de alertas no BD
-  */
-  
+     for(a in rows){
+          nearbyAlerts.push({
+                    descricao: rows[a].descricao,
+                    categoria: rows[a].categoria,
+                    latitude: rows[a].latitude,
+                    longitude: rows[a].longitude                    
+                  });
+        }
+
+        return callback(null, nearbyAlerts); 
   }
 
   })
