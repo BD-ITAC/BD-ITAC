@@ -1,0 +1,14 @@
+<div ng-controller="CrisisController as vm">
+  <table width="100%" class="table">
+   <thead>
+    <tr>
+     <th ng-repeat="(header, value) in CrisisListCollection[0]">{{header}}</th>
+    </tr>
+   </thead>
+   <tbody>
+    <tr ng-repeat="row in CrisisListCollection | filter:searchText">
+     <td ng-repeat="cell in row">{{cell}}</td>
+    </tr>
+   </tbody>
+  </table>
+</div>
