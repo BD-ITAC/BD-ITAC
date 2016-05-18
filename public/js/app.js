@@ -17,7 +17,7 @@ function ($routeProvider, $httpProvider) {
         .when('/crisis', {
             templateUrl: 'part-views/crisis.html',
             controller: 'CrisisController',
-            requireLogin: true
+            requireLogin: false
         })
 /*        .when('/situation-room', {
             templateUrl: 'views/situation-room.html',

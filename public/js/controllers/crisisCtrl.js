@@ -6,7 +6,7 @@ app.controller('CrisisController', ['$scope', '$rootScope', '$location', '$http'
     vm.form = {submitted : false};
 
     $http.get('/rest/crisis').success(function(data){
-
+debugger;
                 $scope.CrisisListCollection = data;
         })
 

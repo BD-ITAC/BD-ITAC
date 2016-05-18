@@ -10,7 +10,6 @@ app.run(['$rootScope','$location', '$localStorage', '$http', 'toastr', 'UtilServ
         }
 
         $rootScope.$on('$routeChangeStart', function (event, next) {
-            debugger;
                     if($localStorage.user !== undefined &&
                         $localStorage.user.hasOwnProperty('id') &&
                         $localStorage.user.id !== undefined){
