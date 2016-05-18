@@ -3,9 +3,9 @@ var mysql = require('mysql')
 , pool_connection
 , env_conf = {
     development: {
-      host: "localhost",
+      host: "edizon.onmypc.net",
       user: "root",
-      password: "root",
+      password: "@Senha01",
       port: "3306",
       database: "bditac",
       connectionLimit    : 10,
