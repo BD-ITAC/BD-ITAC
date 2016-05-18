@@ -86,7 +86,7 @@ crisisDAO = function(pool) {
                 latitude: rows[c].cri_latitude,
                 longitude: rows[c].cri_longitude,
                 dataInicial: rows[c].cri_dh_inicio,
-                dataFinal: rows[c].cri_dh_inicio,
+                dataFinal: rows[c].cri_dh_fim,
                 ativo: rows[c].cri_ativo,
                 fotografia:   rows[c].cri_fotografia
               };
@@ -159,12 +159,11 @@ crisisDAO = function(pool) {
   * Realiza as query de consulta de alertas no BD
   */
    dao.alerts = function(crisis, callback){
-     self.pool.query("select * from crisis", function(err, rows){
+     self.pool.query("select * from crise", function(err, rows){
      if(err){
        return callback(err,{});
       }else{
-       var result = (rows ? rows[0]:{});
-       return callback(null, result);
+       return callback(null, getCrises(rows));
   }
 
   })
