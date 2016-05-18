@@ -8,4 +8,4 @@ app.controller('OneCtrl', ['$scope', '$rootScope', '$location', 'toastr', functi
 
    };
    $rootScope.activetab = $location.path();
-}]);
+}]); 
