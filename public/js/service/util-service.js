@@ -7,9 +7,9 @@ app.service('UtilService', ['$rootScope', '$localStorage', function($rootScope, 
 
   service.setSessionUser = function(user){
     $localStorage.user = {
-      id: user.id,
-      name: user.name,
-      email: user.email
+      id: user.usu_id,
+      name: user.usu_nome,
+      email: user.usu_email
     };
     //$rootScope.$broadcast('headerMenuBroadcast');
   };
