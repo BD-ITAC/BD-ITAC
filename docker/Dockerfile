@@ -14,15 +14,15 @@ ENV PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin:$HIVE_HOME/bin:$SPARK_HOME/bin
 ####################################################
 ## Pré-requisitos
 ####################################################
-RUN apt-get update
-RUN apt-get install -y software-properties-common
+#RUN apt-get update
+#RUN apt-get install -y software-properties-common
 RUN apt-get install -y ssh
-RUN apt-get install -y vim
-RUN apt-get install -y htop
-RUN apt-get install -y curl
-RUN apt-get install -y rsync 
-RUN apt-get install -y net-tools
-RUN apt-get install -y python-pip
+#RUN apt-get install -y vim
+#RUN apt-get install -y htop
+#RUN apt-get install -y curl
+#RUN apt-get install -y rsync 
+#RUN apt-get install -y net-tools
+#RUN apt-get install -y python-pip
 
 ####################################################
 ## Define uma pasta de instalação
@@ -38,44 +38,43 @@ RUN useradd -d $HADOOP_HOME -s /bin/bash -c 'Hadoop User' $HADOOP_USER
 ####################################################
 ## Instala o hadoop
 ####################################################
-ADD ./hadoop/install-hadoop.sh /setup/
-RUN chmod +x ./install-hadoop.sh
-RUN ./install-hadoop.sh
-ADD ./hadoop/*.xml $HADOOP_HOME/etc/hadoop/
+#ADD ./hadoop/install-hadoop.sh /setup/
+#RUN chmod +x ./install-hadoop.sh
+#RUN ./install-hadoop.sh
+#ADD ./hadoop/*.xml $HADOOP_HOME/etc/hadoop/
 
 #instala o hive
-ADD ./hive/install-hive.sh /setup/
-RUN chmod +x ./install-hive.sh
-RUN ./install-hive.sh
-ADD ./hive/hive-site.xml $HIVE_HOME/conf/hive-site.xml
-RUN mkdir $HIVE_HOME/auxlib/
-ADD ./hive/dependencies/*.jar $HIVE_HOME/auxlib/
+#ADD ./hive/install-hive.sh /setup/
+#RUN chmod +x ./install-hive.sh
+#RUN ./install-hive.sh
+#ADD ./hive/hive-site.xml $HIVE_HOME/conf/hive-site.xml
+#RUN mkdir $HIVE_HOME/auxlib/
+#ADD ./hive/dependencies/*.jar $HIVE_HOME/auxlib/
 
 #instala o spark
-ADD ./spark/install-spark.sh /setup/
-RUN chmod +x ./install-spark.sh
-RUN ./install-spark.sh
+#ADD ./spark/install-spark.sh /setup/
+#RUN chmod +x ./install-spark.sh
+#RUN ./install-spark.sh
 
 #configura o ssh
+ADD bashrc $HADOOP_HOME/.bashrc
+RUN mkdir $HADOOP_HOME/.ssh
+ADD ./ssh/ssh.config $HADOOP_HOME/.ssh/config
 ADD ./ssh/setup-ssh.sh /setup/
 RUN chmod +x ./setup-ssh.sh
 RUN ./setup-ssh.sh
-ADD ./ssh/ssh.config $HADOOP_HOME/.ssh/config
-ADD profile $HADOOP_HOME/.profile
 RUN service ssh start
 
-RUN su - $HADOOP_USER
-RUN source $HADOOP_HOME/.profile
-
 #configura o hdfs
-ADD ./hadoop/setup-hdfs.sh /setup/
-RUN chmod +x ./setup-hdfs.sh
-RUN ./setup-hdfs.sh
+#ADD ./hadoop/setup-hdfs.sh /setup/
+#RUN chmod +x ./setup-hdfs.sh
 
 #configura o hive
-ADD ./hive/setup-hive.sh /setup/
-RUN chmod +x ./setup-hive.sh
-RUN ./setup-hive.sh
+#ADD ./hive/setup-hive.sh /setup/
+#RUN chmod +x ./setup-hive.sh
+
+#USER $HADOOP_USER
+#RUN /bin/bash -c "source $HADOOP_HOME/.bashrc ; /setup/setup-hdfs.sh ; /setup/setup-hive.sh"
 
 # HDFS
 EXPOSE 50010 50020 50070 50075 50090 8020 9000
@@ -92,7 +91,8 @@ EXPOSE 8080
 EXPOSE 8888
 
 # run servers:
-ADD start-servers.sh /setup/
-RUN chmod +x /setup/start-servers.sh
+#USER root
+#ADD start-servers.sh /setup/
+#RUN chmod +x /setup/start-servers.sh
 #CMD /setup/start-servers.sh
 
