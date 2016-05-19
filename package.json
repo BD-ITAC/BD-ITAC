@@ -1,11 +1,11 @@
 {
-  "name": "bditac",
+  "name": "BD-ITAC",
   "version": "0.0.1",
   "private": true,
   "description": "TEAM 3 - Api BD-ITAC",
   "apidoc": {
     "title": "Api doc BD-ITAC",
-    "url": "https://api.bditac.com"
+    "url": "http://200.144.14.28"
   },
   "scripts": {
     "start": "node app.js",
@@ -23,6 +23,8 @@
     "string-validator": "^1.0.5"
   },
   "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-api-doc": "^1.1.0",
     "mocha": "^2.4.5",
     "should": "^8.3.0",
     "sinon": "^1.17.3",
