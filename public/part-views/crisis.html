@@ -1,13 +1,33 @@
 <div ng-controller="CrisisController as vm">
-  <table width="100%" class="table">
+  <table width="100%" class="table table-striped">
    <thead>
+     <tr>
+       <th>Nome</th>
+       <th>Telefone</th>
+       <th>E-Mail</th>
+       <th>Descricao</th>
+       <th>Categoria</th>
+       <th>Lat/Long<th>
+       <th>Foto</th>
+     </tr>
+     <!--
     <tr>
      <th ng-repeat="(header, value) in CrisisListCollection[0]">{{header}}</th>
     </tr>
+  -->
    </thead>
    <tbody>
-    <tr ng-repeat="row in CrisisListCollection | filter:searchText">
+    <tr ng-repeat="row in CrisisListCollection">
+      <td>{{row.nome}}</td>
+      <td>{{row.telefone}}</td>
+      <td>{{row.email}}</td>
+      <td>{{row.descricao}}</td>
+      <td>{{row.categoria}}</td>
+      <td>{{row.latitude}};{{row.longitude}}</td>
+      <td><img ng-src="data:image/JPEG;base64,{{row.fotografia}}"></td>
+      <!--
      <td ng-repeat="cell in row">{{cell}}</td>
+   -->
     </tr>
    </tbody>
   </table>

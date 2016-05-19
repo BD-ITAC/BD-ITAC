@@ -28,7 +28,6 @@ module.exports = function(app){
       !req.body.hasOwnProperty('password')) {
          res.status(404).json({success: false, message: 'Required fields not informed.'});
      }else{
-       console.log('CALL DAO');
        userDAO.login(req.body, function(err, user){
            if(err) {
                res.status(500).json(err);
