@@ -77,6 +77,7 @@ RUN chmod +x ./setup-hive.sh
 
 #configura o hue
 ADD ./hue/pseudo-distributed.ini /hue/desktop/conf/
+ADD ./hue/livy-defaults.conf /hue/apps/spark/java/conf/
 
 USER $HADOOP_USER
 RUN /bin/bash -c "source $HADOOP_HOME/.bashrc ; /setup/setup-hdfs.sh ; /setup/setup-hive.sh"
@@ -99,4 +100,4 @@ EXPOSE 8888
 USER root
 ADD start-servers.sh /setup/
 RUN chmod +x /setup/start-servers.sh
-#CMD /setup/start-servers.sh
+CMD bash
