@@ -93,7 +93,7 @@ module.exports = function(app){
    */
   app.get(uri, controller.listCrisis);
   /**
-   * @api {get} /rest/nearbycrisis?latitude=40.0&longitude=50.0&raio=1.0 Pesquisa por coordenadas
+   * @api {get} /rest/crisis/nearbycrisis?latitude=40.0&longitude=50.0&raio=1.0 Pesquisa por coordenadas
    * @apiVersion 1.0.0
    * @apiGroup Crisis
    *
@@ -243,7 +243,7 @@ module.exports = function(app){
    */
   app.get(uri+'/nearbycrisis', controller.nearbyCrisis);
   /**
-   * @api {get} /rest/indicators Indicadores de crises
+   * @api {get} /rest/crisis/indicators Indicadores de crises
    * @apiVersion 1.0.0
    * @apiGroup Crisis
    *
@@ -258,7 +258,7 @@ module.exports = function(app){
    *        finalizados : 20,
    *        emcurso : 8
    *   }
-   *  @apiSampleRequest /rest/indicators
+   *  @apiSampleRequest /rest/crisis/indicators
    */
   app.get(uri+'/indicators', controller.listIndicators);
 
