@@ -10,7 +10,7 @@ Project with structure single page in AngularJS + NodeJS
 2. npm install
 3. bower install
 3. npm install mocha -g
-4. npm install apidoc -g
+4. npm install gulp -g
 
 # Start Project
 1. node app.js
@@ -19,4 +19,4 @@ Project with structure single page in AngularJS + NodeJS
 1. mocha
 
 #Api doc
-1. apidoc -f ./routes/crisis.js -o public/apidoc
+1. gulp or gulp apidoc
