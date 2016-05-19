@@ -27,7 +27,6 @@ userDAO = function(pool) {
           callback (err, {});
         }else{
           user = (rows ? rows[0] : null);
-          console.log(rows);
           callback(null, user);
         }
       });
