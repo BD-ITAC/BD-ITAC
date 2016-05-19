@@ -114,14 +114,19 @@ crisisDAO = function(pool) {
   **/
 
   dao.nearbyAlerts = function(crisis, callback){
-     var nearbyAlerts = [];    
+     var nearbyAlerts = [];
      var path = require('path');
      var host = path.join(__dirname);
-     self.pool.query('SELECT * FROM crisis WHERE latitude = ? AND longitude = ? ', [crisis.latitude, crisis.longitude], function(err, rows){
+
+     //converte raio 100 metros para 0.001
+     var calcRaio = (crisis.raio*0.001)/100;
+
+     self.pool.query('SELECT * FROM crise where ST_AsText(ST_Intersection(cri_lng_lat, ST_Buffer(POINT(?, ?), ?))) is not null', [crisis.longitude, crisis.latitude, calcRaio], function(err, rows){
     // self.pool.query('SELECT * FROM crisis WHERE latitude = ? AND longitude = ? AND raio = ?', [crisis.latitude, crisis.longitude, crisis.raio], function(err, rows){
      if(err){
        return callback(err,{});
-      }else{   
+      }else{
+    
      for(a in rows){
           nearbyAlerts.push( {
             "_embedded" : {
@@ -130,20 +135,20 @@ crisisDAO = function(pool) {
                 "descricaoCompleta" : rows[a].descricao,
                 "categoriaAlerta" : rows[a].categoria,
                 "origemLatitude" : rows[a].latitude,
-                "origemLongitude" : rows[a].longitude, 
+                "origemLongitude" : rows[a].longitude,
                 "origemRaioKms" : 10.0, //confirmar existencia no MER
                 "_links" : {
                   "self" : {
-                    "href" : "http://localhost:3000/rest/crisis/nearbycrisis" + "/" + rows[a].id  
-                   // "href" : url + "/" + rows[a].id  
+                    "href" : "http://localhost:3000/rest/crisis/nearbycrisis" + "/" + rows[a].id
+                   // "href" : url + "/" + rows[a].id
                   }
                 }
               }]
-              } 
+              }
             });
         }
 
-        return callback(null, nearbyAlerts); 
+        return callback(null, nearbyAlerts);
   }
 
   })

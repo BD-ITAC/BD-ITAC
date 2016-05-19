@@ -93,13 +93,13 @@ module.exports = function(app){
    */
   app.get(uri, controller.listCrisis);
   /**
-   * @api {get} /rest/crisis/nearbycrisis?latitude=40.0&longitude=50.0&raio=1.0 Pesquisa por coordenadas
+   * @api {get} /rest/crisis/nearbycrisis?latitude=-23.196641&longitude=-45.946840&raio=10 Pesquisa por coordenadas
    * @apiVersion 1.0.0
    * @apiGroup Crisis
    *
    * @apiParam {Number} latitude  Latitude da localização.
    * @apiParam {Number} longitude  Longitude da localização.
-   * @apiParam {Number} raio Raio de alcance.
+   * @apiParam {Number} raio Raio de alcance em metros.
    *
    *
    *
