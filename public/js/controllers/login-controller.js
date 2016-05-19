@@ -6,6 +6,13 @@ app.controller('LoginController', ['$scope', '$rootScope', '$location', '$http',
     var vm = this;
     vm.form = {submitted : false};
 
+    angular.element(document).ready(function () {
+        if($localStorage.user !== undefined && $localStorage.user.name !== undefined){
+            $location.path('/dash-board');
+        }
+    });
+
+
     vm.login = function (form){
        debugger;
         vm.form.submitted = true;
@@ -22,8 +29,7 @@ app.controller('LoginController', ['$scope', '$rootScope', '$location', '$http',
                   $location.path('/dash-board');
               }
           },function(err){
-            console.error(err.data);
-            toastr.error(err.data.statusText);
+            toastr.error(err.data.message);
           });
       }else {
           toastr.info('Required fields not informed!');

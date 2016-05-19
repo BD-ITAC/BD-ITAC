@@ -4,6 +4,7 @@ module.exports = function(app){
   /**
    * @api {post} /rest/crisis Cadastrar
    * @apiGroup Crisis
+   * @apiVersion 1.0.0
    *
    * @apiParam {String} descricao  Descricao da crise.
    * @apiParam {Numero{1-8}} categoria  Categoria da crise.
@@ -49,17 +50,18 @@ module.exports = function(app){
   app.post(uri+'/', controller.saveCrisis);
   /**
    * @api {get} /rest/crisis Listar
+   * @apiVersion 1.0.0
    * @apiGroup Crisis
    *
-   * @apiSuccess {Numero} list.id Numero identificador
-   * @apiSuccess {String} list.description Descrição da evento
-   * @apiSuccess {Numero} list.categoria Categoria da evento
-   * @apiSuccess {String} list.nome Nome do usuario que enviou a evento
-   * @apiSuccess {String} list.email Endereço de email do usuario
-   * @apiSuccess {String} list.telefone Telefone do usuário
-   * @apiSuccess {Numero} list.latitude Latitude da localização
-   * @apiSuccess {Numero} list.langitude Longitude da localização
-   * @apiSuccess {String} list.fotografia Fotografia do evento em base64
+   * @apiSuccess {Numero} list.id Numero identificador.
+   * @apiSuccess {String} list.description Descrição da evento.
+   * @apiSuccess {Numero} list.categoria Categoria da evento.
+   * @apiSuccess {String} list.nome Nome do usuario que enviou a evento.
+   * @apiSuccess {String} list.email Endereço de email do usuario.
+   * @apiSuccess {String} list.telefone Telefone do usuário.
+   * @apiSuccess {Numero} list.latitude Latitude da localização.
+   * @apiSuccess {Numero} list.langitude Longitude da localização.
+   * @apiSuccess {String} list.fotografia Fotografia do evento em base64.
    *
    * @apiSuccessExample {json} Sucesso
    * HTTP/1.1 200 OK
@@ -87,10 +89,177 @@ module.exports = function(app){
    *          "fotografia" : "...."
    *      }
    *   }
-   *
+   *  @apiSampleRequest /rest/crisis
    */
   app.get(uri, controller.listCrisis);
+  /**
+   * @api {get} /rest/nearbycrisis?latitude=40.0&longitude=50.0&raio=1.0 Pesquisa por coordenadas
+   * @apiVersion 1.0.0
+   * @apiGroup Crisis
+   *
+   * @apiParam {Number} latitude  Latitude da localização.
+   * @apiParam {Number} longitude  Longitude da localização.
+   * @apiParam {Number} raio Raio de alcance.
+   *
+   *
+   *
+   * @apiSuccess {String} descricaoResumida Breve descrição do alerta.
+   * @apiSuccess {String} descricaoCompleta Descrição detalhada do alerta.
+   * @apiSuccess {String} categoriaAlerta Indica o tipo de alerta.
+   * @apiSuccess {Number} origemLatitude Latitude do ponto de origem do alerta.
+   * @apiSuccess {Number} origemLongitude Longitude do ponto de origem do alerta.
+   * @apiSuccess {Number} origemRaioKms Área de abrangência do alerta em Kms.
+   * @apiSuccess {URI} _links:self:href URI do link para o alerta.
+   *
+   * @apiSuccessExample {json} Sucesso
+   * HTTP/1.1 200 OK
+   *{
+ *	  "_embedded" : {
+ *	    "alertaList" : [ {
+ *	      "descricaoResumida" : "Alagamento",
+ *	      "descricaoCompleta" : "Deslizamento na na favela do Paraiso",
+ *	      "categoriaAlerta" : 0,
+ *	      "origemLatitude" : 40.0,
+ *	      "origemLongitude" : 50.0,
+ *	      "origemRaioKms" : 10.0,
+ *	      "_links" : {
+ *	        "self" : {
+ *	          "href" : "http://localhost:3000/rest/crisis/nearbycrisis/16"
+ *	        }
+ *	      }
+ *	    }, {
+ *	      "descricaoResumida" : "Alagamento",
+ *	      "descricaoCompleta" : "Deslizamento na na favela do Paraiso",
+ *	      "categoriaAlerta" : 0,
+ *	      "origemLatitude" : 40.0,
+ *	      "origemLongitude" : 50.0,
+ *	      "origemRaioKms" : 10.0,
+ *	      "_links" : {
+ *	        "self" : {
+ *	          "href" : "http://localhost:3000/rest/crisis/nearbycrisis/2"
+ *	        }
+ *	      }
+ *	    }, {
+ *	      "descricaoResumida" : "Alagamento",
+ *	      "descricaoCompleta" : "Crise de teste",
+ *	      "categoriaAlerta" : 0,
+ *	      "origemLatitude" : 40.0,
+ *	      "origemLongitude" : 50.0,
+ *	      "origemRaioKms" : 10.0,
+ *	      "_links" : {
+ *	        "self" : {
+ *	          "href" : "http://localhost:3000/rest/crisis/nearbycrisis/18"
+ *	        }
+ *	      }
+ *	    }, {
+ *	      "descricaoResumida" : "Alerta de deslizamento",
+ *	      "descricaoCompleta" : "Perigo de deslizamento na altura do Km 20 da rodovia Tamoios, pista Sao Jose dos Campos/Litoral",
+ *	      "categoriaAlerta" : 0,
+ *	      "origemLatitude" : 40.0,
+ *	      "origemLongitude" : 50.0,
+ *	      "origemRaioKms" : 1.0,
+ *	      "_links" : {
+ *	        "self" : {
+ *	          "href" : "http://localhost:3000/rest/crisis/nearbycrisis/4"
+ *	        }
+ *	      }
+ *	    }, {
+ *	      "descricaoResumida" : "Alerta de teste",
+ *	      "descricaoCompleta" : "Teste de alerta para verificar a funcionalidade do sistema",
+ *	      "categoriaAlerta" : 0,
+ *	      "origemLatitude" : 40.0,
+ *	      "origemLongitude" : 50.0,
+ *	      "origemRaioKms" : 1.0,
+ *	      "_links" : {
+ *	        "self" : {
+ *	          "href" : "http://localhost:3000/rest/crisis/nearbycrisis/20"
+ *	        }
+ *	      }
+ *	    }, {
+ *	      "descricaoResumida" : "Alagamento",
+ *	      "descricaoCompleta" : "Deslizamento na na favela do Paraiso",
+ *	      "categoriaAlerta" : 0,
+ *	      "origemLatitude" : 40.0,
+ *	      "origemLongitude" : 50.0,
+ *	      "origemRaioKms" : 10.0,
+ *	      "_links" : {
+ *	        "self" : {
+ *	          "href" : "http://localhost:3000/rest/crisis/nearbycrisis/6"
+ *	        }
+ *	      }
+ *	    }, {
+ *	      "descricaoResumida" : "Alagamento",
+ *	      "descricaoCompleta" : "Crise de teste",
+ *	      "categoriaAlerta" : 0,
+ *	      "origemLatitude" : 40.0,
+ *	      "origemLongitude" : 50.0,
+ *	      "origemRaioKms" : 10.0,
+ *	      "_links" : {
+ *	        "self" : {
+ *	          "href" : "http://localhost:3000/rest/crisis/nearbycrisis/8"
+ *	        }
+ *	      }
+ *	    }, {
+ *	      "descricaoResumida" : "Alerta de teste",
+ *	      "descricaoCompleta" : "Teste de alerta para verificar a funcionalidade do sistema",
+ *	      "categoriaAlerta" : 0,
+ *	      "origemLatitude" : 40.0,
+ *	      "origemLongitude" : 50.0,
+ *	      "origemRaioKms" : 1.0,
+ *	      "_links" : {
+ *	        "self" : {
+ *	          "href" : "http://localhost:3000/rest/crisis/nearbycrisis/10"
+ *	        }
+ *	      }
+ *	    }, {
+ *	      "descricaoResumida" : "Alagamento",
+ *	      "descricaoCompleta" : "Deslizamento na na favela do Paraiso",
+ *	      "categoriaAlerta" : 0,
+ *	      "origemLatitude" : 40.0,
+ *	      "origemLongitude" : 50.0,
+ *	      "origemRaioKms" : 10.0,
+ *	      "_links" : {
+ *	        "self" : {
+ *	          "href" : "http://localhost:3000/rest/crisis/nearbycrisis/12"
+ *	        }
+ *	      }
+ *	    }, {
+ *	      "descricaoResumida" : "Alerta de deslizamento",
+ *	      "descricaoCompleta" : "Perigo de deslizamento na altura do Km 20 da rodovia Tamoios, pista Sao Jose dos Campos/Litoral",
+ *	      "categoriaAlerta" : 0,
+ *	      "origemLatitude" : 40.0,
+ *	      "origemLongitude" : 50.0,
+ *	      "origemRaioKms" : 1.0,
+ *	      "_links" : {
+ *	        "self" : {
+ *	          "href" : "http://localhost:3000/rest/crisis/nearbycrisis/14"
+ *	        }
+ *	      }
+ *	    } ]
+ *	  }
+ *	}
+ *
+   *
+   */
   app.get(uri+'/nearbycrisis', controller.nearbyCrisis);
+  /**
+   * @api {get} /rest/indicators Indicadores de crises
+   * @apiVersion 1.0.0
+   * @apiGroup Crisis
+   *
+   * @apiSuccess {Numero} cadastrados Quantidade de crises cadastradas.
+   * @apiSuccess {Numero} finalizados Quantidade de crises finalizadas.
+   * @apiSuccess {Numero} emcurso Quantidade de crises em curso.
+   *
+   * @apiSuccessExample {json} Sucesso
+   * HTTP/1.1 200 OK
+   *   {
+   *        cadastrados: 30,
+   *        finalizados : 20,
+   *        emcurso : 8
+   *   }
+   *  @apiSampleRequest /rest/indicators
+   */
   app.get(uri+'/indicators', controller.listIndicators);
 
 };

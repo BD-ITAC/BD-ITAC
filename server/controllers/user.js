@@ -23,7 +23,7 @@ module.exports = function(app){
  };
 
  controller.login = function(req, res, next){
-   console.log('CONTROLLER');
+   console.log(req.body);
    if(!req.body.hasOwnProperty('email') ||
       !req.body.hasOwnProperty('password')) {
          res.status(404).json({success: false, message: 'Required fields not informed.'});
@@ -48,7 +48,7 @@ module.exports = function(app){
   var id = req.params.id;
   var valid = false;
   if(req.session.user){
-    if(req.session.user.id == id){
+    if(req.session.user.usu_id == id){
       valid = true;
     }
   }

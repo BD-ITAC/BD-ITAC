@@ -24,5 +24,5 @@ function ($routeProvider, $httpProvider) {
             controller: 'SituationRoomController',
             requireLogin: true
         })*/
-        .otherwise ({ redirectTo: '/index' });
+        .otherwise ({ redirectTo: '/dash-board' });
 }]);
