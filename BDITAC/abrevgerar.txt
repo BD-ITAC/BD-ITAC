@@ -1,0 +1,24 @@
+rlx;relaxa;2
+vlw;valeu;2
+hj;hoje;162756
+hr;hora;163699
+dps;depois;93144
+cel;celular;65959
+tendi;entendi;2
+pv;privado;261073
+sla;sei lá;2
+qnd;quando;266009
+act;aceito;3491
+qr;quer;266932
+smp;sempre;287590
+cm;como;78143
+ult;último;317646
+nd;nada;2
+agr;agora;9079
+ft;foto;140511
+pft;perfeito;245306
+mó;muito;214937
+perae;espera;121947
+qm;quem;266811
+qqr;qualquer;266005
+qt;quanto;266048
