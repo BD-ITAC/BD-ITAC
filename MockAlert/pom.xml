@@ -9,8 +9,8 @@
 	<name>Alert Service</name>
 
 	<groupId>br.ita.bditac</groupId>
-	<artifactId>MockAlert</artifactId>
-	<version>0.0.1</version>
+	<artifactId>mockalert</artifactId>
+	<version>0.0.2</version>
 	<packaging>jar</packaging>
 
     <parent>
@@ -34,6 +34,11 @@
 
         <!-- Docker hub -->
         <docker.image.prefix>bditac</docker.image.prefix>
+        
+        <!-- Versões de outras dependências  -->
+        <apache.commons.codec.version>1.10</apache.commons.codec.version>
+        <assertj.version>3.3.0</assertj.version>
+        <docker.maven.plugin.version>0.4.9</docker.maven.plugin.version>
 
 	</properties>
 
@@ -52,6 +57,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
         </dependency>
 
         <!-- Spring REST API Documentation -->
@@ -80,14 +90,34 @@
         	<groupId>org.springframework.boot</groupId>
         	<artifactId>spring-boot-starter-jersey</artifactId>
         </dependency>
-
+        
+        <!-- Joda Time -->
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+        </dependency>
+        
+        <dependency>
+		  <groupId>com.fasterxml.jackson.datatype</groupId>
+		  <artifactId>jackson-datatype-joda</artifactId>
+		</dependency>   
+		
+		<!-- Apache Commons Codec -->
+		<dependency>
+		  <groupId>commons-codec</groupId>
+		  <artifactId>commons-codec</artifactId>
+		  <version>${apache.commons.codec.version}</version>
+		</dependency>
+		
+        <!-- AssertJ -->
         <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
-            <version>3.3.0</version>
+            <version>${assertj.version}</version>
             <scope>test</scope>
         </dependency>
 
+        <!-- Spring HATEOAS/Jackson addon -->
 		<dependency>
 		    <groupId>com.jayway.jsonpath</groupId>
 		    <artifactId>json-path</artifactId>
@@ -207,11 +237,16 @@
             <plugin>
                 <groupId>com.spotify</groupId>
                 <artifactId>docker-maven-plugin</artifactId>
-                <version>0.4.3</version>
+                <version>${docker.maven.plugin.version}</version>
                 <configuration>
+					<serverId>docker.io</serverId>
+					<registryUrl>https://index.docker.io/v1/</registryUrl>
                     <imageName>${docker.image.prefix}/${project.artifactId}</imageName>
                     <dockerDirectory>src/main/docker</dockerDirectory>
-                    <!-- copy the service's jar file from target into the root directory of the image -->
+                    <forceTags>true</forceTags>
+			        <imageTags>
+						<imageTag>sp2</imageTag>
+			        </imageTags>
                     <resources>
                         <resource>
                             <targetPath>/</targetPath>
@@ -224,29 +259,5 @@
 
         </plugins>
     </build>
-
-    <repositories>
-        <repository>
-            <id>spring-snapshots</id>
-            <url>http://repo.spring.io/snapshot</url>
-            <snapshots><enabled>true</enabled></snapshots>
-        </repository>
-        <repository>
-            <id>spring-milestones</id>
-            <url>http://repo.spring.io/milestone</url>
-        </repository>
-    </repositories>
-
-	<pluginRepositories>
-	    <pluginRepository>
-	        <id>spring-snapshots</id>
-	        <url>http://repo.spring.io/snapshot</url>
-	        <snapshots><enabled>true</enabled></snapshots>
-	    </pluginRepository>
-	    <pluginRepository>
-	        <id>spring-milestones</id>
-	        <url>http://repo.spring.io/milestone</url>
-	    </pluginRepository>
-	</pluginRepositories>
 
 </project>

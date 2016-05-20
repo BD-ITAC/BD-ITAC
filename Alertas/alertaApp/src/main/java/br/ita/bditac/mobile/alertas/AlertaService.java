@@ -1,45 +1,28 @@
 package br.ita.bditac.mobile.alertas;
 
-import android.app.Service;
+import android.app.IntentService;
 import android.content.Intent;
-import android.os.IBinder;
 import android.util.Log;
 
-public class AlertaService extends Service {
+public class AlertaService extends IntentService {
 
     private AlarmReceiver alarmReceiver = new AlarmReceiver();
 
     public AlertaService() {
 
-        Log.i(this.getClass().getSimpleName(), "Service constructed.");
+        super("br.ita.bditac.mobile.alertas.AlertaService");
+
+        Log.i(this.getClass().getSimpleName(), "Alerta service created.");
 
     }
 
     @Override
-    public void onCreate() {
-
-        super.onCreate();
-
-        Log.i(this.getClass().getSimpleName(), "Service started.");
-
-    }
-
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
+    public void onHandleIntent(Intent intent) {
 
         alarmReceiver.setAlarm(this);
         sendBroadcast(new Intent(alarmReceiver.getClass().getName()));
 
-        Log.i(this.getClass().getSimpleName(), "Service flagged.");
-
-        return START_STICKY;
-
-    }
-
-    @Override
-    public IBinder onBind(Intent intent) {
-
-        return null;
+        Log.i(this.getClass().getSimpleName(), "Alerta service alarm flagged.");
 
     }
 

@@ -1,0 +1,4 @@
+#!/bin/sh
+while true; do
+    sleep 1
+done | mosquitto_sub -i "br.ita.bditac.inbound.sub" -v -d -t "br.ita.bditac/#"

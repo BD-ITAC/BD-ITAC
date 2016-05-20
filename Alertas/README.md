@@ -24,7 +24,7 @@ Aplicação móvel utilizando [Spring for Android](http://projects.spring.io/spr
 Módulo responsável pela interação com o usuário do aplicativo móvel.
 
 Possui as telas:
-* Cadastro de eventos - cadastramento de uma ocorrência de evento de crise pelo próprio usuário;
+* Cadastro de crises - cadastramento de uma ocorrência de crise pelo próprio usuário;
 * Indicadores de alertas e crises - painel administrativo que mostra indicadores de alertas e crises;
 * Notificação de alertas - notificação apresentada na bandeja da interface principal do Android;
 * Configurações - configurações do usuário sobre o funcionamento do aplicativo.

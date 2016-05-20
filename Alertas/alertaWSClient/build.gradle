@@ -1,8 +1,8 @@
 apply plugin: 'com.android.library'
 apply plugin: 'org.asciidoctor.gradle.asciidoctor'
+apply plugin: 'jacoco'
 
 configurations {
-    all*.exclude group: 'commons-logging', module: 'commons-logging'
     asciidoclet
 }
 
@@ -10,12 +10,13 @@ android {
     compileSdkVersion 23
     buildToolsVersion "23.0.3"
 
+    publishNonDefault true
+
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -23,6 +24,13 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+
+    testOptions.unitTests.all {
+        testLogging {
+            events 'passed', 'skipped', 'failed', 'standardOut', 'standardError'
+        }
+        reports.html.enabled = true
     }
 
 }
@@ -34,15 +42,17 @@ dependencies {
     androidTestCompile 'com.android.support.test:runner:0.4'
     compile 'org.springframework.android:spring-android-rest-template:1.0.1.RELEASE'
     compile 'com.fasterxml.jackson.core:jackson-databind:2.5.4'
+    compile 'joda-time:joda-time:2.8.2'
+    compile 'commons-codec:commons-codec:1.10'
     compile project(':springAndroidRest')
-    /*
-    compile 'org.apache.httpcomponents:httpclient:4.5.2'
-    compile 'com.fasterxml.jackson.core:jackson-databind:2.5.4'
-    compile 'org.springframework:spring-web:4.1.7.RELEASE'
-    compile 'org.springframework:spring-core:4.1.7.RELEASE'
-    compile 'org.springframework.plugin:spring-plugin-core:1.2.0.RELEASE'
-    compile 'commons-logging:commons-logging:1.2'
-    */
+
+    testCompile 'org.apache.httpcomponents:httpclient:4.5.2'
+    testCompile 'com.fasterxml.jackson.core:jackson-databind:2.5.4'
+    testCompile 'org.springframework:spring-web:4.1.7.RELEASE'
+    testCompile 'org.springframework:spring-core:4.1.7.RELEASE'
+    testCompile 'org.springframework.plugin:spring-plugin-core:1.2.0.RELEASE'
+    testCompile 'commons-logging:commons-logging:1.2'
+
 }
 
 configurations {

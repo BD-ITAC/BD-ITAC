@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
 
         Context context = getApplicationContext();
 
-        if(ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+        if(ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             Log.i(this.getClass().getSimpleName(), "Permission to localization services requested.");
 
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, Constants.REQUEST_CODE_ACCESS_FINE_LOCATION);
@@ -33,14 +33,14 @@ public class MainActivity extends AppCompatActivity {
 
     // TODO: Fazer uma função que generaliza as funções start
 
-    public void startCadastrarEvento(View view) {
-        Intent itentCadastrarEvento = new Intent(this, CadastrarEventoActivity.class);
-        startActivity(itentCadastrarEvento);
+    public void startCadastrarCrise(View view) {
+        Intent itentCadastrarCrise = new Intent(this, CadastrarCriseActivity.class);
+        startActivity(itentCadastrarCrise);
     }
 
-    public void startConsultarEvento(View view) {
-        Intent itentConsultarEvento = new Intent(this, ConsultaEventoActivity.class);
-        startActivity(itentConsultarEvento);
+    public void startConsultarCrise(View view) {
+        Intent itentConsultarCrise = new Intent(this, ConsultaAlertasActivity.class);
+        startActivity(itentConsultarCrise);
     }
 
     public void startConsultarIndicador(View view) {

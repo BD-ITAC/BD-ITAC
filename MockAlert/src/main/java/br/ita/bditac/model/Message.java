@@ -45,6 +45,16 @@ public class Message implements Serializable, Identifiable<Integer> {
     private String description;
 
     private String info;
+    
+    public Message() {
+    	super();
+    	
+    	this.id = 0;
+    	this.type = Type.INFO;
+    	this.status = "Ok";
+    	this.description = "Info";
+    	this.info = "Dummy message";
+    }
 
     public Message(int id, Type type, String status, String description, String info) {
         super();

@@ -7,47 +7,42 @@ public class Alerta implements Serializable {
     private static final long serialVersionUID = 1L;
     
     private int id;
+
+    private String timestamp;
     
     private String descricaoResumida;
     
     private String descricaoCompleta;
-    
-    private int fatorRiscoHumano;
-    
-    private int fatorRiscoMaterial;
-    
+
     private int categoriaAlerta;
-    
-    private double origemLongitude;
-    
+
     private double origemLatitude;
-    
+
+    private double origemLongitude;
+
     private double origemRaioKms;
 
-    public Alerta() {
+    protected Alerta() {
+        this.timestamp = "";
         this.descricaoResumida = "";
         this.descricaoCompleta = "";
-        this.fatorRiscoHumano = 0;
-        this.fatorRiscoMaterial = 0;
         this.categoriaAlerta = 0;
         this.origemLatitude = 0;
         this.origemLongitude = 0;
         this.origemRaioKms = 0;
     }
-    
-    public Alerta(
+
+    protected Alerta(
+            String timestamp,
             String descricaoResumida, 
             String descricaoCompleta, 
-            int fatorRiscoHumano, 
-            int fatorRiscoMaterial, 
-            int categoriaAlerta, 
+            int categoriaAlerta,
             double origemLatitude, 
             double origemLongitude, 
             double origemRaioKms) {
+        this.timestamp = timestamp;
         this.descricaoResumida = descricaoResumida;
         this.descricaoCompleta = descricaoCompleta;
-        this.fatorRiscoHumano = fatorRiscoHumano;
-        this.fatorRiscoMaterial = fatorRiscoMaterial;
         this.categoriaAlerta = categoriaAlerta;
         this.origemLatitude = origemLatitude;
         this.origemLongitude = origemLongitude;
@@ -63,15 +58,15 @@ public class Alerta implements Serializable {
     public void setId(int id) {
         this.id = id;
     }
-    
-    
-    public String getDescricaoResumida() {
-        return descricaoResumida;
+
+
+    public String getTimestamp() {
+        return timestamp;
     }
 
-    
-    public void setDescricaoResumida(String descricaoResumida) {
-        this.descricaoResumida = descricaoResumida;
+
+    public String getDescricaoResumida() {
+        return descricaoResumida;
     }
 
     
@@ -80,48 +75,8 @@ public class Alerta implements Serializable {
     }
 
     
-    public void setDescricaoCompleta(String descricaoCompleta) {
-        this.descricaoCompleta = descricaoCompleta;
-    }
-
-    
-    public int getFatorRiscoHumano() {
-        return fatorRiscoHumano;
-    }
-
-    
-    public void setFatorRiscoHumano(int fatorRiscoHumano) {
-        this.fatorRiscoHumano = fatorRiscoHumano;
-    }
-
-    
-    public int getFatorRiscoMaterial() {
-        return fatorRiscoMaterial;
-    }
-
-    
-    public void setFatorRiscoMaterial(int fatorRiscoMaterial) {
-        this.fatorRiscoMaterial = fatorRiscoMaterial;
-    }
-
-    
     public int getCategoriaAlerta() {
         return categoriaAlerta;
-    }
-
-    
-    public void setCategoriaAlerta(int categoriaAlerta) {
-        this.categoriaAlerta = categoriaAlerta;
-    }
-
-    
-    public double getOrigemLongitude() {
-        return origemLongitude;
-    }
-
-    
-    public void setOrigemLongitude(double origemLongitude) {
-        this.origemLongitude = origemLongitude;
     }
 
     
@@ -129,19 +84,14 @@ public class Alerta implements Serializable {
         return origemLatitude;
     }
 
-    
-    public void setOrigemLatitude(double origemLatitude) {
-        this.origemLatitude = origemLatitude;
+
+    public double getOrigemLongitude() {
+        return origemLongitude;
     }
 
     
     public double getOrigemRaioKms() {
         return origemRaioKms;
-    }
-
-    
-    public void setOrigemRaioKms(double origemRaioKms) {
-        this.origemRaioKms = origemRaioKms;
     }
 
 }

@@ -57,27 +57,35 @@ public class AlertaGetter {
             Log.i(this.getClass().getSimpleName(), "Location not informed.");
         }
         else {
-            List<Alerta> alertas = alertaClient.getAlertaByRegiao(location.getLatitude(), location.getLongitude(), radiusKms);
+            Log.i(this.getClass().getSimpleName(), "Fetching alerts.");
+
+            List<Alerta> alertas = alertaClient.getAlertaByRegiaoRecentes(location.getLatitude(), location.getLongitude(), radiusKms);
 
             if (alertas == null) {
                 Log.i(this.getClass().getSimpleName(), "Alerts not found for now.");
             }
             else {
                 for (Alerta alerta : alertas) {
-                    Intent getAlertaIntent = new Intent(context, NotificationReceiverActivity.class);
-                    PendingIntent pGetAlertaIntent = PendingIntent.getActivity(context, (int) System.currentTimeMillis(), getAlertaIntent, 0);
+                    Intent alertaIntent = new Intent(context, NotificationReceiverActivity.class);
+                    alertaIntent.putExtra(Constants.EXTRA_NOTIFICATION_LATITUDE, location.getLatitude());
+                    alertaIntent.putExtra(Constants.EXTRA_NOTIFICATION_LONGITUDE, location.getLongitude());
+                    alertaIntent.putExtra(Constants.EXTRA_NOTIFICATION_ALERTA, alerta.getDescricaoResumida());
+                    alertaIntent.putExtra(Constants.EXTRA_NOTIFICATION_DESCRICAO, alerta.getDescricaoCompleta());
+                    PendingIntent pendingAlertaIntent = PendingIntent.getActivity(context, (int) System.currentTimeMillis(), alertaIntent, 0);
 
                     Notification notification = new Notification.Builder(context)
-                            .setContentTitle(context.getText(R.string.msg_alert_received))
-                            .setContentText(alerta.getDescricaoResumida())
+                            .setContentTitle(alerta.getDescricaoResumida())
+                            .setContentText(alerta.getDescricaoCompleta())
                             .setStyle(new Notification.BigTextStyle().bigText(alerta.getDescricaoCompleta()))
                             .setSmallIcon(R.drawable.ic_action_alert)
-                            .setContentIntent(pGetAlertaIntent)
-                            .addAction(R.drawable.ic_stat_alert, context.getText(R.string.open), pGetAlertaIntent)
+                            .setContentIntent(pendingAlertaIntent)
+                            .addAction(R.drawable.ic_stat_alert, context.getText(R.string.open), pendingAlertaIntent)
                             .build();
                     NotificationManager notificationManager = (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
 
                     if (notifications.size() > 0) {
+                        Log.w(this.getClass().getSimpleName(), "Removing old notifications.");
+
                         for (Integer notificationId : notifications) {
                             notificationManager.cancel(notificationId);
                         }
