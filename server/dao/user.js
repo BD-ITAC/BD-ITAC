@@ -26,8 +26,18 @@ userDAO = function(pool) {
         if(err){
           callback (err, {});
         }else{
-          user = (rows ? rows[0] : null);
-          console.log(rows);
+          //user = (rows ? rows[0] : null);
+          var user = null;
+          if(rows != null)
+          {
+            user =
+            {
+              usu_nome:  rows[0].usu_nm,
+              usu_id: rows[0].usu_id,
+              usu_email: rows[0].usu_email,
+              usu_fone: rows[0].usu_fone
+            };
+          }
           callback(null, user);
         }
       });

@@ -19,6 +19,7 @@
     "angular-route": "^1.5.0",
     "ngstorage": "^0.3.10",
     "bootstrap": "^3.3.6",
-    "angular-toastr": "^1.7.0"
+    "angular-toastr": "^1.7.0",
+    "angular-bootstrap-lightbox": "^0.12.0"
   }
 }

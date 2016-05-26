@@ -92,7 +92,7 @@
   },
   {
     "type": "get",
-    "url": "/rest/indicators",
+    "url": "/rest/crisis/indicators",
     "title": "Indicadores de crises",
     "version": "1.0.0",
     "group": "Crisis",
@@ -132,16 +132,16 @@
     },
     "sampleRequest": [
       {
-        "url": "/rest/indicators"
+        "url": "/rest/crisis/indicators"
       }
     ],
     "filename": "C:/desenvolvimento/git/BD-ITAC/server/routes/crisis.js",
     "groupTitle": "Crisis",
-    "name": "GetRestIndicators"
+    "name": "GetRestCrisisIndicators"
   },
   {
     "type": "get",
-    "url": "/rest/nearbycrisis?latitude=40.0&longitude=50.0&raio=1.0",
+    "url": "/rest/crisis/nearbycrisis?latitude=40.0&longitude=50.0&raio=1.0",
     "title": "Pesquisa por coordenadas",
     "version": "1.0.0",
     "group": "Crisis",
@@ -236,7 +236,7 @@
     },
     "filename": "C:/desenvolvimento/git/BD-ITAC/server/routes/crisis.js",
     "groupTitle": "Crisis",
-    "name": "GetRestNearbycrisisLatitude400Longitude500Raio10"
+    "name": "GetRestCrisisNearbycrisisLatitude400Longitude500Raio10"
   },
   {
     "type": "post",

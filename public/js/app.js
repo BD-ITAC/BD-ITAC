@@ -1,7 +1,10 @@
-var app = angular.module('bditac', ['ngRoute', 'ngStorage','toastr']);
+var app = angular.module('bditac', ['ui.bootstrap','bootstrapLightbox','ngRoute', 'ngStorage','toastr']);
 
-app.config(['$routeProvider','$httpProvider',
-function ($routeProvider, $httpProvider) {
+app.config(['$routeProvider','$httpProvider', '$compileProvider',
+function ($routeProvider, $httpProvider, $compileProvider) {
+
+  $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|file|ftp|blob):|data:image\//);
+
 
   $routeProvider
         .when('/index', {
