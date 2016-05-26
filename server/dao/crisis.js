@@ -58,7 +58,9 @@ crisisDAO = function(pool) {
               cri_longitude: crisis.longitude,
               cri_dh_inicio: new Date(),
               cri_ativo: true,
-              cri_fotografia: crisis.fotografia
+              cri_pic1: new Buffer(crisis.pic1).toString('base64'),
+              cri_pic2: new Buffer(crisis.pic2).toString('base64'),
+              cri_pic3: new Buffer(crisis.pic3).toString('base64'),
             }
     return dados;
   }
@@ -76,6 +78,15 @@ crisisDAO = function(pool) {
   function getCrises(rows){
     var crises = [];
     for(c in rows){
+
+      var pic1 = '';
+      var pic2 = '';
+      var pic3 = '';
+
+      if(rows[c].cri_pic1 != null) pic1 = new Buffer(rows[c].cri_pic1).toString('base64');
+      if(rows[c].cri_pic2 != null) pic2 = new Buffer(rows[c].cri_pic2).toString('base64');
+      if(rows[c].cri_pic3 != null) pic3 = new Buffer(rows[c].cri_pic3).toString('base64');
+
       var crise={
                 id: rows[c].cri_id,
                 nome: rows[c].cri_nome,
@@ -88,7 +99,9 @@ crisisDAO = function(pool) {
                 dataInicial: rows[c].cri_dh_inicio,
                 dataFinal: rows[c].cri_dh_fim,
                 ativo: rows[c].cri_ativo,
-                fotografia:   rows[c].cri_fotografia
+                pic1:   pic1,
+                pic2:   pic2,
+                pic3:   pic3
               };
               crises.push(crise);
 
@@ -126,7 +139,7 @@ crisisDAO = function(pool) {
      if(err){
        return callback(err,{});
       }else{
-    
+
      for(a in rows){
           nearbyAlerts.push( {
             "_embedded" : {

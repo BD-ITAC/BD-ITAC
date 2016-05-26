@@ -1,3 +1,20 @@
+.table > tbody > tr > td {
+     vertical-align: middle;
+}
+
+.imgcontainer img {
+    max-width: 200px;
+    max-height:150px;
+    width: auto;
+    height: auto;
+}
+.imgcontainers {
+    clear: both;
+    margin-top: 20px;
+}
+img {
+    vertical-align: top
+}
   .jumbotron
   {
     width: 400px;

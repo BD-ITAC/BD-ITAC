@@ -1,3 +1,6 @@
+/*
+ * @author: edizon
+ */
 var mysql = require('mysql')
 ,connection  = require('express-myconnection')
 , pool_connection
