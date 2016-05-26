@@ -12,10 +12,10 @@ var mysql = require('mysql')
       multipleStatements : true
     },
     production: {
-      host: "localhost",
+      host: "192.168.254.4",
       user: "user_app",
       password: "User_@pp",
-      port: "4000",
+      port: "3306",
       database: "bditac",
       connectionLimit    : 10,
       multipleStatements : true
