@@ -57,7 +57,7 @@ crisisDAO = function(pool) {
      oco_usu_cod = @idUsuario, \n\
      oco_cla_cod = '"+dados.cri_categoria + "';";
 
-     console.log(query);
+     //console.log(query);
 
      db.executarTransacao(
         self.pool,
