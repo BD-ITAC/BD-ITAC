@@ -9,7 +9,8 @@ app.service('UtilService', ['$rootScope', '$localStorage', function($rootScope, 
     $localStorage.user = {
       id: user.usu_id,
       name: user.usu_nome,
-      email: user.usu_email
+      email: user.usu_email,
+      telefon: user.usu_fone
     };
     //$rootScope.$broadcast('headerMenuBroadcast');
   };

@@ -17,7 +17,7 @@ app.controller('CrisisController', ['$scope', '$rootScope', '$location', '$http'
 
 
         $scope.openLightboxModal = function (index, fotos) {
-$scope.images = [];
+        $scope.images = [];
           angular.forEach(fotos, function(value)
             {
               $scope.images.push({
