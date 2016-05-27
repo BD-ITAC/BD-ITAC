@@ -13,6 +13,7 @@ exports.executarTransacao = function(pool, cmd, onError) {
                 cmd(conn);
                 conn.commit(function (err) {
                     if (err) {
+
                         return conn.rollback(function () {
                             throw err;
                         });

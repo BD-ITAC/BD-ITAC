@@ -31,8 +31,13 @@
                       <li><a href="#crisis">Crisis</a></li>
                       <li><a href="#">Events</a></li>
                       <li><a href="#">Occurrence</a></li>
-                      <li><a href="#">Users</a></li>
-                    </ul>
+                      <li uib-dropdown>
+                          <a uib-dropdown-toggle>Parameters<span class="caret"></span></a>
+                          <ul uib-dropdown-menu>
+                            <li><a href="#">Users</a></li>
+                            <li><a href="#classification">Classfications</a></li>
+                          </ul>
+                      </li>
 
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href ng-click="vm.logout();">{{vm.user.name}}, <span class="glyphicon glyphicon-off" aria-hidden="true"></span> Logoff</a></li>
@@ -58,5 +63,6 @@
     <script type="text/javascript" src="/js/controllers/dash-board-controller.js"></script>
     <script type="text/javascript" src="/js/controllers/headermenu-controller.js"></script>
     <script type="text/javascript" src="/js/controllers/crisisCtrl.js"></script>
+    <script type="text/javascript" src="/js/controllers/classificationCtrl.js"></script>
 
 </html>

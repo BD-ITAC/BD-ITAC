@@ -20,7 +20,12 @@ function ($routeProvider, $httpProvider, $compileProvider) {
         .when('/crisis', {
             templateUrl: 'part-views/crisis.html',
             controller: 'CrisisController',
-            requireLogin: false
+            requireLogin: true
+        })
+        .when('/classification', {
+            templateUrl: 'part-views/classification.html',
+            controller: 'ClassificationController',
+            requireLogin: true
         })
 /*        .when('/situation-room', {
             templateUrl: 'views/situation-room.html',
