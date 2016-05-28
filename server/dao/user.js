@@ -28,7 +28,7 @@ userDAO = function(pool) {
         }else{
           //user = (rows ? rows[0] : null);
           var user = null;
-          if(rows != null)
+          if(rows != null && rows.length >0)
           {
             user =
             {
