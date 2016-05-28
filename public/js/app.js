@@ -27,6 +27,11 @@ function ($routeProvider, $httpProvider, $compileProvider) {
             controller: 'ClassificationController',
             requireLogin: true
         })
+        .when('/evento', {
+            templateUrl: 'part-views/evento.html',
+            controller: 'EventoController',
+            requireLogin: true
+        })
 /*        .when('/situation-room', {
             templateUrl: 'views/situation-room.html',
             controller: 'SituationRoomController',

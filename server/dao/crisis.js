@@ -55,7 +55,7 @@ crisisDAO = function(pool) {
      oco_cri_cod = @idCrise, \n\
      oco_geo_cod = @idGeo, \n\
      oco_usu_cod = @idUsuario, \n\
-     oco_cla_cod = '"+dados.cri_categoria + "';";
+     oco_eve_cod = '"+dados.cri_categoria + "';";
 
      //console.log(query);
 
@@ -150,7 +150,7 @@ crisisDAO = function(pool) {
             usu.usu_fone as cri_telefone,  \
             usu.usu_email as cri_email,    \
             cri.cri_ds as cri_descricao,   \
-            class.cla_ds as cri_categoria, \
+            event.eve_ds as cri_categoria, \
             geo.geo_lat as cri_latitude,   \
             geo.geo_long as cri_longitude, \
             cri.cri_ini as cri_dh_inicio,  \
@@ -163,7 +163,7 @@ crisisDAO = function(pool) {
         join ocorrencia ocor on ocor.oco_cri_cod = cri.cri_id  \
         join usuario usu on usu.usu_id = oco_usu_cod           \
         join geografica geo on geo.geo_id = oco_geo_cod        \
-        join classificacao class on class.cla_id = ocor.oco_cla_cod";
+        join evento event on event.eve_id = ocor.oco_eve_cod";
 
 
     self.pool.query(

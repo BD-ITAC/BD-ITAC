@@ -8,7 +8,6 @@ app.controller('HeaderMenuController', ['$scope', '$rootScope', '$location', '$h
     vm.user = {};
 
     function displayMenu (param){
-      debugger;
         vm.showMenu = false;
         if($localStorage.user !== undefined && $localStorage.user.name !== undefined){
           vm.user.name = $localStorage.user.name;

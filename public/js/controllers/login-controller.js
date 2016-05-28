@@ -14,7 +14,6 @@ app.controller('LoginController', ['$scope', '$rootScope', '$location', '$http',
 
 
     vm.login = function (form){
-       debugger;
         vm.form.submitted = true;
         if (form.$valid) {
           var param = {
@@ -22,7 +21,6 @@ app.controller('LoginController', ['$scope', '$rootScope', '$location', '$http',
               password: form.password.$viewValue
          };
           $http.post('/rest/users/login',param).then(function(res){
-              debugger;
               if(res.data.success === true){
                   UtilService.setSessionUser(res.data.detail);
                   $rootScope.$broadcast('headerMenuBroadcast');

@@ -13,7 +13,6 @@ app.run(['$rootScope','$location', '$localStorage', '$http', 'toastr', 'UtilServ
                     if($localStorage.user !== undefined &&
                         $localStorage.user.hasOwnProperty('id') &&
                         $localStorage.user.id !== undefined){
-                          debugger;
                             $http.get('/rest/users/validation/' + $localStorage.user.id)
                             .then(function succes(response) {
                               if(response.data === false){
