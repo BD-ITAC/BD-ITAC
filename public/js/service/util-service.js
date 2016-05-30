@@ -20,5 +20,16 @@ app.service('UtilService', ['$rootScope', '$localStorage', function($rootScope, 
     $rootScope.$broadcast('headerMenuBroadcast');
   };
 
+  service.setCurrentMenu = function($scope, $location){
+    $scope.location = $location;
+    $scope.$watch('location.url()', getTitle);
+    function getTitle() {
+      $scope.pageTitle = $location.url().substring(1);
+    }
+
+    $rootScope.$broadcast('headerSeCurrentMenuBroadcast', $scope.location.$$path);
+
+  };
+
   return service;
 }]);

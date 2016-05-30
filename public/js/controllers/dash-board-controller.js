@@ -6,5 +6,6 @@ app.controller('DashBoardController', ['$scope', '$rootScope', '$location', '$ht
     var vm = this;
     vm.form = {submitted : false};
 
+    UtilService.setCurrentMenu($scope, $location);
 
 }]);

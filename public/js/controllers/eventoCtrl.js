@@ -9,6 +9,8 @@ app.controller('EventoController', ['$scope', '$rootScope', '$location', '$http'
     var vm = this;
     vm.form = {submitted : false};
 
+    UtilService.setCurrentMenu($scope, $location);
+
     carregarDados();
 
     $scope.addEvento = function () {

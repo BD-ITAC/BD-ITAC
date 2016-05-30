@@ -10,6 +10,8 @@ app.controller('CrisisController', ['$scope', '$rootScope', '$location', '$http'
     var vm = this;
     vm.form = {submitted : false};
 
+    UtilService.setCurrentMenu($scope, $location);
+
     $http.get('/rest/crisis').success(function(data){
                 $scope.CrisisListCollection = data;
         });

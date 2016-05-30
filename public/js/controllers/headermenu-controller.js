@@ -5,6 +5,7 @@ app.controller('HeaderMenuController', ['$scope', '$rootScope', '$location', '$h
  function($scope,$rootScope,$location,$http,$localStorage, toastr, UtilService) {
     var vm = this;
     vm.showMenu = false;
+    vm.menuCurrent = undefined;
     vm.user = {};
 
     function displayMenu (param){
@@ -27,6 +28,10 @@ app.controller('HeaderMenuController', ['$scope', '$rootScope', '$location', '$h
 
     $scope.$on('headerMenuBroadcast', function (event) {
         displayMenu();
+    });
+    $scope.$on('headerSeCurrentMenuBroadcast', function (event, menu) {
+        vm.menuCurrent = menu.replace('/','');
+        console.log(vm.menuCurrent);
     });
 
 }]);

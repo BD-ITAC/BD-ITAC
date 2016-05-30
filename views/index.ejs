@@ -27,18 +27,18 @@
                   <!-- Collect the nav links, forms, and other content for toggling -->
                   <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
-                      <li class="active"><a href="#">Home <span class="sr-only">(current)</span></a></li>
-                      <li><a href="#crisis">Crisis</a></li>
-                      <li><a href="#">Occurrence</a></li>
-                      <li uib-dropdown>
-                          <a uib-dropdown-toggle>Parameters<span class="caret"></span></a>
+                      <li ng-class="{'active': vm.menuCurrent == 'dash-board'}"><a href="#dash-board">Home <span class="sr-only">(current)</span></a></li>
+                      <li ng-class="{'active': vm.menuCurrent == 'crisis'}"><a href="#crisis">Crisis</a></li>
+                      <li ng-class="{'active': vm.menuCurrent == 'occurrence'}"><a href="#occurrence">Occurrence</a></li>
+                      <li uib-dropdown ng-class="{'active': (vm.menuCurrent == 'users' || vm.menuCurrent == 'classification' || vm.menuCurrent == 'evento')}">
+                          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" uib-dropdown-toggle>Parameters<span class="caret"></span></a>
                           <ul uib-dropdown-menu>
-                            <li><a href="#">Users</a></li>
-                            <li><a href="#classification">Classfications</a></li>
-                            <li><a href="#evento">Events</a></li>
+                            <li ng-class="{'active': vm.menuCurrent == 'users'}"><a href="#">Users</a></li>
+                            <li ng-class="{'active': vm.menuCurrent == 'classification'}"><a href="#classification">Classfications</a></li>
+                            <li ng-class="{'active': vm.menuCurrent == 'evento'}"><a href="#evento">Events</a></li>
                           </ul>
                       </li>
-
+                  </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href ng-click="vm.logout();">{{vm.user.name}}, <span class="glyphicon glyphicon-off" aria-hidden="true"></span> Logoff</a></li>
                     </ul>
@@ -47,7 +47,7 @@
           </div>
         </nav>
     </div>
-    <div ng-view></div>
+    <div ng-view class="container"></div>
 
 </body>
     <script type="text/javascript" src="/bower_components/angular/angular.min.js"> </script>

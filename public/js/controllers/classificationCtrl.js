@@ -9,6 +9,8 @@ app.controller('ClassificationController', ['$scope', '$rootScope', '$location',
     var vm = this;
     vm.form = {submitted : false};
 
+    UtilService.setCurrentMenu($scope, $location);
+
     carregarDados();
 
     $scope.addClassificacao = function () {
