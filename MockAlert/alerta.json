@@ -1,0 +1,17 @@
+{
+    "alerta": {
+        "descricaoResumida" : "Alerta de deslizamento",
+        "descricaoCompleta" : "Perigo de deslizamento na altura do Km 20 da rodovia Tamoios, pista Sao Jose dos Campos/Litoral",
+        "fatorRiscoHumano" : 5,
+        "fatorRiscoMaterial" : 5,
+        "categoriaAlerta" : 0,
+        "origemLongitude" : 0.5,
+        "origemLatitude" : 0.5,
+        "origemRaioKms" : 1.0,
+    },
+    "_links" : {
+        "self" : {
+            "href" : "http://localhost:8080/alerta/1"
+        }
+    }
+}

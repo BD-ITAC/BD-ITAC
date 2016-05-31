@@ -1,0 +1,8 @@
+{
+    "tipo":7,
+    "topicos":[
+        "bditac/temperatura",
+        "bditac/pressao",
+        "bditac/humidade"
+    ]
+}

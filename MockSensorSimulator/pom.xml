@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<name>Sensor Service</name>
+
+	<groupId>br.ita.bditac</groupId>
+	<artifactId>mocksensorsimulator</artifactId>
+	<version>0.0.2</version>
+	<packaging>jar</packaging>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>1.3.3.RELEASE</version>
+    </parent>
+
+    <properties>
+
+		<!-- Boot -->
+		<start-class>br.ita.bditac.app.Application</start-class>
+
+		<!-- Generic properties -->
+		<java.version>1.6</java.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <!-- Docker hub -->
+        <docker.image.prefix>bditac</docker.image.prefix>
+
+        <!-- Versões de outras dependências  -->
+        <eclipse.paho.version>1.0.2</eclipse.paho.version>
+        <assertj.version>3.3.0</assertj.version>
+        <docker.maven.plugin.version>0.4.9</docker.maven.plugin.version>
+
+	</properties>
+
+	<dependencies>
+
+		<!-- Spring Boot -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-integration</artifactId>
+			<scope>compile</scope>
+		</dependency>
+
+        <!-- Spring REST API Documentation -->
+        <dependency>
+            <groupId>org.springframework.restdocs</groupId>
+            <artifactId>spring-restdocs-mockmvc</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Spring HATEOAS -->
+        <dependency>
+            <groupId>org.springframework.hateoas</groupId>
+            <artifactId>spring-hateoas</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.plugin</groupId>
+            <artifactId>spring-plugin-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-ws</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jersey</artifactId>
+        </dependency>
+
+        <!-- Spring Integration -->
+		<dependency>
+			<groupId>org.springframework.integration</groupId>
+			<artifactId>spring-integration-java-dsl</artifactId>
+			<version>1.1.2.RELEASE</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.integration</groupId>
+			<artifactId>spring-integration-stream</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.integration</groupId>
+			<artifactId>spring-integration-mqtt</artifactId>
+		</dependency>
+
+        <!-- Joda Time -->
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+        </dependency>
+
+        <dependency>
+          <groupId>com.fasterxml.jackson.datatype</groupId>
+          <artifactId>jackson-datatype-joda</artifactId>
+        </dependency>
+
+        <!-- AssertJ -->
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>${assertj.version}</version>
+        </dependency>
+
+	</dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+          		<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+					<debug>true</debug>
+					<debuglevel>lines,vars,source</debuglevel>
+				</configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<doclet>org.asciidoctor.Asciidoclet</doclet>
+						<docletArtifact>
+						<groupId>org.asciidoctor</groupId>
+						<artifactId>asciidoclet</artifactId>
+						<version>1.5.4</version>
+					</docletArtifact>
+			        <additionalparam>
+			            --base-dir ${project.basedir}
+			            --attribute "name=${project.name}"
+			            --attribute "version=${project.version}"
+			        </additionalparam>
+				</configuration>
+			</plugin>
+
+	        <plugin>
+	            <groupId>org.apache.maven.plugins</groupId>
+	            <artifactId>maven-surefire-plugin</artifactId>
+	            <configuration>
+                    <includes>
+                        <include>**/*Tests.java</include>
+                    </includes>
+                    <excludes>
+                        <exclude>**/Abstract*.java</exclude>
+                    </excludes>
+	            </configuration>
+	        </plugin>
+
+	        <plugin>
+	            <groupId>org.asciidoctor</groupId>
+	            <artifactId>asciidoctor-maven-plugin</artifactId>
+	            <version>1.5.2</version>
+	            <executions>
+	                <execution>
+	                    <id>generate-docs</id>
+	                    <phase>package</phase>
+	                    <goals>
+	                        <goal>process-asciidoc</goal>
+	                    </goals>
+	                    <configuration>
+	                        <backend>html</backend>
+	                        <doctype>book</doctype>
+	                        <attributes>
+                                <toc>left</toc>
+	                            <snippets>${snippetsDirectory}</snippets>
+	                        </attributes>
+	                    </configuration>
+	                </execution>
+	            </executions>
+	        </plugin>
+
+			<plugin>
+			    <artifactId>maven-resources-plugin</artifactId>
+			    <executions>
+			        <execution>
+			            <id>copy-resources</id>
+			            <phase>prepare-package</phase>
+			            <goals>
+			                <goal>copy-resources</goal>
+			            </goals>
+			            <configuration>
+			                <outputDirectory>
+			                    ${project.build.outputDirectory}/static/docs
+			                </outputDirectory>
+			                <resources>
+			                    <resource>
+			                        <directory>
+			                            ${project.build.directory}/generated-docs
+			                        </directory>
+			                    </resource>
+			                </resources>
+			            </configuration>
+			        </execution>
+			    </executions>
+			</plugin>
+
+            <!-- Plugin to generate a Docker image for running this app -->
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>${docker.maven.plugin.version}</version>
+                <configuration>
+                    <serverId>docker.io</serverId>
+                    <registryUrl>https://index.docker.io/v1/</registryUrl>
+                    <imageName>${docker.image.prefix}/${project.artifactId}</imageName>
+                    <dockerDirectory>src/main/docker</dockerDirectory>
+                    <forceTags>true</forceTags>
+                    <imageTags>
+                        <imageTag>sp2</imageTag>
+                    </imageTags>
+                    <resources>
+                        <resource>
+                            <targetPath>/</targetPath>
+                            <directory>${project.build.directory}</directory>
+                            <include>${project.build.finalName}.jar</include>
+                        </resource>
+                    </resources>
+                </configuration>
+            </plugin>
+
+        </plugins>
+    </build>
+
+</project>

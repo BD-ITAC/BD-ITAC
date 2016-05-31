@@ -1,0 +1,25 @@
+{
+  "name": "BD-ITAC",
+  "description": "Projeto Interdisciplinar BD-ITAC (Big Data and IoT for Alerts and Crisis)",
+  "main": "bower",
+  "authors": [
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/BD-ITAC",
+  "moduleType": [],
+  "private": false,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "1.5.0",
+    "angular-route": "^1.5.0",
+    "angular-bootstrap": "^1.1.2",
+    "angular-toastr": "^1.7.0",
+    "angular-animate": "^1.5.0"
+  }
+}
