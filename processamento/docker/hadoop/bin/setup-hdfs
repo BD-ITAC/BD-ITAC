@@ -1,0 +1,19 @@
+#! /bin/bash
+
+# Make sure only root can run the script
+if [[ $EUID -ne 0 ]]; then
+   echo "This script must be run as root" 1>&2
+   exit 1
+fi
+
+service ssh start
+
+su -l $HADOOP_USER -c "$HADOOP_HOME/bin/hdfs namenode -format"
+
+su -l $HADOOP_USER -c "$HADOOP_HOME/sbin/start-dfs.sh"
+
+su -l $HADOOP_USER -c "$HADOOP_HOME/bin/hdfs dfs -mkdir -p /user/$HADOOP_USER"
+su -l $HADOOP_USER -c "$HADOOP_HOME/bin/hdfs dfs -mkdir -p /tmp"
+su -l $HADOOP_USER -c "$HADOOP_HOME/bin/hdfs dfs -chmod -R 1777 /tmp"
+
+su -l $HADOOP_USER -c "$HADOOP_HOME/sbin/stop-dfs.sh"
