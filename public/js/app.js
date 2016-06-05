@@ -20,9 +20,9 @@ function ($routeProvider, $httpProvider, $compileProvider) {
             controller: 'DashBoardController',
             requireLogin: true
         })
-        .when('/crisis', {
-            templateUrl: 'part-views/crisis.html',
-            controller: 'CrisisController',
+        .when('/avisos', {
+            templateUrl: 'part-views/avisos.html',
+            controller: 'AvisosController',
             requireLogin: true
         })
         .when('/classification', {
