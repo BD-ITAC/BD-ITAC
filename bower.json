@@ -20,6 +20,8 @@
     "ngstorage": "^0.3.10",
     "bootstrap": "^3.3.6",
     "angular-toastr": "^1.7.0",
-    "angular-bootstrap-lightbox": "^0.12.0"
+    "angular-bootstrap-lightbox": "^0.12.0",
+    "angular-modal-service": "^0.9.10",
+    "checklist-model": "^0.9.0"
   }
 }

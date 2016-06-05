@@ -1,12 +1,32 @@
 <div ng-controller="CrisisController as vm">
-  <ol class="breadcrumb">
-  <li><a href="#">Home</a></li>
-  <li><a href="#">Crisis</a></li>
-  <li class="active">List</li>
-</ol>
+    <ol class="breadcrumb">
+      <li><a href="#">Home</a></li>
+      <li><a href="#">Crisis</a></li>
+      <li class="active">List</li>
+    </ol>
+    <hr/>
+  <div name="Filtros" class="form-inline">
+    <div class="form-group">
+      <label for="searchBox"> Pesquisar: </label>
+      <input  class="form-control" type="text" ng-model="searchBoxData.$" id="searchBox"
+              placeholder="Pesquisar...">
+    </div>
+    <div class="form-group">
+        <label for="searchStatusBox"> Filtrar Status: </label>
+        <select class="form-control" name="searchStatusBox" id="searchStatusBox" ng-model="searchBoxData.nome">
+          <option value="">   </option>
+          <option ng-repeat="row in CrisisListCollection">{{row.nome}}</option>
+        </select>
+    </div>
+    <div id="modalCriarCrise" class="form-group pull-right">
+      <a ng-click="abrirCadastraCriseModal()" role="button" class="btn btn-danger" data-dismiss="modal">Criar Crise</a>
+    </div>
+  </div>
+  <hr/>
   <table width="100%" class="table table-striped">
    <thead>
      <tr>
+       <th> </th>
        <th>Nome</th>
        <th>Telefone</th>
        <th>E-Mail</th>
@@ -17,7 +37,12 @@
      </tr>
    </thead>
    <tbody>
-    <tr ng-repeat="row in CrisisListCollection">
+    <tr ng-repeat="row in CrisisListCollection | filter:searchBoxData">
+      <td>
+        <!--<label class="checkbox" for="{{row.cri_id}}">-->
+          <input type="checkbox" checklist-model="avisosSelecionados" checklist-value="row.id"/>
+        <!--</label>-->
+      </td>
       <td>{{row.nome}}</td>
       <td>{{row.telefone}}</td>
       <td>{{row.email}}</td>

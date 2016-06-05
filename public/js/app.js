@@ -1,4 +1,7 @@
-var app = angular.module('bditac', ['ui.bootstrap','bootstrapLightbox','ngRoute', 'ngStorage','toastr']);
+var app = angular.module('bditac', ['ui.bootstrap',
+       'bootstrapLightbox',
+       'ngRoute', 'ngStorage','toastr','angularModalService',
+       'checklist-model']);
 
 app.config(['$routeProvider','$httpProvider', '$compileProvider',
 function ($routeProvider, $httpProvider, $compileProvider) {
