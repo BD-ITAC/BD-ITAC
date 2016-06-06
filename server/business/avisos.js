@@ -2,24 +2,24 @@ var str = require('string-validator');
 
 module.exports = function(app){
   var business = {};
-  var crisisDAO = app.dao.crisis;
+  var avisosDAO = app.dao.avisos;
 
   /**
   * Realiza registro de uma nova crise
   * @author Danilo Ramalho
-  * @param objeto Crisis
+  * @param objeto avisos
   */
-  business.save = function(crisis, callback){
+  business.save = function(avisos, callback){
     //valida preenchimento de campos obrigatórios
     var ValidEmail = str.isEmail();
 
-    if((!crisis.descricao || !crisis.nome || !crisis.email || !crisis.telefone
-      || !crisis.latitude || !crisis.longitude ||
-      !crisis.categoria) || !(crisis.categoria >= 0 && crisis.categoria <= 8)
-      || !(ValidEmail(crisis.email))){
+    if((!avisos.descricao || !avisos.nome || !avisos.email || !avisos.telefone
+      || !avisos.latitude || !avisos.longitude ||
+      !avisos.categoria) || !(avisos.categoria >= 0 && avisos.categoria <= 8)
+      || !(ValidEmail(avisos.email))){
         callback({success: false, message: 'Invalid value data fields.', validationError:true});
       }else{
-        crisisDAO.save(crisis, function(err, result){
+        avisosDAO.save(avisos, function(err, result){
             if(err){
               callback({success: false, message: err}, null);
             }else{
@@ -33,13 +33,13 @@ module.exports = function(app){
   * Pesquisa alertas proximos a localidade do usuario
 */
 
- business.nearbyAlerts = function(crisis, callback){
+ business.nearbyAlerts = function(avisos, callback){
 
     //valida preenchimento de campos obrigatórios
-    if(!crisis.latitude || !crisis.longitude || !crisis.raio ){
+    if(!avisos.latitude || !avisos.longitude || !avisos.raio ){
         callback({success: false, message: 'Invalid value data fields.'});
       }else{
-        crisisDAO.nearbyAlerts(crisis, function(err, result){
+        avisosDAO.nearbyAlerts(avisos, function(err, result){
             if(err){
               callback({success: false, message: err}, null);
             }else{

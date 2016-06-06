@@ -1,16 +1,16 @@
 var db = require("../db/transacao");
 
 
-var crisisDAO = null;
+var avisosDAO = null;
 
 // Inicialização do objeto, obrigando passagem de POOL como parametro.
-// Retorna um objeto crisisDAO implementado logo em seguida.
+// Retorna um objeto avisoDAO implementado logo em seguida.
 module.exports = function(app) {
-    return crisisDAO(app.db.conexao);
+    return avisosDAO(app.db.conexao);
 };
 
 
-crisisDAO = function(pool) {
+avisosDAO = function(pool) {
     var self = this;
     if (pool !== null) {
         this.pool = pool;
@@ -19,13 +19,13 @@ crisisDAO = function(pool) {
   var dao = {};
 
   /**
-  * Realiza registro de uma nova crise
+  * Realiza registro de um novo aviso
   * @author Danilo Ramalho
-  * @param objeto crisis
+  * @param objeto avisos
   */
-  dao.save = function(crisis, callback){//callback(null, {status: 'ok'});
+  dao.save = function(avisos, callback){//callback(null, {status: 'ok'});
 
-    var dados = getDados(crisis);
+    var dados = getDados(avisos);
     //Modificado por Edizon: utilizando transações por conta dos campos
     // auto incrementado.
     var query =
@@ -125,25 +125,25 @@ crisisDAO = function(pool) {
 
 
 
-  function getDados(crisis){
+  function getDados(avisos){
     var dados={
-              cri_nome: crisis.nome,
-              cri_telefone: crisis.telefone,
-              cri_email: crisis.email,
-              cri_descricao: crisis.descricao,
-              cri_categoria: crisis.categoria,
-              cri_latitude: crisis.latitude,
-              cri_longitude: crisis.longitude,
+              cri_nome: avisos.nome,
+              cri_telefone: avisos.telefone,
+              cri_email: avisos.email,
+              cri_descricao: avisos.descricao,
+              cri_categoria: avisos.categoria,
+              cri_latitude: avisos.latitude,
+              cri_longitude: avisos.longitude,
               cri_dh_inicio: new Date(),
               cri_ativo: true,
-              cri_pic1: new Buffer(crisis.fotografia, 'base64'),
+              cri_pic1: new Buffer(avisos.fotografia, 'base64'),
               cri_pic2: '',
               cri_pic3: ''
             }
     return dados;
   }
 
-  dao.listCrisis = function(callback){
+  dao.listAvisos = function(callback){
     var query =
     "select cri.cri_id  as cri_id,             \
              usu.usu_nm as cri_nome,       \
@@ -172,12 +172,12 @@ crisisDAO = function(pool) {
       if(err){
         callback(err,{});
       }else{
-        callback(null, getCrises(rows));
+        callback(null, getAvisos(rows));
       }
     });
   };
 
-  function getCrises(rows){
+  function getAvisos(rows){
     var crises = [];
     for(c in rows){
 

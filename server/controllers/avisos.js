@@ -1,17 +1,17 @@
 module.exports = function(app){
   var controller = {};
-  var crisisBusiness = app.business.crisis;
-  var indicatorsDAO = app.dao.crisis;
+  var avisosBusiness = app.business.avisos;
+  var indicatorsDAO = app.dao.avisos;
 
   /**
-  * Registra uma nova crise
+  * Registra um novo aviso
   * @author Danilo Ramalho
   * @param req HTTP request
   * @param res HHTP response
   */
-  controller.saveCrisis = function(req, res, next){
+  controller.saveAvisos = function(req, res, next){
 
-        crisisBusiness.save(req.body, function(err, data) {
+        avisosBusiness.save(req.body, function(err, data) {
           if(err) {
             var status = err.validationError ? 400 : 500;
             res.status(status).json(err);
@@ -24,11 +24,11 @@ module.exports = function(app){
 
 
   /***
-   * Retorno das crisis
+   * Retorno dos avisos
    */
-   controller.listCrisis = function(req,res,next)
+   controller.listAvisos = function(req,res,next)
    {
-	   indicatorsDAO.listCrisis(function(err, data) {
+	   indicatorsDAO.listAvisos(function(err, data) {
 		   if(err)
 		   {
 			   res.status(500).json(err);
@@ -64,7 +64,7 @@ module.exports = function(app){
  };
 
   controller.nearbyCrisis = function(req, res, next){
-    
+
      if(!req.query.hasOwnProperty('latitude') ||
       !req.query.hasOwnProperty('longitude') ||
         !req.query.hasOwnProperty('raio')) {
@@ -84,7 +84,7 @@ module.exports = function(app){
         });
       }
  };
- 
+
 
   return controller;
 

@@ -24,19 +24,24 @@ describe('Crisis business', function() {
     };
 
 
-    var stub = sinon.stub(app.dao.crisis,'save');
-    stub.returns( function(crisis, callback){
-     return callback(null, {status: 'ok'});
+    var stub = sinon.stub(app.dao.crisis,'save', function(crisis, callback){
+
+        return callback(null, {status: 'ok'});
+
     });
 
 
      crisisBusiness.save(crisis, function(err, data) {
 
+            stub.called.should.be.equal(true);
+            data.should.have.property('status');
+            data.status.should.be.equal('oko');
+          done();
       });
 
-      stub.called.should.be.equal(true);
 
-     done();
+
+
     });
   });
 });

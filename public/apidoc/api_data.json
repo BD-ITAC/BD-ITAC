@@ -1,10 +1,10 @@
 [
   {
     "type": "get",
-    "url": "/rest/crisis",
+    "url": "/rest/avisos",
     "title": "Listar",
     "version": "1.0.0",
-    "group": "Crisis",
+    "group": "Avisos",
     "success": {
       "fields": {
         "Success 200": [
@@ -83,19 +83,19 @@
     },
     "sampleRequest": [
       {
-        "url": "/rest/crisis"
+        "url": "/rest/avisos"
       }
     ],
-    "filename": "C:/desenvolvimento/git/BD-ITAC/server/routes/crisis.js",
-    "groupTitle": "Crisis",
-    "name": "GetRestCrisis"
+    "filename": "C:/desenvolvimento/git/BD-ITAC/server/routes/avisos.js",
+    "groupTitle": "Avisos",
+    "name": "GetRestavisos"
   },
   {
     "type": "get",
-    "url": "/rest/crisis/indicators",
-    "title": "Indicadores de crises",
+    "url": "/rest/avisos/indicators",
+    "title": "Indicadores de avisos",
     "version": "1.0.0",
-    "group": "Crisis",
+    "group": "avisos",
     "success": {
       "fields": {
         "Success 200": [
@@ -104,21 +104,21 @@
             "type": "Numero",
             "optional": false,
             "field": "cadastrados",
-            "description": "Quantidade de crises cadastradas."
+            "description": "Quantidade de avisos cadastradas."
           },
           {
             "group": "Success 200",
             "type": "Numero",
             "optional": false,
             "field": "finalizados",
-            "description": "Quantidade de crises finalizadas."
+            "description": "Quantidade de avisos finalizadas."
           },
           {
             "group": "Success 200",
             "type": "Numero",
             "optional": false,
             "field": "emcurso",
-            "description": "Quantidade de crises em curso."
+            "description": "Quantidade de avisos em curso."
           }
         ]
       },
@@ -132,19 +132,19 @@
     },
     "sampleRequest": [
       {
-        "url": "/rest/crisis/indicators"
+        "url": "/rest/avisos/indicators"
       }
     ],
-    "filename": "C:/desenvolvimento/git/BD-ITAC/server/routes/crisis.js",
-    "groupTitle": "Crisis",
-    "name": "GetRestCrisisIndicators"
+    "filename": "C:/desenvolvimento/git/BD-ITAC/server/routes/avisos.js",
+    "groupTitle": "avisos",
+    "name": "GetRestavisosIndicators"
   },
   {
     "type": "get",
-    "url": "/rest/crisis/nearbycrisis?latitude=40.0&longitude=50.0&raio=1.0",
+    "url": "/rest/avisos/nearbyavisos?latitude=40.0&longitude=50.0&raio=1.0",
     "title": "Pesquisa por coordenadas",
     "version": "1.0.0",
-    "group": "Crisis",
+    "group": "avisos",
     "parameter": {
       "fields": {
         "Parameter": [
@@ -229,20 +229,20 @@
       "examples": [
         {
           "title": "Sucesso",
-          "content": "HTTP/1.1 200 OK\n{\n\t  \"_embedded\" : {\n\t    \"alertaList\" : [ {\n\t      \"descricaoResumida\" : \"Alagamento\",\n\t      \"descricaoCompleta\" : \"Deslizamento na na favela do Paraiso\",\n\t      \"categoriaAlerta\" : 0,\n\t      \"origemLatitude\" : 40.0,\n\t      \"origemLongitude\" : 50.0,\n\t      \"origemRaioKms\" : 10.0,\n\t      \"_links\" : {\n\t        \"self\" : {\n\t          \"href\" : \"http://localhost:3000/rest/crisis/nearbycrisis/16\"\n\t        }\n\t      }\n\t    }, {\n\t      \"descricaoResumida\" : \"Alagamento\",\n\t      \"descricaoCompleta\" : \"Deslizamento na na favela do Paraiso\",\n\t      \"categoriaAlerta\" : 0,\n\t      \"origemLatitude\" : 40.0,\n\t      \"origemLongitude\" : 50.0,\n\t      \"origemRaioKms\" : 10.0,\n\t      \"_links\" : {\n\t        \"self\" : {\n\t          \"href\" : \"http://localhost:3000/rest/crisis/nearbycrisis/2\"\n\t        }\n\t      }\n\t    }, {\n\t      \"descricaoResumida\" : \"Alagamento\",\n\t      \"descricaoCompleta\" : \"Crise de teste\",\n\t      \"categoriaAlerta\" : 0,\n\t      \"origemLatitude\" : 40.0,\n\t      \"origemLongitude\" : 50.0,\n\t      \"origemRaioKms\" : 10.0,\n\t      \"_links\" : {\n\t        \"self\" : {\n\t          \"href\" : \"http://localhost:3000/rest/crisis/nearbycrisis/18\"\n\t        }\n\t      }\n\t    }, {\n\t      \"descricaoResumida\" : \"Alerta de deslizamento\",\n\t      \"descricaoCompleta\" : \"Perigo de deslizamento na altura do Km 20 da rodovia Tamoios, pista Sao Jose dos Campos/Litoral\",\n\t      \"categoriaAlerta\" : 0,\n\t      \"origemLatitude\" : 40.0,\n\t      \"origemLongitude\" : 50.0,\n\t      \"origemRaioKms\" : 1.0,\n\t      \"_links\" : {\n\t        \"self\" : {\n\t          \"href\" : \"http://localhost:3000/rest/crisis/nearbycrisis/4\"\n\t        }\n\t      }\n\t    }, {\n\t      \"descricaoResumida\" : \"Alerta de teste\",\n\t      \"descricaoCompleta\" : \"Teste de alerta para verificar a funcionalidade do sistema\",\n\t      \"categoriaAlerta\" : 0,\n\t      \"origemLatitude\" : 40.0,\n\t      \"origemLongitude\" : 50.0,\n\t      \"origemRaioKms\" : 1.0,\n\t      \"_links\" : {\n\t        \"self\" : {\n\t          \"href\" : \"http://localhost:3000/rest/crisis/nearbycrisis/20\"\n\t        }\n\t      }\n\t    }, {\n\t      \"descricaoResumida\" : \"Alagamento\",\n\t      \"descricaoCompleta\" : \"Deslizamento na na favela do Paraiso\",\n\t      \"categoriaAlerta\" : 0,\n\t      \"origemLatitude\" : 40.0,\n\t      \"origemLongitude\" : 50.0,\n\t      \"origemRaioKms\" : 10.0,\n\t      \"_links\" : {\n\t        \"self\" : {\n\t          \"href\" : \"http://localhost:3000/rest/crisis/nearbycrisis/6\"\n\t        }\n\t      }\n\t    }, {\n\t      \"descricaoResumida\" : \"Alagamento\",\n\t      \"descricaoCompleta\" : \"Crise de teste\",\n\t      \"categoriaAlerta\" : 0,\n\t      \"origemLatitude\" : 40.0,\n\t      \"origemLongitude\" : 50.0,\n\t      \"origemRaioKms\" : 10.0,\n\t      \"_links\" : {\n\t        \"self\" : {\n\t          \"href\" : \"http://localhost:3000/rest/crisis/nearbycrisis/8\"\n\t        }\n\t      }\n\t    }, {\n\t      \"descricaoResumida\" : \"Alerta de teste\",\n\t      \"descricaoCompleta\" : \"Teste de alerta para verificar a funcionalidade do sistema\",\n\t      \"categoriaAlerta\" : 0,\n\t      \"origemLatitude\" : 40.0,\n\t      \"origemLongitude\" : 50.0,\n\t      \"origemRaioKms\" : 1.0,\n\t      \"_links\" : {\n\t        \"self\" : {\n\t          \"href\" : \"http://localhost:3000/rest/crisis/nearbycrisis/10\"\n\t        }\n\t      }\n\t    }, {\n\t      \"descricaoResumida\" : \"Alagamento\",\n\t      \"descricaoCompleta\" : \"Deslizamento na na favela do Paraiso\",\n\t      \"categoriaAlerta\" : 0,\n\t      \"origemLatitude\" : 40.0,\n\t      \"origemLongitude\" : 50.0,\n\t      \"origemRaioKms\" : 10.0,\n\t      \"_links\" : {\n\t        \"self\" : {\n\t          \"href\" : \"http://localhost:3000/rest/crisis/nearbycrisis/12\"\n\t        }\n\t      }\n\t    }, {\n\t      \"descricaoResumida\" : \"Alerta de deslizamento\",\n\t      \"descricaoCompleta\" : \"Perigo de deslizamento na altura do Km 20 da rodovia Tamoios, pista Sao Jose dos Campos/Litoral\",\n\t      \"categoriaAlerta\" : 0,\n\t      \"origemLatitude\" : 40.0,\n\t      \"origemLongitude\" : 50.0,\n\t      \"origemRaioKms\" : 1.0,\n\t      \"_links\" : {\n\t        \"self\" : {\n\t          \"href\" : \"http://localhost:3000/rest/crisis/nearbycrisis/14\"\n\t        }\n\t      }\n\t    } ]\n\t  }\n\t}",
+          "content": "HTTP/1.1 200 OK\n{\n\t  \"_embedded\" : {\n\t    \"alertaList\" : [ {\n\t      \"descricaoResumida\" : \"Alagamento\",\n\t      \"descricaoCompleta\" : \"Deslizamento na na favela do Paraiso\",\n\t      \"categoriaAlerta\" : 0,\n\t      \"origemLatitude\" : 40.0,\n\t      \"origemLongitude\" : 50.0,\n\t      \"origemRaioKms\" : 10.0,\n\t      \"_links\" : {\n\t        \"self\" : {\n\t          \"href\" : \"http://localhost:3000/rest/avisos/nearbyavisos/16\"\n\t        }\n\t      }\n\t    }, {\n\t      \"descricaoResumida\" : \"Alagamento\",\n\t      \"descricaoCompleta\" : \"Deslizamento na na favela do Paraiso\",\n\t      \"categoriaAlerta\" : 0,\n\t      \"origemLatitude\" : 40.0,\n\t      \"origemLongitude\" : 50.0,\n\t      \"origemRaioKms\" : 10.0,\n\t      \"_links\" : {\n\t        \"self\" : {\n\t          \"href\" : \"http://localhost:3000/rest/avisos/nearbyavisos/2\"\n\t        }\n\t      }\n\t    }, {\n\t      \"descricaoResumida\" : \"Alagamento\",\n\t      \"descricaoCompleta\" : \"Crise de teste\",\n\t      \"categoriaAlerta\" : 0,\n\t      \"origemLatitude\" : 40.0,\n\t      \"origemLongitude\" : 50.0,\n\t      \"origemRaioKms\" : 10.0,\n\t      \"_links\" : {\n\t        \"self\" : {\n\t          \"href\" : \"http://localhost:3000/rest/avisos/nearbyavisos/18\"\n\t        }\n\t      }\n\t    }, {\n\t      \"descricaoResumida\" : \"Alerta de deslizamento\",\n\t      \"descricaoCompleta\" : \"Perigo de deslizamento na altura do Km 20 da rodovia Tamoios, pista Sao Jose dos Campos/Litoral\",\n\t      \"categoriaAlerta\" : 0,\n\t      \"origemLatitude\" : 40.0,\n\t      \"origemLongitude\" : 50.0,\n\t      \"origemRaioKms\" : 1.0,\n\t      \"_links\" : {\n\t        \"self\" : {\n\t          \"href\" : \"http://localhost:3000/rest/avisos/nearbyavisos/4\"\n\t        }\n\t      }\n\t    }, {\n\t      \"descricaoResumida\" : \"Alerta de teste\",\n\t      \"descricaoCompleta\" : \"Teste de alerta para verificar a funcionalidade do sistema\",\n\t      \"categoriaAlerta\" : 0,\n\t      \"origemLatitude\" : 40.0,\n\t      \"origemLongitude\" : 50.0,\n\t      \"origemRaioKms\" : 1.0,\n\t      \"_links\" : {\n\t        \"self\" : {\n\t          \"href\" : \"http://localhost:3000/rest/avisos/nearbyavisos/20\"\n\t        }\n\t      }\n\t    }, {\n\t      \"descricaoResumida\" : \"Alagamento\",\n\t      \"descricaoCompleta\" : \"Deslizamento na na favela do Paraiso\",\n\t      \"categoriaAlerta\" : 0,\n\t      \"origemLatitude\" : 40.0,\n\t      \"origemLongitude\" : 50.0,\n\t      \"origemRaioKms\" : 10.0,\n\t      \"_links\" : {\n\t        \"self\" : {\n\t          \"href\" : \"http://localhost:3000/rest/avisos/nearbyavisos/6\"\n\t        }\n\t      }\n\t    }, {\n\t      \"descricaoResumida\" : \"Alagamento\",\n\t      \"descricaoCompleta\" : \"Crise de teste\",\n\t      \"categoriaAlerta\" : 0,\n\t      \"origemLatitude\" : 40.0,\n\t      \"origemLongitude\" : 50.0,\n\t      \"origemRaioKms\" : 10.0,\n\t      \"_links\" : {\n\t        \"self\" : {\n\t          \"href\" : \"http://localhost:3000/rest/avisos/nearbyavisos/8\"\n\t        }\n\t      }\n\t    }, {\n\t      \"descricaoResumida\" : \"Alerta de teste\",\n\t      \"descricaoCompleta\" : \"Teste de alerta para verificar a funcionalidade do sistema\",\n\t      \"categoriaAlerta\" : 0,\n\t      \"origemLatitude\" : 40.0,\n\t      \"origemLongitude\" : 50.0,\n\t      \"origemRaioKms\" : 1.0,\n\t      \"_links\" : {\n\t        \"self\" : {\n\t          \"href\" : \"http://localhost:3000/rest/avisos/nearbyavisos/10\"\n\t        }\n\t      }\n\t    }, {\n\t      \"descricaoResumida\" : \"Alagamento\",\n\t      \"descricaoCompleta\" : \"Deslizamento na na favela do Paraiso\",\n\t      \"categoriaAlerta\" : 0,\n\t      \"origemLatitude\" : 40.0,\n\t      \"origemLongitude\" : 50.0,\n\t      \"origemRaioKms\" : 10.0,\n\t      \"_links\" : {\n\t        \"self\" : {\n\t          \"href\" : \"http://localhost:3000/rest/avisos/nearbyavisos/12\"\n\t        }\n\t      }\n\t    }, {\n\t      \"descricaoResumida\" : \"Alerta de deslizamento\",\n\t      \"descricaoCompleta\" : \"Perigo de deslizamento na altura do Km 20 da rodovia Tamoios, pista Sao Jose dos Campos/Litoral\",\n\t      \"categoriaAlerta\" : 0,\n\t      \"origemLatitude\" : 40.0,\n\t      \"origemLongitude\" : 50.0,\n\t      \"origemRaioKms\" : 1.0,\n\t      \"_links\" : {\n\t        \"self\" : {\n\t          \"href\" : \"http://localhost:3000/rest/avisos/nearbyavisos/14\"\n\t        }\n\t      }\n\t    } ]\n\t  }\n\t}",
           "type": "json"
         }
       ]
     },
-    "filename": "C:/desenvolvimento/git/BD-ITAC/server/routes/crisis.js",
-    "groupTitle": "Crisis",
-    "name": "GetRestCrisisNearbycrisisLatitude400Longitude500Raio10"
+    "filename": "C:/desenvolvimento/git/BD-ITAC/server/routes/avisos.js",
+    "groupTitle": "avisos",
+    "name": "GetRestavisosNearbyavisosLatitude400Longitude500Raio10"
   },
   {
     "type": "post",
-    "url": "/rest/crisis",
+    "url": "/rest/avisos",
     "title": "Cadastrar",
-    "group": "Crisis",
+    "group": "avisos",
     "version": "1.0.0",
     "parameter": {
       "fields": {
@@ -362,8 +362,8 @@
         }
       ]
     },
-    "filename": "C:/desenvolvimento/git/BD-ITAC/server/routes/crisis.js",
-    "groupTitle": "Crisis",
-    "name": "PostRestCrisis"
+    "filename": "C:/desenvolvimento/git/BD-ITAC/server/routes/avisos.js",
+    "groupTitle": "avisos",
+    "name": "PostRestavisos"
   }
 ]
