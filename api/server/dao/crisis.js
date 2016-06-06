@@ -237,7 +237,6 @@ crisisDAO = function(pool) {
      var calcRaio = (crisis.raio*0.001)/100;
 
      self.pool.query('SELECT * FROM crise where ST_AsText(ST_Intersection(cri_lng_lat, ST_Buffer(POINT(?, ?), ?))) is not null', [crisis.longitude, crisis.latitude, calcRaio], function(err, rows){
-    // self.pool.query('SELECT * FROM crisis WHERE latitude = ? AND longitude = ? AND raio = ?', [crisis.latitude, crisis.longitude, crisis.raio], function(err, rows){
      if(err){
        return callback(err,{});
       }else{
@@ -267,6 +266,16 @@ crisisDAO = function(pool) {
   }
 
   })
+  };
+
+  dao.listType = function(callback){
+    self.pool.query('SELECT * FROM crise_tipo', function(err, rows){
+      if(err){
+        return callback(err, null);
+      }else{
+        return callback(null, rows);
+      }
+    });
   };
 
   return dao;
