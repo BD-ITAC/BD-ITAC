@@ -1,0 +1,11 @@
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch SP2_TS03
+# Your branch is up-to-date with 'origin/SP2_TS03'.
+#
+# Changes to be committed:
+#	modified:   public/js/controllers/crisisCtrl.js
+#	modified:   views/index.ejs
+#
+Lista de crisis cadastradas
