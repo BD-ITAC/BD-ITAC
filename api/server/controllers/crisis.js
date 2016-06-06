@@ -1,7 +1,7 @@
 module.exports = function(app){
   var controller = {};
   var crisisBusiness = app.business.crisis;
-  var indicatorsDAO = app.dao.crisis;
+  var crisisDAO = app.dao.crisis;
 
   /**
   * Registra uma nova crise
@@ -28,7 +28,7 @@ module.exports = function(app){
    */
    controller.listCrisis = function(req,res,next)
    {
-	   indicatorsDAO.listCrisis(function(err, data) {
+	   crisisDAO.listCrisis(function(err, data) {
 		   if(err)
 		   {
 			   res.status(500).json(err);
@@ -50,7 +50,7 @@ module.exports = function(app){
   * Retorno indicadores
   */
   controller.listIndicators = function(req, res, next){
-    indicatorsDAO.listAll(function(err, data) {
+    crisisDAO.listAll(function(err, data) {
       if(err) {
           res.status(500).json(err);
       }else{
@@ -64,7 +64,7 @@ module.exports = function(app){
  };
 
   controller.nearbyCrisis = function(req, res, next){
-    
+
      if(!req.query.hasOwnProperty('latitude') ||
       !req.query.hasOwnProperty('longitude') ||
         !req.query.hasOwnProperty('raio')) {
@@ -84,7 +84,16 @@ module.exports = function(app){
         });
       }
  };
- 
+
+ controller.listType = function(req, res, next){
+   crisisDAO.listType(function(err, data){
+     if(err){
+       res.status(500).json(err);
+     }else{
+       res.json(data);
+     }
+   });
+ };
 
   return controller;
 

@@ -1,4 +1,8 @@
-var app = angular.module('bditac', ['ui.bootstrap','bootstrapLightbox','ngRoute', 'ngStorage','toastr']);
+var app = angular.module('bditac', ['ui.bootstrap',
+       'bootstrapLightbox',
+       'ngRoute', 'ngStorage','toastr','angularModalService',
+       'checklist-model',
+     'angular.filter']);
 
 app.config(['$routeProvider','$httpProvider', '$compileProvider',
 function ($routeProvider, $httpProvider, $compileProvider) {
@@ -17,9 +21,9 @@ function ($routeProvider, $httpProvider, $compileProvider) {
             controller: 'DashBoardController',
             requireLogin: true
         })
-        .when('/crisis', {
-            templateUrl: 'part-views/crisis.html',
-            controller: 'CrisisController',
+        .when('/avisos', {
+            templateUrl: 'part-views/avisos.html',
+            controller: 'AvisosController',
             requireLogin: true
         })
         .when('/classification', {
