@@ -1,0 +1,35 @@
+{
+  "name": "BD-ITAC",
+  "version": "0.0.1",
+  "private": true,
+  "description": "TEAM 3 - Api BD-ITAC",
+  "apidoc": {
+    "title": "Api doc BD-ITAC",
+    "url": "http://200.144.14.28"
+  },
+  "scripts": {
+    "start": "node app.js",
+    "test": "./node_modules/.bin/mocha --recursive --reporter spec"
+  },
+  "dependencies": {
+    "atob": "^2.0.3",
+    "blob": "0.0.4",
+    "body-parser": "^1.15.0",
+    "ejs": "^1.0.0",
+    "express": "^4.13.4",
+    "express-load": "^1.1.15",
+    "express-myconnection": "^1.0.4",
+    "express-session": "^1.13.0",
+    "jade": "*",
+    "mysql": "^2.10.2",
+    "string-validator": "^1.0.5"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-api-doc": "^1.1.0",
+    "mocha": "^2.4.5",
+    "should": "^8.3.0",
+    "sinon": "^1.17.3",
+    "supertest": "^1.2.0"
+  }
+}
