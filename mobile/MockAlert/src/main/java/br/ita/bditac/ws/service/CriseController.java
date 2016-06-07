@@ -22,7 +22,6 @@ import br.ita.bditac.model.Crise;
 import br.ita.bditac.model.Message;
 import br.ita.bditac.ws.support.MessageResource;
 import br.ita.bditac.ws.support.MessageResourceAssembler;
-import br.ita.bditac.ws.support.ReverseEnum;
 
 @RestController
 @ExposesResourceFor(Crise.class)
@@ -39,9 +38,8 @@ public class CriseController {
 	        Crise crise = AlertaDAO.adicionarCrise(body);
 	        
 	        // TODO - Simulação do gerenciamento de crises - o processo que torna o cadastramento de crise num alerta
-	        ReverseEnum<Categorias> reverseCategoria = new ReverseEnum<>(Categorias.class);
 	        Alerta alerta = new Alerta(
-	        		reverseCategoria.get(crise.getCategoria()).name(),
+	        		Categorias.getCategoria(crise.getCategoria()),
 	        		crise.getDescricao(),
 	        		crise.getCategoria(),
 	        		crise.getLatitude(),

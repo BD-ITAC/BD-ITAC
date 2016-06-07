@@ -67,11 +67,9 @@ import com.fasterxml.jackson.datatype.joda.JodaModule;
 import br.ita.bditac.app.Application;
 import br.ita.bditac.model.Alerta;
 import br.ita.bditac.model.Crise;
-import br.ita.bditac.model.Indicadores;
 import br.ita.bditac.ws.support.AlertaResource;
 import br.ita.bditac.ws.support.AlertaResources;
 import br.ita.bditac.ws.support.CriseResource;
-import br.ita.bditac.ws.support.IndicadoresResource;
 import br.ita.bditac.ws.support.MessageResource;
 
 /**
@@ -88,12 +86,6 @@ import br.ita.bditac.ws.support.MessageResource;
 public class MockAlertTests {
 
     private static final double DELTA = 1e-6;
-
-    private static final String IND_CADASTRADO = "Cadastrados";
-
-    private static final String IND_FINALIZADOS = "Finalizados";
-
-    private static final String IND_ABERTOS = "Em andamento";
     
     private static String _foto = null;
 
@@ -452,7 +444,7 @@ public class MockAlertTests {
 
         List<Alerta> alertas = getRestTemplate().getForObject(alertaURL, AlertaResources.class, params).unwrap();
 
-        assertThat(alertas.get(0).getDescricaoResumida()).isEqualTo("Alagamento");
+        assertThat(alertas.get(1).getDescricaoResumida()).isEqualTo("Alerta de deslizamento");
     }
 
     /**
@@ -498,103 +490,6 @@ public class MockAlertTests {
 
         ResponseEntity<AlertaResources> resources = getRestTemplate().getForEntity(alertaURL, AlertaResources.class, params);
         assertThat(resources.getStatusCode() == HttpStatus.NOT_FOUND);
-    }
-
-
-    /**
-     *
-     * = TS02-US09
-     * 
-     * == Asserção:
-     *
-     * Testa a inclusão de um grupo de indicadores usando o seriço de Alertas:
-     *
-     * == Dados:
-     *
-     * N/A.
-     *
-     * == Execução:
-     *
-     * Uma chamada ao serviço de Alertas.
-     *
-     * == Resultado esperado:
-     *
-     * Uma estrutura de dados com os dados dos indicadores.
-     *
-     * === Estrutura de dados
-     *
-     * [source,java]
-     * --
-     *	Indicadores indicadoresRequest = new Indicadores();
-     *	indicadoresRequest.addIndicador("Cadastrados", 31);
-     *	indicadoresRequest.addIndicador("Finalizados", 19);
-     *	indicadoresRequest.addIndicador("Em andamento", 6);
-     * --
-     *
-     */
-    @Test
-    public void test109PostIndicadores() throws Exception {
-    	String indicadoresURL = getBaseUrl() + "/indicadores/";
-
-    	Indicadores indicadoresRequest = new Indicadores();
-    	indicadoresRequest.addIndicador("Cadastrados", 31);
-    	indicadoresRequest.addIndicador("Finalizados", 19);
-    	indicadoresRequest.addIndicador("Em andamento", 6);
-
-        ResponseEntity<MessageResource> indicadoresResponseEntity =  getRestTemplate().postForEntity(indicadoresURL, new HttpEntity<Indicadores>(indicadoresRequest), MessageResource.class);
-
-        assertThat(indicadoresResponseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
-    }
-    /**
-     *
-     * = TS02-US09
-     * 
-     * == Asserção:
-     *
-     * Testa a obtenção dos indicadores de Alertas:
-     *
-     * == Dados:
-     *
-     * Não se aplica.
-     *
-     * == Execução:
-     *
-     * Uma chamada ao serviço de Alertas.
-     *
-     * == Resultado esperado:
-     *
-     * Uma estrutura de dados com os dados dos indicadores.
-     *
-     * === Estrutura de dados
-     *
-     * [source,java]
-     * --
-     *	Indicadores indicadoresRequest = new Indicadores();
-     *	indicadoresRequest.addIndicador("Cadastrados", 31);
-     *	indicadoresRequest.addIndicador("Finalizados", 19);
-     *	indicadoresRequest.addIndicador("Em andamento", 6);
-     * --
-     *
-     */
-    @Test
-    public void test110GetIndicadores() throws URISyntaxException {
-        String indicadoresURL = getBaseUrl() + "/indicadores";
-
-        ResponseEntity<IndicadoresResource> indicadoresResponseEntity = getRestTemplate().getForEntity(indicadoresURL, IndicadoresResource.class);
-
-        assertThat(indicadoresResponseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
-
-        Indicadores indicadoresResponse = indicadoresResponseEntity.getBody().getContent();
-
-    	Indicadores indicadoresRequest = new Indicadores();
-    	indicadoresRequest.addIndicador("Cadastrados", 31);
-    	indicadoresRequest.addIndicador("Finalizados", 19);
-    	indicadoresRequest.addIndicador("Em andamento", 6);
-
-    	assertThat(indicadoresResponse.getIndicadores().size()).isEqualTo(indicadoresRequest.getIndicadores().size());
-    	assertThat(indicadoresResponse.getIndicador(IND_CADASTRADO)).isEqualTo(indicadoresRequest.getIndicador(IND_CADASTRADO));
-        assertThat(indicadoresResponse.getIndicador(IND_FINALIZADOS)).isEqualTo(indicadoresRequest.getIndicador(IND_FINALIZADOS));
-        assertThat(indicadoresResponse.getIndicador(IND_ABERTOS)).isEqualTo(indicadoresRequest.getIndicador(IND_ABERTOS));
     }
     
     /**
@@ -711,31 +606,26 @@ public class MockAlertTests {
     }
 
     @Test
-    public void test904PostAlerta() throws Exception {
-        Alerta alerta = new Alerta(
-            "Alerta de teste",
-            "Teste de alerta para verificar a funcionalidade do sistema",
-            0,
-            40.0D,
-            50.0D,
-            1.0D);
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
-        ObjectWriter writer = mapper.writer().withDefaultPrettyPrinter();
-        String alertaJson = writer.writeValueAsString(alerta);
-
-        this.mvc.perform(post(getBaseUrl() + "/alerta")
-            .contentType(MediaTypes.HAL_JSON_VALUE)
-        	.content(alertaJson))
-            .andExpect(status().isCreated())
-            .andDo(document("alerta/post",
-            	preprocessResponse(prettyPrint()),
-                responseFields(
-                    fieldWithPath("id").type(JsonFieldType.NUMBER).description("Identificação da mensagem"),
-                    fieldWithPath("type").type(JsonFieldType.STRING).description("Tipo da mensagem (INFO, WARNING, ERROR)"),
-                    fieldWithPath("status").type(JsonFieldType.STRING).description("Código de estado do sistema"),
-                    fieldWithPath("description").type(JsonFieldType.STRING).description("Descrição da mensagem"),
-                    fieldWithPath("info").type(JsonFieldType.STRING).description("Informações adicionais"))));
+    public void test904GetAlerta() throws Exception {
+        this.mvc.perform(get(getBaseUrl() + "/alerta/id/{id}", 2))
+        .andExpect(status().isOk())
+        .andDo(document("alerta/id",
+            pathParameters(
+            	parameterWithName("id").description("Identificador do alerta no sistema"))));
+    this.mvc.perform(get(getBaseUrl() + "alerta/id/2")
+        .accept(MediaTypes.HAL_JSON_VALUE))
+        .andExpect(status().isOk())
+        .andDo(document("alerta/id",
+        	preprocessResponse(prettyPrint()),
+            responseFields(
+                fieldWithPath("id").type(JsonFieldType.NUMBER).description("Identificação do alerta no sistema"),
+                fieldWithPath("descricaoResumida").type(JsonFieldType.STRING).description("Breve descrição do alerta"),
+                fieldWithPath("descricaoCompleta").type(JsonFieldType.STRING).description("Descrição detalhada do alerta"),
+                fieldWithPath("categoriaAlerta").type(JsonFieldType.STRING).description("Indica o tipo de alerta"),
+                fieldWithPath("origemLatitude").type(JsonFieldType.NUMBER).description("Latitude do ponto de origem do alerta"),
+                fieldWithPath("origemLongitude").type(JsonFieldType.NUMBER).description("Longitude do ponto de origem do alerta"),
+                fieldWithPath("origemRaioKms").type(JsonFieldType.NUMBER).description("Área de abrangência do alerta em Kms"),
+    			fieldWithPath("_links.self.href").type(JsonFieldType.STRING).description("URI do link para o alerta"))));
     }
 
     @Test
@@ -754,6 +644,7 @@ public class MockAlertTests {
             .andDo(document("alerta/getCoords",
             	preprocessResponse(prettyPrint()),
                 responseFields(
+                    fieldWithPath("_embedded.alertaList[].id").type(JsonFieldType.NUMBER).description("Identificação do alerta no sistema"),
                     fieldWithPath("_embedded.alertaList[].descricaoResumida").type(JsonFieldType.STRING).description("Breve descrição do alerta"),
                     fieldWithPath("_embedded.alertaList[].descricaoCompleta").type(JsonFieldType.STRING).description("Descrição detalhada do alerta"),
                     fieldWithPath("_embedded.alertaList[].categoriaAlerta").type(JsonFieldType.STRING).description("Indica o tipo de alerta"),
@@ -761,6 +652,26 @@ public class MockAlertTests {
                     fieldWithPath("_embedded.alertaList[].origemLongitude").type(JsonFieldType.NUMBER).description("Longitude do ponto de origem do alerta"),
                     fieldWithPath("_embedded.alertaList[].origemRaioKms").type(JsonFieldType.NUMBER).description("Área de abrangência do alerta em Kms"),
                     fieldWithPath("_embedded.alertaList[]._links.self.href").type(JsonFieldType.STRING).description("URI do link para o alerta"))));
+    }
+    
+    @Test
+    public void test910GetIndicadores() throws Exception {
+    	this.mvc.perform(get(getBaseUrl() + "/indicadores/latitude/{latitude}/longitude/{longitude}/raio/{raio}", 40.0, 50.0, 1.0D))
+    		.andExpect(status().isOk())
+    		.andDo(document("indicadores",
+                    pathParameters(
+                            parameterWithName("latitude").description("Latitude do ponto de origem do alerta"),
+                            parameterWithName("longitude").description("Longitude do ponto de origem do alerta"),
+                            parameterWithName("raio").description("Área de abrangência do alerta em Kms"))));
+        this.mvc.perform(get(getBaseUrl() + "indicadores/latitude/40.0/longitude/50.0/raio/1.0")
+                .accept(MediaTypes.HAL_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andDo(document("indicadores",
+                	preprocessResponse(prettyPrint()),
+                    responseFields(
+                        fieldWithPath("indicadores.Encerrados").type(JsonFieldType.STRING).description("Este é um exemplo de indicador que pode ser apresentado pelo sistema - mostra crises encerradas no sistema atualmente"),
+                        fieldWithPath("indicadores.Abertos").type(JsonFieldType.STRING).description("Exemplo de indicador do sistema - mostra crises que foram abertas"),
+                        fieldWithPath("indicadores.Em andamento").type(JsonFieldType.STRING).description("Exemplo de indicador do sistema - mostra crise em andamento"))));
     }
 
 }

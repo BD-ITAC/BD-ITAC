@@ -18,11 +18,17 @@ public class AlertaDAO {
 
     private static Map<Integer, Message> _messages = new HashMap<Integer, Message>();
     
-    private static Indicadores _indicadores;
-    
     static {
         _messages.put(1, new Message(1, Message.Type.INFO, "001", "Ok", "Everything is all right!"));
         _messages.put(2, new Message(2, Message.Type.ERROR, "999", "Error", "Something went very badly"));
+        
+        Indicadores.addIndicador("Abertos", 5);
+        Indicadores.addIndicador("Em andamento", 1);
+        Indicadores.addIndicador("Encerrados", 4);
+        
+        Categorias.addCategoria(1, "Alagamento");        
+        Categorias.addCategoria(2, "Incêndio");        
+        Categorias.addCategoria(3, "Deslizamento");        
     }
 
     public static Alerta adicionarAlerta(Alerta alerta) {
@@ -95,22 +101,17 @@ public class AlertaDAO {
         return crise;
     }
     
-    public static Indicadores adicionarIndicador(String nome, int valor) {
-    	_indicadores.addIndicador(nome, valor);
-    	
-    	return _indicadores;
+    public static void adicionarIndicador(String nome, int valor) {
+    	Indicadores.addIndicador(nome, valor);
     }
     
-    public static Indicadores adicionarIndicadores(Indicadores indicadores) {
-    	_indicadores = indicadores;
-    	
-    	return _indicadores;
+    public static Indicadores obterIndicadores(double latitude, double longitude, double raio) {
+    	return new Indicadores();
     }
     
-    public static Indicadores obterIndicadores() {
-    	return _indicadores;
+    public static Categorias obterCategorias() {
+    	return new Categorias();
     }
-    
     
     public static Message obterMessage(int id) {
         Message message = _messages.get(id);

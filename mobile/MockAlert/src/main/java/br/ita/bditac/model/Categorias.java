@@ -1,30 +1,25 @@
 package br.ita.bditac.model;
 
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
-public enum Categorias {
+public class Categorias implements Serializable {
 
-	Alagamento("Alagamento"),
-	Incendio("Incêndio"),
-	AcidenteVeicular("Acidente Veicular"),
-	AcidenteAereo("Acidente Aéreo"),
-	Assassinato("Assassinato"),
-	Roubo("Roubo"),
-	Terremoto("Terremoto"),
-	Desmoronamento("Desmoronamento"),
-	Tiroteio("Tiroteio");
+    private static final long serialVersionUID = 1L;
 	
-	private final String name;
+	private static Map<Integer, String> categorias = new HashMap<Integer, String>();
 	
-	private Categorias(String name) {
-		this.name = name;
+	public static void addCategoria(int id, String nome) {
+		categorias.put(id, nome);
 	}
 	
-	public boolean equalsName(String otherName) {
-		return (otherName == null) ? false : name.equals(otherName);
+	public static String getCategoria(int id) {
+		return categorias.get(id);
 	}
 	
-	public String toString() {
-		return this.name;
+	public Map<Integer, String> getCategorias() {
+		return categorias;
 	}
-	
+
 }

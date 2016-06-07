@@ -32,6 +32,8 @@ import br.ita.bditac.ws.support.MessageResourceAssembler;
 @EnableHypermediaSupport(type = { HypermediaType.HAL })
 @RequestMapping("/alerta")
 public class AlertaController {
+	
+	private static final String ID_REGEX = "(\\[0-9]+)";
 
     private static final String COORD_REGEX = "(?:[-+]?(?:(?:[1-8]?\\d(?:\\.\\d+))+|90))";
     
@@ -39,6 +41,8 @@ public class AlertaController {
     
     public interface Request {
         
+    	String BY_ID = "/id/{id}"; //:"+ ID_REGEX + "}";
+    	
         String BY_REGIAO = "/timestamp/{timestamp}/latitude/{latitude:" + COORD_REGEX + "}" + "/longitude/{longitude:" + COORD_REGEX + "}" + "/raio/{raio:" + DIST_REGEX + "}";
 
     }
@@ -100,10 +104,6 @@ public class AlertaController {
 	        List<Alerta> alertas = AlertaDAO.obterAlertasPorRegiao(timestamp, dLatitude, dLongitude, dRaio);
 	        List<AlertaResource> resources = resourceAssembler.toResources(alertas);
 	        AlertaResources alertaResources = new AlertaResources(resources);
-	        // TODO Remover alertas após período de tempo
-	//        for(Alerta alerta : alertas) {
-	//        	service.removerAlerta(alerta.getId());
-	//        }
 	        if(alertaResources.getContent().size() == 0) {
 	        	return new ResponseEntity<AlertaResources>(HttpStatus.NOT_FOUND);
 	        }
@@ -113,6 +113,19 @@ public class AlertaController {
     	}
     	catch(Exception ex) {
 	        return new ResponseEntity<AlertaResources>(HttpStatus.INTERNAL_SERVER_ERROR);	        
+    	}
+    }
+    
+    @RequestMapping(method = RequestMethod.GET, produces = { MediaTypes.HAL_JSON_VALUE }, value = Request.BY_ID)
+    public ResponseEntity<AlertaResource> alerta(@PathVariable("id") int id) {
+    	try {
+	        Alerta alerta = AlertaDAO.obterAlerta(id);
+	        AlertaResource resource = resourceAssembler.toResource(alerta);
+	        
+	        return new ResponseEntity<AlertaResource>(resource, HttpStatus.OK);
+    	}
+    	catch(Exception ex) {
+	        return new ResponseEntity<AlertaResource>(HttpStatus.INTERNAL_SERVER_ERROR);	        
     	}
     }
 

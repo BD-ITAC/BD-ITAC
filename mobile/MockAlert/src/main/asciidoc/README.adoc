@@ -108,31 +108,34 @@ include::{snippets}/crise/post/response-fields.adoc[]
 
 Alertas são mensagens enviadas pelo sistema para alertar a população de um problema que estiver ocorrendo em determinada área. Dado o volume presumidamente baixo de alertas enviados pelo sistema, todos os usuários recebem todos os alertas em seus aplicativos móveis e o próprio aplicativo determina se o usuário deve ter sua atenção focada na ocorrência com base em parâmetros definidos pelo próprio como tipos de ocorrências, área da ocorrência, magnitude, etc.
 
-=== Gravação
+=== Pesquisa por *identificador*
 
-Para gravar uma crise podemos utilizar o seguinte exemplo (em +curl+).:
-include::{snippets}/alerta/post/curl-request.adoc[]
-
-Os dados a serem inseridos devem ser enviados no formato +JSON+.
+Para pesquisar um registro específico do serviço podemos utilizar o seguinte comando (em +curl+):
+include::{snippets}/alerta/id/curl-request.adoc[]
 
 ==== Requisição
 
-A requisição irá tomar o seguinte formato:
-include::{snippets}/alerta/post/http-request.adoc[]
+A requisição toma a seguinte forma:
+include::{snippets}/alerta/id/http-request.adoc[]
+
+==== Parâmetros da requisição
+
+Os parâmetros que devem ser informados na requisição são:
+include::{snippets}/alerta/id/path-parameters.adoc[]
 
 ==== Resposta
 
-O serviço irá responder com +Status 201 - Created+ e os dados que acabaram de ser inseridos:
-include::{snippets}/alerta/post/http-response.adoc[]
+A resposta irá conter uma lista com os dados formatados em +JSON+ além do cabeçalho com o resultado da operação:
+include::{snippets}/alerta/id/http-response.adoc[]
 
 ==== Descrição da resposta
 
-A descrição do(s) atributo(s) retornado(s): 
-include::{snippets}/alerta/post/request-fields.adoc[]
+A descrição do(s) atributo(s) retornado(s):
+include::{snippets}/alerta/id/response-fields.adoc[]
 
 === Pesquisa por *coordenadas*
 
-Para pesquisar um registro específico do serviço podemos utilizar o seguinte comando (em +curl+):
+Para pesquisar uma lista de registros numa região específica do serviço podemos utilizar o seguinte comando (em +curl+):
 include::{snippets}/alerta/getCoords/curl-request.adoc[]
 
 ==== Requisição
@@ -155,3 +158,28 @@ include::{snippets}/alerta/getCoords/http-response.adoc[]
 A descrição do(s) atributo(s) retornado(s):
 include::{snippets}/alerta/getCoords/response-fields.adoc[]
 
+
+[[resources-indicadores]]
+== Indicadores
+
+Indicadores são estatísticas do sistema, contendo valores numéricos de alertas e crises e indicam a situação do atendimento.
+
+=== Lista
+
+Para obter uma lista dos indicadores disponíveis no sistema, podemos pesquisar utilzando o seguinte comando (em +curl+):
+include::{snippets}/indicadores/curl-request.adoc[]
+
+==== Requisição
+
+A requisição irá tomar o seguinte formato:
+include::{snippets}/indicadores/http-request.adoc[]
+
+==== Resposta
+
+O serviço irá responder com +Status 201 - Created+ e os dados que acabaram de ser inseridos:
+include::{snippets}/indicadores/http-response.adoc[]
+
+==== Descrição da resposta
+
+A descrição do(s) atributo(s) retornado(s): 
+include::{snippets}/indicadores/response-fields.adoc[]
