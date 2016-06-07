@@ -22,6 +22,7 @@
     "angular-toastr": "^1.7.0",
     "angular-bootstrap-lightbox": "^0.12.0",
     "angular-modal-service": "^0.9.10",
-    "angular-filter": "^0.5.8"
+    "angular-filter": "^0.5.8",
+    "gulp": "^3.9.1"
   }
 }
