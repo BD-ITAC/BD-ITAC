@@ -152,9 +152,9 @@ avisosDAO = function(pool) {
         usu.usu_fone,                                  \
         usu.usu_nm,                                    \
         img.img_arq,                                   \
-        av.avs_data as data \
-        geo.uf as estado, \
-        geo.nm as cidade, \
+        av.avs_data as dt, \
+        geo.geo_uf as estado, \
+        geo.geo_nm as cidade \
    from aviso   av                                     \
    join aviso_status avs on av.sta_cod = avs.sta_id    \
    join categoria cat on av.cat_cod = cat.cat_id       \
@@ -191,6 +191,7 @@ avisosDAO = function(pool) {
                 categoria: rows[c].categoria,
                 latitude: rows[c].latitude,
                 longitude: rows[c].longitude,
+                dt: rows[c].dt,
                 //dataInicial: rows[c].cri_dh_inicio,
                 //dataFinal: rows[c].cri_dh_fim,
                 cidade: rows[c].cidade,
