@@ -45,7 +45,6 @@ categoryDao = function(pool) {
       categorias.push(categoria);
     }
 
-    console.log(categorias);
     return categorias;
   }
 

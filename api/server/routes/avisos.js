@@ -61,6 +61,7 @@ module.exports = function(app){
    * @apiSuccess {String} list.telefone Telefone do usuário.
    * @apiSuccess {Numero} list.latitude Latitude da localização.
    * @apiSuccess {Numero} list.langitude Longitude da localização.
+   * @apiSuccess {Numero} list.geo_id id geografico.
    * @apiSuccess {String} list.fotografia Fotografia do aviso em base64.
    *
    * @apiSuccessExample {json} Sucesso

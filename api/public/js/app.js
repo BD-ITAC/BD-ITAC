@@ -2,6 +2,7 @@ var app = angular.module('bditac', ['ui.bootstrap',
        'bootstrapLightbox',
        'ngRoute', 'ngStorage','toastr','angularModalService',
        'checklist-model',
+       'ngMap',
      'angular.filter']);
 
 app.config(['$routeProvider','$httpProvider', '$compileProvider',

@@ -41,6 +41,7 @@ avisosDAO = function(pool) {
      "select @idUsuario:=usu_id from usuario where usu_id = LAST_INSERT_ID();\n\n" +
 
      "insert into aviso set \n \
+     avs_data = NOW(), \n \
      usu_cod = @idUsuario, \n  \
      sta_Cod = 1, \n \
      geo_cod = '" + dados.geoCod + "', \n \
@@ -130,8 +131,8 @@ avisosDAO = function(pool) {
               categoria: avisos.categoria,
               latitude: avisos.latitude,
               longitude: avisos.longitude,
-              geoCod: 1,
-              dh_inicio: new Date(),
+              geoCod: avisos.geo_id,
+              dt: avisos.data,
               ativo: true,
               status: 1,
               pic: new Buffer(avisos.fotografia, 'base64')
@@ -150,12 +151,16 @@ avisosDAO = function(pool) {
         usu.usu_email,                                 \
         usu.usu_fone,                                  \
         usu.usu_nm,                                    \
-        img.img_arq                                    \
+        img.img_arq,                                   \
+        av.avs_data as data \
+        geo.uf as estado, \
+        geo.nm as cidade, \
    from aviso   av                                     \
    join aviso_status avs on av.sta_cod = avs.sta_id    \
    join categoria cat on av.cat_cod = cat.cat_id       \
    join usuario usu on av.usu_cod = usu.usu_id         \
-   join imagem  img on img.avs_cod = av.avs_id";
+   join imagem  img on img.avs_cod = av.avs_id         \
+   left join geografica geo on av.geo_cod = geo_id";
 
 
     self.pool.query(
@@ -188,6 +193,8 @@ avisosDAO = function(pool) {
                 longitude: rows[c].longitude,
                 //dataInicial: rows[c].cri_dh_inicio,
                 //dataFinal: rows[c].cri_dh_fim,
+                cidade: rows[c].cidade,
+                estado: rows[c].estado,
                 status: rows[c].sta_ds,
                 pic1:   pic1
               };

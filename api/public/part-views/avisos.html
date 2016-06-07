@@ -27,6 +27,7 @@
    <thead>
      <tr>
        <th> </th>
+       <th>Data/Hora</th>
        <th>Nome</th>
        <th>Telefone</th>
        <th>E-Mail</th>
@@ -41,7 +42,7 @@
     <tr ng-repeat="row in avisosListCollection | filter:searchBoxData">
       <td>
         <!--<label class="checkbox" for="{{row.cri_id}}">-->
-          <input type="checkbox" checklist-model="avisosSelecionados" checklist-value="row.id"/>
+          <input type="checkbox" checklist-model="avisosSelecionados" checklist-value="row"/>
         <!--</label>-->
       </td>
       <td>{{row.nome}}</td>

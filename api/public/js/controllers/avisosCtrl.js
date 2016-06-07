@@ -11,6 +11,8 @@ app.controller('AvisosController', ['$scope', '$rootScope', '$location', '$http'
     vm.form = {submitted : false};
 
     $scope.avisosSelecionados = [];
+    $scope.avisosListCollection = [];
+    
     UtilService.setCurrentMenu($scope, $location);
 
     $http.get('/rest/avisos').success(function(data){

@@ -12,8 +12,18 @@
           <div class="form-group">
               <label for="tipoDeCrisesBox"> Selecione o Tipo de Crise: </label>
               <select class="form-control" name="tipoDeCrisesBox" id="tipoDeCrisesBox" ng-model="searchBoxData.id">
-                <option ng-repeat="row in tiposdecrisesCollection" value="{{row.id}}">{{row.nome}}</option>
+                <option ng-repeat="row in tiposdecrisesCollection" value="{{row.id}}">{{row.description}}</option>
               </select>
+          </div>
+          <div id="Cidade" class="form-group">
+            <h4>Cidade:</h4>
+              {{Cidade}}
+          </div>
+          <div class="form-group">
+            <h4>Área: </h4>
+            <div map-lazy-load="https://maps.google.com/maps/api/js" div style='overflow:hidden;height:20%;width:100%;'>
+                <ng-map center="{{latitude}},{{longitude}}" zoom="9"></ng-map>
+            </div>
           </div>
         </div>
       </div>
