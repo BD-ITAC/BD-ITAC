@@ -77,6 +77,33 @@ Numa requisiçào `POST`, a resposta irá conter uma entidade descrevendo o resu
 
 Documentação da versão da API/ReST do BD-ITAC.
 
+
+[[resources-categorias]]
+== Categorias
+
+Categorias são os tipos de crises e alertas que o sistema atualmente cobre, baseado na tabela do COBRADE.
+
+=== Lista
+
+Para obter uma lista das categorias de crises e alertas disponíveis no sistema, podemos pesquisar utilzando o seguinte comando (em +curl+):
+include::{snippets}/categorias/curl-request.adoc[]
+
+==== Requisição
+
+A requisição irá tomar o seguinte formato:
+include::{snippets}/categorias/http-request.adoc[]
+
+==== Resposta
+
+O serviço irá responder com +Status 200 - Created+ e os dados disponíveis:
+include::{snippets}/categorias/http-response.adoc[]
+
+==== Descrição da resposta
+
+A descrição do(s) atributo(s) retornado(s): 
+include::{snippets}/categorias/response-fields.adoc[]
+
+
 [[resources-crises]]
 == Crises
 
@@ -176,7 +203,7 @@ include::{snippets}/indicadores/http-request.adoc[]
 
 ==== Resposta
 
-O serviço irá responder com +Status 201 - Created+ e os dados que acabaram de ser inseridos:
+O serviço irá responder com +Status 200 - Created+ e os dados disponíveis:
 include::{snippets}/indicadores/http-response.adoc[]
 
 ==== Descrição da resposta

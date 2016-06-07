@@ -673,5 +673,22 @@ public class MockAlertTests {
                         fieldWithPath("indicadores.Abertos").type(JsonFieldType.STRING).description("Exemplo de indicador do sistema - mostra crises que foram abertas"),
                         fieldWithPath("indicadores.Em andamento").type(JsonFieldType.STRING).description("Exemplo de indicador do sistema - mostra crise em andamento"))));
     }
+    
+    @Test
+    public void test920GetCategorias() throws Exception {
+    	this.mvc.perform(get(getBaseUrl() + "/categorias"))
+    		.andExpect(status().isOk())
+    		.andDo(document("categorias",
+                    pathParameters()));
+        this.mvc.perform(get(getBaseUrl() + "categorias")
+                .accept(MediaTypes.HAL_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andDo(document("categorias",
+                	preprocessResponse(prettyPrint()),
+                    responseFields(
+                        fieldWithPath("categorias.1").type(JsonFieldType.STRING).description("Este é um exemplo de categoria de crise e alerta que pode ser utilizado pelo sistema"),
+                        fieldWithPath("categorias.2").type(JsonFieldType.STRING).description("Exemplo de categoria de crise e alerta"),
+                        fieldWithPath("categorias.3").type(JsonFieldType.STRING).description("Exemplo de categoria de crise e alerta"))));
+    }
 
 }

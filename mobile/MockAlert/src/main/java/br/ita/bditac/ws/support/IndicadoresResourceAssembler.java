@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import br.ita.bditac.model.Indicadores;
 import br.ita.bditac.ws.service.IndicadoresController;
 
+
 @Component
 public class IndicadoresResourceAssembler extends ResourceAssemblerSupport<Indicadores, IndicadoresResource> {
 	

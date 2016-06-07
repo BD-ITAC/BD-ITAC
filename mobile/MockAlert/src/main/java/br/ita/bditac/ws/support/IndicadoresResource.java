@@ -5,6 +5,7 @@ import org.springframework.hateoas.Resource;
 
 import br.ita.bditac.model.Indicadores;
 
+
 public class IndicadoresResource extends Resource<Indicadores> {
 	
 	public IndicadoresResource() {
