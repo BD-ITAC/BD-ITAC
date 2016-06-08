@@ -296,4 +296,11 @@ module.exports = function(app){
    */
   app.get(uri+'/type', controller.listType);
 
+
+  app.get(uri+'/type/class', controller.listTypeClass);
+  app.get(uri+'/type/group/:ctc_id', controller.listTypeGroup);
+  app.get(uri+'/type/subgroup/:ctc_id/:ctg_id', controller.listTypeSubGroup);
+  app.get(uri+'/type/type/:ctc_id/:ctg_id/:cts_id', controller.listTypeType);
+  app.get(uri+'/type/subtype/:ctc_id/:ctg_id/:cts_id/:ctt_id', controller.listTypeSubType);  
+
 };

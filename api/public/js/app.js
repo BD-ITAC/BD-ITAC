@@ -22,6 +22,11 @@ function ($routeProvider, $httpProvider, $compileProvider) {
             controller: 'CrisisController',
             requireLogin: true
         })
+        .when('/crisis-type', {
+            templateUrl: 'part-views/crisis-type.html',
+            controller: 'CrisisTypeController',
+            requireLogin: true
+        })
         .when('/classification', {
             templateUrl: 'part-views/classification.html',
             controller: 'ClassificationController',

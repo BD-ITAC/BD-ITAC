@@ -95,6 +95,71 @@ module.exports = function(app){
    });
  };
 
+ controller.listTypeClass = function(req, res, next){
+   crisisDAO.listTypeClass(function(err, data){
+     if(err){
+       res.status(500).json(err);
+     }else{
+       res.json(data);
+     }
+   });
+ };
+
+ controller.listTypeGroup = function(req, res, next){
+   crisisDAO.listTypeGroup(req.params.ctc_id, function(err, data){
+     if(err){
+       res.status(500).json(err);
+     }else{
+       res.json(data);
+     }
+   });
+ };
+
+ controller.listTypeSubGroup = function(req, res, next){
+   var param = {
+     ctc_id: req.params.ctc_id,
+     ctg_id: req.params.ctg_id
+   };
+   crisisDAO.listTypeSubGroup(param, function(err, data){
+     if(err){
+       res.status(500).json(err);
+     }else{
+       res.json(data);
+     }
+   });
+ };
+
+ controller.listTypeType = function(req, res, next){
+   var param = {
+     ctc_id: req.params.ctc_id,
+     ctg_id: req.params.ctg_id,
+     cts_id: req.params.cts_id
+   };
+   crisisDAO.listTypeType(param, function(err, data){
+     if(err){
+       res.status(500).json(err);
+     }else{
+       res.json(data);
+     }
+   });
+ };
+
+ controller.listTypeSubType = function(req, res, next){
+   var param = {
+     ctc_id: req.params.ctc_id,
+     ctg_id: req.params.ctg_id,
+     cts_id: req.params.cts_id,
+     ctt_id: req.params.ctt_id
+   };
+   crisisDAO.listTypeSubType(param, function(err, data){
+     if(err){
+       res.status(500).json(err);
+     }else{
+       res.json(data);
+     }
+   });
+ };
+
   return controller;
 
 };

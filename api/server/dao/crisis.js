@@ -265,7 +265,7 @@ crisisDAO = function(pool) {
         return callback(null, nearbyAlerts);
   }
 
-  })
+});
   };
 
   dao.listType = function(callback){
@@ -277,6 +277,60 @@ crisisDAO = function(pool) {
       }
     });
   };
+
+  dao.listTypeClass = function(callback){
+    self.pool.query('SELECT * FROM crise_tipo_classe', function(err, rows){
+      if(err){
+        return callback(err, null);
+      }else{
+        return callback(null, rows);
+      }
+    });
+  };
+
+  dao.listTypeGroup = function(ctc_id, callback){
+    self.pool.query('SELECT * FROM crise_tipo_grupo WHERE ctc_id = ?',
+    [ctc_id], function(err, rows){
+      if(err){
+        return callback(err, null);
+      }else{
+        return callback(null, rows);
+      }
+    });
+  };
+
+  dao.listTypeSubGroup = function(param, callback){
+    self.pool.query('SELECT * FROM crise_tipo_subgrupo WHERE ctg_id = ? AND ctc_id = ?',
+    [param.ctg_id, param.ctc_id], function(err, rows){
+      if(err){
+        return callback(err, null);
+      }else{
+        return callback(null, rows);
+      }
+    });
+  };
+
+  dao.listTypeType = function(param, callback){
+    self.pool.query('SELECT * FROM crise_tipo_tipo WHERE cts_id= ? AND ctg_id = ? AND ctc_id', [param.cts_id, param.ctg_id, param.ctc_id], function(err, rows){
+      if(err){
+        return callback(err, null);
+      }else{
+        return callback(null, rows);
+      }
+    });
+  };
+  
+  dao.listTypeSubType = function(param, callback){
+    self.pool.query('SELECT * FROM crise_tipo_subtipo WHERE ctt_id= ? AND cts_id = ? AND ctg_id = ? AND ctc_id = ?',
+    [param.ctt_id, param.cts_id, param.ctg_id, param.ctc_id], function(err, rows){
+      if(err){
+        return callback(err, null);
+      }else{
+        return callback(null, rows);
+      }
+    });
+  };
+
 
   return dao;
 };
