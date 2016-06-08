@@ -6,8 +6,10 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
+import java.util.List;
+
 import br.ita.bditac.ws.client.CategoriasClient;
-import br.ita.bditac.ws.model.Categorias;
+import br.ita.bditac.ws.model.Categoria;
 
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
@@ -18,7 +20,7 @@ public class CategoriasTest extends TestCase {
     @Test
     public void test01GetCategorias() {
         CategoriasClient categoriasClient = new CategoriasClient(HOST_URL);
-        Categorias categorias = categoriasClient.getCategorias();
+        List<Categoria> categorias = categoriasClient.getCategorias();
         assertNotNull(categorias);
     }
 

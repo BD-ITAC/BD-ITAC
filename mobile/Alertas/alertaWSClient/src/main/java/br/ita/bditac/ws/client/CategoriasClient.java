@@ -2,10 +2,13 @@ package br.ita.bditac.ws.client;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import br.ita.bditac.ws.model.Categorias;
-import br.ita.bditac.ws.model.CategoriasResource;
+import java.util.List;
+
+import br.ita.bditac.ws.model.Categoria;
+import br.ita.bditac.ws.model.CategoriaResources;
 
 
 public class CategoriasClient extends AbstractBaseService {
@@ -16,17 +19,17 @@ public class CategoriasClient extends AbstractBaseService {
         super(hostURL);
     }
 
-    public Categorias getCategorias() {
+    public List<Categoria> getCategorias() {
 
         HttpEntity envio = new HttpEntity(getResponseHeader());
 
-        ResponseEntity<CategoriasResource> response = getRestTemplate().exchange(getHostURL() + SERVICE_URL, HttpMethod.GET, envio, CategoriasResource.class);
+        ResponseEntity<CategoriaResources> response = getRestTemplate().exchange(getHostURL() + SERVICE_URL, HttpMethod.GET, envio, CategoriaResources.class);
 
-        if(response.getBody() == null) {
-            return null;
+        if(response.getStatusCode() == HttpStatus.OK) {
+            return response.getBody().unwrap();
         }
         else {
-            return response.getBody().getContent();
+            return null;
         }
 
     }

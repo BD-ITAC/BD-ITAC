@@ -13,7 +13,7 @@ public interface Constants {
 
     public static final String DEFAULT_RADIUS_KMS = "10";
 
-    public static final double DEBUG_RADIUS_KMS = 1;
+    public static final double DEBUG_RADIUS_KMS = 100;
 
     public static final int DEFAULT_LOCATION_POLLING_INTERVAL = 120000;
 
