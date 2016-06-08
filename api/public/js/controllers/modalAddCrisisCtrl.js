@@ -4,18 +4,9 @@
 
 'use strict';
 app.controller('addCrisisModalController',
-  function($scope,avisos,close) {
-  debugger;
-
-  //Carregar os tipos de crises.
-  $scope.tiposdecrisesCollection = [
-    {id:0, nome:"Terremoto"},
-    {id:1, nome:"Balão no céu"},
-    {id:2, nome:"Sei lá..."}
+  function($scope,$http,avisos,close) {
 
 
-
-  ];
 
   if(!avisos.length)
   {
@@ -26,6 +17,14 @@ app.controller('addCrisisModalController',
   }
   else
   {
+    $http.get('/rest/categories').success(function(data){
+                $scope.tiposdecrisesCollection = data;
+    });
+  debugger;
+
+    $scope.cidade = avisos[0].cidade;
+    $scope.latitude = avisos[0].latitude;
+    $scope.longitude = avisos[0].longitude;
     $scope.listaDeTiposDeCrises = true;
     $scope.btnSair = true;
     $scope.btnSalvar=true;

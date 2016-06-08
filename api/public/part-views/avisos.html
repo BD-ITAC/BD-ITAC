@@ -13,9 +13,9 @@
     </div>
     <div class="form-group">
         <label for="searchStatusBox"> Filtrar Status: </label>
-        <select class="form-control" name="searchStatusBox" id="searchStatusBox" ng-model="searchBoxData.nome">
+        <select class="form-control" name="searchStatusBox" id="searchStatusBox" ng-model="searchBoxData.status">
           <option value="">   </option>
-          <option ng-repeat="row in avisosListCollection">{{row.nome}}</option>
+          <option ng-repeat="row in avisosListCollection | unique:'status'">{{row.status}}</option>
         </select>
     </div>
     <div id="modalCriarCrise" class="form-group pull-right">
@@ -27,6 +27,7 @@
    <thead>
      <tr>
        <th> </th>
+       <th>Data/Hora</th>
        <th>Nome</th>
        <th>Telefone</th>
        <th>E-Mail</th>
@@ -34,15 +35,17 @@
        <th>Classificação</th>
        <th>Lat;Long</th>
        <th>Foto</th>
+       <th>Status</th>
      </tr>
    </thead>
    <tbody>
     <tr ng-repeat="row in avisosListCollection | filter:searchBoxData">
       <td>
         <!--<label class="checkbox" for="{{row.cri_id}}">-->
-          <input type="checkbox" checklist-model="avisosSelecionados" checklist-value="row.id"/>
+          <input type="checkbox" checklist-model="avisosSelecionados" checklist-value="row"/>
         <!--</label>-->
       </td>
+      <td>{{row.dt | date:'yyyy-MM-dd HH:mm:ss'}}</td>
       <td>{{row.nome}}</td>
       <td>{{row.telefone}}</td>
       <td>{{row.email}}</td>
@@ -50,12 +53,13 @@
       <td>{{row.categoria}}</td>
       <td>{{row.latitude}};{{row.longitude}}</td>
       <td>
-          <a ng-click="openLightboxModal(0, [row.pic1, row.pic2, row.pic3])">
+          <a ng-click="openLightboxModal(0, [row.pic1])">
             <div class="imgcontainer">
               <img ng-src="data:image/JPEG;base64,{{row.pic1}}" class="img-thumbnail" />
             </div>
           </a>
       </td>
+      <td>{{row.status}}</td>
     </tr>
    </tbody>
   </table>
