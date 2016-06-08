@@ -1,5 +1,7 @@
 package br.ita.bditac.ws.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.ExposesResourceFor;
 import org.springframework.hateoas.MediaTypes;
@@ -16,17 +18,18 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.ita.bditac.model.AlertaDAO;
-import br.ita.bditac.model.Indicadores;
-import br.ita.bditac.ws.support.IndicadoresResource;
-import br.ita.bditac.ws.support.IndicadoresResourceAssembler;
+import br.ita.bditac.model.Indicador;
+import br.ita.bditac.ws.support.IndicadorResource;
+import br.ita.bditac.ws.support.IndicadorResourceAssembler;
+import br.ita.bditac.ws.support.IndicadorResources;
 import br.ita.bditac.ws.support.MessageResource;
 import br.ita.bditac.ws.support.MessageResourceAssembler;
 
 @RestController
-@ExposesResourceFor(Indicadores.class)
+@ExposesResourceFor(Indicador.class)
 @EnableHypermediaSupport(type = { HypermediaType.HAL })
 @RequestMapping("/indicadores")
-public class IndicadoresController {
+public class IndicadorController {
 
     private static final String COORD_REGEX = "(?:[-+]?(?:(?:[1-8]?\\d(?:\\.\\d+))+|90))";
     
@@ -39,26 +42,31 @@ public class IndicadoresController {
     }
 
 	@Autowired
-	private IndicadoresResourceAssembler resourceAssembler;
+	private IndicadorResourceAssembler resourceAssembler;
 
 	@Autowired
 	private MessageResourceAssembler messageResourceAssembler;
 	
 	@RequestMapping(method = RequestMethod.GET, produces = { MediaTypes.HAL_JSON_VALUE }, value = Request.BY_REGIAO)
-	public ResponseEntity<IndicadoresResource> indicadores(@PathVariable("latitude") String latitude, @PathVariable("longitude") String longitude, @PathVariable("raio") String raio) {
+	public ResponseEntity<IndicadorResources> indicadores(@PathVariable("latitude") String latitude, @PathVariable("longitude") String longitude, @PathVariable("raio") String raio) {
         Double dLatitude = Double.valueOf(latitude);
         Double dLongitude = Double.valueOf(longitude);
         Double dRaio = Double.valueOf(raio);
         
-		Indicadores indicadores = AlertaDAO.obterIndicadores(dLatitude, dLongitude, dRaio);
-		if(indicadores == null) {
-			return new ResponseEntity<IndicadoresResource>(HttpStatus.NOT_FOUND);
-		}
-		else {
-			IndicadoresResource resource = resourceAssembler.toResource(indicadores);
-			
-			return new ResponseEntity<IndicadoresResource>(resource, HttpStatus.OK);
-		}
+		try {
+			List<Indicador> indicadores = AlertaDAO.obterIndicadores(dLatitude, dLongitude, dRaio);
+			List<IndicadorResource> resources = resourceAssembler.toResources(indicadores);
+			IndicadorResources indicadorResources = new IndicadorResources(resources);
+			if(indicadorResources.getContent().size() == 0) {
+				return new ResponseEntity<IndicadorResources>(HttpStatus.NOT_FOUND);
+			}
+			else {
+				return new ResponseEntity<IndicadorResources>(indicadorResources, HttpStatus.OK);
+			}
+    	}
+    	catch(Exception ex) {
+	        return new ResponseEntity<IndicadorResources>(HttpStatus.INTERNAL_SERVER_ERROR);	        
+    	}
 	}
 
     @ExceptionHandler(Exception.class)

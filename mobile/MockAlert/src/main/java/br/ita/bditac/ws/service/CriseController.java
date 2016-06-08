@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.ita.bditac.model.Alerta;
 import br.ita.bditac.model.AlertaDAO;
-import br.ita.bditac.model.Categorias;
+import br.ita.bditac.model.Categoria;
 import br.ita.bditac.model.Crise;
 import br.ita.bditac.model.Message;
 import br.ita.bditac.ws.support.MessageResource;
@@ -36,10 +36,11 @@ public class CriseController {
     public ResponseEntity<MessageResource> adicionar(@RequestBody Crise body) {
     	try {
 	        Crise crise = AlertaDAO.adicionarCrise(body);
+	        Categoria categoria = AlertaDAO.obterCategoria(crise.getCategoria());
 	        
 	        // TODO - Simulação do gerenciamento de crises - o processo que torna o cadastramento de crise num alerta
 	        Alerta alerta = new Alerta(
-	        		Categorias.getCategoria(crise.getCategoria()),
+	        		categoria.getDescricao(),
 	        		crise.getDescricao(),
 	        		crise.getCategoria(),
 	        		crise.getLatitude(),

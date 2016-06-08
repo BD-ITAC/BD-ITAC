@@ -227,7 +227,7 @@ public class MockAlertTests {
         
         Crise criseRequest = new Crise(
                 "Deslizamento na na favela do Paraiso",
-                0,
+                1,
                 "Ze das Couves",
                 "zedascouves@gmail.com",
                 "(12) 99876-1234",
@@ -549,7 +549,7 @@ public class MockAlertTests {
 
        Crise criseRequest = new Crise(
                "Deslizamento na na favela do Paraiso",
-               0,
+               1,
                "Ze das Couves",
                "zedascouves@gmail.com",
                "(12) 99876-1234",
@@ -579,7 +579,7 @@ public class MockAlertTests {
     public void test901PostCrise() throws Exception {
         Crise crise = new Crise(
             "Crise de teste",
-            0,
+            1,
             "João da Horta",
             "joao.horta@gmail.com",
             "(12) 95678-4321",
@@ -669,9 +669,9 @@ public class MockAlertTests {
                 .andDo(document("indicadores",
                 	preprocessResponse(prettyPrint()),
                     responseFields(
-                        fieldWithPath("indicadores.Encerrados").type(JsonFieldType.STRING).description("Este é um exemplo de indicador que pode ser apresentado pelo sistema - mostra crises encerradas no sistema atualmente"),
-                        fieldWithPath("indicadores.Abertos").type(JsonFieldType.STRING).description("Exemplo de indicador do sistema - mostra crises que foram abertas"),
-                        fieldWithPath("indicadores.Em andamento").type(JsonFieldType.STRING).description("Exemplo de indicador do sistema - mostra crise em andamento"))));
+                        fieldWithPath("_embedded.indicadorList[].id").type(JsonFieldType.STRING).description("Identificador do indicador"),
+                        fieldWithPath("_embedded.indicadorList[].descricao").type(JsonFieldType.STRING).description("Descrição do indicador"),
+                        fieldWithPath("_embedded.indicadorList[].valor").type(JsonFieldType.STRING).description("Valor do indicador"))));
     }
     
     @Test
@@ -686,9 +686,8 @@ public class MockAlertTests {
                 .andDo(document("categorias",
                 	preprocessResponse(prettyPrint()),
                     responseFields(
-                        fieldWithPath("categorias.1").type(JsonFieldType.STRING).description("Este é um exemplo de categoria de crise e alerta que pode ser utilizado pelo sistema"),
-                        fieldWithPath("categorias.2").type(JsonFieldType.STRING).description("Exemplo de categoria de crise e alerta"),
-                        fieldWithPath("categorias.3").type(JsonFieldType.STRING).description("Exemplo de categoria de crise e alerta"))));
+                        fieldWithPath("_embedded.categoriaList[].id").type(JsonFieldType.STRING).description("Identificador da categoria"),
+                        fieldWithPath("_embedded.categoriaList[].descricao").type(JsonFieldType.STRING).description("Descrição da categoria"))));
     }
 
 }
