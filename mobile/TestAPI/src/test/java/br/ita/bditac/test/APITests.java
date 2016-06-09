@@ -83,7 +83,7 @@ import br.ita.bditac.ws.support.MessageResource;
 @WebAppConfiguration
 @ActiveProfiles("hateoas")
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class MockAlertTests {
+public class APITests {
 
     private static final double DELTA = 1e-6;
     
