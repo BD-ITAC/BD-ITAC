@@ -279,74 +279,6 @@ public class MockAlertTests {
      * 
      * == Asserção:
      *
-     * Testa a inclusão de um alerta utilizando o serviço de Alertas.
-     *
-     * == Dados:
-     *
-     * Uma estrutura de dados com os dados do alerta.
-     *
-     * === Estrutura de Dados
-     *
-     * [source,java]
-     * --
-     *  Alerta alertaRequest = new Alerta(
-     *          "Alerta de deslizamento",
-     *          "Perigo de deslizamento na altura do Km 20 da rodovia Tamoios, pista Sao Jose dos Campos/Litoral",
-     *          5,
-     *          5,
-     *          0,
-     *          40.0,
-     *          50.0,
-     *          1.0);
-     * --
-     *
-     * == Execução:
-     *
-     * Uma chamada ao serviço de de Alertas
-     *
-     * == Resultado esperado:
-     *
-     * Uma estrutura de dados com a mesma informação da estrutura enviada.
-     *
-     * === Estrutura de Dados
-     *
-     * [source,java]
-     * --
-     *  Alerta alertaRequest = new Alerta(
-     *          "Alerta de deslizamento",
-     *          "Perigo de deslizamento na altura do Km 20 da rodovia Tamoios, pista Sao Jose dos Campos/Litoral",
-     *          5,
-     *          5,
-     *          0,
-     *          40.0,
-     *          50.0,
-     *          1.0);
-     * --
-     *
-     */
-    @Test
-    public void test104PostAlerta() throws URISyntaxException {
-        URI alertaURI = new URI(getBaseUrl() + "/alerta");
-
-        Alerta alertaRequest = new Alerta(
-                "Alerta de deslizamento",
-                "Perigo de deslizamento na altura do Km 20 da rodovia Tamoios, pista Sao Jose dos Campos/Litoral",
-                0,
-                40.0,
-                50.0,
-                1.0);
-
-        ResponseEntity<MessageResource> alertaResponseEntity = getRestTemplate().postForEntity(alertaURI, new HttpEntity<Alerta>(alertaRequest), MessageResource.class);
-
-        assertThat(alertaResponseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
-    }
-
-    /**
-     *
-     * = TS02-US09
-     * 
-     * == Asserção:
-     *
      * Testa a obtenção de um alerta de crise do seriço de Alertas:
      *
      * == Dados:
@@ -444,7 +376,7 @@ public class MockAlertTests {
 
         List<Alerta> alertas = getRestTemplate().getForObject(alertaURL, AlertaResources.class, params).unwrap();
 
-        assertThat(alertas.get(1).getDescricaoResumida()).isEqualTo("Alerta de deslizamento");
+        assertThat(alertas.get(0).getDescricaoResumida()).isEqualTo("Alagamento");
     }
 
     /**

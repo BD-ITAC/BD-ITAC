@@ -11,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -52,24 +51,6 @@ public class AlertaController {
 
     @Autowired
     private MessageResourceAssembler messageResourceAssembler;
-
-    @RequestMapping(method = RequestMethod.POST, consumes = { MediaTypes.HAL_JSON_VALUE }, produces = { MediaTypes.HAL_JSON_VALUE })
-    public ResponseEntity<MessageResource> adicionar(@RequestBody Alerta body) {
-    	try {
-    		AlertaDAO.adicionarAlerta(body);
-	        
-	        Message message = new Message(1, Message.Type.INFO, HttpStatus.OK.getReasonPhrase(), "Alerta registrado", "BD-ITAC");
-	        MessageResource resource = new MessageResource(message);
-	        
-	        return new ResponseEntity<MessageResource>(resource, HttpStatus.CREATED);
-    	}
-    	catch(Exception ex) {
-	        Message message = new Message(1, Message.Type.INFO, HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), ex.getMessage(), ex.getCause().getMessage());
-	        MessageResource resource = new MessageResource(message);
-	        
-	        return new ResponseEntity<MessageResource>(resource, HttpStatus.INTERNAL_SERVER_ERROR);	        
-    	}
-    }
     
     @RequestMapping(method = RequestMethod.HEAD, produces = { MediaTypes.HAL_JSON_VALUE }, value = Request.BY_REGIAO)
     public ResponseEntity<MessageResource> alerta(@PathVariable("timestamp") long timestamp, @PathVariable("latitude") String latitude, @PathVariable("longitude") String longitude, @PathVariable("raio") String raio) {

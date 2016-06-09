@@ -7,10 +7,6 @@
         "telefone" : "(12) 99876-1234",
         "latitude": 50,
         "longitude": 50,
-    },
-    "_links" : {
-        "self" : {
-            "href" : "http://localhost:8080/crise/15"
-        }
+        "geo_id": 0
     }
 }

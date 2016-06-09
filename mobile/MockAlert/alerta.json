@@ -8,10 +8,5 @@
         "origemLongitude" : 0.5,
         "origemLatitude" : 0.5,
         "origemRaioKms" : 1.0,
-    },
-    "_links" : {
-        "self" : {
-            "href" : "http://localhost:8080/alerta/1"
-        }
     }
 }
