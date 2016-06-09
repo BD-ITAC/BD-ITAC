@@ -38,6 +38,9 @@ public class Crise implements Serializable {
     
     private double longitude;
     
+    //TODO eliminar este atributo
+    private int geo_id;
+    
     private byte[] fotografia;
     
     static {
@@ -65,6 +68,7 @@ public class Crise implements Serializable {
             String telefone,
             double latitude,
             double longitude,
+            int geo_id,
             String fotografia) {
     	
         this.id = ++_id;
@@ -162,6 +166,18 @@ public class Crise implements Serializable {
 	
 	public void setFotografia(String fotografia) {
 		this.fotografia = fotografia.getBytes();
+	}
+
+	
+	public int getGeo_id() {
+	
+		return geo_id;
+	}
+
+	
+	public void setGeo_id(int geo_id) {
+	
+		this.geo_id = geo_id;
 	}
     
 }

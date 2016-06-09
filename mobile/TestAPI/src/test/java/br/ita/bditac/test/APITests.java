@@ -2,17 +2,6 @@ package br.ita.bditac.test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.offset;
-import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.io.IOException;
 import java.net.URI;
@@ -26,19 +15,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.Before;
 import org.junit.FixMethodOrder;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
 import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.boot.test.IntegrationTest;
-import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.hateoas.hal.Jackson2HalModule;
 import org.springframework.http.HttpEntity;
@@ -48,59 +32,34 @@ import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.restdocs.RestDocumentation;
-import org.springframework.restdocs.payload.JsonFieldType;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.client.ResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
 
-import br.ita.bditac.app.Application;
 import br.ita.bditac.model.Alerta;
 import br.ita.bditac.model.Crise;
 import br.ita.bditac.ws.support.AlertaResource;
 import br.ita.bditac.ws.support.AlertaResources;
+import br.ita.bditac.ws.support.AlternateMessageResource;
 import br.ita.bditac.ws.support.CriseResource;
-import br.ita.bditac.ws.support.MessageResource;
 
 /**
  *
  * = Testes unitários do serviço de Alertas para o BD-ITAC.
  *
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = Application.class)
-@IntegrationTest("server.port:0")
-@WebAppConfiguration
-@ActiveProfiles("hateoas")
+@RunWith(JUnit4.class)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class APITests {
 
     private static final double DELTA = 1e-6;
     
     private static String _foto = null;
-
-    @Configuration
-    @EnableConfigurationProperties
-    @ConfigurationProperties(prefix="info.build")
-    class MockSettings {
-    	
-    	private String version;
-		
-		public String getVersion() {
-			return version;
-		}
-    	
-    }
     
     class ClientErrorHandler implements ResponseErrorHandler {
 
@@ -146,9 +105,6 @@ public class APITests {
 		return _foto;
     	
     }
-    
-    @Value("${local.server.port}")
-    private int port;
 
     @Autowired
     WebApplicationContext context;
@@ -156,21 +112,9 @@ public class APITests {
     @Rule
     public RestDocumentation restDocumentation = new RestDocumentation("target/generated-docs");
 
-    protected MockMvc mvc;
-
 
     protected String getBaseUrl() {
-        return "http://localhost:" + port;
-    }
-
-    @Before
-    public void setup() {
-        mvc = MockMvcBuilders.webAppContextSetup(context).apply(documentationConfiguration(this.restDocumentation)).build();
-    }
-
-    @Test
-    public void test000BootstrapsWebApp() {
-        assertThat(mvc).isNotNull();
+        return "http://bditac.ddns.net";
     }
 
     /**
@@ -222,8 +166,9 @@ public class APITests {
      *
      */
     @Test
+    @Ignore
     public void test101PostCriseGerarAlerta() throws Exception {
-        URI criseURI = new URI(getBaseUrl() + "/crise");
+        URI criseURI = new URI(getBaseUrl() + "/rest/avisos");
         
         Crise criseRequest = new Crise(
                 "Deslizamento na na favela do Paraiso",
@@ -233,9 +178,10 @@ public class APITests {
                 "(12) 99876-1234",
                 40.0,
                 50.0,
+                0,
                 getFoto());
 
-        ResponseEntity<MessageResource> criseResponseEntity =  getRestTemplate().postForEntity(criseURI, new HttpEntity<Crise>(criseRequest), MessageResource.class);
+        ResponseEntity<AlternateMessageResource> criseResponseEntity =  getRestTemplate().postForEntity(criseURI, new HttpEntity<Crise>(criseRequest), AlternateMessageResource.class);
 
         assertThat(criseResponseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
     }
@@ -263,7 +209,7 @@ public class APITests {
      */
     @Test
     public void test103GetCriseInexistente() throws Exception {
-        String criseURL = getBaseUrl() + "/crise/{id}";
+        String criseURL = getBaseUrl() + "/rest/avisos/{id}";
 
         Map<String, Integer> params = new HashMap<String, Integer>();
         params.put("id", 100);
@@ -273,75 +219,7 @@ public class APITests {
         assertThat(criseResponseEntity.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 
-    /**
-     *
-     * = TS02-US09
-     * 
-     * == Asserção:
-     *
-     * Testa a inclusão de um alerta utilizando o serviço de Alertas.
-     *
-     * == Dados:
-     *
-     * Uma estrutura de dados com os dados do alerta.
-     *
-     * === Estrutura de Dados
-     *
-     * [source,java]
-     * --
-     *  Alerta alertaRequest = new Alerta(
-     *          "Alerta de deslizamento",
-     *          "Perigo de deslizamento na altura do Km 20 da rodovia Tamoios, pista Sao Jose dos Campos/Litoral",
-     *          5,
-     *          5,
-     *          0,
-     *          40.0,
-     *          50.0,
-     *          1.0);
-     * --
-     *
-     * == Execução:
-     *
-     * Uma chamada ao serviço de de Alertas
-     *
-     * == Resultado esperado:
-     *
-     * Uma estrutura de dados com a mesma informação da estrutura enviada.
-     *
-     * === Estrutura de Dados
-     *
-     * [source,java]
-     * --
-     *  Alerta alertaRequest = new Alerta(
-     *          "Alerta de deslizamento",
-     *          "Perigo de deslizamento na altura do Km 20 da rodovia Tamoios, pista Sao Jose dos Campos/Litoral",
-     *          5,
-     *          5,
-     *          0,
-     *          40.0,
-     *          50.0,
-     *          1.0);
-     * --
-     *
-     */
-    @Test
-    public void test104PostAlerta() throws URISyntaxException {
-        URI alertaURI = new URI(getBaseUrl() + "/alerta");
-
-        Alerta alertaRequest = new Alerta(
-                "Alerta de deslizamento",
-                "Perigo de deslizamento na altura do Km 20 da rodovia Tamoios, pista Sao Jose dos Campos/Litoral",
-                0,
-                40.0,
-                50.0,
-                1.0);
-
-        ResponseEntity<MessageResource> alertaResponseEntity = getRestTemplate().postForEntity(alertaURI, new HttpEntity<Alerta>(alertaRequest), MessageResource.class);
-
-        assertThat(alertaResponseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
-    }
-
-    /**
+     /**
      *
      * = TS02-US09
      * 
@@ -378,8 +256,8 @@ public class APITests {
      *
      */
     @Test
-    public void test105GetAlerta() throws URISyntaxException {
-        String alertaURL = getBaseUrl() + "/alerta";
+    public void test105GetAlertas() throws URISyntaxException {
+        String alertaURL = getBaseUrl() + "/rest/avisos";
 
         ResponseEntity<AlertaResource> alertaResponseEntity = getRestTemplate().getForEntity(alertaURL, AlertaResource.class);
 
@@ -434,7 +312,7 @@ public class APITests {
      */
     @Test
     public void test107GetAlertasByCoords() throws Exception {
-        String alertaURL = getBaseUrl() + "/alerta/timestamp/{timestamp}/latitude/{latitude}/longitude/{longitude}/raio/{raio}";
+        String alertaURL = getBaseUrl() + "/rest/avisos/nearbycrisis?{timestamp}/latitude/{latitude}/longitude/{longitude}/raio/{raio}";
 
         Map<String, String> params = new HashMap<String, String>();
         params.put("timestamp", "0");
@@ -480,7 +358,7 @@ public class APITests {
      */
     @Test
     public void test108GetAlertaByCoordsInexistente() throws Exception {
-        String alertaURL = getBaseUrl() + "/alerta/timestamp/{timestamp}/latitude/{latitude}/longitude/{longitude}/raio/{raio}";
+        String alertaURL = getBaseUrl() + "/rest/avisos/nearbycrisis?{timestamp}/latitude/{latitude}/longitude/{longitude}/raio/{raio}";
 
         Map<String, String> params = new HashMap<String, String>();
         params.put("timestamp", "0");
@@ -545,7 +423,7 @@ public class APITests {
      */
    @Test
    public void test111PostCriseGerarAlerta() throws Exception {
-       URI criseURI = new URI(getBaseUrl() + "/crise");
+       URI criseURI = new URI(getBaseUrl() + "/rest/avisos");
 
        Crise criseRequest = new Crise(
                "Deslizamento na na favela do Paraiso",
@@ -555,6 +433,7 @@ public class APITests {
                "(12) 99876-1234",
                40.0,
                50.0,
+               0,
                getFoto());
 
        ResponseEntity<CriseResource> criseResponseEntity =  getRestTemplate().postForEntity(criseURI, new HttpEntity<Crise>(criseRequest), CriseResource.class);
@@ -574,120 +453,5 @@ public class APITests {
        assertThat(alertas.get(0).getOrigemLatitude()).isEqualTo(criseRequest.getLatitude(), offset(DELTA));
        assertThat(alertas.get(0).getOrigemLongitude()).isEqualTo(criseRequest.getLongitude(), offset(DELTA));
    }
-   
-    @Test
-    public void test901PostCrise() throws Exception {
-        Crise crise = new Crise(
-            "Crise de teste",
-            1,
-            "João da Horta",
-            "joao.horta@gmail.com",
-            "(12) 95678-4321",
-            40.0,
-            50.0,
-            getFoto());
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
-        ObjectWriter writer = mapper.writer().withDefaultPrettyPrinter();
-        String criseJson = writer.writeValueAsString(crise);
-
-        this.mvc.perform(post(getBaseUrl() + "/crise")
-            .contentType(MediaTypes.HAL_JSON_VALUE)
-            .content(criseJson))
-            .andExpect(status().isCreated())
-            .andDo(document("crise/post",
-            	preprocessResponse(prettyPrint()),
-                responseFields(
-                    fieldWithPath("id").type(JsonFieldType.NUMBER).description("Identificação da mensagem"),
-                    fieldWithPath("type").type(JsonFieldType.STRING).description("Tipo da mensagem (INFO, WARNING, ERROR)"),
-                    fieldWithPath("status").type(JsonFieldType.STRING).description("Código de estado do sistema"),
-                    fieldWithPath("description").type(JsonFieldType.STRING).description("Descrição da mensagem"),
-                    fieldWithPath("info").type(JsonFieldType.STRING).description("Informações adicionais"))));
-    }
-
-    @Test
-    public void test904GetAlerta() throws Exception {
-        this.mvc.perform(get(getBaseUrl() + "/alerta/id/{id}", 2))
-        .andExpect(status().isOk())
-        .andDo(document("alerta/id",
-            pathParameters(
-            	parameterWithName("id").description("Identificador do alerta no sistema"))));
-    this.mvc.perform(get(getBaseUrl() + "alerta/id/2")
-        .accept(MediaTypes.HAL_JSON_VALUE))
-        .andExpect(status().isOk())
-        .andDo(document("alerta/id",
-        	preprocessResponse(prettyPrint()),
-            responseFields(
-                fieldWithPath("id").type(JsonFieldType.NUMBER).description("Identificação do alerta no sistema"),
-                fieldWithPath("descricaoResumida").type(JsonFieldType.STRING).description("Breve descrição do alerta"),
-                fieldWithPath("descricaoCompleta").type(JsonFieldType.STRING).description("Descrição detalhada do alerta"),
-                fieldWithPath("categoriaAlerta").type(JsonFieldType.STRING).description("Indica o tipo de alerta"),
-                fieldWithPath("origemLatitude").type(JsonFieldType.NUMBER).description("Latitude do ponto de origem do alerta"),
-                fieldWithPath("origemLongitude").type(JsonFieldType.NUMBER).description("Longitude do ponto de origem do alerta"),
-                fieldWithPath("origemRaioKms").type(JsonFieldType.NUMBER).description("Área de abrangência do alerta em Kms"),
-    			fieldWithPath("_links.self.href").type(JsonFieldType.STRING).description("URI do link para o alerta"))));
-    }
-
-    @Test
-    public void test907GetAlertaByCoords() throws Exception {
-        this.mvc.perform(get(getBaseUrl() + "/alerta/timestamp/{timestamp}/latitude/{latitude}/longitude/{longitude}/raio/{raio}", 0, 40.0, 50.0, 1.0D))
-            .andExpect(status().isOk())
-            .andDo(document("alerta/locationsCoords",
-                pathParameters(
-                	parameterWithName("timestamp").description("Timestamp desde a última consulta"),
-                    parameterWithName("latitude").description("Latitude do ponto de origem do alerta"),
-                    parameterWithName("longitude").description("Longitude do ponto de origem do alerta"),
-                    parameterWithName("raio").description("Área de abrangência do alerta em Kms"))));
-        this.mvc.perform(get(getBaseUrl() + "alerta/timestamp/0/latitude/40.0/longitude/50.0/raio/1.0")
-            .accept(MediaTypes.HAL_JSON_VALUE))
-            .andExpect(status().isOk())
-            .andDo(document("alerta/getCoords",
-            	preprocessResponse(prettyPrint()),
-                responseFields(
-                    fieldWithPath("_embedded.alertaList[].id").type(JsonFieldType.NUMBER).description("Identificação do alerta no sistema"),
-                    fieldWithPath("_embedded.alertaList[].descricaoResumida").type(JsonFieldType.STRING).description("Breve descrição do alerta"),
-                    fieldWithPath("_embedded.alertaList[].descricaoCompleta").type(JsonFieldType.STRING).description("Descrição detalhada do alerta"),
-                    fieldWithPath("_embedded.alertaList[].categoriaAlerta").type(JsonFieldType.STRING).description("Indica o tipo de alerta"),
-                    fieldWithPath("_embedded.alertaList[].origemLatitude").type(JsonFieldType.NUMBER).description("Latitude do ponto de origem do alerta"),
-                    fieldWithPath("_embedded.alertaList[].origemLongitude").type(JsonFieldType.NUMBER).description("Longitude do ponto de origem do alerta"),
-                    fieldWithPath("_embedded.alertaList[].origemRaioKms").type(JsonFieldType.NUMBER).description("Área de abrangência do alerta em Kms"),
-                    fieldWithPath("_embedded.alertaList[]._links.self.href").type(JsonFieldType.STRING).description("URI do link para o alerta"))));
-    }
-    
-    @Test
-    public void test910GetIndicadores() throws Exception {
-    	this.mvc.perform(get(getBaseUrl() + "/indicadores/latitude/{latitude}/longitude/{longitude}/raio/{raio}", 40.0, 50.0, 1.0D))
-    		.andExpect(status().isOk())
-    		.andDo(document("indicadores",
-                    pathParameters(
-                            parameterWithName("latitude").description("Latitude do ponto de origem do alerta"),
-                            parameterWithName("longitude").description("Longitude do ponto de origem do alerta"),
-                            parameterWithName("raio").description("Área de abrangência do alerta em Kms"))));
-        this.mvc.perform(get(getBaseUrl() + "indicadores/latitude/40.0/longitude/50.0/raio/1.0")
-                .accept(MediaTypes.HAL_JSON_VALUE))
-                .andExpect(status().isOk())
-                .andDo(document("indicadores",
-                	preprocessResponse(prettyPrint()),
-                    responseFields(
-                        fieldWithPath("_embedded.indicadorList[].id").type(JsonFieldType.STRING).description("Identificador do indicador"),
-                        fieldWithPath("_embedded.indicadorList[].descricao").type(JsonFieldType.STRING).description("Descrição do indicador"),
-                        fieldWithPath("_embedded.indicadorList[].valor").type(JsonFieldType.STRING).description("Valor do indicador"))));
-    }
-    
-    @Test
-    public void test920GetCategorias() throws Exception {
-    	this.mvc.perform(get(getBaseUrl() + "/categorias"))
-    		.andExpect(status().isOk())
-    		.andDo(document("categorias",
-                    pathParameters()));
-        this.mvc.perform(get(getBaseUrl() + "categorias")
-                .accept(MediaTypes.HAL_JSON_VALUE))
-                .andExpect(status().isOk())
-                .andDo(document("categorias",
-                	preprocessResponse(prettyPrint()),
-                    responseFields(
-                        fieldWithPath("_embedded.categoriaList[].id").type(JsonFieldType.STRING).description("Identificador da categoria"),
-                        fieldWithPath("_embedded.categoriaList[].descricao").type(JsonFieldType.STRING).description("Descrição da categoria"))));
-    }
 
 }
