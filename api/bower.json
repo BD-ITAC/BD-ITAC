@@ -24,6 +24,7 @@
     "angular-modal-service": "^0.9.10",
     "angular-filter": "^0.5.8",
     "gulp": "^3.9.1",
-    "ngmap": "^1.17.3"
+    "ngmap": "^1.17.3",
+    "checklist-model": "^0.9.0"
   }
 }

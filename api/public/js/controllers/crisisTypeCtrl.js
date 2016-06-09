@@ -9,7 +9,7 @@ app.controller('CrisisTypeController', ['$scope', '$rootScope', '$location', '$h
  function($scope,$rootScope,$location,$http,$localStorage, toastr, UtilService) {
     var vm = this;
     //vm.classList = [];
-    vm.form = {submitted : false};
+    vm.form = {};
 
     UtilService.setCurrentMenu($scope, $location);
 
@@ -47,5 +47,35 @@ app.controller('CrisisTypeController', ['$scope', '$rootScope', '$location', '$h
       });
     };
 
+    vm.clearForm = function(){
+      vm.form.subtype = vm.form.type = vm.form.subgroup = vm.form.group = vm.form.class = undefined;
+      vm.form.description = vm.form.cobrade = vm.form.definition = '';
+    };
+
+    vm.save = function(form){
+      //vm.submitted = true;
+      if(form.$invalid === true){
+        toastr.info('Please complete all fields!');
+      }else{
+        var param = {
+          ctc_id: vm.form.class,
+          ctg_id: vm.form.group,
+          cts_id: vm.form.subgroup,
+          ctt_id: vm.form.type,
+          ctp_id: vm.form.subtype,
+          crt_descricao: vm.form.description,
+          crt_definicao: vm.form.definition,
+          crt_cobrade: vm.form.cobrade
+        };
+        $http.post('rest/crisis/type', param).then(function(res){
+          if(res.status === 200){
+            toastr.success('Type of crisis successfully saved!');
+            vm.clearForm();
+          }else{
+            toast.error(res.data.message);
+          }
+        });
+      }
+    };
 
 }]);

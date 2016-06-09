@@ -319,7 +319,7 @@ crisisDAO = function(pool) {
       }
     });
   };
-  
+
   dao.listTypeSubType = function(param, callback){
     self.pool.query('SELECT * FROM crise_tipo_subtipo WHERE ctt_id= ? AND cts_id = ? AND ctg_id = ? AND ctc_id = ?',
     [param.ctt_id, param.cts_id, param.ctg_id, param.ctc_id], function(err, rows){
@@ -331,6 +331,17 @@ crisisDAO = function(pool) {
     });
   };
 
+  dao.saveType = function(param, callback){
+    self.pool.query('INSERT INTO crise_tipo (ctc_id, ctg_id, cts_id, ctt_id, ctp_id, crt_descricao, crt_definicao, crt_cobrade) \
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?)', [param.ctc_id, param.ctg_id, param.cts_id, param.ctt_id, param.ctp_id,
+      param.crt_descricao, param.crt_definicao, param.crt_cobrade], function(err, rows){
+        if(err){
+          return callback(err, null);
+        }else{
+          return callback(null, rows);
+        }
+      });
+  };
 
   return dao;
 };

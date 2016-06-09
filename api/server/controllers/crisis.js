@@ -160,6 +160,27 @@ module.exports = function(app){
    });
  };
 
+controller.saveType = function(req, res, next){
+  if(!req.body.hasOwnProperty('ctc_id') ||
+     !req.body.hasOwnProperty('ctg_id') ||
+     !req.body.hasOwnProperty('cts_id') ||
+     !req.body.hasOwnProperty('ctt_id') ||
+     !req.body.hasOwnProperty('ctp_id') ||
+     !req.body.hasOwnProperty('crt_descricao') ||
+     !req.body.hasOwnProperty('crt_definicao') ||
+     !req.body.hasOwnProperty('crt_cobrade')) {
+        res.status(404).json({success: false, message: 'Required fields not informed.'});
+    }else{
+      crisisDAO.saveType(req.body, function(err, data){
+        if(err){
+          res.status(500).json({success: false, message: err});
+        }else{
+          res.json({success: true, message: data});
+        }
+      });
+    }
+};
+
   return controller;
 
 };

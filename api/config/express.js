@@ -11,7 +11,7 @@ var session = require('express-session');
 module.exports = function(){
   var app = express();
     // all environments
-  app.set('port', process.env.PORT || 80);
+  app.set('port', process.env.PORT || 8080);
 
   //config session
   app.use(session({secret: 'ssshhhhh',saveUninitialized: true,resave: true}));
