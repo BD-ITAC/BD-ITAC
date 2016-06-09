@@ -1,7 +1,7 @@
 /home/scarenci/workspace/sparkexample/src/main/java/org/sparkexample/WordCount2.java
 /home/scarenci/workspace/sparkexample/src/main/java/org/sparkexample/model/repository/CriseRepository.java
 /home/scarenci/workspace/sparkexample/src/main/java/org/sparkexample/model/pojo/UsuarioPojo.java
+/home/scarenci/workspace/sparkexample/src/main/java/org/sparkexample/model/pojo/CriseCount.java
 /home/scarenci/workspace/sparkexample/src/main/java/org/sparkexample/model/pojo/CrisePojo.java
-/home/scarenci/workspace/sparkexample/src/main/java/org/sparkexample/model/pojo/ResultPojo.java
 /home/scarenci/workspace/sparkexample/src/main/java/org/sparkexample/model/repository/MySQLDAO.java
 /home/scarenci/workspace/sparkexample/src/main/java/org/sparkexample/WordCount.java

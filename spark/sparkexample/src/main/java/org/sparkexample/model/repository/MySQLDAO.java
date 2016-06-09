@@ -7,10 +7,11 @@ public class MySQLDAO {
 	// JDBC driver name and database URL
 	static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
 	static final String DB_URL = "jdbc:mysql://localhost/ita?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
+	//static final String DB_URL = "jdbc:mysql://192.168.254.4/ita?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
 
 	// Database credentials
-	static final String USER = "root";
-	static final String PASS = "pass";
+	static final String USER = "root";//user_app
+	static final String PASS = "magica";//User_@pp
 
 	private Connection conn = null;
 	private Statement stmt = null;
