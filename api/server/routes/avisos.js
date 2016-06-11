@@ -224,7 +224,7 @@ module.exports = function(app){
    *          ]
    *        }
    *   }
-   *  @apiSampleRequest /rest/crisis/indicators
+   *  @apiSampleRequest /rest/avisos/indicators
    */
   app.get(uri+'/indicators', controller.listIndicators);
 

@@ -65,20 +65,10 @@ module.exports = function(app){
 
            if(indicadorList !== null && indicadorList.length >= 0){
              //HAL json
-             var data2 =
-             {
-               _embedded: [{
-                           indicadorList
-                       }]
-             }
-
-             var resource = halson(data2);
+             var resource = halson().addEmbed('indicadorList',indicadorList);
              res.json(resource)
 
-
            }
-
-
          else {
            res.status(404).json({message:'Something went wrong.Please try again later.'});
          }

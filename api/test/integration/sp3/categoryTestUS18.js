@@ -1,7 +1,7 @@
 var supertest = require('supertest');
 var should = require('should');
 
-var  server = supertest.agent('http://localhost:3000');
+var  server = supertest.agent('http://localhost:80');
 
 
 describe('Test of Category', function(){
@@ -15,9 +15,10 @@ describe('Test of Category', function(){
         res.status.should.equal(200);
         res.should.be.json;
 
-        res.body.should.have.length(2);
-        res.body[0].should.have.property('id');
-        res.body[0].should.have.property('descricao');
+        res.body.should.have.property('_embedded');
+        res.body._embedded.should.have.property('categoriaList');
+        res.body._embedded.categoriaList[0].should.have.property('id');
+        res.body._embedded.categoriaList[0].should.have.property('description');
         done();
       });
     });

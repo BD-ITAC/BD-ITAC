@@ -107,7 +107,7 @@ define({ "api": [
         "url": "/rest/avisos"
       }
     ],
-    "filename": "D:/Projetos/ITA/BD-ITAC/api/server/routes/avisos.js",
+    "filename": "C:/git/BD-ITAC/api/server/routes/avisos.js",
     "groupTitle": "Avisos",
     "name": "GetRestAvisos"
   },
@@ -232,7 +232,7 @@ define({ "api": [
         "url": "/rest/avisos"
       }
     ],
-    "filename": "D:/Projetos/ITA/BD-ITAC/api/server/routes/avisos.js",
+    "filename": "C:/git/BD-ITAC/api/server/routes/avisos.js",
     "groupTitle": "Avisos",
     "name": "GetRestAvisosId1"
   },
@@ -331,7 +331,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "D:/Projetos/ITA/BD-ITAC/api/server/routes/avisos.js",
+    "filename": "C:/git/BD-ITAC/api/server/routes/avisos.js",
     "groupTitle": "Avisos",
     "name": "GetRestAvisosNearbywarningsLatitude23196641Longitude45946840Raio10Timestamp20160610t080000"
   },
@@ -452,7 +452,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "D:/Projetos/ITA/BD-ITAC/api/server/routes/avisos.js",
+    "filename": "C:/git/BD-ITAC/api/server/routes/avisos.js",
     "groupTitle": "Avisos",
     "name": "PostRestAvisos"
   },
@@ -484,7 +484,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Sucesso",
-          "content": "HTTP/1.1 200 OK\n   {\n     {\n         \"id\": \"1\",\n         \"descricao\" : \"Alagamentos\"\n     }\n     {\n         \"id\":\"2\",\n         \"descricao\" : \"Emanação vulcânica\"\n     }\n  }",
+          "content": "HTTP/1.1 200 OK\n{_embedded:\n         {categoriaList:\n           [\n               {\n                  \"id\": \"1\",\n                   \"descricao\" : \"Alagamentos\"\n               }\n               {\n                   \"id\":\"2\",\n                   \"descricao\" : \"Emanação vulcânica\"\n               }\n           ]\n        }\n\n    }",
           "type": "json"
         }
       ]
@@ -494,7 +494,7 @@ define({ "api": [
         "url": "/rest/categories"
       }
     ],
-    "filename": "D:/Projetos/ITA/BD-ITAC/api/server/routes/category.js",
+    "filename": "C:/git/BD-ITAC/api/server/routes/category.js",
     "groupTitle": "Categorias",
     "name": "GetRestCategories"
   },
@@ -571,7 +571,7 @@ define({ "api": [
         "url": "/rest/crisis/type"
       }
     ],
-    "filename": "D:/Projetos/ITA/BD-ITAC/api/server/routes/crisis.js",
+    "filename": "C:/git/BD-ITAC/api/server/routes/crisis.js",
     "groupTitle": "Crisis",
     "name": "GetRestCrisisType"
   },
@@ -617,10 +617,10 @@ define({ "api": [
     },
     "sampleRequest": [
       {
-        "url": "/rest/crisis/indicators"
+        "url": "/rest/avisos/indicators"
       }
     ],
-    "filename": "D:/Projetos/ITA/BD-ITAC/api/server/routes/avisos.js",
+    "filename": "C:/git/BD-ITAC/api/server/routes/avisos.js",
     "groupTitle": "avisos",
     "name": "GetRestAvisosIndicators"
   }

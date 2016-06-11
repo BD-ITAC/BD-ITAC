@@ -12,16 +12,21 @@ module.exports = function(app){
    *
    * @apiSuccessExample {json} Sucesso
    * HTTP/1.1 200 OK
-   *    {
-   *      {
-   *          "id": "1",
-   *          "descricao" : "Alagamentos"
-   *      }
-   *      {
-   *          "id":"2",
-   *          "descricao" : "Emanação vulcânica"
-   *      }
-   *   }
+   * {_embedded:
+         {categoriaList:
+           [
+               {
+                  "id": "1",
+                   "descricao" : "Alagamentos"
+               }
+               {
+                   "id":"2",
+                   "descricao" : "Emanação vulcânica"
+               }
+           ]
+        }
+
+    }
    *  @apiSampleRequest /rest/categories
    */
   app.get(uri, controller.listAll);

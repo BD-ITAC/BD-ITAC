@@ -14,17 +14,10 @@ module.exports =  function(app){
       else
       {
         if(categoriaList !== null && categoriaList.length >= 0){
+
           //HAL json
-          var data2 =
-          {
-            _embedded: {
-                        categoriaList
-                    }
-          }
-
-          var resource = halson(data2);
+          var resource = halson().addEmbed('categoriaList',categoriaList);
           res.json(resource)
-
 
         }
         else
