@@ -39,23 +39,35 @@ avisosDAO = function(pool) {
     "usu_fone = '" + dados.telefone + "'; \n\n "+
 
      "select @idUsuario:=usu_id from usuario where usu_id = LAST_INSERT_ID();\n\n" +
+//http://stackoverflow.com/questions/13502360/find-closest-10-cities-with-mysql-using-latitude-and-longitude
+     "SELECT @geo_id:= A.geo_id FROM (      \n\
+       select *, \n\
+       ( 3959 * acos( cos( radians('"+dados.latitude +"') ) * \n\
+       cos( radians( geo_lat ) ) * \n\
+       cos( radians( geo_long ) - \n\
+       radians('"+dados.longitude+"') ) + \n\
+       sin( radians('"+dados.latitude+"') ) * \n\
+       sin( radians( geo_lat )))) as distance \n\
+       from geografica \n\
+     ) A WHERE distance < '100' ORDER BY distance ASC LIMIT 0, 1; \n\n"+
 
      "insert into aviso set \n \
      avs_data = NOW(), \n \
      usu_cod = @idUsuario, \n  \
      sta_Cod = 1, \n \
-     geo_cod = '" + dados.geoCod + "', \n \
+     geo_cod = @geo_id, \n \
      avs_ds = '" + dados.descricao + "',\n \
      avs_latitude = '" + dados.latitude + "',\n \
      avs_longitude = '" + dados.longitude + "',\n \
-     cat_cod = '" + dados.categoria + "';\n " +
+     avs_ptcoord=Point('"+dados.longitude+"','"+dados.latitude+"'),\n \
+     cat_cod = '" + dados.categoria + "';\n\n " +
 
      "select @idCrise:=avs_id from aviso where avs_id = LAST_INSERT_ID();\n\n" +
 
      "insert into imagem set \n " +
      "avs_cod = @idCrise, \n" +
-     "img_arq = ? ; ";
-
+     "img_arq = ? ; \n\n";
+console.log(query);
      db.executarTransacao(
         self.pool,
 
@@ -140,7 +152,7 @@ avisosDAO = function(pool) {
     return dados;
   }
 
-  dao.listAvisos = function(callback){
+  dao.listAvisos = function(filtro, callback){
     var query =
     "select avs_id,                                    \
         av.avs_ds as avs_ds,                           \
@@ -162,6 +174,10 @@ avisosDAO = function(pool) {
    join imagem  img on img.avs_cod = av.avs_id         \
    left join geografica geo on av.geo_cod = geo_id";
 
+    if(filtro != "")
+    {
+      query += " where av.avs_id = " + filtro;
+    }
 
     self.pool.query(
        query,
@@ -197,7 +213,7 @@ avisosDAO = function(pool) {
                 cidade: rows[c].cidade,
                 estado: rows[c].estado,
                 status: rows[c].sta_ds,
-                pic1:   pic1
+                fotografia:   pic1
               };
               avisos.push(aviso);
 
@@ -207,37 +223,69 @@ avisosDAO = function(pool) {
   }
 
 
-  var indicators = [];
-  indicators.push({
-               cadastrados: 30,
-               finalizados : 20,
-               emcurso : 8
-            });
+  dao.listIndicators = function(callback){
+    var query = "SELECT sta_ds, count(avs_id) as valor   \
+                   FROM  bditac.aviso_status  A \
+                   join  bditac.aviso B on A.sta_id = B.sta_cod \
+                   group by sta_ds"
 
-  dao.listAll = function(callback){
-    return callback(null, indicators);
-  };
+                     self.pool.query(
+                        query,
+                        function(err, rows){
+                       if(err){
+                         callback(err,{});
+                       }else{
+                         callback(null, getIndicators(rows));
+                       }
+                     });
+
+                   };
+
+        function getIndicators(rows)
+        {
+          var inds = [];
+          for(c in rows)
+          {
+            var ind =
+            {
+              id: c,
+              descricao: rows[c].sta_ds,
+              valor: rows[c].valor
+            };
+            inds.push(ind);
+          }
+          return inds;
+        };
 
  /**
   Criação do mock json
   **/
 
-  dao.nearbyAlerts = function(crisis, callback){
-     var nearbyAlerts = [];
+  dao.nearbyWarnings = function(avisos, callback){
+     var nearbyWarnings = [];
      var path = require('path');
      var host = path.join(__dirname);
 
      //converte raio 100 metros para 0.001
-     var calcRaio = (crisis.raio*0.001)/100;
+     var calcRaio = (avisos.raio*0.001)/100;
 
-     self.pool.query('SELECT * FROM crise where ST_AsText(ST_Intersection(cri_lng_lat, ST_Buffer(POINT(?, ?), ?))) is not null', [crisis.longitude, crisis.latitude, calcRaio], function(err, rows){
+     var query = 'SELECT * \
+                     FROM aviso \
+                     where ST_AsText(ST_Intersection(avs_ptcoord, ST_Buffer(POINT(?, ?), ?))) is not null';
+
+    if(avisos.timestamp != "''")
+    {
+      query += " and avs_data >= " + avisos.timestamp + "";
+    }
+
+     self.pool.query(query, [avisos.longitude, avisos.latitude, calcRaio], function(err, rows){
     // self.pool.query('SELECT * FROM crisis WHERE latitude = ? AND longitude = ? AND raio = ?', [crisis.latitude, crisis.longitude, crisis.raio], function(err, rows){
      if(err){
        return callback(err,{});
       }else{
 
      for(a in rows){
-          nearbyAlerts.push( {
+          nearbyWarnings.push( {
             "_embedded" : {
               "alertaList" : [ {
                 "descricaoResumida" : rows[a].descricao,
@@ -246,18 +294,19 @@ avisosDAO = function(pool) {
                 "origemLatitude" : rows[a].latitude,
                 "origemLongitude" : rows[a].longitude,
                 "origemRaioKms" : 10.0, //confirmar existencia no MER
+                /*
                 "_links" : {
                   "self" : {
-                    "href" : "http://localhost:3000/rest/crisis/nearbycrisis" + "/" + rows[a].id
+                    "href" : "http://localhost:3000/rest/avisos/nearbyWarnings" + "/" + rows[a].id
                    // "href" : url + "/" + rows[a].id
                   }
-                }
+                }*/
               }]
               }
             });
         }
 
-        return callback(null, nearbyAlerts);
+        return callback(null, nearbyWarnings);
   }
 
   })

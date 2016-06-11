@@ -1,7 +1,9 @@
+var halson = require('halson');
+
 module.exports = function(app){
   var controller = {};
   var avisosBusiness = app.business.avisos;
-  var indicatorsDAO = app.dao.avisos;
+  var avisosDAO = app.dao.avisos;
 
   /**
   * Registra um novo aviso
@@ -11,7 +13,7 @@ module.exports = function(app){
   */
   controller.saveAvisos = function(req, res, next){
 
-        avisosBusiness.save(req.body, function(err, data) {
+        avisosBusiness.save(req.body,function(err, data) {
           if(err) {
             var status = err.validationError ? 400 : 500;
             res.status(status).json(err);
@@ -28,7 +30,13 @@ module.exports = function(app){
    */
    controller.listAvisos = function(req,res,next)
    {
-	   indicatorsDAO.listAvisos(function(err, data) {
+     var filtro = "";
+
+     if(req.query.hasOwnProperty('id'))
+     {
+       filtro = req.query.id;
+     }
+	   avisosDAO.listAvisos(filtro,function(err, data) {
 		   if(err)
 		   {
 			   res.status(500).json(err);
@@ -46,36 +54,56 @@ module.exports = function(app){
 	   });
    };
 
-  /**
-  * Retorno indicadores
-  */
-  controller.listIndicators = function(req, res, next){
-    indicatorsDAO.listAll(function(err, data) {
-      if(err) {
-          res.status(500).json(err);
-      }else{
-        if(data !== null && data.length >= 0) {
-          res.json(data);
-        }else {
-          res.status(404).json({message:'Something went wrong.Please try again later.'});
-        }
-      }
-    });
- };
+   /**
+   * Retorno indicadores
+   */
+   controller.listIndicators = function(req, res, next){
+     avisosDAO.listIndicators(function(err, indicadorList) {
+       if(err) {
+           res.status(500).json(err);
+       }else{
 
-  controller.nearbyCrisis = function(req, res, next){
+           if(indicadorList !== null && indicadorList.length >= 0){
+             //HAL json
+             var data2 =
+             {
+               _embedded: [{
+                           indicadorList
+                       }]
+             }
+
+             var resource = halson(data2);
+             res.json(resource)
+
+
+           }
+
+
+         else {
+           res.status(404).json({message:'Something went wrong.Please try again later.'});
+         }
+       }
+     });
+  };
+
+  controller.nearbyWarnings = function(req, res, next){
 
      if(!req.query.hasOwnProperty('latitude') ||
       !req.query.hasOwnProperty('longitude') ||
-        !req.query.hasOwnProperty('raio')) {
+        !req.query.hasOwnProperty('raio') ||
+        !req.query.hasOwnProperty('timestamp')
+
+      ) {
          res.status(404).json({success: false, message: 'Required fields not informed.'});
       }else{
-        crisis = {
+        aviso = {
           latitude: req.query.latitude,
           longitude: req.query.longitude,
-          raio: req.query.raio
+          raio: req.query.raio,
+          timestamp: req.query.timestamp.replace("T", " ")
+
         };
-        crisisBusiness.nearbyAlerts(crisis, function(err, data) {
+        avisosDAO.nearbyWarnings(aviso, function(err, data) {
           if(err) {
               res.status(500).json(err);
           }else{

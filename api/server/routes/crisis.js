@@ -4,8 +4,7 @@ module.exports = function(app){
 
   app.post(uri+'/', controller.saveCrisis);
   app.get(uri, controller.listCrisis);
-  app.get(uri+'/nearbycrisis', controller.nearbyCrisis);
-  app.get(uri+'/indicators', controller.listIndicators);
+
   /*PALAVRAS CHAVES DAS CRISES*/
   /**
    * @api {get} /rest/crisis/type Palavras Chaves de Crises
@@ -45,6 +44,6 @@ module.exports = function(app){
   app.get(uri+'/type/subgroup/:ctc_id/:ctg_id', controller.listTypeSubGroup);
   app.get(uri+'/type/type/:ctc_id/:ctg_id/:cts_id', controller.listTypeType);
   app.get(uri+'/type/subtype/:ctc_id/:ctg_id/:cts_id/:ctt_id', controller.listTypeSubType);
-  app.post(uri+'/type', controller.saveType);  
+  app.post(uri+'/type', controller.saveType);
 
 };

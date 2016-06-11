@@ -213,60 +213,41 @@ crisisDAO = function(pool) {
   }
 
 
-  var indicators = [];
-  indicators.push({
-               cadastrados: 30,
-               finalizados : 20,
-               emcurso : 8
-            });
+    dao.listIndicators = function(callback){
+      var query = "SELECT sta_ds, count(avs_id) as valor   \
+                     FROM  bditac.aviso_status  A \
+                     join  bditac.aviso B on A.sta_id = B.sta_cod \
+                     group by sta_ds"
 
-  dao.listAll = function(callback){
-    return callback(null, indicators);
+                       self.pool.query(
+                          query,
+                          function(err, rows){
+                         if(err){
+                           callback(err,{});
+                         }else{
+                           callback(null, getIndicators(rows));
+                         }
+                       });
+
   };
 
- /**
-  Criação do mock json
-  **/
-
-  dao.nearbyAlerts = function(crisis, callback){
-     var nearbyAlerts = [];
-     var path = require('path');
-     var host = path.join(__dirname);
-
-     //converte raio 100 metros para 0.001
-     var calcRaio = (crisis.raio*0.001)/100;
-
-     self.pool.query('SELECT * FROM crise where ST_AsText(ST_Intersection(cri_lng_lat, ST_Buffer(POINT(?, ?), ?))) is not null', [crisis.longitude, crisis.latitude, calcRaio], function(err, rows){
-     if(err){
-       return callback(err,{});
-      }else{
-
-     for(a in rows){
-          nearbyAlerts.push( {
-            "_embedded" : {
-              "alertaList" : [ {
-                "descricaoResumida" : rows[a].descricao,
-                "descricaoCompleta" : rows[a].descricao,
-                "categoriaAlerta" : rows[a].categoria,
-                "origemLatitude" : rows[a].latitude,
-                "origemLongitude" : rows[a].longitude,
-                "origemRaioKms" : 10.0, //confirmar existencia no MER
-                "_links" : {
-                  "self" : {
-                    "href" : "http://localhost:3000/rest/crisis/nearbycrisis" + "/" + rows[a].id
-                   // "href" : url + "/" + rows[a].id
-                  }
-                }
-              }]
-              }
-            });
-        }
-
-        return callback(null, nearbyAlerts);
-  }
-
-});
+  function getIndicators(rows)
+  {
+    var inds = [];
+    for(c in rows)
+    {
+      var ind =
+      {
+        id: c,
+        descricao: rows[c].sta_ds,
+        valor: rows[c].valor
+      };
+      inds.push(ind);
+    }
+    return inds;
   };
+
+ 
 
   dao.listType = function(callback){
     self.pool.query('SELECT * FROM crise_tipo', function(err, rows){
