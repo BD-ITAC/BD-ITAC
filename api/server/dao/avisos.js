@@ -67,7 +67,7 @@ avisosDAO = function(pool) {
      "insert into imagem set \n " +
      "avs_cod = @idCrise, \n" +
      "img_arq = ? ; \n\n";
-console.log(query);
+
      db.executarTransacao(
         self.pool,
 
@@ -269,15 +269,31 @@ console.log(query);
      //converte raio 100 metros para 0.001
      var calcRaio = (avisos.raio*0.001)/100;
 
-     var query = 'SELECT * \
-                     FROM aviso \
-                     where ST_AsText(ST_Intersection(avs_ptcoord, ST_Buffer(POINT(?, ?), ?))) is not null';
+      var query = "select avs_id,                                    \
+                         av.avs_ds as avs_ds,                           \
+                         avs.sta_ds as sta_ds,                          \
+                         av.avs_latitude as latitude,                   \
+                         av.avs_longitude as longitude,                 \
+                         cat.cat_ds as categoria,                       \
+                         usu.usu_email,                                 \
+                         usu.usu_fone,                                  \
+                         usu.usu_nm,                                    \
+                         img.img_arq,                                   \
+                         av.avs_data as dt, \
+                         geo.geo_uf as estado, \
+                         geo.geo_nm as cidade \
+                    from aviso   av                                     \
+                    join aviso_status avs on av.sta_cod = avs.sta_id    \
+                    join categoria cat on av.cat_cod = cat.cat_id       \
+                    join usuario usu on av.usu_cod = usu.usu_id         \
+                    join imagem  img on img.avs_cod = av.avs_id         \
+                    left join geografica geo on av.geo_cod = geo_id     \
+                 where ST_AsText(ST_Intersection(av.avs_ptcoord, ST_Buffer(POINT(?, ?), ?))) is not null";
 
     if(avisos.timestamp != "''")
     {
-      query += " and avs_data >= " + avisos.timestamp + "";
+      query += " and av.avs_data >= " + avisos.timestamp + "";
     }
-
      self.pool.query(query, [avisos.longitude, avisos.latitude, calcRaio], function(err, rows){
     // self.pool.query('SELECT * FROM crisis WHERE latitude = ? AND longitude = ? AND raio = ?', [crisis.latitude, crisis.longitude, crisis.raio], function(err, rows){
      if(err){
@@ -288,12 +304,12 @@ console.log(query);
           nearbyWarnings.push( {
             "_embedded" : {
               "alertaList" : [ {
-                "descricaoResumida" : rows[a].descricao,
-                "descricaoCompleta" : rows[a].descricao,
+                "descricaoResumida" : rows[a].avs_ds,
+                "descricaoCompleta" : rows[a].avs_ds,
                 "categoriaAlerta" : rows[a].categoria,
                 "origemLatitude" : rows[a].latitude,
                 "origemLongitude" : rows[a].longitude,
-                "origemRaioKms" : 10.0, //confirmar existencia no MER
+                "origemRaioKms" : 10.0 //confirmar existencia no MER
                 /*
                 "_links" : {
                   "self" : {
