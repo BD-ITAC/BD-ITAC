@@ -219,51 +219,6 @@ public class APITests {
         assertThat(criseResponseEntity.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 
-     /**
-     *
-     * = TS02-US09
-     * 
-     * == Asserção:
-     *
-     * Testa a obtenção de um alerta de crise do seriço de Alertas:
-     *
-     * == Dados:
-     *
-     * Identificação do alerta na requisição.
-     *
-     * == Execução:
-     *
-     * Uma chamada ao serviço de Alertas.
-     *
-     * == Resultado esperado:
-     *
-     * Uma estrutura de dados com os dados do alerta.
-     *
-     * === Estrutura de dados
-     *
-     * [source,java]
-     * --
-     *  Alerta alertaRequest = new Alerta(
-     *          "Alerta de deslizamento",
-     *          "Perigo de deslizamento na altura do Km 20 da rodovia Tamoios, pista Sao Jose dos Campos/Litoral",
-     *          5,
-     *          5,
-     *          0,
-     *          40.0,
-     *          50.0,
-     *          1.0);
-     * --
-     *
-     */
-    @Test
-    public void test105GetAlertas() throws URISyntaxException {
-        String alertaURL = getBaseUrl() + "/rest/avisos";
-
-        ResponseEntity<AlertaResource> alertaResponseEntity = getRestTemplate().getForEntity(alertaURL, AlertaResource.class);
-
-        assertThat(alertaResponseEntity.getStatusCode() == HttpStatus.OK);
-    }
-
     /**
      *
      * = TS02-US09
