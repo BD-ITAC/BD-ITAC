@@ -20,6 +20,7 @@ import br.ita.bditac.ws.model.AlertaResources;
 
 public class AlertaClient extends AbstractBaseService {
 
+    // TODO: Falta a API de alerta ser implementada, provavlemente o nome será '/alert'
     private static final String SERVICE_URL = "/alerta";
 
     private static final String COORDS_PARM = "/timestamp/{timestamp}/latitude/{latitude}/longitude/{longitude}/raio/{raio}";

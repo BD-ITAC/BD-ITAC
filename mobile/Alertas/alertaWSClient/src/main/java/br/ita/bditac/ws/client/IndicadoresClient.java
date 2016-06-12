@@ -18,8 +18,10 @@ import br.ita.bditac.ws.model.IndicadorResources;
 
 public class IndicadoresClient extends AbstractBaseService {
 
-    private static final String SERVICE_URL = "/indicadores";
+    private static final String SERVICE_URL = "/avisos/indicators";
 
+    // TODO: 01 - Consumir o serviço http://200.144.14.28/rest/avisos/nearbyWarnings?latitude=-23.196641&longitude=-45.946840&raio=10&timestamp='2016/06/10T08:00:00'
+    // TODO: 02 - Não dá pra ser a concatenação de SERVICE_URL + COORDS_PARM, pois são URLs diferentes
     private static final String COORDS_PARM = "/latitude/{latitude}/longitude/{longitude}/raio/{raio}";
 
     public IndicadoresClient(String hostURL) {

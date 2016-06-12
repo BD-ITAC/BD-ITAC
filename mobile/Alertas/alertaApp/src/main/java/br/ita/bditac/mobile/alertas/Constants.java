@@ -7,9 +7,9 @@ public interface Constants {
 
     public static final int DEBUG_TIMER = 15000;
 
-    public static final String DEFAULT_URL = "http://10.0.2.2:8081";
+    public static final String DEFAULT_URL = "http://200.144.14.28/rest"; // "http://10.0.2.2:8081";
 
-    public static final String DEBUG_URL = "http://10.0.2.2:8081";
+    public static final String DEBUG_URL = "http://200.144.14.28/rest"; // "http://10.0.2.2:8081";
 
     public static final String DEFAULT_RADIUS_KMS = "10";
 

@@ -13,7 +13,7 @@ import br.ita.bditac.ws.model.CategoriaResources;
 
 public class CategoriasClient extends AbstractBaseService {
 
-    private static final String SERVICE_URL = "/categorias";
+    private static final String SERVICE_URL = "/categories";
 
     public CategoriasClient(String hostURL) {
         super(hostURL);

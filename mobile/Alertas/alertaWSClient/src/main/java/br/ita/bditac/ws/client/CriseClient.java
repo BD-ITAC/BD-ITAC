@@ -8,7 +8,7 @@ import br.ita.bditac.ws.model.MessageResource;
 
 public class CriseClient extends AbstractBaseService {
 
-    private static final String SERVICE_URL = "/crise";
+    private static final String SERVICE_URL = "/crisiss";
 
     public CriseClient(String hostURL) {
         super(hostURL);
