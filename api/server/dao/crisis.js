@@ -107,7 +107,7 @@ console.log(cidade_id);
         */
   };
 
- function getCidade(cidade, callback)
+ function getCidade(cidade)
  {
    var c = 0;
 

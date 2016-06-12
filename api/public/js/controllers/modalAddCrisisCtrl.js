@@ -30,6 +30,7 @@ app.controller('addCrisisModalController',
 
     $scope.cidades = [];
     $scope.positions = [];
+    $scope.avisosIds = [];
 
     for(var c in avisos)
     {
@@ -39,7 +40,7 @@ app.controller('addCrisisModalController',
         estado: avisos[c].estado
       };
 
-
+      $scope.avisosIds.push(avisos[c].id);
       $scope.cidades.push(local);
       $scope.positions.push([avisos[c].latitude,avisos[c].longitude]);
     }
@@ -50,6 +51,7 @@ app.controller('addCrisisModalController',
       latitude:avisos[0].latitude,
       longitude:avisos[0].longitude
     };
+
 
     $scope.retangulo = calcularRetanguloPeloCentro(latlongCentral,10000);
     $scope.lat = avisos[0].latitude;
@@ -109,12 +111,15 @@ app.controller('addCrisisModalController',
 
       coords = coords.substring(1, coords.length-1);
 
+
+
       var parameter = JSON.stringify({
           regiao_coords:coords,
           descricao: $scope.descricao,
-          cidade:+$scope.cidades[0].cidade,
+          cidade:$scope.cidades[0].cidade,
           tipo:$scope.searchBoxData.id,
-          geoid:"1"
+          geoid:"1",
+          avisosId: $scope.avisosIds
       });
 
     $http.post('/rest/crisis', parameter).
