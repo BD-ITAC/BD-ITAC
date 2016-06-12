@@ -175,7 +175,7 @@ avisosDAO = function(pool) {
    join aviso_status avs on av.sta_cod = avs.sta_id    \
    join categoria cat on av.cat_cod = cat.cat_id       \
    join usuario usu on av.usu_cod = usu.usu_id         \
-   join imagem  img on img.avs_cod = av.avs_id         \
+   left join imagem  img on img.avs_cod = av.avs_id         \
    left join geografica geo on av.geo_cod = geo_id";
 
     if(filtro != "")
@@ -213,7 +213,7 @@ avisosDAO = function(pool) {
    join aviso_status avs on av.sta_cod = avs.sta_id    \
    join categoria cat on av.cat_cod = cat.cat_id       \
    join usuario usu on av.usu_cod = usu.usu_id         \
-   join imagem  img on img.avs_cod = av.avs_id         \
+   left join imagem  img on img.avs_cod = av.avs_id         \
    left join geografica geo on av.geo_cod = geo_id     \
    where av.avs_id = ?";
     self.pool.query(
@@ -222,15 +222,17 @@ avisosDAO = function(pool) {
       if(err){
         callback(err,{});
       }else{
-        var aviso = (rows != null ? getAviso(rows[0]):'{}');
-        callback(null, aviso);
+          if(rows[0] == null ){
+              callback(null,null);
+          }else{
+            callback(null, getAviso(rows[0]));
+          }
       }
     });
   };
 
 
   function getAvisos(rows){
-    console.log(rows);
     var avisos = [];
     for(c in rows){
 
@@ -243,11 +245,11 @@ avisosDAO = function(pool) {
 
   function getAviso(row){
 
-    if(typeof row !== 'undefined' && row )
-    {
     var pic1 = '';
 
-    if(row.img_arq != null) pic1 = new Buffer(row.img_arq).toString('base64');
+    if(row.img_arq != null){
+      pic1 = new Buffer(row.img_arq).toString('base64');
+    }
 
     var aviso={
               id: row.avs_id,
@@ -266,13 +268,7 @@ avisosDAO = function(pool) {
               status: row.sta_ds,
               fotografia:   pic1
             };
-            return aviso;
-          }
-      else {
-
-        var aviso = {};
-        return aviso;
-      }
+          return aviso;
   }
 
 

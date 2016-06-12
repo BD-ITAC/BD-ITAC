@@ -25,10 +25,9 @@ crisisDAO = function(pool) {
   */
   dao.save = function(crisis, callback){//callback(null, {status: 'ok'});
 
-    var cidade_id = getCidade(crisis.cidade);
+    getCidade(crisis.cidade, function(cidade_id){
 
-console.log(cidade_id);
-    var dados = getDados(crisis);
+    getDados(crisis);
 
     if(!dados)
     {
@@ -41,8 +40,6 @@ console.log(cidade_id);
       "insert into crise \
       (crt_id, cri_descricao, cri_inicio, cri_ativa, cri_regiao, cid_id, cri_geotipo) \
       values (?,?,?,?,?,?,?)";
-
-     //console.log(query);
 
      db.executarTransacao(
         self.pool,
@@ -66,17 +63,14 @@ console.log(cidade_id);
                         "description" : "Crise registrada",
                         "info" : "BD-ITAC"
                       }
-                    }
-
+                    };
                   return callback(null, message);
                   }
-
-
               }
-
             );
-
         });
+
+      });//fim getDados
 
 
 
@@ -107,23 +101,23 @@ console.log(cidade_id);
         */
   };
 
- function getCidade(cidade)
+ function getCidade(cidade, callback)
  {
-   var c = 0;
+
 
    self.pool.query(
       "select cid_id from cidade where cid_nome = ?", cidade,
       function(err, rows){
         if(!err && rows.length>0){
          console.log(rows[0].cid_id);
-         c= rows[0].cid_id;
+         callback(rows[0].cid_id);
         }
         else {
-          c= 0;
+          callback(0);
         }
       });
 
-      return c;
+
  };
 
  function getDados(crisis){
