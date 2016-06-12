@@ -23,7 +23,9 @@ module.exports = function(){
   app.use(bodyParser.urlencoded({extended: true}));
   app.use(bodyParser.json());
   app.use(function (req, res, next) {
-    res.contentType('application/hal+json');
+    if(req.url.indexOf('rest') > -1){
+      res.contentType('application/hal+json');
+    }
     next();
   });
 

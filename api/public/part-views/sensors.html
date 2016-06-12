@@ -1,0 +1,23 @@
+<div ng-controller="SensorsController as vm">
+  <ol class="breadcrumb">
+  <li><a href="#">Home</a></li>
+  <li><a href="#">Sensors</a></li>
+  <li class="active">List</li>
+</ol>
+  <table width="100%" class="table table-striped">
+   <thead>
+     <tr>
+       <th>Nome</th>
+       <th>Descricao</th>
+       <th>Status</th>
+     </tr>
+   </thead>
+   <tbody>
+    <tr ng-repeat="row in SensorsCollection">
+      <td>{{row.nome}}</td>
+      <td>{{row.descricao}}</td>
+      <td>{{row.status}}</td>     
+    </tr>
+   </tbody>
+  </table>
+</div>

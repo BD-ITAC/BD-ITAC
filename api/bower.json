@@ -25,17 +25,10 @@
     "angular-filter": "^0.5.8",
     "gulp": "^3.9.1",
     "ngmap": "^1.17.3",
-<<<<<<< HEAD
-    "checklist-model": "^0.9.0"
-  },
-  "resolutions": {
-      "angular": "1.5.0"
-=======
     "checklist-model": "^0.9.0",
     "halson": "^2.3.1"
   },
   "resolutions": {
   "angular": "~1.5.6"
->>>>>>> f12683c3342bb2b7fa5900912b1e1caad00f3be4
 }
 }
