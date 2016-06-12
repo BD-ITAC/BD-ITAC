@@ -230,6 +230,7 @@ avisosDAO = function(pool) {
 
 
   function getAvisos(rows){
+    console.log(rows);
     var avisos = [];
     for(c in rows){
 
@@ -241,6 +242,9 @@ avisosDAO = function(pool) {
   }
 
   function getAviso(row){
+
+    if(typeof row !== 'undefined' && row )
+    {
     var pic1 = '';
 
     if(row.img_arq != null) pic1 = new Buffer(row.img_arq).toString('base64');
@@ -263,6 +267,12 @@ avisosDAO = function(pool) {
               fotografia:   pic1
             };
             return aviso;
+          }
+      else {
+
+        var aviso = {};
+        return aviso;
+      }
   }
 
 
