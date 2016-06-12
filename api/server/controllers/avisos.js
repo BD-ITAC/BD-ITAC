@@ -66,7 +66,6 @@ module.exports = function(app){
       else
       {
         if(data !== null){
-          res.setHeader('Content-Type','application/hal+json');
           res.json(data);
         }
         else
