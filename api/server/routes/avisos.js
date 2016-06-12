@@ -47,7 +47,7 @@ module.exports = function(app){
    *
    */
 
-  app.post(uri+'/', controller.saveAvisos);
+  app.post(uri, controller.saveAvisos);
   /**
    * @api {get} /rest/avisos Listar todos os avisos cadastrados.
    * @apiVersion 1.0.0
@@ -101,61 +101,62 @@ module.exports = function(app){
    *   }
    *  @apiSampleRequest /rest/avisos
    */
-  /**
-   * @api {get} /rest/avisos?id='1' Listar os aviso de um dado ID
-   * @apiVersion 1.0.0
-   * @apiGroup Avisos
-   *
-   * @apiParam {Number} id  Identificador para especificar consulta de um único aviso (opcional).
-   *
-   * @apiSuccess {Numero} list.id Numero identificador.
-   * @apiSuccess {String} list.description Descrição do aviso.
-   * @apiSuccess {Numero} list.categoria Categoria do aviso.
-   * @apiSuccess {String} list.nome Nome do usuario que enviou o aviso.
-   * @apiSuccess {String} list.email Endereço de email do usuario.
-   * @apiSuccess {String} list.telefone Telefone do usuário.
-   * @apiSuccess {Numero} list.latitude Latitude da localização.
-   * @apiSuccess {Numero} list.langitude Longitude da localização.
-   * @apiSuccess {Numero} list.cidade cidade do aviso.
-   * @apiSuccess {Numero} list.estado estado do aviso.
-   * @apiSuccess {Numero} list.dt data e hora do aviso.
-   * @apiSuccess {String} list.fotografia Fotografia do aviso em base64.
-   *
-   * @apiSuccessExample {json} Sucesso
-   * HTTP/1.1 200 OK
-   *    {
-   *      {
-   *          "id": 1,
-   *          "descricao" : "Aviso de teste",
-   *          "categoria" : 1,
-   *          "nome" : "João da Horta",
-   *          "email" : "joao.horta@gmail.com",
-   *          "telefone" : "(12) 95678-4321",
-   *          "latitude" : 40.0,
-   *          "longitude" : 50.0,
-   *          "dt":"2016-06-07T18:59:44.000Z",
-   *          "cidade":null,
-   *          "estado":null,
-   *          "fotografia" : "...."
-   *      }
-   *      {
-   *          "id":2,
-   *          "descricao" : "Aviso de teste2",
-   *          "categoria" : 2,
-   *          "nome" : "Neusa Japonesa",
-   *          "email" : "japoneusa@gmail.com",
-   *          "telefone" : "(12) 99999-4321",
-   *          "latitude" : 40.0,
-   *          "longitude" : 50.0,
-   *          "dt":"2016-06-07T18:59:44.000Z",
-   *          "cidade":null,
-   *          "estado":null,
-   *          "fotografia" : "...."
-   *      }
-   *   }
-   *  @apiSampleRequest /rest/avisos
-   */
-  app.get(uri, controller.listAvisos);
+    app.get(uri, controller.listAvisos);
+    /**
+     * @api {get} /rest/avisos/:id Listar os aviso de um dado ID
+     * @apiVersion 1.0.0
+     * @apiGroup Avisos
+     *
+     * @apiParam {Number} id  Identificador para especificar consulta de um único aviso (opcional).
+     *
+     * @apiSuccess {Numero} list.id Numero identificador.
+     * @apiSuccess {String} list.description Descrição do aviso.
+     * @apiSuccess {Numero} list.categoria Categoria do aviso.
+     * @apiSuccess {String} list.nome Nome do usuario que enviou o aviso.
+     * @apiSuccess {String} list.email Endereço de email do usuario.
+     * @apiSuccess {String} list.telefone Telefone do usuário.
+     * @apiSuccess {Numero} list.latitude Latitude da localização.
+     * @apiSuccess {Numero} list.langitude Longitude da localização.
+     * @apiSuccess {Numero} list.cidade cidade do aviso.
+     * @apiSuccess {Numero} list.estado estado do aviso.
+     * @apiSuccess {Numero} list.dt data e hora do aviso.
+     * @apiSuccess {String} list.fotografia Fotografia do aviso em base64.
+     *
+     * @apiSuccessExample {json} Sucesso
+     * HTTP/1.1 200 OK
+     *      {
+     *          "id": 1,
+     *          "descricao" : "Aviso de teste",
+     *          "categoria" : 1,
+     *          "nome" : "João da Horta",
+     *          "email" : "joao.horta@gmail.com",
+     *          "telefone" : "(12) 95678-4321",
+     *          "latitude" : 40.0,
+     *          "longitude" : 50.0,
+     *          "dt":"2016-06-07T18:59:44.000Z",
+     *          "cidade":null,
+     *          "estado":null,
+     *          "fotografia" : "...."
+     *      }
+     *  @apiSampleRequest /rest/avisos
+     */
+  app.get(uri+'/:id', controller.buscarPorId);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   /**
    * @api {get} /rest/avisos/nearbyWarnings?latitude=-23.196641&longitude=-45.946840&raio=10&timestamp='2016/06/10T08:00:00' Pesquisa por coordenadas
    * @apiVersion 1.0.0

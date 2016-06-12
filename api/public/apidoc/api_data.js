@@ -113,7 +113,7 @@ define({ "api": [
   },
   {
     "type": "get",
-    "url": "/rest/avisos?id='1'",
+    "url": "/rest/avisos/:id",
     "title": "Listar os aviso de um dado ID",
     "version": "1.0.0",
     "group": "Avisos",
@@ -222,7 +222,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Sucesso",
-          "content": "HTTP/1.1 200 OK\n   {\n     {\n         \"id\": 1,\n         \"descricao\" : \"Aviso de teste\",\n         \"categoria\" : 1,\n         \"nome\" : \"João da Horta\",\n         \"email\" : \"joao.horta@gmail.com\",\n         \"telefone\" : \"(12) 95678-4321\",\n         \"latitude\" : 40.0,\n         \"longitude\" : 50.0,\n         \"dt\":\"2016-06-07T18:59:44.000Z\",\n         \"cidade\":null,\n         \"estado\":null,\n         \"fotografia\" : \"....\"\n     }\n     {\n         \"id\":2,\n         \"descricao\" : \"Aviso de teste2\",\n         \"categoria\" : 2,\n         \"nome\" : \"Neusa Japonesa\",\n         \"email\" : \"japoneusa@gmail.com\",\n         \"telefone\" : \"(12) 99999-4321\",\n         \"latitude\" : 40.0,\n         \"longitude\" : 50.0,\n         \"dt\":\"2016-06-07T18:59:44.000Z\",\n         \"cidade\":null,\n         \"estado\":null,\n         \"fotografia\" : \"....\"\n     }\n  }",
+          "content": "HTTP/1.1 200 OK\n     {\n         \"id\": 1,\n         \"descricao\" : \"Aviso de teste\",\n         \"categoria\" : 1,\n         \"nome\" : \"João da Horta\",\n         \"email\" : \"joao.horta@gmail.com\",\n         \"telefone\" : \"(12) 95678-4321\",\n         \"latitude\" : 40.0,\n         \"longitude\" : 50.0,\n         \"dt\":\"2016-06-07T18:59:44.000Z\",\n         \"cidade\":null,\n         \"estado\":null,\n         \"fotografia\" : \"....\"\n     }",
           "type": "json"
         }
       ]
@@ -234,7 +234,7 @@ define({ "api": [
     ],
     "filename": "C:/git/BD-ITAC/api/server/routes/avisos.js",
     "groupTitle": "Avisos",
-    "name": "GetRestAvisosId1"
+    "name": "GetRestAvisosId"
   },
   {
     "type": "get",

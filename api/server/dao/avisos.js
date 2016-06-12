@@ -190,36 +190,75 @@ avisosDAO = function(pool) {
     });
   };
 
+  dao.buscarPorId = function(id, callback){
+    var query =
+    "select avs_id,                                    \
+        av.avs_ds as avs_ds,                           \
+        avs.sta_ds as sta_ds,                          \
+        av.avs_latitude as latitude,                   \
+        av.avs_longitude as longitude,                 \
+        cat.cat_ds as categoria,                       \
+        usu.usu_email,                                 \
+        usu.usu_fone,                                  \
+        usu.usu_nm,                                    \
+        img.img_arq,                                   \
+        av.avs_data as dt, \
+        geo.geo_uf as estado, \
+        geo.geo_nm as cidade \
+   from aviso   av                                     \
+   join aviso_status avs on av.sta_cod = avs.sta_id    \
+   join categoria cat on av.cat_cod = cat.cat_id       \
+   join usuario usu on av.usu_cod = usu.usu_id         \
+   join imagem  img on img.avs_cod = av.avs_id         \
+   left join geografica geo on av.geo_cod = geo_id     \
+   where av.avs_id = ?";
+    self.pool.query(
+       query,id
+       ,function(err, rows){
+      if(err){
+        callback(err,{});
+      }else{
+        var aviso = (rows != null ? getAviso(rows[0]):'{}');
+        callback(null, aviso);
+      }
+    });
+  };
+
+
   function getAvisos(rows){
     var avisos = [];
     for(c in rows){
 
-      var pic1 = '';
-
-      if(rows[c].img_arq != null) pic1 = new Buffer(rows[c].img_arq).toString('base64');
-
-      var aviso={
-                id: rows[c].avs_id,
-                nome: rows[c].usu_nm,
-                telefone: rows[c].usu_fone,
-                email: rows[c].usu_email,
-                descricao: rows[c].avs_ds,
-                categoria: rows[c].categoria,
-                latitude: rows[c].latitude,
-                longitude: rows[c].longitude,
-                dt: rows[c].dt,
-                //dataInicial: rows[c].cri_dh_inicio,
-                //dataFinal: rows[c].cri_dh_fim,
-                cidade: rows[c].cidade,
-                estado: rows[c].estado,
-                status: rows[c].sta_ds,
-                fotografia:   pic1
-              };
-              avisos.push(aviso);
+              avisos.push(getAviso(rows[c]));
 
     }
 
     return avisos;
+  }
+
+  function getAviso(row){
+    var pic1 = '';
+
+    if(row.img_arq != null) pic1 = new Buffer(row.img_arq).toString('base64');
+
+    var aviso={
+              id: row.avs_id,
+              nome: row.usu_nm,
+              telefone: row.usu_fone,
+              email: row.usu_email,
+              descricao: row.avs_ds,
+              categoria: row.categoria,
+              latitude: row.latitude,
+              longitude: row.longitude,
+              dt: row.dt,
+              //dataInicial: rows[c].cri_dh_inicio,
+              //dataFinal: rows[c].cri_dh_fim,
+              cidade: row.cidade,
+              estado: row.estado,
+              status: row.sta_ds,
+              fotografia:   pic1
+            };
+            return aviso;
   }
 
 
@@ -301,9 +340,8 @@ avisosDAO = function(pool) {
       }else{
 
      for(a in rows){
-          nearbyWarnings.push( {
-            "_embedded" : {
-              "alertaList" : [ {
+          nearbyWarnings.push(
+            {
                 "descricaoResumida" : rows[a].avs_ds,
                 "descricaoCompleta" : rows[a].avs_ds,
                 "categoriaAlerta" : rows[a].categoria,
@@ -317,9 +355,8 @@ avisosDAO = function(pool) {
                    // "href" : url + "/" + rows[a].id
                   }
                 }*/
-              }]
               }
-            });
+              );
         }
 
         return callback(null, nearbyWarnings);
