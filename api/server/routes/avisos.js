@@ -140,7 +140,7 @@ module.exports = function(app){
      *      }
      *  @apiSampleRequest /rest/avisos
      */
-  app.get(uri+'/:id', controller.buscarPorId);
+  app.get(uri+'/:id(\\d+)/', controller.buscarPorId);
 
 
 
