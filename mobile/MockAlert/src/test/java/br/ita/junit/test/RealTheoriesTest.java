@@ -10,8 +10,6 @@ import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
 
-import br.ita.bditac.model.Real;
-
 @RunWith(Theories.class)
 public class RealTheoriesTest {
 	

@@ -37,6 +37,8 @@ public class IndicadorController {
     
     public interface Request {
         
+    	String ALL = "";
+    	
         String BY_REGIAO = "/latitude/{latitude:" + COORD_REGEX + "}" + "/longitude/{longitude:" + COORD_REGEX + "}" + "/raio/{raio:" + DIST_REGEX + "}";
 
     }
@@ -46,6 +48,24 @@ public class IndicadorController {
 
 	@Autowired
 	private MessageResourceAssembler messageResourceAssembler;
+	
+	@RequestMapping(method = RequestMethod.GET, produces = { MediaTypes.HAL_JSON_VALUE }, value = Request.ALL)
+	public ResponseEntity<IndicadorResources> indicadores() {
+		try {
+			List<Indicador> indicadores = AlertaDAO.obterIndicadores();
+			List<IndicadorResource> resources = resourceAssembler.toResources(indicadores);
+			IndicadorResources indicadorResources = new IndicadorResources(resources);
+			if(indicadorResources.getContent().size() == 0) {
+				return new ResponseEntity<IndicadorResources>(HttpStatus.NOT_FOUND);
+			}
+			else {
+				return new ResponseEntity<IndicadorResources>(indicadorResources, HttpStatus.OK);
+			}
+    	}
+    	catch(Exception ex) {
+	        return new ResponseEntity<IndicadorResources>(HttpStatus.INTERNAL_SERVER_ERROR);	        
+    	}
+	}
 	
 	@RequestMapping(method = RequestMethod.GET, produces = { MediaTypes.HAL_JSON_VALUE }, value = Request.BY_REGIAO)
 	public ResponseEntity<IndicadorResources> indicadores(@PathVariable("latitude") String latitude, @PathVariable("longitude") String longitude, @PathVariable("raio") String raio) {

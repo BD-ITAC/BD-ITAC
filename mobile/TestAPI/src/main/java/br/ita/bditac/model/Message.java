@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 import org.springframework.hateoas.Identifiable;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class Message implements Serializable, Identifiable<Integer> {
 
     private static final long serialVersionUID = 1L;
@@ -66,10 +68,12 @@ public class Message implements Serializable, Identifiable<Integer> {
         this.info = info;
     }
 
+    @JsonIgnore
     public Integer getId() {
         return id;
     }
 
+    @JsonIgnore
     public Type getType() {
         return type;
     }

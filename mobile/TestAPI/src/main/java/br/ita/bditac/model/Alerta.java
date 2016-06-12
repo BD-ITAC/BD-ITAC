@@ -28,7 +28,7 @@ public class Alerta implements Serializable {
     
     private long timestamp;
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
     

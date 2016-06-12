@@ -32,7 +32,10 @@ public class AlertaDAO {
         
         _categorias.put(1, new Categoria("Alagamento"));        
         _categorias.put(2, new Categoria("Incêndio"));        
-        _categorias.put(3, new Categoria("Deslizamento"));        
+        _categorias.put(3, new Categoria("Deslizamento"));
+        
+        _alertas.put(1, new Alerta("Incendio na Favela da Brasa", "Fogo atinge todo o perímetro da favela. Centenas de desaparecidos.", 2, -15.7976, -47.8344, 2));
+        _alertas.put(2, new Alerta("Alagamento da Lagoa Rasa", "Milhares de desabrigados", 2, -15.7976, -47.8344, 5));
     }
 
     public static Alerta adicionarAlerta(Alerta alerta) {
@@ -105,7 +108,7 @@ public class AlertaDAO {
         return crise;
     }
     
-    public static List<Indicador> obterIndicadores(double latitude, double longitude, double raio) {
+    public static List<Indicador> obterIndicadores() {
     	List<Indicador> indicadores = new ArrayList<Indicador>();
     	
     	for(Indicador indicador : _indicadores.values()) {
@@ -113,6 +116,10 @@ public class AlertaDAO {
     	}
     	
     	return indicadores;
+    }
+    
+    public static List<Indicador> obterIndicadores(double latitude, double longitude, double raio) {
+    	return obterIndicadores();
     }
 
     public static Categoria obterCategoria(int id) {

@@ -1,4 +1,4 @@
-package br.ita.bditac.model;
+package br.ita.junit.test;
 
 
 public class Real {

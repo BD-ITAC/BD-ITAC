@@ -10,7 +10,7 @@ public class Categoria implements Serializable {
     
     private int id;
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
     

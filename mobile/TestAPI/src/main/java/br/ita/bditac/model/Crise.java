@@ -15,7 +15,7 @@ public class Crise implements Serializable {
     private int id;
 
     @JsonIgnore
-    public Integer getId() {
+    public int getId() {
         return id;
     }
     
