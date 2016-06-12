@@ -20,42 +20,27 @@ crisisDAO = function(pool) {
 
   /**
   * Realiza registro de uma nova crise
-  * @author Danilo Ramalho
+  * @author Edizon
   * @param objeto crisis
   */
   dao.save = function(crisis, callback){//callback(null, {status: 'ok'});
 
+    var cidade_id = getCidade(crisis.cidade);
+
+console.log(cidade_id);
     var dados = getDados(crisis);
+
+    if(!dados)
+    {
+      return(callback('Impossible to retrieve all data', null));
+    }
+
     //Modificado por Edizon: utilizando transações por conta dos campos
     // auto incrementado.
     var query =
-    "insert into usuario set \n                  "+
-    "usu_nm = '" + dados.cri_nome + "',\n       "+
-    "usu_email = '" + dados.cri_email + "',\n    "+
-    "usu_fone = '" + dados.cri_telefone + "'; \n\n "+
-
-     "select @idUsuario:=usu_id from usuario where usu_id = LAST_INSERT_ID();\n\n" +
-     "insert into crise set \
-     cri_ds = '" + dados.cri_descricao + "',\n \
-     cri_ini = '" + dados.cri_dh_inicio + "',\n \
-     cri_atv = '" + dados.cri_ativo + "',\n \
-     cri_pic1 =?,\n \
-     cri_pic2 =?,\n \
-     cri_pic3 =?;\n\n"+
-
-     "select @idCrise:=cri_id from crise where cri_id = LAST_INSERT_ID();\n\n"+
-
-     "insert into geografica set \n\
-     geo_long = '"+dados.cri_longitude+"',\n\
-     geo_lat = '"+dados.cri_latitude+"';\n\n"+
-
-     "select @idGeo:=geo_id from geografica where geo_id = LAST_INSERT_ID();\n\n"+
-
-     "insert into ocorrencia set \n\
-     oco_cri_cod = @idCrise, \n\
-     oco_geo_cod = @idGeo, \n\
-     oco_usu_cod = @idUsuario, \n\
-     oco_eve_cod = '"+dados.cri_categoria + "';";
+      "insert into crise \
+      (crt_id, cri_descricao, cri_inicio, cri_ativa, cri_regiao, cid_id, cri_geotipo) \
+      values (?,?,?,?,?,?,?)";
 
      //console.log(query);
 
@@ -64,7 +49,7 @@ crisisDAO = function(pool) {
 
         function(conn)
         {
-            conn.query(query, [dados.cri_pic1, dados.cri_pic2, dados.cri_pic3]
+            conn.query(query, dados
               ,function (err, result) {
                 if(err)
                 {
@@ -122,26 +107,51 @@ crisisDAO = function(pool) {
         */
   };
 
+ function getCidade(cidade, callback)
+ {
+   var c = 0;
 
+   self.pool.query(
+      "select cid_id from cidade where cid_nome = ?", cidade,
+      function(err, rows){
+        if(!err && rows.length>0){
+         console.log(rows[0].cid_id);
+         c= rows[0].cid_id;
+        }
+        else {
+          c= 0;
+        }
+      });
 
+      return c;
+ };
 
-  function getDados(crisis){
+ function getDados(crisis){
+     var cidade_id=0;
+
+     console.log("CidadeID:");
+     console.log(cidade_id);
+
+    if(!cidade_id && cidade_id == 0)
+    {
+      return "";
+    }
+
     var dados={
-              cri_nome: crisis.nome,
-              cri_telefone: crisis.telefone,
-              cri_email: crisis.email,
+              crt_id: crisis.tipo,
               cri_descricao: crisis.descricao,
-              cri_categoria: crisis.categoria,
-              cri_latitude: crisis.latitude,
-              cri_longitude: crisis.longitude,
-              cri_dh_inicio: new Date(),
-              cri_ativo: true,
-              cri_pic1: new Buffer(crisis.fotografia, 'base64'),
-              cri_pic2: '',
-              cri_pic3: ''
-            }
+              cri_inicio: new Date(),
+              cri_ativa: 1,
+              cri_regiao: crisis.regiao_coords,
+              cid_id: cidade_id,
+              cri_geotipo: crisis.geoid
+
+            };
+    console.log("Dados:");
+    console.log(dados);
     return dados;
-  }
+
+};
 
   dao.listCrisis = function(callback){
     var query =
@@ -213,41 +223,9 @@ crisisDAO = function(pool) {
   }
 
 
-    dao.listIndicators = function(callback){
-      var query = "SELECT sta_ds, count(avs_id) as valor   \
-                     FROM  bditac.aviso_status  A \
-                     join  bditac.aviso B on A.sta_id = B.sta_cod \
-                     group by sta_ds"
 
-                       self.pool.query(
-                          query,
-                          function(err, rows){
-                         if(err){
-                           callback(err,{});
-                         }else{
-                           callback(null, getIndicators(rows));
-                         }
-                       });
 
-  };
 
-  function getIndicators(rows)
-  {
-    var inds = [];
-    for(c in rows)
-    {
-      var ind =
-      {
-        id: c,
-        descricao: rows[c].sta_ds,
-        valor: rows[c].valor
-      };
-      inds.push(ind);
-    }
-    return inds;
-  };
-
- 
 
   dao.listType = function(callback){
     self.pool.query('SELECT * FROM crise_tipo', function(err, rows){

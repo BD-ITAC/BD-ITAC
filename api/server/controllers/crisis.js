@@ -11,8 +11,7 @@ module.exports = function(app){
   * @param res HHTP response
   */
   controller.saveCrisis = function(req, res, next){
-
-        crisisBusiness.save(req.body, function(err, data) {
+     crisisBusiness.save(req.body, function(err, data) {
           if(err) {
             var status = err.validationError ? 400 : 500;
             res.status(status).json(err);

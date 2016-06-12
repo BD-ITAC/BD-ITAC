@@ -5,7 +5,7 @@ var mysql = require('mysql')
 ,connection  = require('express-myconnection')
 , pool_connection
 , env_conf = {
-  development: {
+  development_old: {
     host: "localhost",
     user: "user_app",
     password: "User_@pp",
@@ -14,7 +14,7 @@ var mysql = require('mysql')
     connectionLimit    : 10,
     multipleStatements : true
     },
-    development_old: {
+    development: {
       host: "edizon.onmypc.net",
       user: "root",
       password: "@Senha01",

@@ -44,9 +44,7 @@ app.controller('addCrisisModalController',
       $scope.positions.push([avisos[c].latitude,avisos[c].longitude]);
     }
 
-
-
-
+    //Tem que calcular a média. Não somente a primeira posição.
     var latlongCentral =
     {
       latitude:avisos[0].latitude,
@@ -85,18 +83,51 @@ app.controller('addCrisisModalController',
    var lat2 = lat0 + (180/Math.PI)*(-d/6378137)
    var lon2 = lon0 + (180/Math.PI)*(-d/6378137)/Math.cos(Math.PI/180.0*lat0)
 
-   return [[lat2,lon2],[lat1,lon1]];
+   return [[lat2,lon2],[lat2,lon1],[lat1,lon1],[lat1,lon2]];
  };
 
   $scope.close = function(result, map) {
-debugger;
+
     if(result === true)
     {
-      // criar a crise na base de dados.
-      var ne;
-      ne = $scope.map.getBounds();
-      console.log(ne);
 
+      if($scope.descricao && !$scope.searchBoxData.value)
+      {
+
+
+      // criar a crise na base de dados.
+      var paths;
+      paths = $scope.map.shapes[0].getPath();
+
+    var coords = "";
+      // Iterate over the vertices.
+    for (var i =0; i < paths.getLength(); i++) {
+      var xy = paths.getAt(i);
+      coords += xy.lat() + "," + xy.lng() + ",";
+
+    }
+
+      coords = coords.substring(1, coords.length-1);
+
+      var parameter = JSON.stringify({
+          regiao_coords:coords,
+          descricao: $scope.descricao,
+          cidade:+$scope.cidades[0].cidade,
+          tipo:$scope.searchBoxData.id,
+          geoid:"1"
+      });
+
+    $http.post('/rest/crisis', parameter).
+    success(function(data, status, headers, config) {
+        // this callback will be called asynchronously
+        // when the response is available
+        console.log(data);
+      }).
+      error(function(data, status, headers, config) {
+        // called asynchronously if an error occurs
+        // or server returns response with an error status.
+      });
+      }
     }
  	  close(result, 500); // close, but give 500ms for bootstrap to animate
   };
