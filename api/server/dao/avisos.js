@@ -19,6 +19,7 @@ avisosDAO = function(pool) {
   var dao = {};
 
   /**
+
   * Realiza registro de um novo aviso
   * @author Danilo Ramalho
   * @param objeto avisos
@@ -62,11 +63,14 @@ avisosDAO = function(pool) {
      avs_ptcoord=Point('"+dados.longitude+"','"+dados.latitude+"'),\n \
      cat_cod = '" + dados.categoria + "';\n\n " +
 
-     "select @idCrise:=avs_id from aviso where avs_id = LAST_INSERT_ID();\n\n" +
+     "select @idCrise:=avs_id from aviso where avs_id = LAST_INSERT_ID();\n\n"
 
-     "insert into imagem set \n " +
-     "avs_cod = @idCrise, \n" +
-     "img_arq = ? ; \n\n";
+     if(dados.pic != null && dados.pic.length > 0)
+     {
+       "insert into imagem set \n " +
+       "avs_cod = @idCrise, \n" +
+       "img_arq = ? ; \n\n";
+     }
 
      db.executarTransacao(
         self.pool,
