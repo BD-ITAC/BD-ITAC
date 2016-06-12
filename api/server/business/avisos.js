@@ -12,7 +12,7 @@ module.exports = function(app){
   business.save = function(avisos, callback){
     //valida preenchimento de campos obrigatórios
     var ValidEmail = str.isEmail();
-
+    
     if((!avisos.descricao || !avisos.nome || !avisos.email || !avisos.telefone
       || !avisos.latitude || !avisos.longitude ||
       !avisos.categoria) || !(avisos.categoria >= 0 && avisos.categoria <= 8)
@@ -23,6 +23,7 @@ module.exports = function(app){
             if(err){
               callback({success: false, message: err}, null);
             }else{
+
               callback(null, result);
             }
         });

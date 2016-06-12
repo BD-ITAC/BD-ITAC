@@ -4,8 +4,14 @@
 
 'use strict';
 app.controller('addCrisisModalController',
-  function($scope,$http,avisos,close) {
+  function($scope,$http,avisos,close, NgMap) {
 
+    var vm = this;
+    NgMap.getMap().then(function(map) {
+        vm.map = map;
+      });
+
+  vm.googleMapsUrl = 'https://maps.google.com/maps/api/js';
 
 
   if(!avisos.length)
@@ -20,24 +26,113 @@ app.controller('addCrisisModalController',
     $http.get('/rest/categories').success(function(data){
                 $scope.tiposdecrisesCollection = data;
     });
-  debugger;
 
-    $scope.cidade = avisos[0].cidade;
-    $scope.latitude = avisos[0].latitude;
-    $scope.longitude = avisos[0].longitude;
+
+    $scope.cidades = [];
+    $scope.positions = [];
+    $scope.avisosIds = [];
+
+    for(var c in avisos)
+    {
+      var local=
+      {
+        cidade: avisos[c].cidade,
+        estado: avisos[c].estado
+      };
+
+      $scope.avisosIds.push(avisos[c].id);
+      $scope.cidades.push(local);
+      $scope.positions.push([avisos[c].latitude,avisos[c].longitude]);
+    }
+
+    //Tem que calcular a média. Não somente a primeira posição.
+    var latlongCentral =
+    {
+      latitude:avisos[0].latitude,
+      longitude:avisos[0].longitude
+    };
+
+
+    $scope.retangulo = calcularRetanguloPeloCentro(latlongCentral,10000);
+    $scope.lat = avisos[0].latitude;
+    $scope.lon=  avisos[0].longitude;
     $scope.listaDeTiposDeCrises = true;
     $scope.btnSair = true;
     $scope.btnSalvar=true;
 
+    //google.maps.event.trigger($scope.google.maps, 'resize');
+
+    window.setTimeout(function(){
+        google.maps.event.trigger($scope.google.maps, 'resize');
+    }, 100);
+
+
+
   }
 
+ function calcularRetanguloPeloCentro(latlong, distanciaEmMetros)
+ {
+   //Considerando o centro do retangulo como a coordenada central.
+   var d = distanciaEmMetros/2;
+   var lat0 = latlong.latitude;
+   var lon0 = latlong.longitude;
 
+   //http://stackoverflow.com/questions/2839533/adding-distance-to-a-gps-coordinate
 
-  $scope.close = function(result) {
+   var lat1 = lat0 + (180/Math.PI)*(d/6378137)
+   var lon1 = lon0 + (180/Math.PI)*(d/6378137)/Math.cos(Math.PI/180.0*lat0)
+
+   var lat2 = lat0 + (180/Math.PI)*(-d/6378137)
+   var lon2 = lon0 + (180/Math.PI)*(-d/6378137)/Math.cos(Math.PI/180.0*lat0)
+
+   return [[lat2,lon2],[lat2,lon1],[lat1,lon1],[lat1,lon2]];
+ };
+
+  $scope.close = function(result, map) {
+
     if(result === true)
     {
-      // criar a crise na base de dados.
 
+      if($scope.descricao && !$scope.searchBoxData.value)
+      {
+
+
+      // criar a crise na base de dados.
+      var paths;
+      paths = $scope.map.shapes[0].getPath();
+
+    var coords = "";
+      // Iterate over the vertices.
+    for (var i =0; i < paths.getLength(); i++) {
+      var xy = paths.getAt(i);
+      coords += xy.lat() + "," + xy.lng() + ",";
+
+    }
+
+      coords = coords.substring(1, coords.length-1);
+
+
+
+      var parameter = JSON.stringify({
+          regiao_coords:coords,
+          descricao: $scope.descricao,
+          cidade:$scope.cidades[0].cidade,
+          tipo:$scope.searchBoxData.id,
+          geoid:"1",
+          avisosId: $scope.avisosIds
+      });
+
+    $http.post('/rest/crisis', parameter).
+    success(function(data, status, headers, config) {
+        // this callback will be called asynchronously
+        // when the response is available
+        console.log(data);
+      }).
+      error(function(data, status, headers, config) {
+        // called asynchronously if an error occurs
+        // or server returns response with an error status.
+      });
+      }
     }
  	  close(result, 500); // close, but give 500ms for bootstrap to animate
   };

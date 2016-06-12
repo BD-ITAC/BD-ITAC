@@ -11,7 +11,7 @@ var session = require('express-session');
 module.exports = function(){
   var app = express();
     // all environments
-  app.set('port', process.env.PORT || 8080);
+  app.set('port', process.env.PORT || 80);
 
   //config session
   app.use(session({secret: 'ssshhhhh',saveUninitialized: true,resave: true}));
@@ -22,6 +22,10 @@ module.exports = function(){
   app.set('view engine', 'ejs');
   app.use(bodyParser.urlencoded({extended: true}));
   app.use(bodyParser.json());
+  app.use(function (req, res, next) {
+    res.contentType('application/hal+json');
+    next();
+  });
 
   load('models', {cwd: 'server'})
 //    .then('helpers')

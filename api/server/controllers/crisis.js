@@ -1,3 +1,4 @@
+var halson = require('halson');
 module.exports = function(app){
   var controller = {};
   var crisisBusiness = app.business.crisis;
@@ -10,8 +11,7 @@ module.exports = function(app){
   * @param res HHTP response
   */
   controller.saveCrisis = function(req, res, next){
-
-        crisisBusiness.save(req.body, function(err, data) {
+     crisisBusiness.save(req.body, function(err, data) {
           if(err) {
             var status = err.validationError ? 400 : 500;
             res.status(status).json(err);
@@ -46,44 +46,7 @@ module.exports = function(app){
 	   });
    };
 
-  /**
-  * Retorno indicadores
-  */
-  controller.listIndicators = function(req, res, next){
-    crisisDAO.listAll(function(err, data) {
-      if(err) {
-          res.status(500).json(err);
-      }else{
-        if(data !== null && data.length >= 0) {
-          res.json(data);
-        }else {
-          res.status(404).json({message:'Something went wrong.Please try again later.'});
-        }
-      }
-    });
- };
 
-  controller.nearbyCrisis = function(req, res, next){
-
-     if(!req.query.hasOwnProperty('latitude') ||
-      !req.query.hasOwnProperty('longitude') ||
-        !req.query.hasOwnProperty('raio')) {
-         res.status(404).json({success: false, message: 'Required fields not informed.'});
-      }else{
-        crisis = {
-          latitude: req.query.latitude,
-          longitude: req.query.longitude,
-          raio: req.query.raio
-        };
-        crisisBusiness.nearbyAlerts(crisis, function(err, data) {
-          if(err) {
-              res.status(500).json(err);
-          }else{
-              res.json(data);
-          }
-        });
-      }
- };
 
  controller.listType = function(req, res, next){
    crisisDAO.listType(function(err, data){

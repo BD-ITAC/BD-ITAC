@@ -11,12 +11,8 @@ module.exports = function(app){
   */
   business.save = function(crisis, callback){
     //valida preenchimento de campos obrigatórios
-    var ValidEmail = str.isEmail();
-
-    if((!crisis.descricao || !crisis.nome || !crisis.email || !crisis.telefone
-      || !crisis.latitude || !crisis.longitude ||
-      !crisis.categoria) || !(crisis.categoria >= 0 && crisis.categoria <= 8)
-      || !(ValidEmail(crisis.email))){
+    if((!crisis.regiao_coords || !crisis.descricao || !crisis.cidade || !crisis.tipo
+      || !crisis.geoid)){
         callback({success: false, message: 'Invalid value data fields.', validationError:true});
       }else{
         crisisDAO.save(crisis, function(err, result){

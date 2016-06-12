@@ -12,25 +12,34 @@
           <div class="form-group">
               <label for="tipoDeCrisesBox"> Selecione o Tipo de Crise: </label>
               <select class="form-control" name="tipoDeCrisesBox" id="tipoDeCrisesBox" ng-model="searchBoxData.id">
-                <option ng-repeat="row in tiposdecrisesCollection" value="{{row.id}}">{{row.description}}</option>
+                <option ng-repeat="row in tiposdecrisesCollection._embedded.categoriaList" value="{{row.id}}">{{row.description}}</option>
               </select>
+          </div>
+          <div id="Descricao" class="form-group">
+            <h4>Descrição:</h4>
+            <input type="text" ng-model="descricao" class="form-control"/>
           </div>
           <div id="Cidade" class="form-group">
             <h4>Cidade:</h4>
-              {{Cidade}}
-          </div>
+            <div ng-repeat="c in cidades | unique:'cidade'">
+              {{c.cidade}} - {{c.estado}}
+            </div>
           <div class="form-group">
             <h4>Área: </h4>
-            <div map-lazy-load="https://maps.google.com/maps/api/js" div style='overflow:hidden;height:20%;width:100%;'>
-                <ng-map center="{{latitude}},{{longitude}}" zoom="9"></ng-map>
+            <div class="col-md-12">
+              <ng-map default-style="true" center="{{lat}},{{lon}}" zoom="10">
+              <marker ng-repeat="p in positions" position="{{p}}"></marker>
+              <shape name="polygon" editable="true"
+                            draggable="true" paths="{{retangulo}}">
+              </shape>
+              </ng-map>
             </div>
-          </div>
         </div>
       </div>
       <div class="modal-footer">
         <button type="button" ng-click="close(false)" class="btn btn-default"
                 data-dismiss="modal" ng-show="btnSair">Cancelar</button>
-        <button type="button" ng-click="close(sair)" class="btn btn-primary"
+        <button type="button" ng-click="close(true)" class="btn btn-primary"
                 data-dismiss="modal" ng-show="btnSalvar">Iniciar Nova Crise</button>
       </div>
     </div>
