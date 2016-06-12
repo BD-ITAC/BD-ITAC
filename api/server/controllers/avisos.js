@@ -54,6 +54,30 @@ module.exports = function(app){
 	   });
    };
 
+   controller.buscarPorId = function(req,res,next)
+   {
+     var id = req.params.id
+    avisosDAO.buscarPorId(id,function(err, data) {
+      if(err)
+      {
+
+        res.status(500).json(err);
+      }
+      else
+      {
+        if(data !== null){
+          res.setHeader('Content-Type','application/hal+json');
+          res.json(data);
+        }
+        else
+        {
+          res.status(404).json({message:'Something went wrong. Please Try again later.'});
+        }
+      }
+    });
+   };
+
+
    /**
    * Retorno indicadores
    */
@@ -93,11 +117,11 @@ module.exports = function(app){
           timestamp: req.query.timestamp.replace("T", " ")
 
         };
-        avisosDAO.nearbyWarnings(aviso, function(err, data) {
+        avisosDAO.nearbyWarnings(aviso, function(err, alertaList) {
           if(err) {
               res.status(500).json(err);
           }else{
-              res.json(data);
+              res.json(halson().addEmbed('alertaList',alertaList));
           }
         });
       }
