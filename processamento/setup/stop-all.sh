@@ -8,7 +8,7 @@ fi
 
 # Hue
 echo "stopping hueserver"
-start-stop-daemon --stop --pidfile /var/run/hueserver.pid
+killall python2.7
 
 # LivyServer
 echo "stopping livyserver"
