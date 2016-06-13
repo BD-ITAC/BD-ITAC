@@ -1,7 +1,7 @@
 var supertest = require("supertest");
 var should = require("should");
 
-var server = supertest.agent("http://localhost:3000");
+var server = supertest.agent("http://bditac.ddns.net");
 
 describe("Test of Crisis",function(){
 
@@ -115,11 +115,11 @@ describe("Test of Crisis",function(){
       res.should.be.json;
       res.status.should.equal(201);
       res.body.should.have.property('message');
-	  
+
       done();
     });
   });
-  
+
   it("Deve retornar crises por latitude/longitude e raio",function(done){
 
   var crisis_param = {
@@ -140,7 +140,7 @@ describe("Test of Crisis",function(){
     .end(function(err,res){
 
      res.should.be.json;
-	 
+
 
      done();
 	});
