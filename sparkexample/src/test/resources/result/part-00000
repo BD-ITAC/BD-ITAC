@@ -1,7 +1,0 @@
-(two,Tweet{id=1, name='two'})
-(test2,Tweet{id=1, name='test2'})
-(one,Tweet{id=1, name='one'})
-(three,Tweet{id=1, name='three'})
-(five,Tweet{id=1, name='five'})
-(four,Tweet{id=1, name='four'})
-(test,Tweet{id=1, name='test'})
