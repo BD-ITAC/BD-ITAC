@@ -32,7 +32,7 @@ public abstract class AbstractBaseService {
         mapper.registerModule(new Jackson2HalModule());
 
         MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
-        converter.setSupportedMediaTypes(Arrays.asList(MediaTypes.HAL_JSON));
+        converter.setSupportedMediaTypes(Arrays.asList(MediaTypes.HAL_JSON, MediaType.TEXT_HTML));
         converter.setObjectMapper(mapper);
 
         restTemplate = new RestTemplate();

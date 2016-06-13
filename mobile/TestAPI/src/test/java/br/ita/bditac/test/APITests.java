@@ -26,6 +26,7 @@ import org.springframework.hateoas.MediaTypes;
 import org.springframework.hateoas.hal.Jackson2HalModule;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -87,8 +88,7 @@ public class APITests {
         mapper.registerModules(new Jackson2HalModule(), new JodaModule());
 
         MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
-        converter.setSupportedMediaTypes(Arrays.asList(MediaTypes.HAL_JSON));
-        //converter.setSupportedMediaTypes(Arrays.asList(MediaType.APPLICATION_JSON_UTF8));
+        converter.setSupportedMediaTypes(Arrays.asList(MediaTypes.HAL_JSON, MediaType.APPLICATION_JSON_UTF8, MediaType.TEXT_HTML));
         converter.setObjectMapper(mapper);
 
         RestTemplate restTemplate = new RestTemplate(Collections.<HttpMessageConverter<?>> singletonList(converter));
@@ -221,12 +221,12 @@ public class APITests {
 	   
 	   List<Categoria> categorias = getRestTemplate().getForObject(categoriaURI, CategoriaResources.class).unwrap();
 	   
-	   assertThat(categorias.get(0).getDescricao()).isEqualTo("Acidente de transporte aéreo");
+	   assertThat(categorias.get(0).getDescription()).isEqualTo("Acidente de transporte aéreo");
    }
 
    @Test
    public void test117GetIndicadores() throws Exception {
-	   URI indicadoresURI = new URI(getBaseUrl() + "/rest/indicators");
+	   URI indicadoresURI = new URI(getBaseUrl() + "/rest/avisos/indicators");
 	   
 	   List<Indicador> indicadores = getRestTemplate().getForObject(indicadoresURI, IndicadorResources.class).unwrap();
 	   

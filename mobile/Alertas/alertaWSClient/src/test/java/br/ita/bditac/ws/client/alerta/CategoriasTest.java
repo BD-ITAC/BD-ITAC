@@ -15,7 +15,7 @@ import br.ita.bditac.ws.model.Categoria;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class CategoriasTest extends TestCase {
 
-    private static final String HOST_URL = "http://localhost:8081";
+    private static final String HOST_URL = "http://200.144.14.28/rest/categories";
 
     @Test
     public void test01GetCategorias() {

@@ -14,7 +14,7 @@ import br.ita.bditac.ws.model.Crise;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class CriseTests extends TestCase {
 
-    private static final String HOST_URL = "http://localhost:8081";
+    private static final String HOST_URL = "http://200.144.14.28/rest/avisos";
 
     @Test
     public void test01PostCrise() {

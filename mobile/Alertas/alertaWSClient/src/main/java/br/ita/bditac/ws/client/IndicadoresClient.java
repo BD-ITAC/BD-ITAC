@@ -5,12 +5,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 
 import br.ita.bditac.ws.model.Indicador;
 import br.ita.bditac.ws.model.IndicadorResources;
@@ -20,26 +15,15 @@ public class IndicadoresClient extends AbstractBaseService {
 
     private static final String SERVICE_URL = "/avisos/indicators";
 
-    // TODO: 01 - Consumir o serviço http://200.144.14.28/rest/avisos/nearbyWarnings?latitude=-23.196641&longitude=-45.946840&raio=10&timestamp='2016/06/10T08:00:00'
-    // TODO: 02 - Não dá pra ser a concatenação de SERVICE_URL + COORDS_PARM, pois são URLs diferentes
-    private static final String COORDS_PARM = "/latitude/{latitude}/longitude/{longitude}/raio/{raio}";
-
     public IndicadoresClient(String hostURL) {
         super(hostURL);
     }
 
-    public List<Indicador> getIndicadores(double latitude, double longitude, double raio) {
+    public List<Indicador> getIndicadores() {
 
-        Map<String, String> params = new LinkedHashMap<String, String>();
-        DecimalFormat df = new DecimalFormat("#0.000000");
-        df.setDecimalFormatSymbols(DecimalFormatSymbols.getInstance(Locale.US));
-        params.put("latitude", df.format(latitude));
-        params.put("longitude", df.format(longitude));
-        params.put("raio", df.format(raio));
+        HttpEntity envio=new HttpEntity(getResponseHeader());
 
-        HttpEntity envio = new HttpEntity(getResponseHeader());
-
-        ResponseEntity<IndicadorResources> response = getRestTemplate().exchange(getHostURL() + SERVICE_URL + COORDS_PARM, HttpMethod.GET, envio, IndicadorResources.class, params);
+        ResponseEntity<IndicadorResources> response = getRestTemplate().exchange(getHostURL() + SERVICE_URL, HttpMethod.GET, envio, IndicadorResources.class);
 
         if(response.getStatusCode() == HttpStatus.OK) {
             return response.getBody().unwrap();

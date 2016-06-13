@@ -19,8 +19,9 @@ public class Indicador implements Serializable {
 
     }
     
-    public Indicador(String descricao, long valor) {
+    public Indicador(int id, String descricao, long valor) {
 
+		this.id = id;
     	this.descricao = descricao;
     	this.valor = valor;
     	

@@ -42,6 +42,8 @@ public class CadastrarCriseActivity extends AppCompatActivity {
 
     private Context context;
 
+    private AppCompatActivity app;
+
     private Location currentLocation;
 
     private String alertasUrl;
@@ -141,10 +143,10 @@ public class CadastrarCriseActivity extends AppCompatActivity {
                 if(categorias != null) {
                     ArrayList<String> categoriaArrayList=new ArrayList<>();
                     for(Categoria categoria : categorias) {
-                        categoriaArrayList.add(categoria.getDescricao());
+                        categoriaArrayList.add(categoria.getDescription());
                     }
 
-                    ArrayAdapter<String> adapter=new ArrayAdapter<String>(context, android.R.layout.simple_dropdown_item_1line, categoriaArrayList);
+                    ArrayAdapter<String> adapter=new ArrayAdapter<String>(app, android.R.layout.simple_dropdown_item_1line, categoriaArrayList);
                     inputCategoria.setAdapter(adapter);
                 }
             }
@@ -173,15 +175,16 @@ public class CadastrarCriseActivity extends AppCompatActivity {
 
         saving = false;
 
-        SharedPreferences preferences=null;
+        SharedPreferences preferences = null;
 
-        context=getApplicationContext();
+        context = getApplicationContext();
+        app = this;
 
         if(!Debug.isDebuggerConnected()) {
-            preferences=PreferenceManager.getDefaultSharedPreferences(context);
+            preferences = PreferenceManager.getDefaultSharedPreferences(context);
         }
 
-        alertasUrl=Debug.isDebuggerConnected() ? Constants.DEBUG_URL : preferences.getString("alerts.service.url", Constants.DEFAULT_URL);
+        alertasUrl = Debug.isDebuggerConnected() ? Constants.DEBUG_URL : preferences.getString("alerts.service.url", Constants.DEFAULT_URL);
 
         new CarregarCategoriaTask().execute();
 

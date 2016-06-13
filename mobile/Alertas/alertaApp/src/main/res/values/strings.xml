@@ -21,4 +21,6 @@
     <string name="report">Report</string>
     <string name="browse">Browse</string>
     <string name="status">Status</string>
+    <string name="title_alerta_list">Alertas</string>
+    <string name="title_alerta_detail">Alerta Detail</string>
 </resources>

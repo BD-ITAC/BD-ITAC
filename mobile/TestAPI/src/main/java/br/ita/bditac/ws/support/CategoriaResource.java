@@ -9,7 +9,7 @@ import br.ita.bditac.model.Categoria;
 public class CategoriaResource extends Resource<Categoria> {
 
 	public CategoriaResource() {
-		super (new Categoria());
+		super (new Categoria(0, null));
 	}
 	
 	public CategoriaResource(Categoria categoria) {

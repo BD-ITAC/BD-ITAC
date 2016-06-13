@@ -9,7 +9,7 @@ import br.ita.bditac.model.Indicador;
 public class IndicadorResource extends Resource<Indicador> {
 	
 	public IndicadorResource() {
-		super(new Indicador());
+		super(new Indicador(null, null, 0));
 	}
 	
 	public IndicadorResource(Indicador indicador) {

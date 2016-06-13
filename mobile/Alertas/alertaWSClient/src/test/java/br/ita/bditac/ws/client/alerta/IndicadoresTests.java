@@ -16,12 +16,12 @@ import br.ita.bditac.ws.model.Indicador;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class IndicadoresTests extends TestCase {
 
-    private static final String HOST_URL = "http://localhost:8081";
+    private static final String HOST_URL = "http://200.144.14.28/rest/avisos/indicators";
 
     @Test
     public void test01GetIndicadores() {
         IndicadoresClient indicadoresClient = new IndicadoresClient(HOST_URL);
-        List<Indicador> indicadores = indicadoresClient.getIndicadores(-15.7976, -47.8344, 10.0);
+        List<Indicador> indicadores = indicadoresClient.getIndicadores();
         assertNotNull(indicadores);
     }
 

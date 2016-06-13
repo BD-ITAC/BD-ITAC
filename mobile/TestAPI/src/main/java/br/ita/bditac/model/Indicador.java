@@ -6,15 +6,13 @@ public class Indicador implements Serializable {
 
     private static final long serialVersionUID = 1L;
     
-    private static int _id;
-    
-    private int id;
+    private String id;
 
-    public int getId() {
+    public String getId() {
         return id;
     }
     
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -22,19 +20,18 @@ public class Indicador implements Serializable {
     
     private long valor;
     
-    static {
-    	_id = 0;
-    }
-    
     public Indicador() {
-    	this.id = 0;
-    	
+        
+        this.id = "";
+        
     	this.descricao = "";
+    	this.valor = 0;
+    	
     }
     
-    public Indicador(String descricao, long valor) {
+    public Indicador(String id, String descricao, long valor) {
         
-        this.id = ++_id;
+        this.id = id;
         
     	this.descricao = descricao;
     	this.valor = valor;

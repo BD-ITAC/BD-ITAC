@@ -6,8 +6,6 @@ public class Categoria implements Serializable {
 
     private static final long serialVersionUID = 1L;
     
-    private static int _id;
-    
     private int id;
 
     public int getId() {
@@ -18,32 +16,30 @@ public class Categoria implements Serializable {
         this.id = id;
     }
 
-    private String descricao;
-    
-    static {
-    	_id = 0;
-    }
+    private String description;
     
     public Categoria() {
-    	this.id = 0;
+        
+        this.id = 0;
+        
+    	this.description = "";
     	
-    	this.descricao = "";
     }
     
-    public Categoria(String descricao) {
+    public Categoria(int id, String descricao) {
         
-        this.id = ++_id;
+        this.id = id;
         
-    	this.descricao = descricao;
+    	this.description = descricao;
     	
     }
 	
-	public String getDescricao() {
-		return descricao;
+	public String getDescription() {
+		return description;
 	}
 	
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
+	public void setDescription(String description) {
+		this.description = description;
 	}
       
 }

@@ -1,19 +1,13 @@
 package br.ita.bditac.mobile.alertas;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Debug;
 import android.preference.PreferenceManager;
-import android.support.v4.content.ContextCompat;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
@@ -54,10 +48,6 @@ public class ConsultarIndicadoresActivity extends ChartBase implements OnChartVa
 
     private List<Indicador> indicadores = null;
 
-    private LocationListener locationListener;
-
-    private Location currentLocation;
-
     private class ConsultarIndicadoresTask extends AsyncTask<Void, Void, List<Indicador>> {
 
         private Exception exception;
@@ -65,17 +55,9 @@ public class ConsultarIndicadoresActivity extends ChartBase implements OnChartVa
         protected List<Indicador> doInBackground(Void... params) {
 
             try {
-                if(currentLocation == null) {
-                    Toast.makeText(context, getText(R.string.msg_location_service_unaivalable), Toast.LENGTH_LONG).show();
+                IndicadoresClient indicadoresClient=new IndicadoresClient(alertasUrl);
 
-                    Log.i(this.getClass().getSimpleName(), getText(R.string.msg_location_service_unaivalable).toString());
-                }
-                else {
-                    IndicadoresClient indicadoresClient=new IndicadoresClient(alertasUrl);
-
-                    // TODO definir o raio da pesquisa de indicadores
-                    indicadores=indicadoresClient.getIndicadores(currentLocation.getLatitude(), currentLocation.getLongitude(), 10);
-                }
+                indicadores=indicadoresClient.getIndicadores();
             }
             catch(Exception ex) {
                 CharSequence mensagem = getText(R.string.msg_alerts_service_unaivalable);
@@ -141,14 +123,6 @@ public class ConsultarIndicadoresActivity extends ChartBase implements OnChartVa
                 l.setEnabled(false);
             }
 
-            if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                LocationManager locationManager = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
-
-                Log.i(this.getClass().getSimpleName(), "Alerta location service deregistered.");
-
-                locationManager.removeUpdates(locationListener);
-            }
-
         }
     }
 
@@ -162,24 +136,6 @@ public class ConsultarIndicadoresActivity extends ChartBase implements OnChartVa
         SharedPreferences preferences = null;
 
         this.context = getApplicationContext();
-
-        try {
-            if(ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                LocationManager locationManager=(LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-
-                Log.i(this.getClass().getSimpleName(), "Alerta location service registered.");
-
-                locationListener=new AlertaLocationListener(context);
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
-
-                currentLocation=locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            }
-        }
-        catch(Exception ex) {
-            Toast.makeText(context, getText(R.string.msg_alerts_service_unaivalable), Toast.LENGTH_LONG).show();
-
-            Log.e(this.getClass().getSimpleName(), ex.getMessage(), ex);
-        }
 
         if (!Debug.isDebuggerConnected()) {
             preferences = PreferenceManager.getDefaultSharedPreferences(context);

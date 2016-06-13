@@ -21,7 +21,7 @@ import br.ita.bditac.ws.model.Crise;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class AlertaTests extends TestCase {
 
-    private static final String HOST_URL = "http://localhost:8081";
+    private static final String HOST_URL = "http://200.144.14.28/rest/avisos";
 
     private static Bitmap _foto = null;
 

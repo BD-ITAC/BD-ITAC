@@ -17,26 +17,27 @@ public class Categoria implements Serializable {
         this.id = id;
     }
 
-    private String descricao;
+    private String description;
 
     public Categoria() {
 
-    	this.descricao = "";
+    	this.description= "";
 
     }
     
-    public Categoria(String descricao) {
+    public Categoria(int id, String description) {
 
-    	this.descricao = descricao;
+        this.id = id;
+    	this.description=description;
     	
     }
 	
-	public String getDescricao() {
-		return descricao;
+	public String getDescription() {
+		return description;
 	}
 	
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
+	public void setDescription(String description) {
+		this.description=description;
 	}
       
 }
