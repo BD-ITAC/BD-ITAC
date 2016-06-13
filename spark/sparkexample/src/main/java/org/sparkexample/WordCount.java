@@ -1,5 +1,6 @@
 package org.sparkexample;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import org.apache.spark.SparkConf;
@@ -10,7 +11,7 @@ import org.apache.spark.api.java.function.Function2;
 import org.apache.spark.api.java.function.PairFunction;
 import org.sparkexample.model.pojo.CrisePojo;
 import org.sparkexample.model.pojo.CriseCount;
-import org.sparkexample.model.pojo.UsuarioPojo;
+import org.sparkexample.model.pojo.Twitter;
 import org.sparkexample.model.repository.CriseRepository;
 
 import com.datastax.spark.connector.cql.CassandraConnector;
@@ -24,16 +25,18 @@ public class WordCount {
 
 	private static final String cassandra_keyspace = "ita_key"; //?
 	private static final String cassandra_ip = "127.0.0.1";//192.168.254.4
-	private static final String cassandra_table_in = "usuario";//?
+	private static final String cassandra_table_in = "twitter";//?
 	private static final String cassandra_table_out = "crisecount";
 	private static final String cassandra_user = null;//"bditacsenha";
 	private static final String cassandra_pass = null;//"dbitac2016";
+	
+	private static final Timestamp now = new Timestamp(System.currentTimeMillis());
 
-	private static final PairFunction<UsuarioPojo, String, CriseCount> WORDS_MAPPER_CLASS = new PairFunction<UsuarioPojo, String, CriseCount>() {
+	private static final PairFunction<Twitter, Integer, CriseCount> WORDS_MAPPER_CLASS = new PairFunction<Twitter, Integer, CriseCount>() {
 
-		public Tuple2<String, CriseCount> call(UsuarioPojo u) throws Exception {
+		public Tuple2<Integer, CriseCount> call(Twitter t) throws Exception {
 			//alterar para usar id da crise
-			return new Tuple2<String, CriseCount>(u.getName(), new CriseCount(1, 1));
+			return new Tuple2<Integer, CriseCount>(t.getCri_id(), new CriseCount(t.getCri_id(), 1, now));
 		}
 	};
 
@@ -69,16 +72,16 @@ public class WordCount {
 		// Cassandra connector
 		CassandraConnector connector = CassandraConnector.apply(context.getConf());
 
-		JavaRDD<UsuarioPojo> rdd = CassandraJavaUtil.javaFunctions(context).cassandraTable(cassandra_keyspace,
-				cassandra_table_in, CassandraJavaUtil.mapRowTo(UsuarioPojo.class));
+		JavaRDD<Twitter> rdd = CassandraJavaUtil.javaFunctions(context).cassandraTable(cassandra_keyspace,
+				cassandra_table_in, CassandraJavaUtil.mapRowTo(Twitter.class));
 
 		// Filtrar
 
 		// Separa o texto em um map com chave
-		JavaPairRDD<String, CriseCount> pairs = rdd.mapToPair(WORDS_MAPPER_CLASS);
+		JavaPairRDD<Integer, CriseCount> pairs = rdd.mapToPair(WORDS_MAPPER_CLASS);
 
 		// Junta todas as ocorrencias da mesma chave em uma linha
-		JavaPairRDD<String, CriseCount> counter = pairs.reduceByKey(WORDS_REDUCER_CLASS);
+		JavaPairRDD<Integer, CriseCount> counter = pairs.reduceByKey(WORDS_REDUCER_CLASS);
 
 		// Salva o ResultPojoado em um arquivo
 		// counter.saveAsTextFile(args[1]);

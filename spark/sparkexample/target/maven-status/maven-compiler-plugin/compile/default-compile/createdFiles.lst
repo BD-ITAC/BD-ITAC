@@ -1,8 +1,9 @@
-org/sparkexample/WordCount2$3.class
-org/sparkexample/model/pojo/CriseCount.class
 org/sparkexample/model/repository/MySQLDAO.class
 org/sparkexample/model/pojo/CrisePojo.class
 org/sparkexample/WordCount2.class
+org/sparkexample/model/pojo/Twitter.class
+org/sparkexample/WordCount2$3.class
+org/sparkexample/model/pojo/CriseCount.class
 org/sparkexample/WordCount$2.class
 org/sparkexample/model/pojo/UsuarioPojo.class
 org/sparkexample/WordCount2$2.class

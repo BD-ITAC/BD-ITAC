@@ -10,15 +10,17 @@ public class CriseCount implements Serializable {
 	private UUID id;
 	private Integer idcrise;
 	private long count;
-	private Timestamp lastupdate = new Timestamp(System.currentTimeMillis());
+	private Timestamp lastupdate;
 
 	public CriseCount() {
 	}
 
-	public CriseCount(Integer idCrise, long count) {
+	public CriseCount(Integer idCrise, long count, Timestamp date) {
 		UUID uid = UUID.fromString("45400630-8cf0-11bd-b23e-10b96e4ef00d");
 		this.id = uid.randomUUID();
+		this.idcrise = idCrise;
 		this.count = count;
+		this.lastupdate = date;
 	}
 
 	public UUID getId() {
