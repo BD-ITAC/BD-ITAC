@@ -18,7 +18,7 @@ module.exports = function(app){
 		   else
 		   {
 			   if(data !== null && data.length >= 0){
-           var resource = halson().addEmbed('alertsList',indicadorList);
+           var resource = halson().addEmbed('alertsList',data);
            res.json(resource)
 			   }
 			   else
@@ -27,7 +27,7 @@ module.exports = function(app){
 			   }
 		   }
 	   });
-   };
+  };
 
   return controller;
 };
