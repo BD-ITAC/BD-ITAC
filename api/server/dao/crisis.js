@@ -130,7 +130,7 @@ crisisDAO = function(pool) {
     };
 
   dao.listCrisis = function(callback){
-    var query =
+    /*var query =
     "select cri.cri_id  as cri_id,             \
              usu.usu_nm as cri_nome,       \
             usu.usu_fone as cri_telefone,  \
@@ -150,15 +150,20 @@ crisisDAO = function(pool) {
         join usuario usu on usu.usu_id = oco_usu_cod           \
         join geografica geo on geo.geo_id = oco_geo_cod        \
         join evento event on event.eve_id = ocor.oco_eve_cod";
-
-
+    */
+    /*jshint multistr: true */
+    var query = "select cri.cri_id, cri.cri_descricao, date_format(cri.cri_inicio,'%d/%m/%Y') AS cri_inicio, date_format(cri.cri_final,'%d/%m/%Y') AS cri_final, CAST(cri.cri_ativa AS DECIMAL(1)) AS cri_ativa, cri.cri_regiao, cri.cri_geotipo, tip.crt_descricao, cri.cid_id, cid_nome, cid.est_sigla \
+                 from  crise cri \
+                 inner join crise_tipo tip on tip.crt_id=cri.crt_id \
+                 inner join cidade cid on cid.cid_id=cri.cid_id";
     self.pool.query(
        query,
        function(err, rows){
       if(err){
         callback(err,{});
       }else{
-        callback(null, getCrises(rows));
+        //callback(null, getCrises(rows));
+        callback(null, rows);
       }
     });
   };
