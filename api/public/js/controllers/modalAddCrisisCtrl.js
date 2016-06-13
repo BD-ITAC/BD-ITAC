@@ -7,11 +7,7 @@ app.controller('addCrisisModalController',
   function($scope,$http,$window,avisos,close, NgMap) {
 
     var vm = this;
-    NgMap.getMap().then(function(map) {
-        vm.map = map;
-      });
 
-  vm.googleMapsUrl = 'https://maps.google.com/maps/api/js';
 
 
   if(!avisos.length)
@@ -61,10 +57,17 @@ app.controller('addCrisisModalController',
     $scope.btnSalvar=true;
 
     //google.maps.event.trigger($scope.google.maps, 'resize');
+    NgMap.getMap().then(function(map) {
+            vm.map = map;
+            window.setTimeout(function(){
+                google.maps.event.trigger(map, 'resize');
+                var myLatLng = new google.maps.LatLng(avisos[0].latitude, avisos[0].longitude);
+                $scope.map.setCenter(myLatLng);
+            }, 100);
 
-    window.setTimeout(function(){
-        google.maps.event.trigger($scope.google.maps, 'resize');
-    }, 100);
+      });
+
+      vm.googleMapsUrl = 'https://maps.google.com/maps/api/js';
 
 
 
@@ -118,7 +121,7 @@ app.controller('addCrisisModalController',
           descricao: $scope.descricao,
           cidade:$scope.cidades[0].cidade,
           tipo:$scope.searchBoxData.id,
-          geoid:"1",
+          geoid:"3",
           avisosId: $scope.avisosIds
       });
 
