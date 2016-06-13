@@ -15,9 +15,10 @@ categoryDao = function(pool) {
 
   dao.listAll = function(callback){
     var query =
+
     "SELECT           \
-        cat_id , \
-        cat_ds\
+        crt_cod as cat_id , \
+        cat_ds \
       FROM categoria        \
      ORDER BY cat_ds";
 

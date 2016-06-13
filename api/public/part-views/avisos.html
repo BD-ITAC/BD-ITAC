@@ -41,9 +41,14 @@
    <tbody>
     <tr ng-repeat="row in avisosListCollection | filter:searchBoxData">
       <td>
-        <!--<label class="checkbox" for="{{row.cri_id}}">-->
-          <input type="checkbox" checklist-model="avisosSelecionados" checklist-value="row"/>
-        <!--</label>-->
+        <div ng-switch on="row.status">
+            <div ng-switch-when="Pendente">
+                <input type="checkbox" checklist-model="avisosSelecionados" checklist-value="row"/>
+            </div>
+            <div ng-switch-default>
+                -
+            </div>
+        </div>
       </td>
       <td>{{row.dt | date:'yyyy-MM-dd HH:mm:ss'}}</td>
       <td>{{row.nome}}</td>

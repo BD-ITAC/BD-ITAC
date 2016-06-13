@@ -23,30 +23,49 @@ crisisDAO = function(pool) {
   * @author Edizon
   * @param objeto crisis
   */
-  dao.save = function(crisis, callback){//callback(null, {status: 'ok'});
-
-    getCidade(crisis.cidade, function(cidade_id){
-
-    getDados(crisis);
-
-    if(!dados)
+  dao.save = function(crisis, callback)
+  {
+    getDados(crisis, function(dados)
     {
-      return(callback('Impossible to retrieve all data', null));
-    }
+        if(dados === "")
+        {
+          return(callback('Impossible to retrieve all data', null));
+        }
+        //Modificado por Edizon: utilizando transações por conta dos campos
+        // auto incrementado.
+        var query = "insert into crise set \n\
+           crt_id = ?, \n\
+           cri_descricao= ?, \n\
+           cri_inicio = NOW(), \n\
+           cri_ativa=?, \n\
+           cri_regiao=?, \n\
+           cid_id=?, \n\
+           cri_geotipo=?; \n\
+            \n\n\
+           select @idCrise:=cri_id from crise where cri_id = LAST_INSERT_ID();\n\n";
 
-    //Modificado por Edizon: utilizando transações por conta dos campos
-    // auto incrementado.
-    var query =
-      "insert into crise \
-      (crt_id, cri_descricao, cri_inicio, cri_ativa, cri_regiao, cid_id, cri_geotipo) \
-      values (?,?,?,?,?,?,?)";
 
+           for(var c in dados.avs_ids)
+           {
+             query += "insert into aviso_crise set \n \
+                       cri_cod = @idCrise, \n \
+                       avs_cod = '"+ dados.avs_ids[c] +"';\n\n";
+
+             query += "update aviso set \n \
+                        sta_cod = 2 \n \
+                        where avs_id = "+ dados.avs_ids[c] + ";\n\n"
+           };
      db.executarTransacao(
         self.pool,
 
         function(conn)
         {
-            conn.query(query, dados
+            conn.query(query, [dados.crt_id,
+                               dados.cri_descricao,
+                               dados.cri_ativa,
+                               dados.cri_regiao,
+                               dados.cid_id,
+                               dados.cri_geotipo]
               ,function (err, result) {
                 if(err)
                 {
@@ -69,83 +88,46 @@ crisisDAO = function(pool) {
               }
             );
         });
-
-      });//fim getDados
-
-
-
-
-/*
-    self.pool.query(
-          "insert into crise set ?", getDados(crisis), function (err, result) {
-          if(err)
-          {
-            callback(err, {});
-            console.log(err);
-          }
-          else
-          {
-            var message = {
-                "message" : {
-                  "id" : result.insertId,
-                  "type" : "INFO",
-                  "status" : "OK",
-                  "description" : "Crise registrada",
-                  "info" : "BD-ITAC"
-                }
-              }
-
-            return callback(null, message);
-          }
-        });
-        */
+    });
   };
 
  function getCidade(cidade, callback)
  {
-
-
    self.pool.query(
       "select cid_id from cidade where cid_nome = ?", cidade,
       function(err, rows){
         if(!err && rows.length>0){
-         console.log(rows[0].cid_id);
          callback(rows[0].cid_id);
         }
         else {
           callback(0);
         }
       });
-
-
  };
 
- function getDados(crisis){
-     var cidade_id=0;
+ function getDados(crisis, callback){
+   getCidade(crisis.cidade,
+     function(cidade_id)
+     {
+        if(!cidade_id && cidade_id == 0)
+        {
+          callback("");
+        }
 
-     console.log("CidadeID:");
-     console.log(cidade_id);
+        var dados={
+                  crt_id: crisis.tipo,
+                  cri_descricao: crisis.descricao,
+                  cri_inicio: new Date(),
+                  cri_ativa: 1,
+                  cri_regiao: crisis.regiao_coords,
+                  cid_id: cidade_id,
+                  cri_geotipo: crisis.geoid,
+                  avs_ids: crisis.avisosId
+                };
+        callback(dados);
+      });
 
-    if(!cidade_id && cidade_id == 0)
-    {
-      return "";
-    }
-
-    var dados={
-              crt_id: crisis.tipo,
-              cri_descricao: crisis.descricao,
-              cri_inicio: new Date(),
-              cri_ativa: 1,
-              cri_regiao: crisis.regiao_coords,
-              cid_id: cidade_id,
-              cri_geotipo: crisis.geoid
-
-            };
-    console.log("Dados:");
-    console.log(dados);
-    return dados;
-
-};
+    };
 
   dao.listCrisis = function(callback){
     var query =
