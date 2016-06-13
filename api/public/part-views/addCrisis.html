@@ -27,7 +27,7 @@
           <div class="form-group">
             <h4>Área: </h4>
             <div class="col-md-12">
-              <ng-map default-style="true" center="{{lat}},{{lon}}" zoom="10">
+              <ng-map default-style="true" center="{{lat}},{{lon}}" zoom="12">
               <marker ng-repeat="p in positions" position="{{p}}"></marker>
               <shape name="polygon" editable="true"
                             draggable="true" paths="{{retangulo}}">
