@@ -13,8 +13,35 @@
 @rem WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 @rem See the License for the specific language governing permissions and
 @rem limitations under the License.
+@rem
+setlocal enabledelayedexpansion
 
-set HADOOP_JOB_HISTORYSERVER_HEAPSIZE=1000
+echo starting yarn daemons
 
-set HADOOP_MAPRED_ROOT_LOGGER=%HADOOP_LOGLEVEL%,RFA
+if not defined HADOOP_BIN_PATH ( 
+  set HADOOP_BIN_PATH=%~dp0
+)
 
+if "%HADOOP_BIN_PATH:~-1%" == "\" (
+  set HADOOP_BIN_PATH=%HADOOP_BIN_PATH:~0,-1%
+)
+
+set DEFAULT_LIBEXEC_DIR=%HADOOP_BIN_PATH%\..\libexec
+if not defined HADOOP_LIBEXEC_DIR (
+  set HADOOP_LIBEXEC_DIR=%DEFAULT_LIBEXEC_DIR%
+)
+
+call %HADOOP_LIBEXEC_DIR%\yarn-config.cmd %*
+if "%1" == "--config" (
+  shift
+  shift
+)
+
+@rem start resourceManager
+start "Apache Hadoop Distribution" yarn resourcemanager
+@rem start nodeManager
+start "Apache Hadoop Distribution" yarn nodemanager
+@rem start proxyserver
+@rem start "Apache Hadoop Distribution" yarn proxyserver
+
+endlocal

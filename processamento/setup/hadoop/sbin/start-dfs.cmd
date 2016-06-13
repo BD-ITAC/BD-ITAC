@@ -13,8 +13,29 @@
 @rem WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 @rem See the License for the specific language governing permissions and
 @rem limitations under the License.
+@rem
+setlocal enabledelayedexpansion
 
-set HADOOP_JOB_HISTORYSERVER_HEAPSIZE=1000
+if not defined HADOOP_BIN_PATH ( 
+  set HADOOP_BIN_PATH=%~dp0
+)
 
-set HADOOP_MAPRED_ROOT_LOGGER=%HADOOP_LOGLEVEL%,RFA
+if "%HADOOP_BIN_PATH:~-1%" == "\" (
+  set HADOOP_BIN_PATH=%HADOOP_BIN_PATH:~0,-1%
+)
 
+set DEFAULT_LIBEXEC_DIR=%HADOOP_BIN_PATH%\..\libexec
+if not defined HADOOP_LIBEXEC_DIR (
+  set HADOOP_LIBEXEC_DIR=%DEFAULT_LIBEXEC_DIR%
+)
+
+call %HADOOP_LIBEXEC_DIR%\hdfs-config.cmd %*
+if "%1" == "--config" (
+  shift
+  shift
+)
+
+start "Apache Hadoop Distribution" hadoop namenode
+start "Apache Hadoop Distribution" hadoop datanode
+
+endlocal

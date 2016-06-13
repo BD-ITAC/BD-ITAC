@@ -30,6 +30,14 @@
     <description/>
   </property>
   <property>
+    <name>hive.plan.serialization.format</name>
+    <value>kryo</value>
+    <description>
+      Query plan format serialization between client and task nodes. 
+      Two supported values are : kryo and javaXML. Kryo is default.
+    </description>
+  </property>
+  <property>
     <name>hive.exec.stagingdir</name>
     <value>.hive-staging</value>
     <description>Directory name that will be created inside table locations in order to support HDFS encryption. This is replaces ${hive.exec.scratchdir} for query results with the exception of read-only tables. In all cases ${hive.exec.scratchdir} is still used for other temporary files, such as job plans.</description>
@@ -333,104 +341,6 @@
     <description>Thrift URI for the remote metastore. Used by metastore client to connect to remote metastore.</description>
   </property>
   <property>
-    <name>hive.metastore.fastpath</name>
-    <value>false</value>
-    <description>Used to avoid all of the proxies and object copies in the metastore.  Note, if this is set, you MUST use a local metastore (hive.metastore.uris must be empty) otherwise undefined and most likely undesired behavior will result</description>
-  </property>
-  <property>
-    <name>hive.metastore.hbase.catalog.cache.size</name>
-    <value>50000</value>
-    <description>Maximum number of objects we will place in the hbase metastore catalog cache.  The objects will be divided up by types that we need to cache.</description>
-  </property>
-  <property>
-    <name>hive.metastore.hbase.aggregate.stats.cache.size</name>
-    <value>10000</value>
-    <description>Maximum number of aggregate stats nodes that we will place in the hbase metastore aggregate stats cache.</description>
-  </property>
-  <property>
-    <name>hive.metastore.hbase.aggregate.stats.max.partitions</name>
-    <value>10000</value>
-    <description>Maximum number of partitions that are aggregated per cache node.</description>
-  </property>
-  <property>
-    <name>hive.metastore.hbase.aggregate.stats.false.positive.probability</name>
-    <value>0.01</value>
-    <description>Maximum false positive probability for the Bloom Filter used in each aggregate stats cache node (default 1%).</description>
-  </property>
-  <property>
-    <name>hive.metastore.hbase.aggregate.stats.max.variance</name>
-    <value>0.1</value>
-    <description>Maximum tolerable variance in number of partitions between a cached node and our request (default 10%).</description>
-  </property>
-  <property>
-    <name>hive.metastore.hbase.cache.ttl</name>
-    <value>600s</value>
-    <description>
-      Expects a time value with unit (d/day, h/hour, m/min, s/sec, ms/msec, us/usec, ns/nsec), which is sec if not specified.
-      Number of seconds for a cached node to be active in the cache before they become stale.
-    </description>
-  </property>
-  <property>
-    <name>hive.metastore.hbase.cache.max.writer.wait</name>
-    <value>5000ms</value>
-    <description>
-      Expects a time value with unit (d/day, h/hour, m/min, s/sec, ms/msec, us/usec, ns/nsec), which is msec if not specified.
-      Number of milliseconds a writer will wait to acquire the writelock before giving up.
-    </description>
-  </property>
-  <property>
-    <name>hive.metastore.hbase.cache.max.reader.wait</name>
-    <value>1000ms</value>
-    <description>
-      Expects a time value with unit (d/day, h/hour, m/min, s/sec, ms/msec, us/usec, ns/nsec), which is msec if not specified.
-      Number of milliseconds a reader will wait to acquire the readlock before giving up.
-    </description>
-  </property>
-  <property>
-    <name>hive.metastore.hbase.cache.max.full</name>
-    <value>0.9</value>
-    <description>Maximum cache full % after which the cache cleaner thread kicks in.</description>
-  </property>
-  <property>
-    <name>hive.metastore.hbase.cache.clean.until</name>
-    <value>0.8</value>
-    <description>The cleaner thread cleans until cache reaches this % full size.</description>
-  </property>
-  <property>
-    <name>hive.metastore.hbase.connection.class</name>
-    <value>org.apache.hadoop.hive.metastore.hbase.VanillaHBaseConnection</value>
-    <description>Class used to connection to HBase</description>
-  </property>
-  <property>
-    <name>hive.metastore.hbase.aggr.stats.cache.entries</name>
-    <value>10000</value>
-    <description>How many in stats objects to cache in memory</description>
-  </property>
-  <property>
-    <name>hive.metastore.hbase.aggr.stats.memory.ttl</name>
-    <value>60s</value>
-    <description>
-      Expects a time value with unit (d/day, h/hour, m/min, s/sec, ms/msec, us/usec, ns/nsec), which is sec if not specified.
-      Number of seconds stats objects live in memory after they are read from HBase.
-    </description>
-  </property>
-  <property>
-    <name>hive.metastore.hbase.aggr.stats.invalidator.frequency</name>
-    <value>5s</value>
-    <description>
-      Expects a time value with unit (d/day, h/hour, m/min, s/sec, ms/msec, us/usec, ns/nsec), which is sec if not specified.
-      How often the stats cache scans its HBase entries and looks for expired entries
-    </description>
-  </property>
-  <property>
-    <name>hive.metastore.hbase.aggr.stats.hbase.ttl</name>
-    <value>604800s</value>
-    <description>
-      Expects a time value with unit (d/day, h/hour, m/min, s/sec, ms/msec, us/usec, ns/nsec), which is sec if not specified.
-      Number of seconds stats entries live in HBase cache after they are created.  They may be invalided by updates or partition drops before this.  Default is one week.
-    </description>
-  </property>
-  <property>
     <name>hive.metastore.connect.retries</name>
     <value>3</value>
     <description>Number of retries while opening a connection to metastore</description>
@@ -439,11 +349,6 @@
     <name>hive.metastore.failure.retries</name>
     <value>1</value>
     <description>Number of retries upon failure of Thrift metastore calls</description>
-  </property>
-  <property>
-    <name>hive.metastore.port</name>
-    <value>9083</value>
-    <description>Hive metastore listener port</description>
   </property>
   <property>
     <name>hive.metastore.client.connect.retry.delay</name>
@@ -626,17 +531,17 @@
     <description>Specify connection pool library for datanucleus</description>
   </property>
   <property>
-    <name>datanucleus.schema.validateTables</name>
+    <name>datanucleus.validateTables</name>
     <value>false</value>
     <description>validates existing schema against code. turn this on if you want to verify existing schema</description>
   </property>
   <property>
-    <name>datanucleus.schema.validateColumns</name>
+    <name>datanucleus.validateColumns</name>
     <value>false</value>
     <description>validates existing schema against code. turn this on if you want to verify existing schema</description>
   </property>
   <property>
-    <name>datanucleus.schema.validateConstraints</name>
+    <name>datanucleus.validateConstraints</name>
     <value>false</value>
     <description>validates existing schema against code. turn this on if you want to verify existing schema</description>
   </property>
@@ -646,9 +551,14 @@
     <description>metadata store type</description>
   </property>
   <property>
-    <name>datanucleus.schema.autoCreateAll</name>
-    <value>false</value>
+    <name>datanucleus.autoCreateSchema</name>
+    <value>true</value>
     <description>creates necessary schema on a startup if one doesn't exist. set this to false, after creating it once</description>
+  </property>
+  <property>
+    <name>datanucleus.fixedDatastore</name>
+    <value>false</value>
+    <description/>
   </property>
   <property>
     <name>hive.metastore.schema.verification</name>
@@ -719,7 +629,7 @@
   <property>
     <name>hive.metastore.batch.retrieve.table.partition.max</name>
     <value>1000</value>
-    <description>Maximum number of objects that metastore internally retrieves in one batch.</description>
+    <description>Maximum number of table partitions that metastore internally retrieves in one batch.</description>
   </property>
   <property>
     <name>hive.metastore.init.hooks</name>
@@ -841,7 +751,7 @@
   </property>
   <property>
     <name>hive.metastore.disallow.incompatible.col.type.changes</name>
-    <value>true</value>
+    <value>false</value>
     <description>
       If true (default is false), ALTER TABLE operations which change the type of a
       column (say STRING) to an incompatible type (say MAP) are disallowed.
@@ -993,11 +903,6 @@
     <description>The cleaner thread cleans until cache reaches this % full size.</description>
   </property>
   <property>
-    <name>hive.metastore.metrics.enabled</name>
-    <value>false</value>
-    <description>Enable metrics on the metastore.</description>
-  </property>
-  <property>
     <name>hive.metadata.export.location</name>
     <value/>
     <description>
@@ -1144,36 +1049,17 @@
     <description>Comma separated list of keys from the configuration file not to convert to environment variables when envoking the script operator</description>
   </property>
   <property>
-    <name>hive.strict.checks.large.query</name>
-    <value>false</value>
-    <description>
-      Enabling strict large query checks disallows the following:
-        Orderby without limit.
-        No partition being picked up for a query against partitioned table.
-      Note that these checks currently do not consider data size, only the query pattern.
-    </description>
-  </property>
-  <property>
-    <name>hive.strict.checks.type.safety</name>
-    <value>true</value>
-    <description>
-      Enabling strict type safety checks disallows the following:
-        Comparing bigints and strings.
-        Comparing bigints and doubles.
-    </description>
-  </property>
-  <property>
-    <name>hive.strict.checks.cartesian.product</name>
-    <value>true</value>
-    <description>
-      Enabling strict large query checks disallows the following:
-        Cartesian product (cross join).
-    </description>
-  </property>
-  <property>
     <name>hive.mapred.mode</name>
     <value>nonstrict</value>
-    <description>Deprecated; use hive.strict.checks.* settings instead.</description>
+    <description>
+      The mode in which the Hive operations are being performed. 
+      In strict mode, some risky queries are not allowed to run. They include:
+        Cartesian Product.
+        No partition being picked up for a query.
+        Comparing bigints and strings.
+        Comparing bigints and doubles.
+        Orderby without limit.
+    </description>
   </property>
   <property>
     <name>hive.alias</name>
@@ -1246,11 +1132,6 @@
     <description>Default cost of reading a byte from HDFS; expressed as multiple of Local FS read cost</description>
   </property>
   <property>
-    <name>hive.transpose.aggr.join</name>
-    <value>false</value>
-    <description>push aggregates through join</description>
-  </property>
-  <property>
     <name>hive.mapjoin.bucket.cache.size</name>
     <value>100</value>
     <description/>
@@ -1259,14 +1140,9 @@
     <name>hive.mapjoin.optimized.hashtable</name>
     <value>true</value>
     <description>
-      Whether Hive should use memory-optimized hash table for MapJoin.
-      Only works on Tez and Spark, because memory-optimized hashtable cannot be serialized.
+      Whether Hive should use memory-optimized hash table for MapJoin. Only works on Tez,
+      because memory-optimized hashtable cannot be serialized.
     </description>
-  </property>
-  <property>
-    <name>hive.mapjoin.optimized.hashtable.probe.percent</name>
-    <value>0.5</value>
-    <description>Probing space percentage of the optimized hashtable</description>
   </property>
   <property>
     <name>hive.mapjoin.hybridgrace.hashtable</name>
@@ -1281,16 +1157,16 @@
   <property>
     <name>hive.mapjoin.hybridgrace.minwbsize</name>
     <value>524288</value>
-    <description>For hybrid graceHash join, the minimum write buffer size used by optimized hashtable. Default is 512 KB.</description>
+    <description>For hybrid grace hash join, the minimum write buffer size used by optimized hashtable. Default is 512 KB.</description>
   </property>
   <property>
     <name>hive.mapjoin.hybridgrace.minnumpartitions</name>
     <value>16</value>
-    <description>ForHybrid grace hash join, the minimum number of partitions to create.</description>
+    <description>For hybrid grace hash join, the minimum number of partitions to create.</description>
   </property>
   <property>
     <name>hive.mapjoin.optimized.hashtable.wbsize</name>
-    <value>8388608</value>
+    <value>10485760</value>
     <description>
       Optimized hashtable (see hive.mapjoin.optimized.hashtable) uses a chain of buffers to
       store data. This is one buffer size. HT may be slightly faster if this is larger, but for small
@@ -1343,11 +1219,20 @@
   </property>
   <property>
     <name>hive.map.groupby.sorted</name>
-    <value>true</value>
+    <value>false</value>
     <description>
       If the bucketing/sorting properties of the table exactly match the grouping key, whether to perform 
       the group by in the mapper by using BucketizedHiveInputFormat. The only downside to this
       is that it limits the number of mappers to the number of files.
+    </description>
+  </property>
+  <property>
+    <name>hive.map.groupby.sorted.testmode</name>
+    <value>false</value>
+    <description>
+      If the bucketing/sorting properties of the table exactly match the grouping key, whether to perform 
+      the group by in the mapper by using BucketizedHiveInputFormat. If the test mode is set, the plan
+      is not converted, but a query property is set to denote the same.
     </description>
   </property>
   <property>
@@ -1428,7 +1313,7 @@
   <property>
     <name>hive.serdes.using.metastore.for.schema</name>
     <value>org.apache.hadoop.hive.ql.io.orc.OrcSerde,org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe,org.apache.hadoop.hive.serde2.columnar.ColumnarSerDe,org.apache.hadoop.hive.serde2.dynamic_type.DynamicSerDe,org.apache.hadoop.hive.serde2.MetadataTypedColumnsetSerDe,org.apache.hadoop.hive.serde2.columnar.LazyBinaryColumnarSerDe,org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe,org.apache.hadoop.hive.serde2.lazybinary.LazyBinarySerDe</value>
-    <description>SerDes retrieving schema from metastore. This is an internal parameter.</description>
+    <description>SerDes retriving schema from metastore. This an internal parameter. Check with the hive dev. team</description>
   </property>
   <property>
     <name>hive.querylog.location</name>
@@ -1519,11 +1404,6 @@
     </description>
   </property>
   <property>
-    <name>hive.exec.schema.evolution</name>
-    <value>true</value>
-    <description>Use schema evolution to convert self-describing file format's data to the schema desired by the reader.</description>
-  </property>
-  <property>
     <name>hive.sample.seednumber</name>
     <value>0</value>
     <description>A number used to percentage sampling. By changing this number, user will change the subsets of data sampled.</description>
@@ -1569,16 +1449,6 @@
     <name>hive.test.currenttimestamp</name>
     <value/>
     <description>current timestamp for test</description>
-  </property>
-  <property>
-    <name>hive.test.rollbacktxn</name>
-    <value>false</value>
-    <description>For testing only.  Will mark every ACID transaction aborted</description>
-  </property>
-  <property>
-    <name>hive.test.fail.compaction</name>
-    <value>false</value>
-    <description>For testing only.  Will cause CompactorMR to fail.</description>
   </property>
   <property>
     <name>hive.merge.mapfiles</name>
@@ -1790,11 +1660,6 @@
     </description>
   </property>
   <property>
-    <name>hive.orc.splits.ms.footer.cache.enabled</name>
-    <value>false</value>
-    <description>Whether to enable using file metadata cache in metastore for ORC file footers.</description>
-  </property>
-  <property>
     <name>hive.orc.splits.include.file.footer</name>
     <value>false</value>
     <description>
@@ -1803,23 +1668,9 @@
     </description>
   </property>
   <property>
-    <name>hive.orc.splits.directory.batch.ms</name>
-    <value>0</value>
-    <description>
-      How long, in ms, to wait to batch input directories for processing during ORC split
-      generation. 0 means process directories individually. This can increase the number of
-      metastore calls if metastore metadata cache is used.
-    </description>
-  </property>
-  <property>
-    <name>hive.orc.splits.include.fileid</name>
-    <value>true</value>
-    <description>Include file ID in splits on file systems thaty support it.</description>
-  </property>
-  <property>
     <name>hive.orc.cache.stripe.details.size</name>
     <value>10000</value>
-    <description>Max cache size for keeping meta info about orc splits cached in the client.</description>
+    <description>Cache size for keeping meta info about orc splits cached in the client.</description>
   </property>
   <property>
     <name>hive.orc.compute.splits.num.threads</name>
@@ -1859,14 +1710,6 @@
       job, process those skewed keys. The same key need not be skewed for all the tables, and so,
       the follow-up map-reduce job (for the skewed keys) would be much faster, since it would be a
       map-join.
-    </description>
-  </property>
-  <property>
-    <name>hive.optimize.dynamic.partition.hashjoin</name>
-    <value>false</value>
-    <description>
-      Whether to enable dynamically partitioned hash join optimization. 
-      This setting is also dependent on enabling hive.auto.convert.join
     </description>
   </property>
   <property>
@@ -1955,11 +1798,8 @@
   </property>
   <property>
     <name>hive.limit.pushdown.memory.usage</name>
-    <value>0.1</value>
-    <description>
-      Expects value between 0.0f and 1.0f.
-      The fraction of available memory to be used for buffering rows in Reducesink operator for limit pushdown optimization.
-    </description>
+    <value>-1.0</value>
+    <description>The max memory to be used for hash in RS operator for top K selection.</description>
   </property>
   <property>
     <name>hive.limit.query.max.table.partition</name>
@@ -2049,18 +1889,20 @@
     </description>
   </property>
   <property>
-    <name>hive.query.name</name>
-    <value/>
-    <description>
-      This named is used by Tez to set the dag name. This name in turn will appear on 
-      the Tez UI representing the work that was done.
-    </description>
+    <name>hive.enforce.bucketing</name>
+    <value>false</value>
+    <description>Whether bucketing is enforced. If true, while inserting into the table, bucketing is enforced.</description>
+  </property>
+  <property>
+    <name>hive.enforce.sorting</name>
+    <value>false</value>
+    <description>Whether sorting is enforced. If true, while inserting into the table, sorting is enforced.</description>
   </property>
   <property>
     <name>hive.optimize.bucketingsorting</name>
     <value>true</value>
     <description>
-      Don't create a reducer for enforcing 
+      If hive.enforce.bucketing or hive.enforce.sorting is true, don't create a reducer for enforcing 
       bucketing/sorting for queries of the form: 
       insert overwrite table T2 select * from T1;
       where T1 and T2 are bucketed/sorted by the same keys into the same number of buckets.
@@ -2131,6 +1973,11 @@
     <description>Whether to provide the row offset virtual column</description>
   </property>
   <property>
+    <name>hive.hadoop.supports.splittable.combineinputformat</name>
+    <value>false</value>
+    <description/>
+  </property>
+  <property>
     <name>hive.optimize.index.filter</name>
     <value>false</value>
     <description>Whether to enable automatic use of indexes</description>
@@ -2154,21 +2001,6 @@
     <name>hive.ppd.remove.duplicatefilters</name>
     <value>true</value>
     <description>Whether to push predicates down into storage handlers.  Ignored when hive.optimize.ppd is false.</description>
-  </property>
-  <property>
-    <name>hive.optimize.point.lookup</name>
-    <value>true</value>
-    <description>Whether to transform OR clauses in Filter operators into IN clauses</description>
-  </property>
-  <property>
-    <name>hive.optimize.point.lookup.min</name>
-    <value>31</value>
-    <description>Minimum number of OR clauses needed to transform into IN clauses</description>
-  </property>
-  <property>
-    <name>hive.optimize.partition.columns.separate</name>
-    <value>true</value>
-    <description>Extract partition columns from IN clauses</description>
   </property>
   <property>
     <name>hive.optimize.constant.propagation</name>
@@ -2280,28 +2112,12 @@
     <description>exploit intra-query correlations.</description>
   </property>
   <property>
-    <name>hive.optimize.limittranspose</name>
+    <name>hive.mapred.supports.subdirectories</name>
     <value>false</value>
     <description>
-      Whether to push a limit through left/right outer join or union. If the value is true and the size of the outer
-      input is reduced enough (as specified in hive.optimize.limittranspose.reduction), the limit is pushed
-      to the outer input or union; to remain semantically correct, the limit is kept on top of the join or the union too.
-    </description>
-  </property>
-  <property>
-    <name>hive.optimize.limittranspose.reductionpercentage</name>
-    <value>1.0</value>
-    <description>
-      When hive.optimize.limittranspose is true, this variable specifies the minimal reduction of the
-      size of the outer input of the join or input of the union that we should get in order to apply the rule.
-    </description>
-  </property>
-  <property>
-    <name>hive.optimize.limittranspose.reductiontuples</name>
-    <value>0</value>
-    <description>
-      When hive.optimize.limittranspose is true, this variable specifies the minimal reduction in the
-      number of tuples of the outer input of the join or the input of the union that you should get in order to apply the rule.
+      Whether the version of Hadoop which is running supports sub-directories for tables/partitions. 
+      Many Hive optimizations can be applied if the Hadoop version supports sub-directories for
+      tables/partitions. It was added by MAPREDUCE-1501
     </description>
   </property>
   <property>
@@ -2359,11 +2175,22 @@
     <name>hive.stats.dbclass</name>
     <value>fs</value>
     <description>
-      Expects one of the pattern in [custom, fs].
+      Expects one of the pattern in [jdbc(:.*), hbase, counter, custom, fs].
       The storage that stores temporary Hive statistics. In filesystem based statistics collection ('fs'), 
       each task writes statistics it has collected in a file on the filesystem, which will be aggregated 
-      after the job has finished. Supported values are fs (filesystem) and custom as defined in StatsSetupConst.java.
+      after the job has finished. Supported values are fs (filesystem), jdbc:database (where database 
+      can be derby, mysql, etc.), hbase, counter, and custom as defined in StatsSetupConst.java.
     </description>
+  </property>
+  <property>
+    <name>hive.stats.jdbcdriver</name>
+    <value>org.apache.derby.jdbc.EmbeddedDriver</value>
+    <description>The JDBC driver for the database that stores temporary Hive statistics.</description>
+  </property>
+  <property>
+    <name>hive.stats.dbconnectionstring</name>
+    <value>jdbc:derby:;databaseName=TempStatsStore;create=true</value>
+    <description>The default connection string for the database that stores temporary Hive statistics.</description>
   </property>
   <property>
     <name>hive.stats.default.publisher</name>
@@ -2376,9 +2203,33 @@
     <description>The Java class (implementing the StatsAggregator interface) that is used by default if hive.stats.dbclass is custom type.</description>
   </property>
   <property>
+    <name>hive.stats.jdbc.timeout</name>
+    <value>30s</value>
+    <description>
+      Expects a time value with unit (d/day, h/hour, m/min, s/sec, ms/msec, us/usec, ns/nsec), which is sec if not specified.
+      Timeout value used by JDBC connection and statements.
+    </description>
+  </property>
+  <property>
     <name>hive.stats.atomic</name>
     <value>false</value>
     <description>whether to update metastore stats only if all stats are available</description>
+  </property>
+  <property>
+    <name>hive.stats.retries.max</name>
+    <value>0</value>
+    <description>
+      Maximum number of retries when stats publisher/aggregator got an exception updating intermediate database. 
+      Default is no tries on failures.
+    </description>
+  </property>
+  <property>
+    <name>hive.stats.retries.wait</name>
+    <value>3000ms</value>
+    <description>
+      Expects a time value with unit (d/day, h/hour, m/min, s/sec, ms/msec, us/usec, ns/nsec), which is msec if not specified.
+      The base waiting window before the next retry. The actual wait time is calculated by baseWindow * failures baseWindow * (failure + 1) * (random number between [0.0,1.0]).
+    </description>
   </property>
   <property>
     <name>hive.stats.collect.rawdatasize</name>
@@ -2443,6 +2294,23 @@
     <name>hive.metastore.stats.ndv.densityfunction</name>
     <value>false</value>
     <description>Whether to use density function to estimate the NDV for the whole table based on the NDV of partitions</description>
+  </property>
+  <property>
+    <name>hive.stats.key.prefix.max.length</name>
+    <value>150</value>
+    <description>
+      Determines if when the prefix of the key used for intermediate stats collection
+      exceeds a certain length, a hash of the key is used instead.  If the value &lt; 0 then hashing
+    </description>
+  </property>
+  <property>
+    <name>hive.stats.key.prefix.reserve.length</name>
+    <value>24</value>
+    <description>
+      Reserved length for postfix of stats key. Currently only meaningful for counter type which should
+      keep length of full stats key smaller than max length configured by hive.stats.key.prefix.max.length.
+      For counter type, it should be bigger than the length of LB spec if exists.
+    </description>
   </property>
   <property>
     <name>hive.stats.max.variable.length</name>
@@ -2635,11 +2503,6 @@
     </description>
   </property>
   <property>
-    <name>hive.txn.heartbeat.threadpool.size</name>
-    <value>5</value>
-    <description>The number of threads to use for heartbeating. For Hive CLI, 1 is enough. For HiveServer2, we need a few</description>
-  </property>
-  <property>
     <name>hive.txn.max.open.batch</name>
     <value>1000</value>
     <description>
@@ -2718,11 +2581,6 @@
     </description>
   </property>
   <property>
-    <name>hive.compactor.max.num.delta</name>
-    <value>500</value>
-    <description>Maximum number of delta files that the compactor will attempt to handle in a single job.</description>
-  </property>
-  <property>
     <name>hive.compactor.abortedtxn.threshold</name>
     <value>1000</value>
     <description>
@@ -2731,75 +2589,11 @@
     </description>
   </property>
   <property>
-    <name>hive.compactor.initiator.failed.compacts.threshold</name>
-    <value>2</value>
-    <description>
-      Expects value between 1 and 20.
-      Number of consecutive compaction failures (per table/partition) after which automatic compactions will not be scheduled any more.  Note that this must be less than hive.compactor.history.retention.failed.
-    </description>
-  </property>
-  <property>
     <name>hive.compactor.cleaner.run.interval</name>
     <value>5000ms</value>
     <description>
       Expects a time value with unit (d/day, h/hour, m/min, s/sec, ms/msec, us/usec, ns/nsec), which is msec if not specified.
       Time between runs of the cleaner thread
-    </description>
-  </property>
-  <property>
-    <name>hive.compactor.job.queue</name>
-    <value/>
-    <description>
-      Used to specify name of Hadoop queue to which
-      Compaction jobs will be submitted.  Set to empty string to let Hadoop choose the queue.
-    </description>
-  </property>
-  <property>
-    <name>hive.compactor.history.retention.succeeded</name>
-    <value>3</value>
-    <description>
-      Expects value between 0 and 100.
-      Determines how many successful compaction records will be retained in compaction history for a given table/partition.
-    </description>
-  </property>
-  <property>
-    <name>hive.compactor.history.retention.failed</name>
-    <value>3</value>
-    <description>
-      Expects value between 0 and 100.
-      Determines how many failed compaction records will be retained in compaction history for a given table/partition.
-    </description>
-  </property>
-  <property>
-    <name>hive.compactor.history.retention.attempted</name>
-    <value>2</value>
-    <description>
-      Expects value between 0 and 100.
-      Determines how many attempted compaction records will be retained in compaction history for a given table/partition.
-    </description>
-  </property>
-  <property>
-    <name>hive.compactor.history.reaper.interval</name>
-    <value>2m</value>
-    <description>
-      Expects a time value with unit (d/day, h/hour, m/min, s/sec, ms/msec, us/usec, ns/nsec), which is msec if not specified.
-      Determines how often compaction history reaper runs
-    </description>
-  </property>
-  <property>
-    <name>hive.timedout.txn.reaper.start</name>
-    <value>100s</value>
-    <description>
-      Expects a time value with unit (d/day, h/hour, m/min, s/sec, ms/msec, us/usec, ns/nsec), which is msec if not specified.
-      Time delay of 1st reaper run after metastore start
-    </description>
-  </property>
-  <property>
-    <name>hive.timedout.txn.reaper.interval</name>
-    <value>180s</value>
-    <description>
-      Expects a time value with unit (d/day, h/hour, m/min, s/sec, ms/msec, us/usec, ns/nsec), which is msec if not specified.
-      Time interval describing how often the reaper runs
     </description>
   </property>
   <property>
@@ -2924,7 +2718,7 @@
   </property>
   <property>
     <name>hive.security.authorization.manager</name>
-    <value>org.apache.hadoop.hive.ql.security.authorization.plugin.sqlstd.SQLStdHiveAuthorizerFactory</value>
+    <value>org.apache.hadoop.hive.ql.security.authorization.DefaultHiveAuthorizationProvider</value>
     <description>
       The Hive client authorization manager class name. The user defined authorization class should implement 
       interface org.apache.hadoop.hive.ql.security.authorization.HiveAuthorizationProvider.
@@ -3031,14 +2825,6 @@
     <description>Whether to print the names of the columns in query output.</description>
   </property>
   <property>
-    <name>hive.cli.tez.session.async</name>
-    <value>true</value>
-    <description>
-      Whether to start Tez
-      session in background when running CLI with Tez, allowing CLI to be available earlier.
-    </description>
-  </property>
-  <property>
     <name>hive.error.on.empty.partition</name>
     <value>false</value>
     <description>Whether to throw an exception if dynamic partition insert generates empty results.</description>
@@ -3117,12 +2903,35 @@
     </description>
   </property>
   <property>
+    <name>hive.server2.logging.operation.enabled</name>
+    <value>true</value>
+    <description>When true, HS2 will save operation logs and make them available for clients</description>
+  </property>
+  <property>
+    <name>hive.server2.logging.operation.log.location</name>
+    <value>${system:java.io.tmpdir}/${system:user.name}/operation_logs</value>
+    <description>Top level directory where operation logs are stored if logging functionality is enabled</description>
+  </property>
+  <property>
+    <name>hive.server2.logging.operation.level</name>
+    <value>EXECUTION</value>
+    <description>
+      Expects one of [none, execution, performance, verbose].
+      HS2 operation logging mode available to clients to be set at session level.
+      For this to work, hive.server2.logging.operation.enabled should be set to true.
+        NONE: Ignore any logging
+        EXECUTION: Log completion of tasks
+        PERFORMANCE: Execution + Performance logs 
+        VERBOSE: All logs
+    </description>
+  </property>
+  <property>
     <name>hive.log4j.file</name>
     <value/>
     <description>
       Hive log4j configuration file.
-      If the property is not set, then logging will be initialized using hive-log4j2.properties found on the classpath.
-      If the property is set, the value must be a valid URI (java.net.URI, e.g. "file:///tmp/my-logging.xml"), 
+      If the property is not set, then logging will be initialized using hive-log4j.properties found on the classpath.
+      If the property is set, the value must be a valid URI (java.net.URI, e.g. "file:///tmp/my-logging.properties"), 
       which you can then extract a URL from and pass to PropertyConfigurator.configure(URL).
     </description>
   </property>
@@ -3131,8 +2940,8 @@
     <value/>
     <description>
       Hive log4j configuration file for execution mode(sub command).
-      If the property is not set, then logging will be initialized using hive-exec-log4j2.properties found on the classpath.
-      If the property is set, the value must be a valid URI (java.net.URI, e.g. "file:///tmp/my-logging.xml"), 
+      If the property is not set, then logging will be initialized using hive-exec-log4j.properties found on the classpath.
+      If the property is set, the value must be a valid URI (java.net.URI, e.g. "file:///tmp/my-logging.properties"), 
       which you can then extract a URL from and pass to PropertyConfigurator.configure(URL).
     </description>
   </property>
@@ -3146,7 +2955,7 @@
   </property>
   <property>
     <name>hive.explain.user</name>
-    <value>true</value>
+    <value>false</value>
     <description>
       Whether to show explain result at user level.
       When enabled, will log EXPLAIN output for the query at user level.
@@ -3165,32 +2974,6 @@
     <name>hive.autogen.columnalias.prefix.includefuncname</name>
     <value>false</value>
     <description>Whether to include function name in the column alias auto generated by Hive.</description>
-  </property>
-  <property>
-    <name>hive.service.metrics.class</name>
-    <value>org.apache.hadoop.hive.common.metrics.metrics2.CodahaleMetrics</value>
-    <description>
-      Expects one of [org.apache.hadoop.hive.common.metrics.metrics2.codahalemetrics, org.apache.hadoop.hive.common.metrics.legacymetrics].
-      Hive metrics subsystem implementation class.
-    </description>
-  </property>
-  <property>
-    <name>hive.service.metrics.reporter</name>
-    <value>JSON_FILE, JMX</value>
-    <description>Reporter type for metric class org.apache.hadoop.hive.common.metrics.metrics2.CodahaleMetrics, comma separated list of JMX, CONSOLE, JSON_FILE</description>
-  </property>
-  <property>
-    <name>hive.service.metrics.file.location</name>
-    <value>/tmp/report.json</value>
-    <description>For metric class org.apache.hadoop.hive.common.metrics.metrics2.CodahaleMetrics JSON_FILE reporter, the location of local JSON metrics file.  This file will get overwritten at every interval.</description>
-  </property>
-  <property>
-    <name>hive.service.metrics.file.frequency</name>
-    <value>5s</value>
-    <description>
-      Expects a time value with unit (d/day, h/hour, m/min, s/sec, ms/msec, us/usec, ns/nsec), which is msec if not specified.
-      For metric class org.apache.hadoop.hive.common.metrics.metrics2.CodahaleMetrics JSON_FILE reporter, the frequency of updating JSON metrics file.
-    </description>
   </property>
   <property>
     <name>hive.exec.perf.logger</name>
@@ -3314,135 +3097,6 @@
     <description>Bind host on which to run the HiveServer2 Thrift service.</description>
   </property>
   <property>
-    <name>hive.driver.parallel.compilation</name>
-    <value>false</value>
-    <description>
-      Whether to
-      enable parallel compilation between sessions on HiveServer2. The default is false.
-    </description>
-  </property>
-  <property>
-    <name>hive.server2.webui.host</name>
-    <value>0.0.0.0</value>
-    <description>The host address the HiveServer2 WebUI will listen on</description>
-  </property>
-  <property>
-    <name>hive.server2.webui.port</name>
-    <value>10002</value>
-    <description>The port the HiveServer2 WebUI will listen on. This can beset to 0 or a negative integer to disable the web UI</description>
-  </property>
-  <property>
-    <name>hive.server2.webui.max.threads</name>
-    <value>50</value>
-    <description>The max HiveServer2 WebUI threads</description>
-  </property>
-  <property>
-    <name>hive.server2.webui.use.ssl</name>
-    <value>false</value>
-    <description>Set this to true for using SSL encryption for HiveServer2 WebUI.</description>
-  </property>
-  <property>
-    <name>hive.server2.webui.keystore.path</name>
-    <value/>
-    <description>SSL certificate keystore location for HiveServer2 WebUI.</description>
-  </property>
-  <property>
-    <name>hive.server2.webui.keystore.password</name>
-    <value/>
-    <description>SSL certificate keystore password for HiveServer2 WebUI.</description>
-  </property>
-  <property>
-    <name>hive.server2.webui.use.spnego</name>
-    <value>false</value>
-    <description>If true, the HiveServer2 WebUI will be secured with SPNEGO. Clients must authenticate with Kerberos.</description>
-  </property>
-  <property>
-    <name>hive.server2.webui.spnego.keytab</name>
-    <value/>
-    <description>The path to the Kerberos Keytab file containing the HiveServer2 WebUI SPNEGO service principal.</description>
-  </property>
-  <property>
-    <name>hive.server2.webui.spnego.principal</name>
-    <value>HTTP/_HOST@EXAMPLE.COM</value>
-    <description>
-      The HiveServer2 WebUI SPNEGO service principal.
-      The special string _HOST will be replaced automatically with 
-      the value of hive.server2.webui.host or the correct host name.
-    </description>
-  </property>
-  <property>
-    <name>hive.server2.tez.default.queues</name>
-    <value/>
-    <description>
-      A list of comma separated values corresponding to YARN queues of the same name.
-      When HiveServer2 is launched in Tez mode, this configuration needs to be set
-      for multiple Tez sessions to run in parallel on the cluster.
-    </description>
-  </property>
-  <property>
-    <name>hive.server2.tez.sessions.per.default.queue</name>
-    <value>1</value>
-    <description>
-      A positive integer that determines the number of Tez sessions that should be
-      launched on each of the queues specified by "hive.server2.tez.default.queues".
-      Determines the parallelism on each queue.
-    </description>
-  </property>
-  <property>
-    <name>hive.server2.tez.initialize.default.sessions</name>
-    <value>false</value>
-    <description>
-      This flag is used in HiveServer2 to enable a user to use HiveServer2 without
-      turning on Tez for HiveServer2. The user could potentially want to run queries
-      over Tez without the pool of sessions.
-    </description>
-  </property>
-  <property>
-    <name>hive.server2.tez.session.lifetime</name>
-    <value>162h</value>
-    <description>
-      Expects a time value with unit (d/day, h/hour, m/min, s/sec, ms/msec, us/usec, ns/nsec), which is hour if not specified.
-      The lifetime of the Tez sessions launched by HS2 when default sessions are enabled.
-      Set to 0 to disable session expiration.
-    </description>
-  </property>
-  <property>
-    <name>hive.server2.tez.session.lifetime.jitter</name>
-    <value>3h</value>
-    <description>
-      Expects a time value with unit (d/day, h/hour, m/min, s/sec, ms/msec, us/usec, ns/nsec), which is hour if not specified.
-      The jitter for Tez session lifetime; prevents all the sessions from restarting at once.
-    </description>
-  </property>
-  <property>
-    <name>hive.server2.logging.operation.enabled</name>
-    <value>true</value>
-    <description>When true, HS2 will save operation logs and make them available for clients</description>
-  </property>
-  <property>
-    <name>hive.server2.logging.operation.log.location</name>
-    <value>${system:java.io.tmpdir}/${system:user.name}/operation_logs</value>
-    <description>Top level directory where operation logs are stored if logging functionality is enabled</description>
-  </property>
-  <property>
-    <name>hive.server2.logging.operation.level</name>
-    <value>EXECUTION</value>
-    <description>
-      Expects one of [none, execution, performance, verbose].
-      HS2 operation logging mode available to clients to be set at session level.
-      For this to work, hive.server2.logging.operation.enabled should be set to true.
-        NONE: Ignore any logging
-        EXECUTION: Log completion of tasks
-        PERFORMANCE: Execution + Performance logs 
-        VERBOSE: All logs
-    </description>
-  </property>
-  <property>
-    <name>hive.server2.metrics.enabled</name>
-    <value>false</value>
-    <description>Enable metrics on the HiveServer2.</description>
-  </property>
-  <property>
     <name>hive.server2.thrift.http.port</name>
     <value>10001</value>
     <description>Port number of HiveServer2 Thrift interface when hive.server2.transport.mode is 'http'.</description>
@@ -3472,16 +3126,6 @@
       Expects a time value with unit (d/day, h/hour, m/min, s/sec, ms/msec, us/usec, ns/nsec), which is sec if not specified.
       Keepalive time for an idle http worker thread. When the number of workers exceeds min workers, excessive threads are killed after this time interval.
     </description>
-  </property>
-  <property>
-    <name>hive.server2.thrift.http.request.header.size</name>
-    <value>6144</value>
-    <description>Request header size in bytes, when using HTTP transport mode. Jetty defaults used.</description>
-  </property>
-  <property>
-    <name>hive.server2.thrift.http.response.header.size</name>
-    <value>6144</value>
-    <description>Response header size in bytes, when using HTTP transport mode. Jetty defaults used.</description>
   </property>
   <property>
     <name>hive.server2.thrift.http.cookie.auth.enabled</name>
@@ -3611,16 +3255,6 @@
     </description>
   </property>
   <property>
-    <name>hive.session.impl.classname</name>
-    <value/>
-    <description>Classname for custom implementation of hive session</description>
-  </property>
-  <property>
-    <name>hive.session.impl.withugi.classname</name>
-    <value/>
-    <description>Classname for custom implementation of hive session with UGI</description>
-  </property>
-  <property>
     <name>hive.server2.authentication</name>
     <value>NONE</value>
     <description>
@@ -3696,50 +3330,6 @@
     <name>hive.server2.authentication.ldap.Domain</name>
     <value/>
     <description/>
-  </property>
-  <property>
-    <name>hive.server2.authentication.ldap.groupDNPattern</name>
-    <value/>
-    <description>
-      COLON-separated list of patterns to use to find DNs for group entities in this directory.
-      Use %s where the actual group name is to be substituted for.
-      For example: CN=%s,CN=Groups,DC=subdomain,DC=domain,DC=com.
-    </description>
-  </property>
-  <property>
-    <name>hive.server2.authentication.ldap.groupFilter</name>
-    <value/>
-    <description>
-      COMMA-separated list of LDAP Group names (short name not full DNs).
-      For example: HiveAdmins,HadoopAdmins,Administrators
-    </description>
-  </property>
-  <property>
-    <name>hive.server2.authentication.ldap.userDNPattern</name>
-    <value/>
-    <description>
-      COLON-separated list of patterns to use to find DNs for users in this directory.
-      Use %s where the actual group name is to be substituted for.
-      For example: CN=%s,CN=Users,DC=subdomain,DC=domain,DC=com.
-    </description>
-  </property>
-  <property>
-    <name>hive.server2.authentication.ldap.userFilter</name>
-    <value/>
-    <description>
-      COMMA-separated list of LDAP usernames (just short names, not full DNs).
-      For example: hiveuser,impalauser,hiveadmin,hadoopadmin
-    </description>
-  </property>
-  <property>
-    <name>hive.server2.authentication.ldap.customLDAPQuery</name>
-    <value/>
-    <description>
-      A full LDAP query that LDAP Atn provider uses to execute against LDAP Server.
-      If this query returns a null resultset, the LDAP Provider fails the Authentication
-      request, succeeds if the user is part of the resultset.For example: (&amp;(objectClass=group)(objectClass=top)(instanceType=4)(cn=Domain*)) 
-      (&amp;(objectClass=person)(|(sAMAccountName=admin)(|(memberOf=CN=Domain Admins,CN=Users,DC=domain,DC=com)(memberOf=CN=Administrators,CN=Builtin,DC=domain,DC=com))))
-    </description>
   </property>
   <property>
     <name>hive.server2.custom.authentication.class</name>
@@ -3826,6 +3416,11 @@
     <description>Comma separated list of udfs names. These udfs will not be allowed in queries. The udf black list takes precedence over udf white list</description>
   </property>
   <property>
+    <name>hive.security.command.whitelist</name>
+    <value>set,reset,dfs,add,list,delete,reload,compile</value>
+    <description>Comma separated list of non-SQL Hive commands users are authorized to execute</description>
+  </property>
+  <property>
     <name>hive.server2.session.check.interval</name>
     <value>6h</value>
     <description>
@@ -3862,37 +3457,9 @@
     </description>
   </property>
   <property>
-    <name>hive.server2.thrift.client.retry.limit</name>
-    <value>1</value>
-    <description>Number of retries upon failure of Thrift HiveServer2 calls</description>
-  </property>
-  <property>
-    <name>hive.server2.thrift.client.connect.retry.limit</name>
-    <value>1</value>
-    <description>Number of retries while opening a connection to HiveServe2</description>
-  </property>
-  <property>
-    <name>hive.server2.thrift.client.retry.delay.seconds</name>
-    <value>1s</value>
-    <description>
-      Expects a time value with unit (d/day, h/hour, m/min, s/sec, ms/msec, us/usec, ns/nsec), which is sec if not specified.
-      Number of seconds for the HiveServer2 thrift client to wait between consecutive connection attempts. Also specifies the time to wait between retrying thrift calls upon failures
-    </description>
-  </property>
-  <property>
-    <name>hive.server2.thrift.client.user</name>
-    <value>anonymous</value>
-    <description>Username to use against thrift client</description>
-  </property>
-  <property>
-    <name>hive.server2.thrift.client.password</name>
-    <value>anonymous</value>
-    <description>Password to use against thrift client</description>
-  </property>
-  <property>
-    <name>hive.security.command.whitelist</name>
-    <value>set,reset,dfs,add,list,delete,reload,compile</value>
-    <description>Comma separated list of non-SQL Hive commands users are authorized to execute</description>
+    <name>hive.conf.restricted.list</name>
+    <value>hive.security.authenticator.manager,hive.security.authorization.manager,hive.users.in.admin.role</value>
+    <description>Comma separated list of configuration options which are immutable at runtime</description>
   </property>
   <property>
     <name>hive.multi.insert.move.tasks.share.dependencies</name>
@@ -3968,17 +3535,7 @@
     <value>mr</value>
     <description>
       Expects one of [mr, tez, spark].
-      Chooses execution engine. Options are: mr (Map reduce, default), tez, spark. While MR
-      remains the default engine for historical reasons, it is itself a historical engine
-      and is deprecated in Hive 2 line. It may be removed without further warning.
-    </description>
-  </property>
-  <property>
-    <name>hive.execution.mode</name>
-    <value>container</value>
-    <description>
-      Expects one of [container, llap].
-      Chooses whether query fragments will run in container or in llap
+      Chooses execution engine. Options are: mr (Map reduce, default), tez (hadoop 2 only), spark
     </description>
   </property>
   <property>
@@ -3991,7 +3548,7 @@
   </property>
   <property>
     <name>hive.user.install.directory</name>
-    <value>/user/</value>
+    <value>hdfs:///user/</value>
     <description>
       If hive (in tez mode only) cannot find a usable hive jar in "hive.jar.directory", 
       it will upload the hive jar to "hive.user.install.directory/user.name"
@@ -4086,15 +3643,6 @@
     <description>Percent of entries in the group by aggregation hash flushed when the memory threshold is exceeded.</description>
   </property>
   <property>
-    <name>hive.vectorized.execution.reducesink.new.enabled</name>
-    <value>true</value>
-    <description>
-      This flag should be set to true to enable the new vectorization
-      of queries using ReduceSink.
-      iThe default value is true.
-    </description>
-  </property>
-  <property>
     <name>hive.typecheck.on.insert</name>
     <value>true</value>
     <description>This property has been extended to control whether to check, convert, and normalize partition value to conform to its column type in partition operations including but not limited to insert, such as alter, describe etc.</description>
@@ -4118,19 +3666,14 @@
     <description>Whether to generate the splits locally or in the AM (tez only)</description>
   </property>
   <property>
-    <name>hive.tez.input.generate.consistent.splits</name>
-    <value>true</value>
-    <description>Whether to generate consistent split locations when generating splits in the AM</description>
-  </property>
-  <property>
     <name>hive.prewarm.enabled</name>
     <value>false</value>
-    <description>Enables container prewarm for Tez/Spark (Hadoop 2 only)</description>
+    <description>Enables container prewarm for Tez (Hadoop 2 only)</description>
   </property>
   <property>
     <name>hive.prewarm.numcontainers</name>
     <value>10</value>
-    <description>Controls the number of containers to prewarm for Tez/Spark (Hadoop 2 only)</description>
+    <description>Controls the number of containers to prewarm for Tez (Hadoop 2 only)</description>
   </property>
   <property>
     <name>hive.stageid.rearrange</name>
@@ -4150,6 +3693,33 @@
     <description>The name of counter group for internal Hive variables (CREATED_FILE, FATAL_ERROR, etc.)</description>
   </property>
   <property>
+    <name>hive.server2.tez.default.queues</name>
+    <value/>
+    <description>
+      A list of comma separated values corresponding to YARN queues of the same name.
+      When HiveServer2 is launched in Tez mode, this configuration needs to be set
+      for multiple Tez sessions to run in parallel on the cluster.
+    </description>
+  </property>
+  <property>
+    <name>hive.server2.tez.sessions.per.default.queue</name>
+    <value>1</value>
+    <description>
+      A positive integer that determines the number of Tez sessions that should be
+      launched on each of the queues specified by "hive.server2.tez.default.queues".
+      Determines the parallelism on each queue.
+    </description>
+  </property>
+  <property>
+    <name>hive.server2.tez.initialize.default.sessions</name>
+    <value>false</value>
+    <description>
+      This flag is used in HiveServer2 to enable a user to use HiveServer2 without
+      turning on Tez for HiveServer2. The user could potentially want to run queries
+      over Tez without the pool of sessions.
+    </description>
+  </property>
+  <property>
     <name>hive.support.quoted.identifiers</name>
     <value>column</value>
     <description>
@@ -4164,16 +3734,6 @@
     <value>true</value>
     <description>
       This flag should be set to true to enable support for SQL2011 reserved keywords.
-      The default value is true.
-    </description>
-  </property>
-  <property>
-    <name>hive.support.special.characters.tablename</name>
-    <value>true</value>
-    <description>
-      This flag should be set to true to enable support for special characters in table names.
-      When it is set to false, only [a-zA-Z_0-9]+ are supported.
-      The only supported special character right now is '/'. This flag applies only to quoted table names.
       The default value is true.
     </description>
   </property>
@@ -4243,23 +3803,6 @@
     </description>
   </property>
   <property>
-    <name>hive.tez.bucket.pruning</name>
-    <value>false</value>
-    <description>
-      When pruning is enabled, filters on bucket columns will be processed by 
-      filtering the splits against a bitset of included buckets. This needs predicates 
-      produced by hive.optimize.ppd and hive.optimize.index.filters.
-    </description>
-  </property>
-  <property>
-    <name>hive.tez.bucket.pruning.compat</name>
-    <value>true</value>
-    <description>
-      When pruning is enabled, handle possibly broken inserts due to negative hashcodes.
-      This occasionally doubles the data scan cost, but is default enabled for safety
-    </description>
-  </property>
-  <property>
     <name>hive.tez.dynamic.partition.pruning</name>
     <value>true</value>
     <description>
@@ -4292,425 +3835,6 @@
     <name>hive.tez.exec.inplace.progress</name>
     <value>true</value>
     <description>Updates tez job execution progress in-place in the terminal.</description>
-  </property>
-  <property>
-    <name>hive.llap.io.enabled</name>
-    <value>false</value>
-    <description>Whether the LLAP IO layer is enabled.</description>
-  </property>
-  <property>
-    <name>hive.llap.io.memory.mode</name>
-    <value>cache</value>
-    <description>
-      Expects one of [cache, allocator, none].
-      LLAP IO memory usage; 'cache' (the default) uses data and metadata cache with a
-      custom off-heap allocator, 'allocator' uses the custom allocator without the caches,
-      'none' doesn't use either (this mode may result in significant performance degradation)
-    </description>
-  </property>
-  <property>
-    <name>hive.llap.io.allocator.alloc.min</name>
-    <value>128Kb</value>
-    <description>
-      Expects a byte size value with unit (blank for bytes, kb, mb, gb, tb, pb).
-      Minimum allocation possible from LLAP buddy allocator. Allocations below that are
-      padded to minimum allocation. For ORC, should generally be the same as the expected
-      compression buffer size, or next lowest power of 2. Must be a power of 2.
-    </description>
-  </property>
-  <property>
-    <name>hive.llap.io.allocator.alloc.max</name>
-    <value>16Mb</value>
-    <description>
-      Expects a byte size value with unit (blank for bytes, kb, mb, gb, tb, pb).
-      Maximum allocation possible from LLAP buddy allocator. For ORC, should be as large as
-      the largest expected ORC compression buffer size. Must be a power of 2.
-    </description>
-  </property>
-  <property>
-    <name>hive.llap.io.allocator.arena.count</name>
-    <value>8</value>
-    <description>
-      Arena count for LLAP low-level cache; cache will be allocated in the steps of
-      (size/arena_count) bytes. This size must be &lt;= 1Gb and &gt;= max allocation; if it is
-      not the case, an adjusted size will be used. Using powers of 2 is recommended.
-    </description>
-  </property>
-  <property>
-    <name>hive.llap.io.memory.size</name>
-    <value>1Gb</value>
-    <description>
-      Expects a byte size value with unit (blank for bytes, kb, mb, gb, tb, pb).
-      Maximum size for IO allocator or ORC low-level cache.
-    </description>
-  </property>
-  <property>
-    <name>hive.llap.io.allocator.direct</name>
-    <value>true</value>
-    <description>Whether ORC low-level cache should use direct allocation.</description>
-  </property>
-  <property>
-    <name>hive.llap.io.use.lrfu</name>
-    <value>false</value>
-    <description>Whether ORC low-level cache should use LRFU cache policy instead of default (FIFO).</description>
-  </property>
-  <property>
-    <name>hive.llap.io.lrfu.lambda</name>
-    <value>0.01</value>
-    <description>
-      Lambda for ORC low-level cache LRFU cache policy. Must be in [0, 1]. 0 makes LRFU
-      behave like LFU, 1 makes it behave like LRU, values in between balance accordingly.
-    </description>
-  </property>
-  <property>
-    <name>hive.llap.cache.allow.synthetic.fileid</name>
-    <value>false</value>
-    <description>
-      Whether LLAP cache should use synthetic file ID if real one is not available. Systems
-      like HDFS, Isilon, etc. provide a unique file/inode ID. On other FSes (e.g. local
-      FS), the cache would not work by default because LLAP is unable to uniquely track the
-      files; enabling this setting allows LLAP to generate file ID from the path, size and
-      modification time, which is almost certain to identify file uniquely. However, if you
-      use a FS without file IDs and rewrite files a lot (or are paranoid), you might want
-      to avoid this setting.
-    </description>
-  </property>
-  <property>
-    <name>hive.llap.io.use.fileid.path</name>
-    <value>true</value>
-    <description>
-      Whether LLAP should use fileId (inode)-based path to ensure better consistency for the
-      cases of file overwrites. This is supported on HDFS.
-    </description>
-  </property>
-  <property>
-    <name>hive.llap.io.orc.time.counters</name>
-    <value>true</value>
-    <description>Whether to enable time counters for LLAP IO layer (time spent in HDFS, etc.)</description>
-  </property>
-  <property>
-    <name>hive.llap.auto.allow.uber</name>
-    <value>true</value>
-    <description>Whether or not to allow the planner to run vertices in the AM.</description>
-  </property>
-  <property>
-    <name>hive.llap.auto.enforce.tree</name>
-    <value>true</value>
-    <description>Enforce that all parents are in llap, before considering vertex</description>
-  </property>
-  <property>
-    <name>hive.llap.auto.enforce.vectorized</name>
-    <value>true</value>
-    <description>Enforce that inputs are vectorized, before considering vertex</description>
-  </property>
-  <property>
-    <name>hive.llap.auto.enforce.stats</name>
-    <value>true</value>
-    <description>Enforce that col stats are available, before considering vertex</description>
-  </property>
-  <property>
-    <name>hive.llap.auto.max.input.size</name>
-    <value>10737418240</value>
-    <description>Check input size, before considering vertex (-1 disables check)</description>
-  </property>
-  <property>
-    <name>hive.llap.auto.max.output.size</name>
-    <value>1073741824</value>
-    <description>Check output size, before considering vertex (-1 disables check)</description>
-  </property>
-  <property>
-    <name>hive.llap.execution.mode</name>
-    <value>none</value>
-    <description>
-      Expects one of [auto, none, all, map].
-      Chooses whether query fragments will run in container or in llap
-    </description>
-  </property>
-  <property>
-    <name>hive.llap.object.cache.enabled</name>
-    <value>true</value>
-    <description>Cache objects (plans, hashtables, etc) in llap</description>
-  </property>
-  <property>
-    <name>hive.llap.queue.metrics.percentiles.intervals</name>
-    <value/>
-    <description>
-      Comma-delimited set of integers denoting the desired rollover intervals (in seconds)
-      for percentile latency metrics on the LLAP daemon producer-consumer queue.
-      By default, percentile latency metrics are disabled.
-    </description>
-  </property>
-  <property>
-    <name>hive.llap.io.threadpool.size</name>
-    <value>10</value>
-    <description>Specify the number of threads to use for low-level IO thread pool.</description>
-  </property>
-  <property>
-    <name>hive.llap.daemon.service.principal</name>
-    <value/>
-    <description>The name of the LLAP daemon's service principal.</description>
-  </property>
-  <property>
-    <name>hive.llap.daemon.keytab.file</name>
-    <value/>
-    <description>The path to the Kerberos Keytab file containing the LLAP daemon's service principal.</description>
-  </property>
-  <property>
-    <name>hive.llap.zk.sm.principal</name>
-    <value/>
-    <description>The name of the principal to use to talk to ZooKeeper for ZooKeeper SecretManager.</description>
-  </property>
-  <property>
-    <name>hive.llap.zk.sm.keytab.file</name>
-    <value/>
-    <description>
-      The path to the Kerberos Keytab file containing the principal to use to talk to
-      ZooKeeper for ZooKeeper SecretManager.
-    </description>
-  </property>
-  <property>
-    <name>hive.llap.zk.sm.connectionString</name>
-    <value/>
-    <description>ZooKeeper connection string for ZooKeeper SecretManager.</description>
-  </property>
-  <property>
-    <name>hive.llap.daemon.acl</name>
-    <value>*</value>
-    <description>The ACL for LLAP daemon.</description>
-  </property>
-  <property>
-    <name>hive.llap.management.acl</name>
-    <value>*</value>
-    <description>The ACL for LLAP daemon management.</description>
-  </property>
-  <property>
-    <name>hive.llap.daemon.delegation.token.lifetime</name>
-    <value>14d</value>
-    <description>
-      Expects a time value with unit (d/day, h/hour, m/min, s/sec, ms/msec, us/usec, ns/nsec), which is sec if not specified.
-      LLAP delegation token lifetime, in seconds if specified without a unit.
-    </description>
-  </property>
-  <property>
-    <name>hive.llap.management.rpc.port</name>
-    <value>15004</value>
-    <description>RPC port for LLAP daemon management service.</description>
-  </property>
-  <property>
-    <name>hive.llap.auto.auth</name>
-    <value>true</value>
-    <description>Whether or not to set Hadoop configs to enable auth in LLAP web app.</description>
-  </property>
-  <property>
-    <name>hive.llap.daemon.rpc.num.handlers</name>
-    <value>5</value>
-    <description>Number of RPC handlers for LLAP daemon.</description>
-  </property>
-  <property>
-    <name>hive.llap.daemon.work.dirs</name>
-    <value/>
-    <description>
-      Working directories for the daemon. Needs to be set for a secure cluster, since LLAP may
-      not have access to the default YARN working directories. yarn.nodemanager.local-dirs is
-      used if this is not set
-    </description>
-  </property>
-  <property>
-    <name>hive.llap.daemon.yarn.shuffle.port</name>
-    <value>15551</value>
-    <description>YARN shuffle port for LLAP-daemon-hosted shuffle.</description>
-  </property>
-  <property>
-    <name>hive.llap.daemon.yarn.container.mb</name>
-    <value>-1</value>
-    <description>TODO doc. Unused?</description>
-  </property>
-  <property>
-    <name>hive.llap.daemon.shuffle.dir.watcher.enabled</name>
-    <value>false</value>
-    <description>TODO doc</description>
-  </property>
-  <property>
-    <name>hive.llap.daemon.am.liveness.heartbeat.interval.ms</name>
-    <value>10000ms</value>
-    <description>
-      Expects a time value with unit (d/day, h/hour, m/min, s/sec, ms/msec, us/usec, ns/nsec), which is msec if not specified.
-      Tez AM-LLAP heartbeat interval (milliseconds). This needs to be below the task timeout
-      interval, but otherwise as high as possible to avoid unnecessary traffic.
-    </description>
-  </property>
-  <property>
-    <name>hive.llap.am.liveness.connection.timeout.ms</name>
-    <value>10000ms</value>
-    <description>
-      Expects a time value with unit (d/day, h/hour, m/min, s/sec, ms/msec, us/usec, ns/nsec), which is msec if not specified.
-      Amount of time to wait on connection failures to the AM from an LLAP daemon before
-      considering the AM to be dead.
-    </description>
-  </property>
-  <property>
-    <name>hive.llap.am.liveness.connection.sleep.between.retries.ms</name>
-    <value>2000ms</value>
-    <description>
-      Expects a time value with unit (d/day, h/hour, m/min, s/sec, ms/msec, us/usec, ns/nsec), which is msec if not specified.
-      Sleep duration while waiting to retry connection failures to the AM from the daemon for
-      the general keep-alive thread (milliseconds).
-    </description>
-  </property>
-  <property>
-    <name>hive.llap.daemon.num.executors</name>
-    <value>4</value>
-    <description>
-      Number of executors to use in LLAP daemon; essentially, the number of tasks that can be
-      executed in parallel.
-    </description>
-  </property>
-  <property>
-    <name>hive.llap.daemon.rpc.port</name>
-    <value>15001</value>
-    <description>The LLAP daemon RPC port.</description>
-  </property>
-  <property>
-    <name>hive.llap.daemon.memory.per.instance.mb</name>
-    <value>4096</value>
-    <description>The total amount of memory to use for the executors inside LLAP (in megabytes).</description>
-  </property>
-  <property>
-    <name>hive.llap.daemon.vcpus.per.instance</name>
-    <value>4</value>
-    <description>The total number of vcpus to use for the executors inside LLAP.</description>
-  </property>
-  <property>
-    <name>hive.llap.daemon.num.file.cleaner.threads</name>
-    <value>1</value>
-    <description>Number of file cleaner threads in LLAP.</description>
-  </property>
-  <property>
-    <name>hive.llap.file.cleanup.delay.seconds</name>
-    <value>300s</value>
-    <description>
-      Expects a time value with unit (d/day, h/hour, m/min, s/sec, ms/msec, us/usec, ns/nsec), which is sec if not specified.
-      How long to delay before cleaning up query files in LLAP (in seconds, for debugging).
-    </description>
-  </property>
-  <property>
-    <name>hive.llap.daemon.service.hosts</name>
-    <value/>
-    <description>
-      Explicitly specified hosts to use for LLAP scheduling. Useful for testing. By default,
-      YARN registry is used.
-    </description>
-  </property>
-  <property>
-    <name>hive.llap.daemon.service.refresh.interval.sec</name>
-    <value>60s</value>
-    <description>
-      Expects a time value with unit (d/day, h/hour, m/min, s/sec, ms/msec, us/usec, ns/nsec), which is sec if not specified.
-      LLAP YARN registry service list refresh delay, in seconds.
-    </description>
-  </property>
-  <property>
-    <name>hive.llap.daemon.communicator.num.threads</name>
-    <value>10</value>
-    <description>Number of threads to use in LLAP task communicator in Tez AM.</description>
-  </property>
-  <property>
-    <name>hive.llap.task.scheduler.node.reenable.min.timeout.ms</name>
-    <value>200ms</value>
-    <description>
-      Expects a time value with unit (d/day, h/hour, m/min, s/sec, ms/msec, us/usec, ns/nsec), which is msec if not specified.
-      Minimum time after which a previously disabled node will be re-enabled for scheduling,
-      in milliseconds. This may be modified by an exponential back-off if failures persist.
-    </description>
-  </property>
-  <property>
-    <name>hive.llap.task.scheduler.node.reenable.max.timeout.ms</name>
-    <value>10000ms</value>
-    <description>
-      Expects a time value with unit (d/day, h/hour, m/min, s/sec, ms/msec, us/usec, ns/nsec), which is msec if not specified.
-      Maximum time after which a previously disabled node will be re-enabled for scheduling,
-      in milliseconds. This may be modified by an exponential back-off if failures persist.
-    </description>
-  </property>
-  <property>
-    <name>hive.llap.task.scheduler.node.disable.backoff.factor</name>
-    <value>1.5</value>
-    <description>
-      Backoff factor on successive blacklists of a node due to some failures. Blacklist times
-      start at the min timeout and go up to the max timeout based on this backoff factor.
-    </description>
-  </property>
-  <property>
-    <name>hive.llap.task.scheduler.num.schedulable.tasks.per.node</name>
-    <value>0</value>
-    <description>
-      The number of tasks the AM TaskScheduler will try allocating per node. 0 indicates that
-      this should be picked up from the Registry. -1 indicates unlimited capacity; positive
-      values indicate a specific bound.
-    </description>
-  </property>
-  <property>
-    <name>hive.llap.task.scheduler.locality.delay</name>
-    <value>0ms</value>
-    <description>
-      Expects a time value with unit (d/day, h/hour, m/min, s/sec, ms/msec, us/usec, ns/nsec), which is msec if not specified.
-      The time should be in between -1 msec (inclusive) and 9223372036854775807 msec (inclusive).
-      Amount of time to wait before allocating a request which contains location information, to a location other than the ones requested. Set to -1 for an infinite delay, 0for a no delay. Currently these are the only two supported values
-    </description>
-  </property>
-  <property>
-    <name>hive.llap.daemon.task.scheduler.wait.queue.size</name>
-    <value>10</value>
-    <description>LLAP scheduler maximum queue size.</description>
-  </property>
-  <property>
-    <name>hive.llap.daemon.wait.queue.comparator.class.name</name>
-    <value>org.apache.hadoop.hive.llap.daemon.impl.comparator.ShortestJobFirstComparator</value>
-    <description>
-      The priority comparator to use for LLAP scheduler prioroty queue. The built-in options
-      are org.apache.hadoop.hive.llap.daemon.impl.comparator.ShortestJobFirstComparator and
-      .....FirstInFirstOutComparator
-    </description>
-  </property>
-  <property>
-    <name>hive.llap.daemon.task.scheduler.enable.preemption</name>
-    <value>true</value>
-    <description>
-      Whether non-finishable running tasks (e.g. a reducer waiting for inputs) should be
-      preempted by finishable tasks inside LLAP scheduler.
-    </description>
-  </property>
-  <property>
-    <name>hive.llap.task.communicator.connection.timeout.ms</name>
-    <value>16000ms</value>
-    <description>
-      Expects a time value with unit (d/day, h/hour, m/min, s/sec, ms/msec, us/usec, ns/nsec), which is msec if not specified.
-      Connection timeout (in milliseconds) before a failure to an LLAP daemon from Tez AM.
-    </description>
-  </property>
-  <property>
-    <name>hive.llap.task.communicator.connection.sleep.between.retries.ms</name>
-    <value>2000ms</value>
-    <description>
-      Expects a time value with unit (d/day, h/hour, m/min, s/sec, ms/msec, us/usec, ns/nsec), which is msec if not specified.
-      Sleep duration (in milliseconds) to wait before retrying on error when obtaining a
-      connection to LLAP daemon from Tez AM.
-    </description>
-  </property>
-  <property>
-    <name>hive.llap.daemon.web.port</name>
-    <value>15002</value>
-    <description>LLAP daemon web UI port.</description>
-  </property>
-  <property>
-    <name>hive.llap.daemon.web.ssl</name>
-    <value>false</value>
-    <description>Whether LLAP daemon web UI should use SSL.</description>
-  </property>
-  <property>
-    <name>hive.llap.client.consistent.splits</name>
-    <value>false</value>
-    <description>Whether to setup split locations to match nodes on which llap daemons are running, instead of using the locations provided by the split itself</description>
   </property>
   <property>
     <name>hive.spark.client.future.timeout</name>
@@ -4770,19 +3894,6 @@
     <description>Name of the SASL mechanism to use for authentication.</description>
   </property>
   <property>
-    <name>hive.spark.dynamic.partition.pruning</name>
-    <value>false</value>
-    <description>
-      When dynamic pruning is enabled, joins on partition keys will be processed by writing
-      to a temporary HDFS file, and read later for removing unnecessary partitions.
-    </description>
-  </property>
-  <property>
-    <name>hive.spark.dynamic.partition.pruning.max.data.size</name>
-    <value>104857600</value>
-    <description>Maximum total data size in dynamic pruning.</description>
-  </property>
-  <property>
     <name>hive.reorder.nway.joins</name>
     <value>true</value>
     <description>Runs reordering of tables within single n-way join (i.e.: picks streamtable)</description>
@@ -4794,48 +3905,5 @@
       Expects value bigger than 0.
       If value is greater than 0 logs in fixed intervals of size n rather than exponentially.
     </description>
-  </property>
-  <property>
-    <name>hive.msck.path.validation</name>
-    <value>throw</value>
-    <description>
-      Expects one of [throw, skip, ignore].
-      The approach msck should take with HDFS directories that are partition-like but contain unsupported characters. 'throw' (an exception) is the default; 'skip' will skip the invalid directories and still repair the others; 'ignore' will skip the validation (legacy behavior, causes bugs in many cases)
-    </description>
-  </property>
-  <property>
-    <name>hive.server2.llap.concurrent.queries</name>
-    <value>-1</value>
-    <description>The number of queries allowed in parallel via llap. Negative number implies 'infinite'.</description>
-  </property>
-  <property>
-    <name>hive.tez.enable.memory.manager</name>
-    <value>true</value>
-    <description>Enable memory manager for tez</description>
-  </property>
-  <property>
-    <name>hive.hash.table.inflation.factor</name>
-    <value>2.0</value>
-    <description>Expected inflation factor between disk/in memory representation of hash tables</description>
-  </property>
-  <property>
-    <name>hive.log.trace.id</name>
-    <value/>
-    <description>Log tracing id that can be used by upstream clients for tracking respective logs. Truncated to 64 characters. Defaults to use auto-generated session id.</description>
-  </property>
-  <property>
-    <name>hive.conf.restricted.list</name>
-    <value>hive.security.authenticator.manager,hive.security.authorization.manager,hive.users.in.admin.role</value>
-    <description>Comma separated list of configuration options which are immutable at runtime</description>
-  </property>
-  <property>
-    <name>hive.conf.hidden.list</name>
-    <value>javax.jdo.option.ConnectionPassword,hive.server2.keystore.password</value>
-    <description>Comma separated list of configuration options which should not be read by normal user like passwords</description>
-  </property>
-  <property>
-    <name>hive.conf.internal.variable.list</name>
-    <value>hive.added.files.path,hive.added.jars.path,hive.added.archives.path</value>
-    <description>Comma separated list of variables which are used internally and should not be configurable.</description>
   </property>
 </configuration>

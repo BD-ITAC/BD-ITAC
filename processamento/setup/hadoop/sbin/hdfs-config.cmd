@@ -14,7 +14,30 @@
 @rem See the License for the specific language governing permissions and
 @rem limitations under the License.
 
-set HADOOP_JOB_HISTORYSERVER_HEAPSIZE=1000
+@rem included in all the hdfs scripts with source command
+@rem should not be executed directly
 
-set HADOOP_MAPRED_ROOT_LOGGER=%HADOOP_LOGLEVEL%,RFA
+if not defined HADOOP_BIN_PATH ( 
+  set HADOOP_BIN_PATH=%~dp0
+)
 
+if "%HADOOP_BIN_PATH:~-1%" == "\" (
+  set HADOOP_BIN_PATH=%HADOOP_BIN_PATH:~0,-1%
+)
+
+set DEFAULT_LIBEXEC_DIR=%HADOOP_BIN_PATH%\..\libexec
+if not defined HADOOP_LIBEXEC_DIR (
+  set HADOOP_LIBEXEC_DIR=%DEFAULT_LIBEXEC_DIR%
+)
+
+if exist %HADOOP_LIBEXEC_DIR%\hadoop-config.cmd (
+  call %HADOOP_LIBEXEC_DIR%\hadoop-config.cmd %*
+) else if exist %HADOOP_COMMON_HOME%\libexec\hadoop-config.cmd (
+  call %HADOOP_COMMON_HOME%\libexec\hadoop-config.cmd %*
+) else if exist %HADOOP_HOME%\libexec\hadoop-config.cmd (
+  call %HADOOP_HOME%\libexec\hadoop-config.cmd %*
+) else (
+  echo Hadoop common not found.
+)
+
+:eof
