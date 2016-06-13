@@ -29,5 +29,5 @@ module.exports = function(app){
 	   });
    };
 
-  return alertsDAO;
+  return controller;
 };
