@@ -2,12 +2,15 @@ package br.ita.bditac.mobile.alertas;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MenuItem;
 
 import org.osmdroid.api.IMapController;
 import org.osmdroid.bonuspack.overlays.Marker;
@@ -22,6 +25,12 @@ public class NotificationReceiverActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notification_receiver);
+
+        // Show the Up button in the action bar.
+        ActionBar actionBar=getSupportActionBar();
+        if(actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
 
         Context context = getApplicationContext();
 
@@ -39,6 +48,7 @@ public class NotificationReceiverActivity extends AppCompatActivity {
 
         double latitude = getIntent().getDoubleExtra(Constants.EXTRA_NOTIFICATION_LATITUDE, Constants.DEFAULT_NOTIFICATION_LATITUDE);
         double longitude = getIntent().getDoubleExtra(Constants.EXTRA_NOTIFICATION_LONGITUDE, Constants.DEFAULT_NOTIFICATION_LONGITUDE);
+        double raio = getIntent().getDoubleExtra(Constants.EXTRA_NOTIFICATION_RAIO, Constants.DEFAULT_NOTIFICATION_RAIO);
         String alerta = getIntent().getStringExtra(Constants.EXTRA_NOTIFICATION_ALERTA);
         String descricao = getIntent().getStringExtra(Constants.EXTRA_NOTIFICATION_DESCRICAO);
 
@@ -60,6 +70,16 @@ public class NotificationReceiverActivity extends AppCompatActivity {
         marker.setTitle(alerta);
         marker.setSubDescription(descricao);
         map.getOverlays().add(marker);
+
+        /*
+        Polygon areaAlerta = new Polygon(this);
+        ArrayList<GeoPoint> areaPoints = new ArrayList<GeoPoint>();
+        for (float f = 0; f < 360; f += 1){
+            areaPoints.add(new GeoPoint(latitude , longitude ).destinationPoint(raio, f));
+        }
+        areaAlerta.setPoints(areaPoints);
+        map.getOverlays().add(areaAlerta);
+        */
 
         map.invalidate();
 
@@ -89,6 +109,22 @@ public class NotificationReceiverActivity extends AppCompatActivity {
             }
         }
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id=item.getItemId();
+        if(id == android.R.id.home) {
+            // This ID represents the Home or Up button. In the case of this
+            // activity, the Up button is shown. For
+            // more details, see the Navigation pattern on Android Design:
+            //
+            // http://developer.android.com/design/patterns/navigation.html#up-vs-back
+            //
+            navigateUpTo(new Intent(this, AlertaListActivity.class));
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 }

@@ -193,17 +193,21 @@ public class AlertaListActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
             holder.mItem=mValues.get(position);
-            holder.mIdView.setText(new Integer(mValues.get(position).getId()).toString());
-            holder.mContentView.setText(mValues.get(position).getDescricaoCompleta());
+            holder.mIdView.setText(new Integer(holder.mItem.getId()).toString());
+            holder.mContentView.setText(holder.mItem.getDescricaoCompleta());
 
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                 Context context=v.getContext();
-                Intent intent=new Intent(context, AlertaDetailActivity.class);
-                intent.putExtra(AlertaDetailFragment.ARG_ITEM_ID, new Integer(holder.mItem.getId()).toString());
 
-                context.startActivity(intent);
+                Intent alertaIntent = new Intent(context, NotificationReceiverActivity.class);
+                alertaIntent.putExtra(Constants.EXTRA_NOTIFICATION_LATITUDE, holder.mItem.getOrigemLatitude());
+                alertaIntent.putExtra(Constants.EXTRA_NOTIFICATION_LONGITUDE, holder.mItem.getOrigemLongitude());                   alertaIntent.putExtra(Constants.EXTRA_NOTIFICATION_RAIO, holder.mItem.getOrigemRaioKms());
+                alertaIntent.putExtra(Constants.EXTRA_NOTIFICATION_ALERTA, holder.mItem.getDescricaoResumida());
+                alertaIntent.putExtra(Constants.EXTRA_NOTIFICATION_DESCRICAO, holder.mItem.getDescricaoCompleta());
+
+                context.startActivity(alertaIntent);
                 }
             });
         }
@@ -231,6 +235,9 @@ public class AlertaListActivity extends AppCompatActivity {
             public String toString() {
                 return super.toString() + " '" + mContentView.getText() + "'";
             }
+
         }
+
     }
+
 }

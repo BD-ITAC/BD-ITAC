@@ -12,6 +12,7 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWit
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
+import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.io.IOException;
@@ -20,10 +21,14 @@ import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.junit.Before;
@@ -57,6 +62,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.client.ResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -311,9 +317,9 @@ public class MockAlertTests {
      */
     @Test
     public void test105GetAlerta() throws URISyntaxException {
-        String alertaURL = getBaseUrl() + "/alerta";
+        String alertaUrl = getBaseUrl() + "/alerta";
 
-        ResponseEntity<AlertaResource> alertaResponseEntity = getRestTemplate().getForEntity(alertaURL, AlertaResource.class);
+        ResponseEntity<AlertaResource> alertaResponseEntity = getRestTemplate().getForEntity(alertaUrl, AlertaResource.class);
 
         assertThat(alertaResponseEntity.getStatusCode() == HttpStatus.OK);
     }
@@ -366,17 +372,18 @@ public class MockAlertTests {
      */
     @Test
     public void test107GetAlertasByCoords() throws Exception {
-        String alertaURL = getBaseUrl() + "/alerta/timestamp/{timestamp}/latitude/{latitude}/longitude/{longitude}/raio/{raio}";
+        DecimalFormat df=new DecimalFormat("#0.000000");
+        SimpleDateFormat tf=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+        df.setDecimalFormatSymbols(DecimalFormatSymbols.getInstance(Locale.US));
+        UriComponentsBuilder uriComponentsBuilder=UriComponentsBuilder.fromHttpUrl(getBaseUrl() + "/rest/avisos/nearbyWarnings").
+            queryParam("timestamp", "'" + tf.format(0) + "'").
+            queryParam("latitude", df.format(40)).
+            queryParam("longitude", df.format(50)).
+            queryParam("raio", df.format(1));
 
-        Map<String, String> params = new HashMap<String, String>();
-        params.put("timestamp", "0");
-        params.put("latitude", "40.0");
-        params.put("longitude", "50.0");
-        params.put("raio", "1.0");
-
-        List<Alerta> alertas = getRestTemplate().getForObject(alertaURL, AlertaResources.class, params).unwrap();
-
-        assertThat(alertas.get(0).getDescricaoResumida()).isEqualTo("Alagamento");
+        ResponseEntity<AlertaResources> resources = getRestTemplate().getForEntity(uriComponentsBuilder.build().encode().toUri(), AlertaResources.class);
+        
+        assertThat(resources.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 
     /**
@@ -412,16 +419,19 @@ public class MockAlertTests {
      */
     @Test
     public void test108GetAlertaByCoordsInexistente() throws Exception {
-        String alertaURL = getBaseUrl() + "/alerta/timestamp/{timestamp}/latitude/{latitude}/longitude/{longitude}/raio/{raio}";
+        DecimalFormat df=new DecimalFormat("#0.000000");
+        SimpleDateFormat tf=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+        
+        df.setDecimalFormatSymbols(DecimalFormatSymbols.getInstance(Locale.US));
+        UriComponentsBuilder uriComponentsBuilder=UriComponentsBuilder.fromHttpUrl(getBaseUrl() + "/rest/avisos/nearbyWarnings").
+            queryParam("timestamp", "'" + tf.format(0) + "'").
+            queryParam("latitude", df.format(0.6)).
+            queryParam("longitude", df.format(0.6)).
+            queryParam("raio", df.format(1));
 
-        Map<String, String> params = new HashMap<String, String>();
-        params.put("timestamp", "0");
-        params.put("latitude", "0.6");
-        params.put("longitude", "0.6");
-        params.put("raio", "1.0");
-
-        ResponseEntity<AlertaResources> resources = getRestTemplate().getForEntity(alertaURL, AlertaResources.class, params);
-        assertThat(resources.getStatusCode() == HttpStatus.NOT_FOUND);
+        ResponseEntity<AlertaResources> resources = getRestTemplate().getForEntity(uriComponentsBuilder.build().encode().toUri(), AlertaResources.class);
+        
+        assertThat(resources.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
     
     /**
@@ -493,16 +503,22 @@ public class MockAlertTests {
 
        assertThat(criseResponseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
        
-       String alertaURL = getBaseUrl() + "/alerta/timestamp/{timestamp}/latitude/{latitude}/longitude/{longitude}/raio/{raio}";
+       DecimalFormat df=new DecimalFormat("#0.000000");
+       SimpleDateFormat tf=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+       
+       df.setDecimalFormatSymbols(DecimalFormatSymbols.getInstance(Locale.US));
+       UriComponentsBuilder uriComponentsBuilder=UriComponentsBuilder.fromHttpUrl(getBaseUrl() + "/rest/avisos/nearbyWarnings").
+           queryParam("timestamp", "'" + tf.format(0) + "'").
+           queryParam("latitude", df.format(40)).
+           queryParam("longitude", df.format(50)).
+           queryParam("raio", df.format(1));
 
-       Map<String, String> params = new HashMap<String, String>();
-       params.put("timestamp", "0");
-       params.put("latitude", "40.0");
-       params.put("longitude", "50.0");
-       params.put("raio", "1.0");
-
-       List<Alerta> alertas = getRestTemplate().getForObject(alertaURL, AlertaResources.class, params).unwrap();
-
+       ResponseEntity<AlertaResources> resources = getRestTemplate().getForEntity(uriComponentsBuilder.build().encode().toUri(), AlertaResources.class);
+       
+       assertThat(resources.getStatusCode()).isEqualTo(HttpStatus.OK);
+       
+       List<Alerta> alertas = resources.getBody().unwrap();
+       
        assertThat(alertas.get(0).getOrigemLatitude()).isEqualTo(criseRequest.getLatitude(), offset(DELTA));
        assertThat(alertas.get(0).getOrigemLongitude()).isEqualTo(criseRequest.getLongitude(), offset(DELTA));
    }
@@ -539,38 +555,47 @@ public class MockAlertTests {
 
     @Test
     public void test904GetAlerta() throws Exception {
-        this.mvc.perform(get(getBaseUrl() + "/alerta/id/{id}", 2))
-        .andExpect(status().isOk())
-        .andDo(document("alerta/id",
-            pathParameters(
-            	parameterWithName("id").description("Identificador do alerta no sistema"))));
-    this.mvc.perform(get(getBaseUrl() + "alerta/id/2")
-        .accept(MediaTypes.HAL_JSON_VALUE))
-        .andExpect(status().isOk())
-        .andDo(document("alerta/id",
-        	preprocessResponse(prettyPrint()),
-            responseFields(
-                fieldWithPath("id").type(JsonFieldType.NUMBER).description("Identificação do alerta no sistema"),
-                fieldWithPath("descricaoResumida").type(JsonFieldType.STRING).description("Breve descrição do alerta"),
-                fieldWithPath("descricaoCompleta").type(JsonFieldType.STRING).description("Descrição detalhada do alerta"),
-                fieldWithPath("categoriaAlerta").type(JsonFieldType.STRING).description("Indica o tipo de alerta"),
-                fieldWithPath("origemLatitude").type(JsonFieldType.NUMBER).description("Latitude do ponto de origem do alerta"),
-                fieldWithPath("origemLongitude").type(JsonFieldType.NUMBER).description("Longitude do ponto de origem do alerta"),
-                fieldWithPath("origemRaioKms").type(JsonFieldType.NUMBER).description("Área de abrangência do alerta em Kms"),
-    			fieldWithPath("_links.self.href").type(JsonFieldType.STRING).description("URI do link para o alerta"))));
+        this.mvc.perform(get(getBaseUrl() + "/rest/avisos/{id}", 1))
+	        .andExpect(status().isOk())
+	        .andDo(document("alerta/id",
+	            pathParameters(
+	            	parameterWithName("id").description("Identificador do alerta no sistema"))));
+	    this.mvc.perform(get(getBaseUrl() + "/rest/avisos/1")
+	        .accept(MediaTypes.HAL_JSON_VALUE))
+	        .andExpect(status().isOk())
+	        .andDo(document("alerta/id",
+	        	preprocessResponse(prettyPrint()),
+	            responseFields(
+	                fieldWithPath("id").type(JsonFieldType.NUMBER).description("Identificação do alerta no sistema"),
+	                fieldWithPath("descricaoResumida").type(JsonFieldType.STRING).description("Breve descrição do alerta"),
+	                fieldWithPath("descricaoCompleta").type(JsonFieldType.STRING).description("Descrição detalhada do alerta"),
+	                fieldWithPath("categoriaAlerta").type(JsonFieldType.STRING).description("Indica o tipo de alerta"),
+	                fieldWithPath("origemLatitude").type(JsonFieldType.NUMBER).description("Latitude do ponto de origem do alerta"),
+	                fieldWithPath("origemLongitude").type(JsonFieldType.NUMBER).description("Longitude do ponto de origem do alerta"),
+	                fieldWithPath("origemRaioKms").type(JsonFieldType.NUMBER).description("Área de abrangência do alerta em Kms"),
+	    			fieldWithPath("_links.self.href").type(JsonFieldType.STRING).description("URI do link para o alerta"))));
     }
 
     @Test
     public void test907GetAlertaByCoords() throws Exception {
-        this.mvc.perform(get(getBaseUrl() + "/alerta/timestamp/{timestamp}/latitude/{latitude}/longitude/{longitude}/raio/{raio}", 0, 40.0, 50.0, 1.0D))
+        DecimalFormat df=new DecimalFormat("#0.000000");
+        SimpleDateFormat tf=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+        df.setDecimalFormatSymbols(DecimalFormatSymbols.getInstance(Locale.US));
+        UriComponentsBuilder uriComponentsBuilder=UriComponentsBuilder.fromHttpUrl(getBaseUrl() + "/rest/avisos/nearbyWarnings").
+            queryParam("timestamp", "'" + tf.format(0) + "'").
+            queryParam("latitude", df.format(40)).
+            queryParam("longitude", df.format(50)).
+            queryParam("raio", df.format(1));
+        
+        this.mvc.perform(get(uriComponentsBuilder.build().encode().toUri()))
             .andExpect(status().isOk())
             .andDo(document("alerta/locationsCoords",
-                pathParameters(
+            	requestParameters(
                 	parameterWithName("timestamp").description("Timestamp desde a última consulta"),
                     parameterWithName("latitude").description("Latitude do ponto de origem do alerta"),
                     parameterWithName("longitude").description("Longitude do ponto de origem do alerta"),
                     parameterWithName("raio").description("Área de abrangência do alerta em Kms"))));
-        this.mvc.perform(get(getBaseUrl() + "alerta/timestamp/0/latitude/40.0/longitude/50.0/raio/1.0")
+        this.mvc.perform(get(uriComponentsBuilder.build().encode().toUri())
             .accept(MediaTypes.HAL_JSON_VALUE))
             .andExpect(status().isOk())
             .andDo(document("alerta/getCoords",

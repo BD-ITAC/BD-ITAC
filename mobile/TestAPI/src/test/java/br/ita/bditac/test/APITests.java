@@ -18,12 +18,11 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.junit.FixMethodOrder;
-import org.junit.Rule;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.junit.runners.MethodSorters;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.hateoas.hal.Jackson2HalModule;
 import org.springframework.http.HttpEntity;
@@ -33,10 +32,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.restdocs.RestDocumentation;
 import org.springframework.web.client.ResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -109,18 +106,12 @@ public class APITests {
     	
     }
 
-    @Autowired
-    WebApplicationContext context;
-
-    @Rule
-    public RestDocumentation restDocumentation = new RestDocumentation("target/generated-docs");
-
-
     protected String getBaseUrl() {
         return "http://bditac.ddns.net";
     }
     
     @Test
+    @Ignore
     public void test101PostCriseGerarAlerta() throws Exception {
         URI criseURI = new URI(getBaseUrl() + "/rest/avisos");
         
@@ -153,12 +144,12 @@ public class APITests {
 
     @Test
     public void test107GetAlertasByCoords() throws Exception {
-        String alertaURL = getBaseUrl() + "/rest/avisos/nearbyWarnings";
+        String alertaUrl = getBaseUrl() + "/rest/avisos/nearbyWarnings";
 
         DecimalFormat df=new DecimalFormat("#0.000000");
         SimpleDateFormat tf=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
         df.setDecimalFormatSymbols(DecimalFormatSymbols.getInstance(Locale.US));
-        UriComponentsBuilder uriComponentsBuilder=UriComponentsBuilder.fromHttpUrl(alertaURL).
+        UriComponentsBuilder uriComponentsBuilder=UriComponentsBuilder.fromHttpUrl(alertaUrl).
                 queryParam("timestamp", "'" + tf.format(0) + "'").
                 queryParam("latitude", df.format(-23)).
                 queryParam("longitude", df.format(-45)).
@@ -175,13 +166,14 @@ public class APITests {
     }
 
     @Test
+    @Ignore
     public void test108GetAlertaByCoordsInexistente() throws Exception {
-        String alertaURL = getBaseUrl() + "/rest/avisos/nearbyWarnings";
+        String alertaUrl = getBaseUrl() + "/rest/avisos/nearbyWarnings";
 
         DecimalFormat df=new DecimalFormat("#0.000000");
         SimpleDateFormat tf=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
         df.setDecimalFormatSymbols(DecimalFormatSymbols.getInstance(Locale.US));
-        UriComponentsBuilder uriComponentsBuilder=UriComponentsBuilder.fromHttpUrl(alertaURL).
+        UriComponentsBuilder uriComponentsBuilder=UriComponentsBuilder.fromHttpUrl(alertaUrl).
                 queryParam("timestamp", "'" + tf.format(0) + "'").
                 queryParam("latitude", df.format(0.6)).
                 queryParam("longitude", df.format(0.6)).
