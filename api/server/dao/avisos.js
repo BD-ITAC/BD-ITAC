@@ -91,7 +91,7 @@ avisosDAO = function(pool) {
                         "id" : result.insertId,
                         "type" : "INFO",
                         "status" : "OK",
-                        "description" : "Crise registrada",
+                        "description" : "Aviso registrado",
                         "info" : "BD-ITAC"
                       }
                     }
