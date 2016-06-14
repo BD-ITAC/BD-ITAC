@@ -9,7 +9,8 @@ module.exports = function(app){
    */
    controller.listAlerts = function(req,res,next)
    {
-     alertsDAO.listAlerts(function(err, data)
+
+     alertsDAO.listAlerts(req.body, function(err, data)
      {
 		   if(err)
 		   {

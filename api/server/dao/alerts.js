@@ -16,27 +16,47 @@ alertsDAO = function(pool){
       this.pool = pool;
   }
 
-  dao.listAlerts = function(callback){
+  dao.listAlerts = function(filtro, callback){
       console.log(getAlerts());
-      callback(null,getAlerts());
+      var query =" SELECT id,         \
+              ( 6371 * acos( cos( radians(@latitude) ) * cos( radians( lat ) )     \
+                  * cos( radians( lng ) - radians(@longitude) ) + sin( radians(@latitude) )  \
+                  * sin( radians( lat ) ) ) ) AS distance  \
+              FROM markers \
+              HAVING distance < @raio ORDER BY distance LIMIT 0 , 20";
+    self.pool.query(
+       query, [filtro.latitude, filtro.longitude, filtro.latitude, filtro.raio]
+       function(err, rows){
+      if(err){
+        callback(err,{});
+      }else{
+
+        callback(null,getAlerts(rows));
+      }
+    });
+
   };
 
 
-  function getAlerts(callback)
+  function getAlerts(rows)
   {
      var alerts = [];
 
-     var alert =
-     {
-       descricao:"Alagamento na região de São José dos Campos",
-       datahora: "2016-06-12T08:00:32",
-       cidade: "São José dos Campos",
-       latitude: -23.1966,
-       longitude: -45.9468,
-       tipodacrise: "Alagamentos"
+     for (var i in rows) {
+       var alert =
+             {
+               descricao: row[i].descricao,
+               datahora: row[i].datahora,
+               cidade: row[i].cidade,
+               latitude: row[i].latitude,
+               longitude: row[i].longitude,
+               tipodacrise: row[i].tipodacrise
+             }
+
+       alerts.push(alert);
+
      }
 
-     alerts.push(alert);
 
      return alerts;
   };
