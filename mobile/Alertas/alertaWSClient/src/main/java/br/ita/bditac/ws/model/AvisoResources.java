@@ -1,13 +1,11 @@
 package br.ita.bditac.ws.model;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Resources;
 
-import br.ita.bditac.model.Aviso;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 
 public class AvisoResources extends Resources<AvisoResource> {
