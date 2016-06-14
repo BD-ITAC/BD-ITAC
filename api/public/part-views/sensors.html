@@ -1,22 +1,48 @@
 <div ng-controller="SensorsController as vm">
-  <ol class="breadcrumb">
-  <li><a href="#">Home</a></li>
-  <li><a href="#">Sensors</a></li>
-  <li class="active">List</li>
-</ol>
+    <ol class="breadcrumb">
+      <li><a href="#">Home</a></li>
+      <li><a href="#">Sensors</a></li>
+      <li class="active">List</li>
+    </ol>
+    <hr/>
+  <div name="Filtros" class="form-inline">
+    <div class="form-group">
+      <label for="searchBox"> Pesquisar: </label>
+      <input  class="form-control" type="text" ng-model="searchBoxData.$" id="searchBox"
+              placeholder="Pesquisar...">
+    </div>
+    <div class="form-group">
+        <label for="searchStatusBox"> Filtrar Status: </label>
+        <select class="form-control" name="searchStatusBox" id="searchStatusBox" ng-model="searchBoxData.status">
+          <option value="">   </option>
+          <option ng-repeat="row in avisosListCollection | unique:'status'">{{row.status}}</option>
+        </select>
+    </div>    
+  <hr/>
   <table width="100%" class="table table-striped">
    <thead>
      <tr>
+       <th> </th>
+       <th>Data/Hora</th>
        <th>Nome</th>
+       <th>Telefone</th>
+       <th>E-Mail</th>
        <th>Descricao</th>
+       <th>Classificação</th>
+       <th>Lat;Long</th>
        <th>Status</th>
      </tr>
    </thead>
    <tbody>
-    <tr ng-repeat="row in SensorsCollection">
+    <tr ng-repeat="row in avisosListCollection | filter:searchBoxData">
+     <td>{{row.dt | date:'yyyy-MM-dd HH:mm:ss'}}</td>
       <td>{{row.nome}}</td>
+      <td>{{row.telefone}}</td>
+      <td>{{row.email}}</td>
       <td>{{row.descricao}}</td>
-      <td>{{row.status}}</td>     
+      <td>{{row.categoria}}</td>
+      <td>{{row.latitude}};{{row.longitude}}</td>
+      <td>{{row.status}}</td>
     </tr>
    </tbody>
   </table>
