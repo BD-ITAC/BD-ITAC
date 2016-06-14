@@ -71,7 +71,7 @@ public class NotificationReceiverActivity extends AppCompatActivity {
         Marker marker = new Marker(map);
         marker.setPosition(alertaPoint);
         marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
-        marker.setIcon(getResources().getDrawable(R.drawable.ic_action_alert));
+        marker.setIcon(getResources().getDrawable(R.drawable.ic_warning));
         marker.setTitle(alerta);
         marker.setSubDescription(descricao);
         map.getOverlays().add(marker);
