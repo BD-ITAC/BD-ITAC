@@ -282,6 +282,15 @@ crisisDAO = function(pool) {
         }
       });
   };
+  dao.cancelCrisis = function(cri_id, callback){
+    self.pool.query('UPDATE crise SET cri_ativa = 0 WHERE cri_id = ?', [cri_id], function(err, rows){
+        if(err){
+          return callback(err, null);
+        }else{
+          return callback(null, {'crises': true});
+        }
+      });
+  };
 
   return dao;
 };

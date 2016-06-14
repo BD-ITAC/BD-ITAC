@@ -375,5 +375,15 @@ avisosDAO = function(pool) {
   })
   };
 
+  dao.cancelAviso = function(cri_id, callback){
+    self.pool.query('UPDATE aviso SET sta_cod = 4 WHERE avs_id in (SELECT avs_cod FROM aviso_crise WHERE cri_cod = ?)', [cri_id], function(err, rows){
+        if(err){
+          return callback(err, null);
+        }else{
+          return callback(null, {'avisos': true});
+        }
+      });
+  };
+
   return dao;
 };

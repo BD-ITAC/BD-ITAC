@@ -46,4 +46,6 @@ module.exports = function(app){
   app.get(uri+'/type/subtype/:ctc_id/:ctg_id/:cts_id/:ctt_id', controller.listTypeSubType);
   app.post(uri+'/type', controller.saveType);
 
+  app.delete(uri+'/:cri_id', controller.cancelCrisis);
+
 };

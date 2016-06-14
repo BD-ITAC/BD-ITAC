@@ -7,16 +7,18 @@
   <table width="100%" class="table table-striped">
    <thead>
      <tr>
-       <th>Descrição</th>
+       <th>#ID</th>
+       <th>Description</th>
        <th>Local</th>
-       <th>Início</th>
-       <th>Fim</th>
-       <th>Ativo</th>
+       <th>Start Date</th>
+       <th>Finish Date</th>
+       <th>Active</th>
        <th></th>
      </tr>
    </thead>
    <tbody>
     <tr ng-repeat="crise in CrisisListCollection">
+      <td>{{crise.cri_id}}</td>
       <td>{{crise.cri_descricao}}</td>
       <td>{{crise.cid_nome}} / {{crise.est_sigla}}</td>
       <td>{{crise.cri_inicio}}</td>
@@ -29,7 +31,7 @@
         <button class="btn btn-success" type="button" title="Create Alert">
            <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
         </button>
-        <button class="btn btn-danger" type="button" title="Cancel Crisis">
+        <button class="btn btn-danger" type="button" title="Cancel Crisis" ng-click="vm.cancel(crise.cri_id);">
            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
         </button>
       </td>
