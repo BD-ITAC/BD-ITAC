@@ -1,7 +1,6 @@
 package br.ita.bditac.test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.offset;
 
 import java.io.IOException;
 import java.net.URI;
@@ -19,7 +18,6 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.junit.FixMethodOrder;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -46,15 +44,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
 
-import br.ita.bditac.model.Alerta;
 import br.ita.bditac.model.Categoria;
 import br.ita.bditac.model.Crise;
 import br.ita.bditac.model.Indicador;
 import br.ita.bditac.ws.support.AlertaResources;
-import br.ita.bditac.ws.support.AlternateMessageResource;
 import br.ita.bditac.ws.support.CategoriaResources;
 import br.ita.bditac.ws.support.CriseResource;
 import br.ita.bditac.ws.support.IndicadorResources;
+import br.ita.bditac.ws.support.MessageResource;
 
 /**
  *
@@ -64,8 +61,6 @@ import br.ita.bditac.ws.support.IndicadorResources;
 @RunWith(JUnit4.class)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class APITests {
-
-    private static final double DELTA = 1e-6;
     
     private static String _foto = null;
     
@@ -126,7 +121,6 @@ public class APITests {
     }
     
     @Test
-    @Ignore
     public void test101PostCriseGerarAlerta() throws Exception {
         URI criseURI = new URI(getBaseUrl() + "/rest/avisos");
         
@@ -138,10 +132,9 @@ public class APITests {
                 "(12) 99876-1234",
                 40.0,
                 50.0,
-                0,
                 getFoto());
 
-        ResponseEntity<AlternateMessageResource> criseResponseEntity =  getRestTemplate().postForEntity(criseURI, new HttpEntity<Crise>(criseRequest), AlternateMessageResource.class);
+        ResponseEntity<MessageResource> criseResponseEntity =  getRestTemplate().postForEntity(criseURI, new HttpEntity<Crise>(criseRequest), MessageResource.class);
 
         assertThat(criseResponseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
     }
@@ -197,42 +190,6 @@ public class APITests {
 
         assertThat(resources.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
-
-   @Test
-   public void test111PostCriseGerarAlerta() throws Exception {
-       URI criseURI = new URI(getBaseUrl() + "/rest/avisos");
-
-       Crise criseRequest = new Crise(
-               "Deslizamento na na favela do Paraiso",
-               1,
-               "Ze das Couves",
-               "zedascouves@gmail.com",
-               "(12) 99876-1234",
-               40.0,
-               50.0,
-               0,
-               getFoto());
-
-       ResponseEntity<CriseResource> criseResponseEntity =  getRestTemplate().postForEntity(criseURI, new HttpEntity<Crise>(criseRequest), CriseResource.class);
-
-       assertThat(criseResponseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
-       
-       String alertaURL = getBaseUrl() + "/rest/avisos/nearbyWarnings";
-
-       DecimalFormat df=new DecimalFormat("#0.000000");
-       SimpleDateFormat tf=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
-       df.setDecimalFormatSymbols(DecimalFormatSymbols.getInstance(Locale.US));
-       UriComponentsBuilder uriComponentsBuilder=UriComponentsBuilder.fromHttpUrl(alertaURL).
-               queryParam("timestamp", "'" + tf.format(0) + "'").
-               queryParam("latitude", df.format(0.6)).
-               queryParam("longitude", df.format(0.6)).
-               queryParam("raio", df.format(1));
-
-       List<Alerta> alertas = getRestTemplate().getForObject(uriComponentsBuilder.build().encode().toUri(), AlertaResources.class).unwrap();
-
-       assertThat(alertas.get(0).getOrigemLatitude()).isEqualTo(criseRequest.getLatitude(), offset(DELTA));
-       assertThat(alertas.get(0).getOrigemLongitude()).isEqualTo(criseRequest.getLongitude(), offset(DELTA));
-   }
    
    @Test
    public void test115GetCategorias() throws Exception {
@@ -249,7 +206,7 @@ public class APITests {
 	   
 	   List<Indicador> indicadores = getRestTemplate().getForObject(indicadoresURI, IndicadorResources.class).unwrap();
 	   
-	   assertThat(indicadores.get(1).getDescricao()).isEqualTo("Pendente");
+	   assertThat(indicadores.get(1).getDescricao()).isEqualTo("Finalizado Não Confirmado");
    }
    
 }

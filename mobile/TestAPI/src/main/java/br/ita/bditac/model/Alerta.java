@@ -22,8 +22,6 @@ public class Alerta implements Serializable {
 
     private static final long serialVersionUID = 1L;
     
-    private static int _id;
-    
     private int id;
     
     private long timestamp;
@@ -57,7 +55,7 @@ public class Alerta implements Serializable {
      * - Apocalipse Zumbi
      * - etc.
      */
-    private int categoriaAlerta;
+    private String categoriaAlerta;
     
     /**
      * Coordenadas do ponto de origem da crise - latitude
@@ -74,31 +72,28 @@ public class Alerta implements Serializable {
      */
     private double origemRaioKms;
     
-    static {
-    	_id = 0;
-    }
-    
     public Alerta() {
     	this.id = 0;
     	
     	this.timestamp = 0;
         this.descricaoResumida = "";
         this.descricaoCompleta = "";
-        this.categoriaAlerta = 0;
+        this.categoriaAlerta = "";
         this.origemLatitude = 0;
         this.origemLongitude = 0;
         this.origemRaioKms = 0;
     }
     
     public Alerta(
+    		int id,
             String descricaoResumida, 
             String descricaoCompleta, 
-            int categoriaAlerta, 
+            String categoriaAlerta, 
             double origemLatitude, 
             double origemLongitude, 
             double origemRaioKms) {
         
-        this.id = ++_id;
+        this.id = id;
     	
     	this.timestamp = DateTime.now().getMillis();
         this.descricaoResumida = descricaoResumida;
@@ -136,12 +131,12 @@ public class Alerta implements Serializable {
     }
 
     
-    public int getCategoriaAlerta() {
+    public String getCategoriaAlerta() {
         return categoriaAlerta;
     }
 
     
-    public void setCategoriaAlerta(int categoriaAlerta) {
+    public void setCategoriaAlerta(String categoriaAlerta) {
         this.categoriaAlerta = categoriaAlerta;
     }
 
