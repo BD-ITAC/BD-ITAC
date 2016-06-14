@@ -158,6 +158,21 @@ controller.cancelCrisis = function(req, res, next){
   }
 };
 
+controller.acceptedCrisis = function(req, res, next){
+  if(!req.body.hasOwnProperty('cri_id')){
+    res.status(404).json({success: false, message: 'Required ID not informed.'});
+  }else{
+    crisisDAO.acceptedCrisis(req.body.cri_id, function(err, data){
+      if(err){
+        res.status(500).json({success: false, message: err});
+      }else{
+        res.json({success: true, message: data});
+      }
+    });
+  }
+};
+
+
   return controller;
 
 };

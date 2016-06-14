@@ -152,7 +152,9 @@ crisisDAO = function(pool) {
         join evento event on event.eve_id = ocor.oco_eve_cod";
     */
     /*jshint multistr: true */
-    var query = "select cri.cri_id, cri.cri_descricao, date_format(cri.cri_inicio,'%d/%m/%Y') AS cri_inicio, date_format(cri.cri_final,'%d/%m/%Y') AS cri_final, CAST(cri.cri_ativa AS DECIMAL(1)) AS cri_ativa, cri.cri_regiao, cri.cri_geotipo, tip.crt_descricao, cri.cid_id, cid_nome, cid.est_sigla \
+    var query = "select cri.cri_id, cri.cri_descricao, date_format(cri.cri_inicio,'%d/%m/%Y') AS cri_inicio, date_format(cri.cri_final,'%d/%m/%Y') AS cri_final, CAST(cri.cri_ativa AS DECIMAL(1)) AS cri_ativa, cri.cri_regiao, cri.cri_geotipo, tip.crt_descricao, cri.cid_id, cid_nome, cid.est_sigla, \
+                        (SELECT count(*) FROM aviso_crise avs WHERE avs.cri_cod=cri.cri_id) AS count_aviso, \
+                        (SELECT count(*) FROM alerta ale WHERE ale.cri_cod=cri.cri_id) AS count_alerta \
                  from  crise cri \
                  inner join crise_tipo tip on tip.crt_id=cri.crt_id \
                  inner join cidade cid on cid.cid_id=cri.cid_id";
@@ -288,6 +290,16 @@ crisisDAO = function(pool) {
           return callback(err, null);
         }else{
           return callback(null, {'crises': true});
+        }
+      });
+  };
+  dao.acceptedCrisis = function(cri_id, callback){
+    console.log('aqui');
+    self.pool.query('INSERT INTO alerta (cri_cod, alt_timestamp, geo_cod, alt_raio) VALUES (?, NOW(), 1, 1)', [cri_id], function(err, rows){
+        if(err){
+          return callback(err, null);
+        }else{
+          return callback(null, rows);
         }
       });
   };

@@ -47,5 +47,6 @@ module.exports = function(app){
   app.post(uri+'/type', controller.saveType);
 
   app.delete(uri+'/:cri_id', controller.cancelCrisis);
+  app.post(uri+'/accepted', controller.acceptedCrisis);
 
 };
