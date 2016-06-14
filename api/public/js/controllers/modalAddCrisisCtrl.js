@@ -4,14 +4,10 @@
 
 'use strict';
 app.controller('addCrisisModalController',
-  function($scope,$http,avisos,close, NgMap) {
+  function($scope,$http,$window,avisos,close, NgMap) {
 
     var vm = this;
-    NgMap.getMap().then(function(map) {
-        vm.map = map;
-      });
 
-  vm.googleMapsUrl = 'https://maps.google.com/maps/api/js';
 
 
   if(!avisos.length)
@@ -61,10 +57,17 @@ app.controller('addCrisisModalController',
     $scope.btnSalvar=true;
 
     //google.maps.event.trigger($scope.google.maps, 'resize');
+    NgMap.getMap().then(function(map) {
+            vm.map = map;
+            window.setTimeout(function(){
+                google.maps.event.trigger(map, 'resize');
+                var myLatLng = new google.maps.LatLng(avisos[0].latitude, avisos[0].longitude);
+                $scope.map.setCenter(myLatLng);
+            }, 100);
 
-    window.setTimeout(function(){
-        google.maps.event.trigger($scope.google.maps, 'resize');
-    }, 100);
+      });
+
+      vm.googleMapsUrl = 'https://maps.google.com/maps/api/js';
 
 
 
@@ -118,7 +121,7 @@ app.controller('addCrisisModalController',
           descricao: $scope.descricao,
           cidade:$scope.cidades[0].cidade,
           tipo:$scope.searchBoxData.id,
-          geoid:"1",
+          geoid:"3",
           avisosId: $scope.avisosIds
       });
 
@@ -126,15 +129,26 @@ app.controller('addCrisisModalController',
     success(function(data, status, headers, config) {
         // this callback will be called asynchronously
         // when the response is available
-        console.log(data);
+        $window.alert('Crise criada com sucesso!');
       }).
       error(function(data, status, headers, config) {
         // called asynchronously if an error occurs
         // or server returns response with an error status.
+        $window.alert('Houve um erro com a solicitação. A crise não foi criada.');
       });
+        close(result, 500); // close, but give 500ms for bootstrap to animate
       }
+      else {
+        $window.alert('Dados Incompletos.');
+        return;
+      }
+
     }
- 	  close(result, 500); // close, but give 500ms for bootstrap to animate
+    else {
+        $window.alert('Nenhuma alteração registrada.');
+        close(result, 500);
+    }
+
   };
 
 });

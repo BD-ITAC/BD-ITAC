@@ -70,7 +70,16 @@ module.exports = function(app){
         }
         else
         {
-          res.status(404).json({message:'Something went wrong. Please Try again later.'});
+          var message = {
+              "message" : {
+                "id" : 1,
+                "type" : "WARNING",
+                "status" : "NOTFOUND",
+                "description" : "Waning not found",
+                "info" : "BD-ITAC"
+              }
+            };
+          res.status(404).json(message);
         }
       }
     });

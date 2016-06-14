@@ -1,9 +1,9 @@
 var supertest = require("supertest");
 var should = require("should");
 
-var server = supertest.agent("http://edizon.onmypc.net:3000");
+var server = supertest.agent("http://bditac.ddns.net");
 
-describe("Teste de Servidor - http://edizon.onmypc.net:3000",function(){
+describe("Teste de Servidor",function(){
 
   it("Deve HTTP status == 200, '/'",function(done){
 

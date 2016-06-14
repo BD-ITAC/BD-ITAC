@@ -107,7 +107,7 @@ module.exports = function(app){
      * @apiVersion 1.0.0
      * @apiGroup Avisos
      *
-     * @apiParam {Number} id  Identificador para especificar consulta de um único aviso (opcional).
+     * @apiParam {Number} id  Identificador para especificar consulta de um único aviso.
      *
      * @apiSuccess {Numero} list.id Numero identificador.
      * @apiSuccess {String} list.description Descrição do aviso.
