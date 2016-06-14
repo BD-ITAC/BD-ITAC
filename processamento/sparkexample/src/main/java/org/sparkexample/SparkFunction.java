@@ -5,6 +5,7 @@ import java.sql.Timestamp;
 import org.apache.spark.api.java.function.Function2;
 import org.apache.spark.api.java.function.PairFunction;
 import org.sparkexample.model.pojo.CriseCount;
+import org.sparkexample.model.pojo.CriseType;
 import org.sparkexample.model.pojo.Facebook;
 import org.sparkexample.model.pojo.Twitter;
 
@@ -18,7 +19,7 @@ public class SparkFunction<T> {
 
 		public Tuple2<Integer, CriseCount> call(Twitter t) throws Exception {
 			//alterar para usar id da crise
-			return new Tuple2<Integer, CriseCount>(t.getCri_id(), new CriseCount(t.getCri_id(), 1, now));
+			return new Tuple2<Integer, CriseCount>(t.getCri_id(), new CriseCount(t.getCri_id(), 1, now, CriseType.TWITTER));
 		}
 	};
 	
@@ -26,7 +27,7 @@ public class SparkFunction<T> {
 
 		public Tuple2<Integer, CriseCount> call(Facebook t) throws Exception {
 			//alterar para usar id da crise
-			return new Tuple2<Integer, CriseCount>(t.getFcb_id(), new CriseCount(t.getFcb_id(), 1, now));
+			return new Tuple2<Integer, CriseCount>(t.getFcb_id(), new CriseCount(t.getCri_id(), 1, now, CriseType.FACEBOOK));
 		}
 	};
 

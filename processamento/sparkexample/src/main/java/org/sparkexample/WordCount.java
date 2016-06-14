@@ -1,16 +1,12 @@
 package org.sparkexample;
 
-import java.util.List;
-
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.sparkexample.model.pojo.CriseCount;
-import org.sparkexample.model.pojo.CrisePojo;
 import org.sparkexample.model.pojo.Facebook;
 import org.sparkexample.model.pojo.Twitter;
-import org.sparkexample.model.repository.CriseRepository;
 
 import com.datastax.spark.connector.cql.CassandraConnector;
 import com.datastax.spark.connector.japi.CassandraJavaUtil;
@@ -19,18 +15,18 @@ public class WordCount {
 
 	private static JavaSparkContext context;
 
-	private static final String cassandra_keyspace = "ita_key"; //?
-	private static final String cassandra_ip = "127.0.0.1";//192.168.254.4
+	private static final String cassandra_keyspace = "bditac";//"ita_key";
+	private static final String cassandra_ip = "db.bditac.com";
 	private static final String cassandra_table_out = "crisecount";
-	private static final String cassandra_user = null;//"bditacsenha";
-	private static final String cassandra_pass = null;//"dbitac2016";
+	private static final String cassandra_user = "bditac";
+	private static final String cassandra_pass = "bditac2016";
 	
 
 	public static void main(String[] args) {
 
 		// MSQL Configuration
-		CriseRepository cr = new CriseRepository();
-		List<CrisePojo> list = cr.find();
+		//CriseRepository cr = new CriseRepository();
+		//List<CrisePojo> list = cr.find();
 
 		// Spark Configuration
 		SparkConf conf;
@@ -50,7 +46,7 @@ public class WordCount {
 		CassandraConnector connector = CassandraConnector.apply(context.getConf());
 
 		twitterCount();
-		facebookCount();
+		//facebookCount();
 	}
 
 	private static void twitterCount() {

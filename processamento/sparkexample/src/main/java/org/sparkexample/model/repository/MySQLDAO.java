@@ -6,12 +6,12 @@ public class MySQLDAO {
 
 	// JDBC driver name and database URL
 	static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-	static final String DB_URL = "jdbc:mysql://localhost/ita?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
-	//static final String DB_URL = "jdbc:mysql://192.168.254.4/ita?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
+	//static final String DB_URL = "jdbc:mysql://localhost/ita?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
+	static final String DB_URL = "jdbc:mysql://db.bditac.com/bditac?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
 
 	// Database credentials
-	static final String USER = "root";//user_app
-	static final String PASS = "magica";//User_@pp
+	static final String USER = "user_app";//"root";//user_app
+	static final String PASS = "User_@pp";//"magica";//User_@pp
 
 	private Connection conn = null;
 	private Statement stmt = null;

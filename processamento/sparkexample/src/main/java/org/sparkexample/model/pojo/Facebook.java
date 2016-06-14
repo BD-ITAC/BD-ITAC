@@ -9,6 +9,7 @@ public class Facebook {
 	private String fcb_message;
 	private String fcb_pagename;
 	private String fcb_tipo;
+	private Integer cri_id;
 	
 	public Integer getFcb_id() {
 		return fcb_id;
@@ -51,5 +52,11 @@ public class Facebook {
 	}
 	public void setFcb_tipo(String fcb_tipo) {
 		this.fcb_tipo = fcb_tipo;
+	}
+	public Integer getCri_id() {
+		return cri_id;
+	}
+	public void setCri_id(Integer cri_id) {
+		this.cri_id = cri_id;
 	}
 }

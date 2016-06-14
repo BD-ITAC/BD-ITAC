@@ -11,16 +11,18 @@ public class CriseCount implements Serializable {
 	private Integer idcrise;
 	private long count;
 	private Timestamp lastupdate;
+	private Integer crisetype;
 
 	public CriseCount() {
 	}
 
-	public CriseCount(Integer idCrise, long count, Timestamp date) {
+	public CriseCount(Integer idCrise, long count, Timestamp date, CriseType criseType) {
 		UUID uid = UUID.fromString("45400630-8cf0-11bd-b23e-10b96e4ef00d");
 		this.id = uid.randomUUID();
 		this.idcrise = idCrise;
 		this.count = count;
 		this.lastupdate = date;
+		this.crisetype = criseType.getTipo();
 	}
 
 	public UUID getId() {
@@ -58,5 +60,13 @@ public class CriseCount implements Serializable {
 
 	public void setIdcrise(Integer idcrise) {
 		this.idcrise = idcrise;
+	}
+
+	public Integer getCrisetype() {
+		return crisetype;
+	}
+
+	public void setCrisetype(Integer crisetype) {
+		this.crisetype = crisetype;
 	}
 }
