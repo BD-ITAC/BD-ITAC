@@ -28,22 +28,17 @@
                   <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
                       <li ng-class="{'active': vm.menuCurrent == 'dash-board'}"><a href="#dash-board">Home <span class="sr-only">(current)</span></a></li>
-                      <li uib-dropdown ng-class="{'active': (vm.menuCurrent == 'crisis' || vm.menuCurrent == 'crisis-type')}">
-                          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" uib-dropdown-toggle>Crisis<span class="caret"></span></a>
-                          <ul uib-dropdown-menu>
-                            <li ng-class="{'active': vm.menuCurrent == 'crisis'}"><a href="#crisis">List Crisis</a></li>
-                            <li ng-class="{'active': vm.menuCurrent == 'crisis-type'}"><a href="#crisis-type">Type Crisis</a></li>
-                          </ul>
-                      </li>
-                      <li ng-class="{'active': vm.menuCurrent == 'occurrence'}"><a href="#occurrence">Occurrence</a></li>
                       <li ng-class="{'active': vm.menuCurrent == 'avisos'}"><a href="#avisos">Avisos</a></li>
+                      <li ng-class="{'active': vm.menuCurrent == 'crisis'}"><a href="#crisis">Crisis</a></li>
                       <li ng-class="{'active': vm.menuCurrent == 'alertas'}"><a href="#alertas">Alerts</a></li>
+                      <li ng-class="{'active': vm.menuCurrent == 'occurrence'}"><a href="#occurrence">Occurrence</a></li>
                       <li uib-dropdown ng-class="{'active': (vm.menuCurrent == 'users' || vm.menuCurrent == 'classification' || vm.menuCurrent == 'evento')}">
                           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" uib-dropdown-toggle>Parameters<span class="caret"></span></a>
                           <ul uib-dropdown-menu>
                             <li ng-class="{'active': vm.menuCurrent == 'users'}"><a href="#">Users</a></li>
                             <li ng-class="{'active': vm.menuCurrent == 'classification'}"><a href="#classification">Classfications</a></li>
                             <li ng-class="{'active': vm.menuCurrent == 'evento'}"><a href="#evento">Events</a></li>
+                            <li ng-class="{'active': vm.menuCurrent == 'crisis-type'}"><a href="#crisis-type">Type Crisis</a></li>
                           </ul>
                       </li>
                   </ul>
