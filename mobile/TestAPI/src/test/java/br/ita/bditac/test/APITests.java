@@ -8,10 +8,14 @@ import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.junit.FixMethodOrder;
@@ -35,6 +39,7 @@ import org.springframework.restdocs.RestDocumentation;
 import org.springframework.web.client.ResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -155,31 +160,42 @@ public class APITests {
 
     @Test
     public void test107GetAlertasByCoords() throws Exception {
-        String alertaURL = getBaseUrl() + "/rest/avisos/nearbycrisis?{timestamp}/latitude/{latitude}/longitude/{longitude}/raio/{raio}";
+        String alertaURL = getBaseUrl() + "/rest/avisos/nearbyWarnings";
 
-        Map<String, String> params = new HashMap<String, String>();
-        params.put("timestamp", "0");
-        params.put("latitude", "40.0");
-        params.put("longitude", "50.0");
-        params.put("raio", "1.0");
-
-        List<Alerta> alertas = getRestTemplate().getForObject(alertaURL, AlertaResources.class, params).unwrap();
-
-        assertThat(alertas.get(1).getDescricaoResumida()).isEqualTo("Alerta de deslizamento");
+        DecimalFormat df=new DecimalFormat("#0.000000");
+        SimpleDateFormat tf=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+        df.setDecimalFormatSymbols(DecimalFormatSymbols.getInstance(Locale.US));
+        UriComponentsBuilder uriComponentsBuilder=UriComponentsBuilder.fromHttpUrl(alertaURL).
+                queryParam("timestamp", "'" + tf.format(0) + "'").
+                queryParam("latitude", df.format(-23)).
+                queryParam("longitude", df.format(-45)).
+                queryParam("raio", df.format(10));
+        ResponseEntity<AlertaResources> resources = null;
+        try {
+        	resources = getRestTemplate().getForEntity(uriComponentsBuilder.build().encode().toUri(), AlertaResources.class);
+        }
+        catch(Exception ex) {
+        	System.out.println(ex.getMessage());
+        }
+        
+        assertThat(resources.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 
     @Test
     public void test108GetAlertaByCoordsInexistente() throws Exception {
-        String alertaURL = getBaseUrl() + "/rest/avisos/nearbycrisis?{timestamp}/latitude/{latitude}/longitude/{longitude}/raio/{raio}";
+        String alertaURL = getBaseUrl() + "/rest/avisos/nearbyWarnings";
 
-        Map<String, String> params = new HashMap<String, String>();
-        params.put("timestamp", "0");
-        params.put("latitude", "0.6");
-        params.put("longitude", "0.6");
-        params.put("raio", "1.0");
+        DecimalFormat df=new DecimalFormat("#0.000000");
+        SimpleDateFormat tf=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+        df.setDecimalFormatSymbols(DecimalFormatSymbols.getInstance(Locale.US));
+        UriComponentsBuilder uriComponentsBuilder=UriComponentsBuilder.fromHttpUrl(alertaURL).
+                queryParam("timestamp", "'" + tf.format(0) + "'").
+                queryParam("latitude", df.format(0.6)).
+                queryParam("longitude", df.format(0.6)).
+                queryParam("raio", df.format(1));
+        ResponseEntity<AlertaResources> resources = getRestTemplate().getForEntity(uriComponentsBuilder.build().encode().toUri(), AlertaResources.class);
 
-        ResponseEntity<AlertaResources> resources = getRestTemplate().getForEntity(alertaURL, AlertaResources.class, params);
-        assertThat(resources.getStatusCode() == HttpStatus.NOT_FOUND);
+        assertThat(resources.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 
    @Test
@@ -201,15 +217,18 @@ public class APITests {
 
        assertThat(criseResponseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
        
-       String alertaURL = getBaseUrl() + "/alerta/timestamp/{timestamp}/latitude/{latitude}/longitude/{longitude}/raio/{raio}";
+       String alertaURL = getBaseUrl() + "/rest/avisos/nearbyWarnings";
 
-       Map<String, String> params = new HashMap<String, String>();
-       params.put("timestamp", "0");
-       params.put("latitude", "40.0");
-       params.put("longitude", "50.0");
-       params.put("raio", "1.0");
+       DecimalFormat df=new DecimalFormat("#0.000000");
+       SimpleDateFormat tf=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+       df.setDecimalFormatSymbols(DecimalFormatSymbols.getInstance(Locale.US));
+       UriComponentsBuilder uriComponentsBuilder=UriComponentsBuilder.fromHttpUrl(alertaURL).
+               queryParam("timestamp", "'" + tf.format(0) + "'").
+               queryParam("latitude", df.format(0.6)).
+               queryParam("longitude", df.format(0.6)).
+               queryParam("raio", df.format(1));
 
-       List<Alerta> alertas = getRestTemplate().getForObject(alertaURL, AlertaResources.class, params).unwrap();
+       List<Alerta> alertas = getRestTemplate().getForObject(uriComponentsBuilder.build().encode().toUri(), AlertaResources.class).unwrap();
 
        assertThat(alertas.get(0).getOrigemLatitude()).isEqualTo(criseRequest.getLatitude(), offset(DELTA));
        assertThat(alertas.get(0).getOrigemLongitude()).isEqualTo(criseRequest.getLongitude(), offset(DELTA));

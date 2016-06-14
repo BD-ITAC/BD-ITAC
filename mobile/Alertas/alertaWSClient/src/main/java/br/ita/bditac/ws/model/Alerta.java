@@ -15,7 +15,7 @@ public class Alerta implements Serializable {
     
     private String descricaoCompleta;
 
-    private int categoriaAlerta;
+    private String categoriaAlerta;
 
     private double origemLatitude;
 
@@ -28,7 +28,7 @@ public class Alerta implements Serializable {
         this.timestamp = "";
         this.descricaoResumida = "";
         this.descricaoCompleta = "";
-        this.categoriaAlerta = 0;
+        this.categoriaAlerta = "";
         this.origemLatitude = 0;
         this.origemLongitude = 0;
         this.origemRaioKms = 0;
@@ -39,7 +39,7 @@ public class Alerta implements Serializable {
             String timestamp,
             String descricaoResumida, 
             String descricaoCompleta, 
-            int categoriaAlerta,
+            String categoriaAlerta,
             double origemLatitude, 
             double origemLongitude, 
             double origemRaioKms) {
@@ -79,7 +79,7 @@ public class Alerta implements Serializable {
     }
 
     
-    public int getCategoriaAlerta() {
+    public String getCategoriaAlerta() {
         return categoriaAlerta;
     }
 
