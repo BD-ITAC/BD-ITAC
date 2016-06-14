@@ -17,7 +17,7 @@ public class AvisoClient extends AbstractBaseService {
         super(hostURL);
     }
 
-    private List<Aviso> getAvisos() {
+    public List<Aviso> getAvisos() {
 
         ResponseEntity<AvisoResources> response = getRestTemplate().getForEntity(getHostURL(), AvisoResources.class);
 
