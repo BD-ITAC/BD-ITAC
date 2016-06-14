@@ -1,6 +1,71 @@
 [
   {
     "type": "get",
+    "url": "/rest/alerts",
+    "title": "Listar todos alertas confirmados",
+    "group": "Alertas",
+    "version": "1.0.0",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "descricao",
+            "description": "Descricao do alerta."
+          },
+          {
+            "group": "Success 200",
+            "type": "DateTime",
+            "optional": false,
+            "field": "datahora",
+            "description": "Data e hora da confirmação do alerta."
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "cidade",
+            "description": "Nome da cidade do alerta."
+          },
+          {
+            "group": "Success 200",
+            "type": "Numero",
+            "optional": false,
+            "field": "latitude",
+            "description": "Latitude da localização."
+          },
+          {
+            "group": "Success 200",
+            "type": "Numero",
+            "optional": false,
+            "field": "longitude",
+            "description": "Longitude da localização."
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "tipodacrise",
+            "description": "O tipo da crise que originou o alerta."
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "\n {\"_embedded\":\n  {\"alertsList\":[\n\t\t{\"descricao\":\"Alagamento na região de São José dos Campos\",\n\t\t \"datahora\":\"2016-06-12T08:00:32\",\n\t\t \"cidade\":\"São José dos Campos\",\n\t\t \"latitude\":-23.1966,\n\t\t \"longitude\":-45.9468,\n\t\t \"tipodacrise\":\"Alagamentos\"}]\n  }",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "D:/Projetos/ITA/BD-ITAC/api/server/routes/alerts.js",
+    "groupTitle": "Alertas",
+    "name": "GetRestAlerts"
+  },
+  {
+    "type": "get",
     "url": "/rest/avisos",
     "title": "Listar todos os avisos cadastrados.",
     "version": "1.0.0",
@@ -107,7 +172,7 @@
         "url": "/rest/avisos"
       }
     ],
-    "filename": "C:/git/BD-ITAC/api/server/routes/avisos.js",
+    "filename": "D:/Projetos/ITA/BD-ITAC/api/server/routes/avisos.js",
     "groupTitle": "Avisos",
     "name": "GetRestAvisos"
   },
@@ -125,7 +190,7 @@
             "type": "Number",
             "optional": false,
             "field": "id",
-            "description": "Identificador para especificar consulta de um único aviso (opcional)."
+            "description": "Identificador para especificar consulta de um único aviso."
           }
         ]
       }
@@ -232,7 +297,7 @@
         "url": "/rest/avisos"
       }
     ],
-    "filename": "C:/git/BD-ITAC/api/server/routes/avisos.js",
+    "filename": "D:/Projetos/ITA/BD-ITAC/api/server/routes/avisos.js",
     "groupTitle": "Avisos",
     "name": "GetRestAvisosId"
   },
@@ -331,7 +396,7 @@
         }
       ]
     },
-    "filename": "C:/git/BD-ITAC/api/server/routes/avisos.js",
+    "filename": "D:/Projetos/ITA/BD-ITAC/api/server/routes/avisos.js",
     "groupTitle": "Avisos",
     "name": "GetRestAvisosNearbywarningsLatitude23196641Longitude45946840Raio10Timestamp20160610t080000"
   },
@@ -452,7 +517,7 @@
         }
       ]
     },
-    "filename": "C:/git/BD-ITAC/api/server/routes/avisos.js",
+    "filename": "D:/Projetos/ITA/BD-ITAC/api/server/routes/avisos.js",
     "groupTitle": "Avisos",
     "name": "PostRestAvisos"
   },
@@ -494,7 +559,7 @@
         "url": "/rest/categories"
       }
     ],
-    "filename": "C:/git/BD-ITAC/api/server/routes/category.js",
+    "filename": "D:/Projetos/ITA/BD-ITAC/api/server/routes/category.js",
     "groupTitle": "Categorias",
     "name": "GetRestCategories"
   },
@@ -571,7 +636,7 @@
         "url": "/rest/crisis/type"
       }
     ],
-    "filename": "C:/git/BD-ITAC/api/server/routes/crisis.js",
+    "filename": "D:/Projetos/ITA/BD-ITAC/api/server/routes/crisis.js",
     "groupTitle": "Crisis",
     "name": "GetRestCrisisType"
   },
@@ -620,7 +685,7 @@
         "url": "/rest/avisos/indicators"
       }
     ],
-    "filename": "C:/git/BD-ITAC/api/server/routes/avisos.js",
+    "filename": "D:/Projetos/ITA/BD-ITAC/api/server/routes/avisos.js",
     "groupTitle": "avisos",
     "name": "GetRestAvisosIndicators"
   }

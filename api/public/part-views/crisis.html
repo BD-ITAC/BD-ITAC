@@ -7,29 +7,31 @@
   <table width="100%" class="table table-striped">
    <thead>
      <tr>
-       <th>Nome</th>
-       <th>Telefone</th>
-       <th>E-Mail</th>
-       <th>Descricao</th>
-       <th>Classificação</th>
-       <th>Lat;Long</th>
-       <th>Foto</th>
+       <th>Descrição</th>
+       <th>Local</th>
+       <th>Início</th>
+       <th>Fim</th>
+       <th>Ativo</th>
+       <th></th>
      </tr>
    </thead>
    <tbody>
-    <tr ng-repeat="row in CrisisListCollection">
-      <td>{{row.nome}}</td>
-      <td>{{row.telefone}}</td>
-      <td>{{row.email}}</td>
-      <td>{{row.descricao}}</td>
-      <td>{{row.categoria}}</td>
-      <td>{{row.latitude}};{{row.longitude}}</td>
+    <tr ng-repeat="crise in CrisisListCollection">
+      <td>{{crise.cri_descricao}}</td>
+      <td>{{crise.cid_nome}} / {{crise.est_sigla}}</td>
+      <td>{{crise.cri_inicio}}</td>
+      <td>{{crise.cri_final}}</td>
+      <td>{{vm.parseBoolString(crise.cri_ativa)}}</td>
       <td>
-          <a ng-click="openLightboxModal(0, [row.pic1, row.pic2, row.pic3])">
-            <div class="imgcontainer">
-              <img ng-src="data:image/JPEG;base64,{{row.pic1}}" class="img-thumbnail" />
-            </div>
-          </a>
+        <button class="btn btn-default" type="button" title="Detail Crisis">
+           <span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>
+        </button>
+        <button class="btn btn-success" type="button" title="Create Alert">
+           <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+        </button>
+        <button class="btn btn-danger" type="button" title="Cancel Crisis">
+           <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+        </button>
       </td>
     </tr>
    </tbody>

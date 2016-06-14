@@ -35,5 +35,8 @@ app.controller('CrisisController', ['$scope', '$rootScope', '$location', '$http'
           Lightbox.openModal($scope.images, index);
         };
 
+  vm.parseBoolString = function(x){
+    return x == 1 ? 'Sim' : 'Não';
+  };
 
 }]);
