@@ -45,6 +45,7 @@ import br.ita.bditac.model.Categoria;
 import br.ita.bditac.model.Crise;
 import br.ita.bditac.model.Indicador;
 import br.ita.bditac.ws.support.AlertaResources;
+import br.ita.bditac.ws.support.AvisoResources;
 import br.ita.bditac.ws.support.CategoriaResources;
 import br.ita.bditac.ws.support.CriseResource;
 import br.ita.bditac.ws.support.IndicadorResources;
@@ -140,6 +141,21 @@ public class APITests {
         ResponseEntity<CriseResource> criseResponseEntity = getRestTemplate().getForEntity(criseURL, CriseResource.class, params);
 
         assertThat(criseResponseEntity.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+    }
+
+    @Test
+    public void test105GetAvisos() throws Exception {
+        String alertaUrl = getBaseUrl() + "/rest/alerts";
+
+        ResponseEntity<AvisoResources> resources = null;
+        try {
+        	resources = getRestTemplate().getForEntity(alertaUrl, AvisoResources.class);
+        }
+        catch(Exception ex) {
+        	System.out.println(ex.getMessage());
+        }
+        
+        assertThat(resources.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 
     @Test

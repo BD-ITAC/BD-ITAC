@@ -5,6 +5,7 @@ import org.springframework.hateoas.Resource;
 
 import br.ita.bditac.model.Alerta;
 
+
 public class AlertaResource extends Resource<Alerta> {
     
     public AlertaResource() {
