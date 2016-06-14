@@ -2,10 +2,10 @@ package br.ita.bditac.mobile.alertas;
 
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AppCompatActivity;
 
 
-public class ChartBase extends FragmentActivity {
+public class ChartBase extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

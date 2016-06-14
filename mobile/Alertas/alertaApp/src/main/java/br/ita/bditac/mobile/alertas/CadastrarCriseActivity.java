@@ -17,8 +17,10 @@ import android.os.Debug;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -167,6 +169,12 @@ public class CadastrarCriseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastrar_crise);
 
+        // Show the Up button in the action bar.
+        ActionBar actionBar=getSupportActionBar();
+        if(actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+
         inputDescricao = (EditText) findViewById(R.id.mensagem);
 
         imageView = (ImageView) findViewById(R.id.camera_image);
@@ -255,6 +263,17 @@ public class CadastrarCriseActivity extends AppCompatActivity {
             }
         }
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id=item.getItemId();
+        if(id == android.R.id.home) {
+            //NavUtils.navigateUpFromSameTask(this);
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public void Capture_Click(View view) {

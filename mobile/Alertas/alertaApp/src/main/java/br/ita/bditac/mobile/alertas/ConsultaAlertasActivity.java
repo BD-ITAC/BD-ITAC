@@ -15,11 +15,6 @@ import android.os.Debug;
 import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
@@ -40,58 +35,11 @@ public class ConsultaAlertasActivity extends ListActivity {
 
     private LocationListener locationListener;
 
-    private class AlertaArrayAdapter extends ArrayAdapter<Alerta> {
-
-        private final Context context;
-
-        private final Alerta[] alertas;
-
-        public AlertaArrayAdapter(Context context, int resourceId, Alerta[] alertas) {
-            super(context, R.layout.list_alertas);
-
-            this.context = context;
-            this.alertas = alertas;
-        }
-
-        @Override
-        public int getCount() {
-
-            if(alertas == null) {
-                return 0;
-            }
-            else {
-                return alertas.length;
-            }
-
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View rowView = inflater.inflate(R.layout.list_alertas, parent, false);
-
-            TextView descricaoResumida = (TextView) rowView.findViewById(R.id.descricaoResumida);
-            descricaoResumida.setText(alertas[position].getDescricaoResumida());
-
-            TextView descricaoCompleta = (TextView) rowView.findViewById(R.id.descricaoCompleta);
-            descricaoCompleta.setText(alertas[position].getDescricaoCompleta());
-
-            return rowView;
-        }
-
-    }
-
     private class ConsultarAlertasTask extends AsyncTask<Void, Void, Alerta[]> {
-
-        private Exception exception;
-
-        private ListActivity activity;
 
         protected ConsultarAlertasTask(ListActivity activity) {
 
             super();
-
-            this.activity = activity;
 
         }
 
@@ -127,10 +75,6 @@ public class ConsultaAlertasActivity extends ListActivity {
         protected void onPostExecute(Alerta[] alertas) {
 
             super.onPostExecute(alertas);
-
-            //AlertaArrayAdapter adapter = new AlertaArrayAdapter(activity, R.layout.list_alertas, alertas);
-            //activity.setListAdapter(adapter);
-            //adapter.notifyDataSetChanged();
 
             if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 LocationManager locationManager = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);

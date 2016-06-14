@@ -130,8 +130,13 @@ public class ConsultarIndicadoresActivity extends ChartBase implements OnChartVa
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        //getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_consultar_indicadores);
+
+        // Show the Up button in the action bar.
+        android.support.v7.app.ActionBar actionBar=getSupportActionBar();
+        if(actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
 
         SharedPreferences preferences = null;
 
@@ -169,10 +174,13 @@ public class ConsultarIndicadoresActivity extends ChartBase implements OnChartVa
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
+            case android.R.id.home: {
+                finish();
+                break;
+            }
             case R.id.actionToggleValues: {
                 for (IDataSet<?> set : mChart.getData().getDataSets())
                     set.setDrawValues(!set.isDrawValuesEnabled());
-
                 mChart.invalidate();
                 break;
             }
@@ -193,7 +201,6 @@ public class ConsultarIndicadoresActivity extends ChartBase implements OnChartVa
                 break;
             }
             case R.id.actionToggleXVals: {
-
                 mChart.setDrawSliceText(!mChart.isDrawSliceTextEnabled());
                 mChart.invalidate();
                 break;

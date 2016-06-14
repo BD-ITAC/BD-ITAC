@@ -193,7 +193,6 @@ public class AlertaListActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
             holder.mItem=mValues.get(position);
-            holder.mIdView.setText(new Integer(holder.mItem.getId()).toString());
             holder.mContentView.setText(holder.mItem.getDescricaoCompleta());
 
             holder.mView.setOnClickListener(new View.OnClickListener() {
@@ -203,7 +202,8 @@ public class AlertaListActivity extends AppCompatActivity {
 
                 Intent alertaIntent = new Intent(context, NotificationReceiverActivity.class);
                 alertaIntent.putExtra(Constants.EXTRA_NOTIFICATION_LATITUDE, holder.mItem.getOrigemLatitude());
-                alertaIntent.putExtra(Constants.EXTRA_NOTIFICATION_LONGITUDE, holder.mItem.getOrigemLongitude());                   alertaIntent.putExtra(Constants.EXTRA_NOTIFICATION_RAIO, holder.mItem.getOrigemRaioKms());
+                alertaIntent.putExtra(Constants.EXTRA_NOTIFICATION_LONGITUDE, holder.mItem.getOrigemLongitude());
+                alertaIntent.putExtra(Constants.EXTRA_NOTIFICATION_RAIO, holder.mItem.getOrigemRaioKms());
                 alertaIntent.putExtra(Constants.EXTRA_NOTIFICATION_ALERTA, holder.mItem.getDescricaoResumida());
                 alertaIntent.putExtra(Constants.EXTRA_NOTIFICATION_DESCRICAO, holder.mItem.getDescricaoCompleta());
 
@@ -220,14 +220,12 @@ public class AlertaListActivity extends AppCompatActivity {
         public class ViewHolder extends RecyclerView.ViewHolder {
 
             public final View mView;
-            public final TextView mIdView;
             public final TextView mContentView;
             public Alerta mItem;
 
             public ViewHolder(View view) {
                 super(view);
                 mView=view;
-                mIdView=(TextView) view.findViewById(R.id.id);
                 mContentView=(TextView) view.findViewById(R.id.content);
             }
 

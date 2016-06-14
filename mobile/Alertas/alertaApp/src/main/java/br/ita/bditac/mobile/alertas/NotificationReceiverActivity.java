@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -14,9 +15,13 @@ import android.view.MenuItem;
 
 import org.osmdroid.api.IMapController;
 import org.osmdroid.bonuspack.overlays.Marker;
+import org.osmdroid.bonuspack.overlays.Polygon;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
+
+import java.util.ArrayList;
+
 
 public class NotificationReceiverActivity extends AppCompatActivity {
 
@@ -71,15 +76,14 @@ public class NotificationReceiverActivity extends AppCompatActivity {
         marker.setSubDescription(descricao);
         map.getOverlays().add(marker);
 
-        /*
         Polygon areaAlerta = new Polygon(this);
-        ArrayList<GeoPoint> areaPoints = new ArrayList<GeoPoint>();
-        for (float f = 0; f < 360; f += 1){
-            areaPoints.add(new GeoPoint(latitude , longitude ).destinationPoint(raio, f));
-        }
+        ArrayList<GeoPoint> areaPoints = Polygon.pointsAsCircle(alertaPoint, raio * 1000);
         areaAlerta.setPoints(areaPoints);
+        areaAlerta.setFillColor(Color.TRANSPARENT);
+        areaAlerta.setStrokeColor(Color.BLUE);
+        areaAlerta.setStrokeWidth(1);
+        marker.setAlpha(0.75f);
         map.getOverlays().add(areaAlerta);
-        */
 
         map.invalidate();
 
@@ -115,12 +119,6 @@ public class NotificationReceiverActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id=item.getItemId();
         if(id == android.R.id.home) {
-            // This ID represents the Home or Up button. In the case of this
-            // activity, the Up button is shown. For
-            // more details, see the Navigation pattern on Android Design:
-            //
-            // http://developer.android.com/design/patterns/navigation.html#up-vs-back
-            //
             navigateUpTo(new Intent(this, AlertaListActivity.class));
             return true;
         }
