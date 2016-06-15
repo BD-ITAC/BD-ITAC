@@ -23,7 +23,7 @@ alertsDAO = function(pool){
 	               * sin( radians( geo_lat ) ) ) ) AS distance  \
                  from alerta \
                  join geografica on geo_id = geo_cod \
-                 where alt_timestamp = ? having distance < ? ";
+                 where alt_timestamp >= ? having distance < ? ";
     self.pool.query(
        query,
        [filtro.latitude, filtro.longitude, filtro.latitude, filtro.timestamp, filtro.raio]
@@ -48,12 +48,12 @@ alertsDAO = function(pool){
      for (var i in rows) {
        var alert =
              {
-               descricao: row[i].alt_msg,
-               datahora: row[i].alt_timestamp,
-               cidade: row[i].geo_uf,
-               latitude: row[i].latitude,
-               longitude: row[i].geo_lat,
-               tipodacrise: row[i].geo_long
+               descricao: rows[i].alt_msg,
+               datahora: rows[i].alt_timestamp,
+               cidade: rows[i].geo_uf,
+               latitude: rows[i].latitude,
+               longitude: rows[i].geo_lat,
+               tipodacrise: rows[i].geo_long
              }
 
        alerts.push(alert);

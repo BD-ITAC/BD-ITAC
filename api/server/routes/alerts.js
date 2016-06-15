@@ -2,7 +2,7 @@ module.exports = function(app){
   var uri = '/rest/alerts';
   var controller = app.controllers.alerts;
   /**
-   * @api {get} /rest/alerts?latitude=-23.196641&longitude=-45.946840&raio=10&timestamp='2016/06/10T08:00:00' Listar todos alertas confirmados por região
+   * @api {get} /rest/alerts?latitude=-9.44340653710605&longitude=-70.4864968937616&raio=10&timestamp=2016-06-14%2000:11:05 Listar todos alertas confirmados por região
    * @apiGroup Alertas
    * @apiVersion 1.0.0
    *
