@@ -53,6 +53,9 @@ app.controller('CrisisController', ['$scope', '$rootScope', '$location', '$http'
       }
     };
 
+    vm.openDetail = function(cri_id){
+      $location.path('#crisis-detail/?cri_id='+cri_id);
+    };
     vm.cancel = function(cri_id){
       $http({
       method: 'DELETE',

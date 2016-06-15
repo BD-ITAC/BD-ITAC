@@ -27,7 +27,7 @@
       <td>{{vm.alerta(crise.count_alerta)}}</td>
       <td>{{vm.parseBoolString(crise.cri_ativa)}}</td>
       <td>
-        <button class="btn btn-default" type="button" title="Detail Crisis">
+        <button class="btn btn-default" type="button" title="Detail Crisis" ng-click="vm.openDetail(crise.cri_id);>
            <span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>
         </button>
         <button class="btn btn-success" type="button" title="Create Alert" ng-disabled="vm.disabled(crise.cri_ativa, crise.count_alerta);" ng-click="vm.createAlert(crise.cri_id);">

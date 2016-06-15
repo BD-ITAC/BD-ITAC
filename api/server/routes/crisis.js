@@ -5,6 +5,8 @@ module.exports = function(app){
   app.post(uri+'/', controller.saveCrisis);
   app.get(uri, controller.listCrisis);
 
+  app.get(uri+'/:cri_id', controller.getCrisisID);
+
   /*PALAVRAS CHAVES DAS CRISES*/
   /**
    * @api {get} /rest/crisis/type Palavras Chaves de Crises
