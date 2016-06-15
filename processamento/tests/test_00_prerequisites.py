@@ -21,3 +21,9 @@ def test_hivehome_environment_variable(File):
     environment = File("/etc/environment")
     assert environment.is_file
     assert environment.contains("HIVE_HOME")
+
+
+def test_hivehome_environment_variable(File):
+    environment = File("/etc/environment")
+    assert environment.is_file
+    assert environment.contains("SPARK_HOME")
