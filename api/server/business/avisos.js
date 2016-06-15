@@ -12,12 +12,21 @@ module.exports = function(app){
   business.save = function(avisos, callback){
     //valida preenchimento de campos obrigatórios
     var ValidEmail = str.isEmail();
-    
+
     if((!avisos.descricao || !avisos.nome || !avisos.email || !avisos.telefone
       || !avisos.latitude || !avisos.longitude ||
       !avisos.categoria) || !(avisos.categoria >= 0 && avisos.categoria <= 8)
       || !(ValidEmail(avisos.email))){
-        callback({success: false, message: 'Invalid value data fields.', validationError:true});
+        var message = {
+            "message" : {
+              "id" : 1,
+              "type" : "ERROR",
+              "status" : "BAD_REQUEST",
+              "description" : "Invalid value data fields.",
+              "info" : "Error"
+            }
+          };
+        callback(message, null);
       }else{
         avisosDAO.save(avisos, function(err, result){
             if(err){
