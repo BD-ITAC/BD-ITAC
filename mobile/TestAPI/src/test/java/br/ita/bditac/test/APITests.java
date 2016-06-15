@@ -126,7 +126,7 @@ public class APITests {
 		criseRequest.put("fotografia", getFoto());
         MessageResource criseResponseEntity = getRestTemplate().postForObject(criseURI, new HttpEntity<Map<String, Object>>(criseRequest), MessageResource.class);
 
-        assertThat(criseResponseEntity.getContent().getStatus()).isEqualTo("Ok");
+        assertThat(criseResponseEntity.getContent().getStatus()).isEqualTo("OK");
     }
     
     @Test
@@ -143,7 +143,7 @@ public class APITests {
 		criseRequest.put("longitude", 50.0);
         MessageResource criseResponseEntity = getRestTemplate().postForObject(criseURI, new HttpEntity<Map<String, Object>>(criseRequest), MessageResource.class);
 
-        assertThat(criseResponseEntity.getContent().getStatus()).isEqualTo("Ok");
+        assertThat(criseResponseEntity.getContent().getStatus()).isEqualTo("OK");
     }
 
     @Test
