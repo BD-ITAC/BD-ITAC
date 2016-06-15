@@ -2,12 +2,12 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>org.sparkexamples</groupId>
-	<artifactId>first-example</artifactId>
+	<groupId>org.spark</groupId>
+	<artifactId>SparkProcessamento</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>sparkexample</name>
+	<name>spark</name>
 	<url>http://maven.apache.org</url>
 
 	<properties>
@@ -88,7 +88,7 @@
 					<!-- MainClass in mainfest make a executable jar -->
 					<archive>
 						<manifest>
-							<mainClass>org.sparkexample.WordCount</mainClass>
+							<mainClass>org.spark.Processamento</mainClass>
 						</manifest>
 					</archive>
 				</configuration>
