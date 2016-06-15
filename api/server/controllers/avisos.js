@@ -75,7 +75,7 @@ module.exports = function(app){
                 "id" : 1,
                 "type" : "WARNING",
                 "status" : "NOTFOUND",
-                "description" : "Waning not found",
+                "description" : "Warning not found",
                 "info" : "BD-ITAC"
               }
             };

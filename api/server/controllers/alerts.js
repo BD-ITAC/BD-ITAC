@@ -9,7 +9,26 @@ module.exports = function(app){
    */
    controller.listAlerts = function(req,res,next)
    {
-     alertsDAO.listAlerts(function(err, data)
+     if(!req.query.hasOwnProperty('latitude') ||
+      !req.query.hasOwnProperty('longitude') ||
+        !req.query.hasOwnProperty('raio') ||
+        !req.query.hasOwnProperty('timestamp')
+
+      ) {
+        var message = {
+            "message" : {
+              "id" : 1,
+              "type" : "ERROR",
+              "status" : "BADREQUEST",
+              "description" : "Required fields not informed.",
+              "info" : "BD-ITAC"
+            }
+          };
+         res.status(401).json(message);
+         return;
+      }
+
+     alertsDAO.listAlerts(req.query, function(err, data)
      {
 		   if(err)
 		   {
@@ -23,7 +42,16 @@ module.exports = function(app){
 			   }
 			   else
 			   {
-				   res.status(404).json({message:'Something went wrong. Please Try again later.'});
+           var message = {
+               "message" : {
+                 "id" : 1,
+                 "type" : "WARNING",
+                 "status" : "NOTFOUND",
+                 "description" : "Alerts not found",
+                 "info" : "BD-ITAC"
+               }
+             };
+				   res.status(404).json(message);
 			   }
 		   }
 	   });

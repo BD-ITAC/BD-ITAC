@@ -16,33 +16,50 @@ alertsDAO = function(pool){
       this.pool = pool;
   }
 
-  dao.listAlerts = function(callback){
-      console.log(getAlerts());
-      /*SELECT alt_id, alt_msg, alt_raio, geo_lat, geo_long, SQRT(
-    POW(69.1 * (geo_lat - (-9.44340653710605)), 2) +
-    POW(69.1 * ((-70.4864968937616) - geo_long) * COS(geo_lat / 57.3), 2)) AS distance
-FROM geografica
-inner join alerta on geo_cod = geo_id
-HAVING distance < 125 ORDER BY distance;*/
-      callback(null,getAlerts());
+  dao.listAlerts = function(filtro, callback){
+      var query ="select alt_msg, alt_timestamp, geo_uf, geo_lat, geo_long     \
+                ,( 6371 * acos( cos( radians(?) ) * cos( radians( geo_lat ) )   \
+                * cos( radians( geo_long ) - radians(?) ) + sin( radians(?) )  \
+	               * sin( radians( geo_lat ) ) ) ) AS distance  \
+                 from alerta \
+                 join geografica on geo_id = geo_cod \
+                 where alt_timestamp = ? having distance < ? ";
+    self.pool.query(
+       query,
+       [filtro.latitude, filtro.longitude, filtro.latitude, filtro.timestamp, filtro.raio]
+       ,function(err, rows){
+      if(err){
+        callback(err,{});
+      }else{
+        if(rows[0] == null){
+          callback(null,null);
+        }else {
+            callback(null,getAlerts(rows));
+        }
+      }
+    });
   };
 
 
-  function getAlerts(callback)
+  function getAlerts(rows)
   {
      var alerts = [];
 
-     var alert =
-     {
-       descricao:"Alagamento na região de São José dos Campos",
-       datahora: "2016-06-12T08:00:32",
-       cidade: "São José dos Campos",
-       latitude: -23.1966,
-       longitude: -45.9468,
-       tipodacrise: "Alagamentos"
+     for (var i in rows) {
+       var alert =
+             {
+               descricao: row[i].alt_msg,
+               datahora: row[i].alt_timestamp,
+               cidade: row[i].geo_uf,
+               latitude: row[i].latitude,
+               longitude: row[i].geo_lat,
+               tipodacrise: row[i].geo_long
+             }
+
+       alerts.push(alert);
+
      }
 
-     alerts.push(alert);
 
      return alerts;
   };
