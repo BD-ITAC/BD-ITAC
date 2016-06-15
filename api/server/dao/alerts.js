@@ -16,6 +16,17 @@ alertsDAO = function(pool){
       this.pool = pool;
   }
 
+  dao.listAllAlerts = function(callback){
+    var query = "SELECT alt_id, alt_msg, date_format(alt_timestamp,'%d/%m/%Y') AS alt_timestamp FROM alerta";
+    self.pool.query(query, function(err, rows){
+      if(err){
+        callback (err, null);
+      }else{
+        callback(null, rows);
+      }
+    });
+  };
+
   dao.listAlerts = function(filtro, callback){
       var query ="select alt_msg, alt_timestamp, geo_uf, geo_lat, geo_long     \
                 ,( 6371 * acos( cos( radians(?) ) * cos( radians( geo_lat ) )   \

@@ -4,6 +4,16 @@ module.exports = function(app){
   var controller = {};
   var alertsDAO = app.dao.alerts;
 
+  controller.listAllAlerts = function(req, res, next){
+    alertsDAO.listAllAlerts(function(err, data){
+      if(err){
+        res.status(500).json(err);
+      }else{
+        res.json(data);
+      }
+    });
+  };
+
   /***
    * Retorno dos avisos
    */

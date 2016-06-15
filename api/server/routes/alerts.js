@@ -34,5 +34,18 @@ module.exports = function(app){
 
   app.get(uri, controller.listAlerts);
 
+  /**
+   * @api {get} /rest/alerts/all Listar todos alertas
+   * @apiGroup Alertas
+   * @apiVersion 1.0.0
+   *
+   * @apiSuccess {Numero} alt_id  identificador único do alerta
+   * @apiSuccess {String} alt_msg  descrição do alerta.
+   * @apiSuccess {DateTime} alt_timestamp  data de cadastro do alerta.
+   *
+   */
+
+  app.get(uri+'/all', controller.listAllAlerts);
+
 
 };

@@ -22,6 +22,11 @@ function ($routeProvider, $httpProvider, $compileProvider) {
             controller: 'DashBoardController',
             requireLogin: true
         })
+        .when('/alerts', {
+            templateUrl: 'part-views/alerts.html',
+            controller: 'AlertsController',
+            requireLogin: true
+        })
         .when('/avisos', {
             templateUrl: 'part-views/avisos.html',
             controller: 'AvisosController',
