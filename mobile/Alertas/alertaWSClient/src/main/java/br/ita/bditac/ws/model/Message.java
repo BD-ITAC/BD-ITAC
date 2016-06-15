@@ -1,6 +1,8 @@
 package br.ita.bditac.ws.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 
 
@@ -47,6 +49,8 @@ public class Message implements Serializable {
     private String info;
 
     public Message() {
+        super();
+
         this.id = 0;
         this.type = null;
         this.status = "";
@@ -64,10 +68,12 @@ public class Message implements Serializable {
         this.info = info;
     }
 
+    @JsonIgnore
     public Integer getId() {
         return id;
     }
 
+    @JsonIgnore
     public Type getType() {
         return type;
     }

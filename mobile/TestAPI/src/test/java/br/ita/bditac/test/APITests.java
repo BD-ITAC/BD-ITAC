@@ -13,6 +13,7 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -42,7 +43,6 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
 
 import br.ita.bditac.model.Categoria;
-import br.ita.bditac.model.Crise;
 import br.ita.bditac.model.Indicador;
 import br.ita.bditac.ws.support.AlertaResources;
 import br.ita.bditac.ws.support.AvisoResources;
@@ -65,7 +65,7 @@ public class APITests {
     class ClientErrorHandler implements ResponseErrorHandler {
 
         public void handleError(ClientHttpResponse response) throws IOException {
-
+        	System.out.println(response.toString());
         }
 
         public boolean hasError(ClientHttpResponse response) throws IOException {
@@ -86,7 +86,7 @@ public class APITests {
         mapper.registerModules(new Jackson2HalModule(), new JodaModule());
 
         MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
-        converter.setSupportedMediaTypes(Arrays.asList(MediaTypes.HAL_JSON, MediaType.APPLICATION_JSON_UTF8, MediaType.TEXT_HTML));
+        converter.setSupportedMediaTypes(Arrays.asList(MediaTypes.HAL_JSON, MediaType.APPLICATION_JSON, MediaType.APPLICATION_JSON_UTF8, MediaType.TEXT_HTML));
         converter.setObjectMapper(mapper);
 
         RestTemplate restTemplate = new RestTemplate(Collections.<HttpMessageConverter<?>> singletonList(converter));
@@ -112,23 +112,38 @@ public class APITests {
     }
     
     @Test
-    @Ignore
-    public void test101PostCriseGerarAlerta() throws Exception {
+    public void test101PostCriseGerarAlertaComFoto() throws Exception {
         URI criseURI = new URI(getBaseUrl() + "/rest/avisos");
-        
-        Crise criseRequest = new Crise(
-                "Deslizamento na na favela do Paraiso",
-                1,
-                "Ze das Couves",
-                "zedascouves@gmail.com",
-                "(12) 99876-1234",
-                40.0,
-                50.0,
-                getFoto());
 
-        ResponseEntity<MessageResource> criseResponseEntity =  getRestTemplate().postForEntity(criseURI, new HttpEntity<Crise>(criseRequest), MessageResource.class);
+        Map<String, Object> criseRequest = new LinkedHashMap<>();
+        criseRequest.put("descricao", "Deslizamento na na favela do Paraiso");
+		criseRequest.put("categoria", 2);
+		criseRequest.put("nome", "Ze das Couves");
+		criseRequest.put("email", "zedascouves@gmail.com");
+		criseRequest.put("telefone", "(12) 99876-1234");
+		criseRequest.put("latitude", 40.0);
+		criseRequest.put("longitude", 50.0);
+		criseRequest.put("fotografia", getFoto());
+        MessageResource criseResponseEntity = getRestTemplate().postForObject(criseURI, new HttpEntity<Map<String, Object>>(criseRequest), MessageResource.class);
 
-        assertThat(criseResponseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+        assertThat(criseResponseEntity.getContent().getStatus()).isEqualTo("Ok");
+    }
+    
+    @Test
+    public void test102PostCriseGerarAlertaSemFoto() throws Exception {
+        URI criseURI = new URI(getBaseUrl() + "/rest/avisos");
+
+        Map<String, Object> criseRequest = new LinkedHashMap<>();
+        criseRequest.put("descricao", "Deslizamento na na favela do Paraiso");
+		criseRequest.put("categoria", 2);
+		criseRequest.put("nome", "Ze das Couves");
+		criseRequest.put("email", "zedascouves@gmail.com");
+		criseRequest.put("telefone", "(12) 99876-1234");
+		criseRequest.put("latitude", 40.0);
+		criseRequest.put("longitude", 50.0);
+        MessageResource criseResponseEntity = getRestTemplate().postForObject(criseURI, new HttpEntity<Map<String, Object>>(criseRequest), MessageResource.class);
+
+        assertThat(criseResponseEntity.getContent().getStatus()).isEqualTo("Ok");
     }
 
     @Test

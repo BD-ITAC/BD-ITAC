@@ -73,7 +73,13 @@ public class CadastrarCriseActivity extends AppCompatActivity {
                 CriseClient criseClient = new CriseClient(alertasUrl);
 
                 for(Crise crise : crises) {
-                    criseClient.addCrise(crise);
+                    if(!criseClient.addCrise(crise)) {
+                        Toast.makeText(context, getText(R.string.msg_alerts_service_unaivalable), Toast.LENGTH_LONG).show();
+
+                        Log.e(this.getClass().getSimpleName(), getText(R.string.msg_alerts_service_unaivalable).toString());
+
+                        break;
+                    }
                 }
 
                 saved = true;
