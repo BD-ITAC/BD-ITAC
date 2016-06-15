@@ -1,8 +1,6 @@
 package br.ita.bditac.ws.model;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import java.io.Serializable;
 
 
@@ -48,6 +46,12 @@ public class Message implements Serializable {
 
     private String info;
 
+    private boolean success;
+
+    private String message;
+
+    private boolean validationError;
+
     public Message() {
         super();
 
@@ -56,9 +60,13 @@ public class Message implements Serializable {
         this.status = "";
         this.description = "";
         this.info = "";
+
+        this.success = true;
+        this.message = "";
+        this.validationError = false;
     }
 
-    public Message(int id, Type type, String status, String description, String info) {
+    public Message(int id, Type type, String status, String description, String info, boolean success, String message, boolean validationError) {
         super();
 
         this.id = id;
@@ -66,14 +74,16 @@ public class Message implements Serializable {
         this.status = status;
         this.description = description;
         this.info = info;
+
+        this.success = success;
+        this.message = message;
+        this.validationError = validationError;
     }
 
-    @JsonIgnore
     public Integer getId() {
         return id;
     }
 
-    @JsonIgnore
     public Type getType() {
         return type;
     }
@@ -90,8 +100,16 @@ public class Message implements Serializable {
         return info;
     }
 
-    public void setInfo(String info) {
-        this.info = info;
+    public boolean isSuccess() {
+        return success;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public boolean isValidationError() {
+        return validationError;
     }
 
 }

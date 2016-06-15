@@ -28,7 +28,7 @@ public class CriseTests extends TestCase {
                 -25.0D,
                 -45.0D,
                 AlertaTests.getFoto());
-        criseClient.addCrise(criseNova);
+        assertTrue(criseClient.addCrise(criseNova));
     }
 
 }
