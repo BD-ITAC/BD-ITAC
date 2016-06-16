@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import br.ita.bditac.model.Alerta;
 import br.ita.bditac.ws.service.AlertaController;
 
+
 @Component
 public class AlertaResourceAssembler extends ResourceAssemblerSupport<Alerta, AlertaResource> {
 

@@ -39,7 +39,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void startConsultarCrise(View view) {
-        Intent itentConsultarCrise = new Intent(this, ConsultaAlertasActivity.class);
+        //Intent itentConsultarCrise = new Intent(this, ConsultaAlertasActivity.class);
+        Intent itentConsultarCrise = new Intent(this, AlertaListActivity.class);
         startActivity(itentConsultarCrise);
     }
 

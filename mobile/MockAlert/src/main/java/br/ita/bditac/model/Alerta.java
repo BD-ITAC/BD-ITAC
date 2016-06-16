@@ -28,12 +28,10 @@ public class Alerta implements Serializable {
     
     private long timestamp;
 
-    @JsonIgnore
-    public Integer getId() {
+    public int getId() {
         return id;
     }
     
-    @JsonIgnore
     public void setId(int id) {
         this.id = id;
     }

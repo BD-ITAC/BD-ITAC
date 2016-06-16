@@ -1,0 +1,12 @@
+{
+    "crise" : {
+        "descricao" : "Deslizamento na na favela do Paraiso",
+        "categoria" : 0,
+        "nome" : "Ze das Couves",
+        "email" : "zedascouves@gmail.com",
+        "telefone" : "(12) 99876-1234",
+        "latitude": 50,
+        "longitude": 50,
+        "geo_id": 0
+    }
+}

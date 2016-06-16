@@ -17,8 +17,10 @@ import android.os.Debug;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -27,8 +29,11 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import br.ita.bditac.ws.client.CategoriasClient;
 import br.ita.bditac.ws.client.CriseClient;
+import br.ita.bditac.ws.model.Categoria;
 import br.ita.bditac.ws.model.Crise;
 import br.ita.bditac.ws.model.Usuario;
 
@@ -38,6 +43,8 @@ public class CadastrarCriseActivity extends AppCompatActivity {
     private static final int CAMERA_REQUEST = 1000;
 
     private Context context;
+
+    private AppCompatActivity app;
 
     private Location currentLocation;
 
@@ -50,6 +57,8 @@ public class CadastrarCriseActivity extends AppCompatActivity {
     private LocationListener locationListener;
 
     private ImageView imageView;
+
+    private List<Categoria> categorias;
 
     protected boolean saving = false;
 
@@ -64,7 +73,13 @@ public class CadastrarCriseActivity extends AppCompatActivity {
                 CriseClient criseClient = new CriseClient(alertasUrl);
 
                 for(Crise crise : crises) {
-                    criseClient.addCrise(crise);
+                    if(!criseClient.addCrise(crise)) {
+                        Toast.makeText(context, getText(R.string.msg_alerts_service_unaivalable), Toast.LENGTH_LONG).show();
+
+                        Log.e(this.getClass().getSimpleName(), getText(R.string.msg_alerts_service_unaivalable).toString());
+
+                        break;
+                    }
                 }
 
                 saved = true;
@@ -117,19 +132,75 @@ public class CadastrarCriseActivity extends AppCompatActivity {
 
     }
 
+    private class CarregarCategoriaTask extends AsyncTask<Void, Void, List<Categoria>> {
+
+        @Override
+        protected List<Categoria> doInBackground(Void... params) {
+
+            CategoriasClient categoriasClient = new CategoriasClient(alertasUrl);
+
+            categorias = categoriasClient.getCategorias();
+
+            return categorias;
+        }
+
+        @Override
+        protected void onPostExecute(List<Categoria> categorias) {
+
+            try {
+                if(categorias != null) {
+                    ArrayList<String> categoriaArrayList=new ArrayList<>();
+                    for(Categoria categoria : categorias) {
+                        categoriaArrayList.add(categoria.getDescription());
+                    }
+
+                    ArrayAdapter<String> adapter=new ArrayAdapter<String>(app, android.R.layout.simple_dropdown_item_1line, categoriaArrayList);
+                    inputCategoria.setAdapter(adapter);
+                }
+            }
+            catch(Exception ex) {
+                CharSequence mensagem = getText(R.string.msg_alerts_service_unaivalable);
+                Toast.makeText(context, mensagem, Toast.LENGTH_LONG).show();
+
+                Log.e(this.getClass().getSimpleName(), ex.getMessage(), ex);
+            }
+
+        }
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastrar_crise);
 
+        // Show the Up button in the action bar.
+        ActionBar actionBar=getSupportActionBar();
+        if(actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+
         inputDescricao = (EditText) findViewById(R.id.mensagem);
 
         imageView = (ImageView) findViewById(R.id.camera_image);
 
+        inputCategoria = (Spinner) findViewById(R.id.categoria);
+
         saving = false;
 
-        CarregarCategoria();
+        SharedPreferences preferences = null;
+
+        context = getApplicationContext();
+        app = this;
+
+        if(!Debug.isDebuggerConnected()) {
+            preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        }
+
+        alertasUrl = Debug.isDebuggerConnected() ? Constants.DEBUG_URL : preferences.getString("alerts.service.url", Constants.DEFAULT_URL);
+
+        new CarregarCategoriaTask().execute();
 
     }
 
@@ -154,16 +225,6 @@ public class CadastrarCriseActivity extends AppCompatActivity {
             Toast.makeText(context, getText(R.string.msg_crisis_being_saved), Toast.LENGTH_LONG).show();
         }
         else {
-            SharedPreferences preferences=null;
-
-            context=getApplicationContext();
-
-            if(!Debug.isDebuggerConnected()) {
-                preferences=PreferenceManager.getDefaultSharedPreferences(context);
-            }
-
-            alertasUrl=Debug.isDebuggerConnected() ? Constants.DEBUG_URL : preferences.getString("alerts.service.url", Constants.DEFAULT_URL);
-
             try {
                 Context context=getApplicationContext();
 
@@ -192,7 +253,7 @@ public class CadastrarCriseActivity extends AppCompatActivity {
             else {
                 Crise crise=new Crise(
                     inputDescricao.getText().toString(),
-                    inputCategoria.getSelectedItemPosition(),
+                    inputCategoria.getSelectedItemPosition() + 1,
                     Usuario.getNome(),
                     Usuario.getEmail(),
                     Usuario.getTelefone(),
@@ -210,36 +271,22 @@ public class CadastrarCriseActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id=item.getItemId();
+        if(id == android.R.id.home) {
+            //NavUtils.navigateUpFromSameTask(this);
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     public void Capture_Click(View view) {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if(intent.resolveActivity(getPackageManager()) != null) {
             startActivityForResult(intent, CAMERA_REQUEST);
         }
-    }
-
-    private void CarregarCategoria(){
-
-        // TODO: Criar essa lista em resources e alterar quando a API estiver pronta para cadastrar esse dominio dinamicamente
-
-        inputCategoria = (Spinner) findViewById(R.id.categoria);
-
-        if (inputCategoria == null)
-            return ;
-
-        ArrayList<String> categoriaArrayList = new ArrayList<>();
-        categoriaArrayList.add("Alagamento");
-        categoriaArrayList.add("Incêndio");
-        categoriaArrayList.add("Acidente Veicular");
-        categoriaArrayList.add("Acidente Aéreo");
-        categoriaArrayList.add("Assassinato");
-        categoriaArrayList.add("Roubo");
-        categoriaArrayList.add("Terremoto");
-        categoriaArrayList.add("Desmoronamento");
-        categoriaArrayList.add("Tiroteio");
-
-        ArrayAdapter<String> adapter = new ArrayAdapter <String>(this, android.R.layout.simple_dropdown_item_1line, categoriaArrayList);
-        inputCategoria.setAdapter(adapter);
-
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

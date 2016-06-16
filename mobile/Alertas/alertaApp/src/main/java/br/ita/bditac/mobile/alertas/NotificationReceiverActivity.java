@@ -2,18 +2,26 @@ package br.ita.bditac.mobile.alertas;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MenuItem;
 
 import org.osmdroid.api.IMapController;
 import org.osmdroid.bonuspack.overlays.Marker;
+import org.osmdroid.bonuspack.overlays.Polygon;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
+
+import java.util.ArrayList;
+
 
 public class NotificationReceiverActivity extends AppCompatActivity {
 
@@ -22,6 +30,12 @@ public class NotificationReceiverActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notification_receiver);
+
+        // Show the Up button in the action bar.
+        ActionBar actionBar=getSupportActionBar();
+        if(actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
 
         Context context = getApplicationContext();
 
@@ -39,6 +53,7 @@ public class NotificationReceiverActivity extends AppCompatActivity {
 
         double latitude = getIntent().getDoubleExtra(Constants.EXTRA_NOTIFICATION_LATITUDE, Constants.DEFAULT_NOTIFICATION_LATITUDE);
         double longitude = getIntent().getDoubleExtra(Constants.EXTRA_NOTIFICATION_LONGITUDE, Constants.DEFAULT_NOTIFICATION_LONGITUDE);
+        double raio = getIntent().getDoubleExtra(Constants.EXTRA_NOTIFICATION_RAIO, Constants.DEFAULT_NOTIFICATION_RAIO);
         String alerta = getIntent().getStringExtra(Constants.EXTRA_NOTIFICATION_ALERTA);
         String descricao = getIntent().getStringExtra(Constants.EXTRA_NOTIFICATION_DESCRICAO);
 
@@ -56,10 +71,19 @@ public class NotificationReceiverActivity extends AppCompatActivity {
         Marker marker = new Marker(map);
         marker.setPosition(alertaPoint);
         marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
-        marker.setIcon(getResources().getDrawable(R.drawable.ic_action_alert));
+        marker.setIcon(getResources().getDrawable(R.drawable.ic_warning));
         marker.setTitle(alerta);
         marker.setSubDescription(descricao);
         map.getOverlays().add(marker);
+
+        Polygon areaAlerta = new Polygon(this);
+        ArrayList<GeoPoint> areaPoints = Polygon.pointsAsCircle(alertaPoint, raio * 1000);
+        areaAlerta.setPoints(areaPoints);
+        areaAlerta.setFillColor(Color.TRANSPARENT);
+        areaAlerta.setStrokeColor(Color.BLUE);
+        areaAlerta.setStrokeWidth(1);
+        marker.setAlpha(0.75f);
+        map.getOverlays().add(areaAlerta);
 
         map.invalidate();
 
@@ -89,6 +113,16 @@ public class NotificationReceiverActivity extends AppCompatActivity {
             }
         }
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id=item.getItemId();
+        if(id == android.R.id.home) {
+            navigateUpTo(new Intent(this, AlertaListActivity.class));
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 }

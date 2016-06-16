@@ -30,9 +30,10 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import br.ita.bditac.ws.client.IndicadoresClient;
-import br.ita.bditac.ws.model.Indicadores;
+import br.ita.bditac.ws.model.Indicador;
 
 
 public class ConsultarIndicadoresActivity extends ChartBase implements OnChartValueSelectedListener {
@@ -45,18 +46,18 @@ public class ConsultarIndicadoresActivity extends ChartBase implements OnChartVa
 
     private Typeface tf;
 
-    private Indicadores indicadores = null;
+    private List<Indicador> indicadores = null;
 
-    private class ConsultarIndicadoresTask extends AsyncTask<Void, Void, Indicadores> {
+    private class ConsultarIndicadoresTask extends AsyncTask<Void, Void, List<Indicador>> {
 
         private Exception exception;
 
-        protected Indicadores doInBackground(Void... params) {
+        protected List<Indicador> doInBackground(Void... params) {
 
             try {
-                IndicadoresClient indicadoresClient = new IndicadoresClient(alertasUrl);
+                IndicadoresClient indicadoresClient=new IndicadoresClient(alertasUrl);
 
-                indicadores = indicadoresClient.getIndicadores();
+                indicadores=indicadoresClient.getIndicadores();
             }
             catch(Exception ex) {
                 CharSequence mensagem = getText(R.string.msg_alerts_service_unaivalable);
@@ -71,7 +72,7 @@ public class ConsultarIndicadoresActivity extends ChartBase implements OnChartVa
         }
 
         @Override
-        protected void onPostExecute(Indicadores indicadores) {
+        protected void onPostExecute(List<Indicador> indicadores) {
 
             super.onPostExecute(indicadores);
 
@@ -121,6 +122,7 @@ public class ConsultarIndicadoresActivity extends ChartBase implements OnChartVa
                 l.setPosition(Legend.LegendPosition.RIGHT_OF_CHART);
                 l.setEnabled(false);
             }
+
         }
     }
 
@@ -128,8 +130,13 @@ public class ConsultarIndicadoresActivity extends ChartBase implements OnChartVa
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        //getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_consultar_indicadores);
+
+        // Show the Up button in the action bar.
+        android.support.v7.app.ActionBar actionBar=getSupportActionBar();
+        if(actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
 
         SharedPreferences preferences = null;
 
@@ -144,7 +151,7 @@ public class ConsultarIndicadoresActivity extends ChartBase implements OnChartVa
         new ConsultarIndicadoresTask().execute();
 
         try {
-            if(indicadores == null || indicadores.getIndicadores().size() == 0 ) {
+            if(indicadores == null || indicadores.size() == 0 ) {
                 Log.i(this.getClass().getSimpleName(), getText(R.string.msg_statistics_service_unaivalable).toString());
             }
         }
@@ -167,10 +174,13 @@ public class ConsultarIndicadoresActivity extends ChartBase implements OnChartVa
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
+            case android.R.id.home: {
+                finish();
+                break;
+            }
             case R.id.actionToggleValues: {
                 for (IDataSet<?> set : mChart.getData().getDataSets())
                     set.setDrawValues(!set.isDrawValuesEnabled());
-
                 mChart.invalidate();
                 break;
             }
@@ -191,7 +201,6 @@ public class ConsultarIndicadoresActivity extends ChartBase implements OnChartVa
                 break;
             }
             case R.id.actionToggleXVals: {
-
                 mChart.setDrawSliceText(!mChart.isDrawSliceTextEnabled());
                 mChart.invalidate();
                 break;
@@ -226,17 +235,23 @@ public class ConsultarIndicadoresActivity extends ChartBase implements OnChartVa
         float mult = range;
 
         ArrayList<Entry> yVals1 = new ArrayList<Entry>();
-        ArrayList<Integer> yValues = new ArrayList<>(indicadores.getIndicadores().values());
+        ArrayList<Long> yValues = new ArrayList<>();
+        for(Indicador indicador : indicadores) {
+            yValues.add(indicador.getValor());
+        }
 
         // IMPORTANT: In a PieChart, no values (Entry) should have the same
         // xIndex (even if from different DataSets), since no values can be
         // drawn above each other.
 
-        for (int i = 0; i < indicadores.getIndicadores().size(); i++) {
+        for (int i = 0; i < indicadores.size(); i++) {
             yVals1.add(new Entry((float) yValues.get(i), i));
         }
 
-        ArrayList<String> xVals = new ArrayList<String>(indicadores.getIndicadores().keySet());
+        ArrayList<String> xVals = new ArrayList<String>();
+        for(Indicador indicador : indicadores) {
+            xVals.add(indicador.getDescricao());
+        }
 
         PieDataSet dataSet = new PieDataSet(yVals1, "Estatísticas");
         dataSet.setSliceSpace(3f);

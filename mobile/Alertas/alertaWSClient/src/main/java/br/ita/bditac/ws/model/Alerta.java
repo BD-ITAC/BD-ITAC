@@ -2,6 +2,7 @@ package br.ita.bditac.ws.model;
 
 import java.io.Serializable;
 
+
 public class Alerta implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -14,7 +15,7 @@ public class Alerta implements Serializable {
     
     private String descricaoCompleta;
 
-    private int categoriaAlerta;
+    private String categoriaAlerta;
 
     private double origemLatitude;
 
@@ -23,23 +24,26 @@ public class Alerta implements Serializable {
     private double origemRaioKms;
 
     protected Alerta() {
+        this.id = 0;
         this.timestamp = "";
         this.descricaoResumida = "";
         this.descricaoCompleta = "";
-        this.categoriaAlerta = 0;
+        this.categoriaAlerta = "";
         this.origemLatitude = 0;
         this.origemLongitude = 0;
         this.origemRaioKms = 0;
     }
 
     protected Alerta(
+            int id,
             String timestamp,
             String descricaoResumida, 
             String descricaoCompleta, 
-            int categoriaAlerta,
+            String categoriaAlerta,
             double origemLatitude, 
             double origemLongitude, 
             double origemRaioKms) {
+        this.id = id;
         this.timestamp = timestamp;
         this.descricaoResumida = descricaoResumida;
         this.descricaoCompleta = descricaoCompleta;
@@ -75,7 +79,7 @@ public class Alerta implements Serializable {
     }
 
     
-    public int getCategoriaAlerta() {
+    public String getCategoriaAlerta() {
         return categoriaAlerta;
     }
 

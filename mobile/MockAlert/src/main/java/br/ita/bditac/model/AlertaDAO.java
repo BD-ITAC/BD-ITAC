@@ -15,14 +15,27 @@ public class AlertaDAO {
     private static Map<Integer, Alerta> _alertas = new HashMap<Integer, Alerta>();
     
     private static Map<Integer, Crise> _crises = new HashMap<Integer, Crise>();
+    
+    private static Map<Integer, Categoria> _categorias = new HashMap<Integer, Categoria>();
+    
+    private static Map<Integer, Indicador> _indicadores = new HashMap<Integer, Indicador>();
 
     private static Map<Integer, Message> _messages = new HashMap<Integer, Message>();
-    
-    private static Indicadores _indicadores;
     
     static {
         _messages.put(1, new Message(1, Message.Type.INFO, "001", "Ok", "Everything is all right!"));
         _messages.put(2, new Message(2, Message.Type.ERROR, "999", "Error", "Something went very badly"));
+        
+        _indicadores.put(1, new Indicador("Abertos", 5));
+        _indicadores.put(2, new Indicador("Em andamento", 1));
+        _indicadores.put(3, new Indicador("Encerrados", 4));
+        
+        _categorias.put(1, new Categoria("Alagamento"));        
+        _categorias.put(2, new Categoria("Incêndio"));        
+        _categorias.put(3, new Categoria("Deslizamento"));
+        
+        _alertas.put(1, new Alerta("Incendio na Favela da Brasa", "Fogo atinge todo o perímetro da favela. Centenas de desaparecidos.", 2, -15.7976, -47.8344, 2));
+        _alertas.put(2, new Alerta("Alagamento da Lagoa Rasa", "Milhares de desabrigados", 2, -15.7976, -47.8344, 5));
     }
 
     public static Alerta adicionarAlerta(Alerta alerta) {
@@ -95,22 +108,35 @@ public class AlertaDAO {
         return crise;
     }
     
-    public static Indicadores adicionarIndicador(String nome, int valor) {
-    	_indicadores.addIndicador(nome, valor);
+    public static List<Indicador> obterIndicadores() {
+    	List<Indicador> indicadores = new ArrayList<Indicador>();
     	
-    	return _indicadores;
-    }
-    
-    public static Indicadores adicionarIndicadores(Indicadores indicadores) {
-    	_indicadores = indicadores;
+    	for(Indicador indicador : _indicadores.values()) {
+    		indicadores.add(indicador);
+    	}
     	
-    	return _indicadores;
+    	return indicadores;
     }
     
-    public static Indicadores obterIndicadores() {
-    	return _indicadores;
+    public static List<Indicador> obterIndicadores(double latitude, double longitude, double raio) {
+    	return obterIndicadores();
+    }
+
+    public static Categoria obterCategoria(int id) {
+    	Categoria categoria = _categorias.get(id);
+    	
+    	return categoria;
     }
     
+    public static List<Categoria> obterCategorias() {
+    	List<Categoria> categorias = new ArrayList<Categoria>();
+    	
+    	for(Categoria categoria : _categorias.values()) {
+    		categorias.add(categoria);
+    	}
+    	
+    	return categorias;
+    }
     
     public static Message obterMessage(int id) {
         Message message = _messages.get(id);
