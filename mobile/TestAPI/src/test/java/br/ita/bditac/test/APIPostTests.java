@@ -51,7 +51,7 @@ public class APIPostTests {
     	
     	try {
 	    	if(_foto == null) {
-		        _foto = Files.readAllBytes(Paths.get(Thread.currentThread().getContextClassLoader().getResource("foto1.png").getPath()));
+		        _foto = Files.readAllBytes(Paths.get(Thread.currentThread().getContextClassLoader().getResource("foto2.jpg").getPath()));
 	    	}
     	}
     	catch(IOException ioex) {

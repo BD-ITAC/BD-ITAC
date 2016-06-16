@@ -1,5 +1,7 @@
 package br.ita.bditac.ws.client;
 
+import android.util.Log;
+
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -36,7 +38,7 @@ public class CriseClient {
     class ClientErrorHandler implements ResponseErrorHandler {
 
         public void handleError(ClientHttpResponse response) throws IOException {
-
+            Log.e(this.getClass().getSimpleName(), String.format("response status: '%s', headers: '%s'", response.getStatusText(), response.getHeaders()));
         }
 
         public boolean hasError(ClientHttpResponse response) throws IOException {
