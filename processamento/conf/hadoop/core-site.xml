@@ -4,11 +4,11 @@
         <value>hdfs://master.bditac.com:9000</value>
     </property>
     <property>
-        <name>hadoop.proxyuser.hue.hosts</name>
+        <name>hadoop.proxyuser.hdfs.hosts</name>
         <value>*</value>
     </property>
     <property>
-        <name>hadoop.proxyuser.hue.groups</name>
+        <name>hadoop.proxyuser.hdfs.groups</name>
         <value>*</value>
     </property>
 </configuration>

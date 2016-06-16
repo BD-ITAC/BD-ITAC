@@ -34,11 +34,13 @@ $HADOOP_HOME/bin/hdfs dfs -mkdir -p /user/hive/warehouse
 $HADOOP_HOME/bin/hdfs dfs -chmod g+w /user/hive/warehouse
 $HADOOP_HOME/bin/hdfs dfs -mkdir -p /hive/auxlib
 $HADOOP_HOME/bin/hdfs dfs -put $HIVE_HOME/auxlib/* /hive/auxlib
-$HADOOP_HOME/bin/hdfs dfs -chown -R root:root /hive/auxlib/
 
 # Spark
 $HADOOP_HOME/bin/hdfs dfs -mkdir -p /spark/auxlib
 $HADOOP_HOME/bin/hdfs dfs -put $SPARK_HOME/lib/* /spark/auxlib
-$HADOOP_HOME/bin/hdfs dfs -chown -R root:root /spark/auxlib/
+
+# Oozie
+$HADOOP_HOME/bin/hdfs dfs -mkdir -p /oozie/auxlib
+$HADOOP_HOME/bin/hdfs dfs -put $OOZIE_HOME/share/lib/* /oozie/auxlib
 
 $HADOOP_HOME/sbin/stop-dfs.sh
