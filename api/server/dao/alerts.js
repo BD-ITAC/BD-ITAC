@@ -1,6 +1,5 @@
 var db = require("../db/transacao");
 
-
 var alertsDAO = null;
 
 module.exports = function(app) {

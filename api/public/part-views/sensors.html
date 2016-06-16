@@ -19,29 +19,92 @@
         </select>
     </div>    
   <hr/>
+  <tiltle>Barometrica</tiltle>
   <table width="100%" class="table table-striped">
    <thead>
      <tr>
        <th> </th>
        <th>Data/Hora</th>
-       <th>Nome</th>
-       <th>Telefone</th>
-       <th>E-Mail</th>
-       <th>Descricao</th>
-       <th>Classificação</th>
-       <th>Lat;Long</th>
+       <th>Valor</th>   
        <th>Status</th>
      </tr>
    </thead>
    <tbody>
     <tr ng-repeat="row in avisosListCollection | filter:searchBoxData">
      <td>{{row.dt | date:'yyyy-MM-dd HH:mm:ss'}}</td>
-      <td>{{row.nome}}</td>
-      <td>{{row.telefone}}</td>
-      <td>{{row.email}}</td>
-      <td>{{row.descricao}}</td>
-      <td>{{row.categoria}}</td>
-      <td>{{row.latitude}};{{row.longitude}}</td>
+      <td>{{row.valor}}</td>  
+      <td>{{row.status}}</td>
+    </tr>
+   </tbody>
+  </table>
+  <tiltle>Nivel de água</tiltle>
+  <table width="100%" class="table table-striped">
+   <thead>
+     <tr>
+       <th> </th>
+       <th>Data/Hora</th>
+       <th>Valor</th>   
+       <th>Status</th>
+     </tr>
+   </thead>
+   <tbody>
+    <tr ng-repeat="row in avisosListCollection | filter:searchBoxData">
+     <td>{{row.dt | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+      <td>{{row.valor}}</td>  
+      <td>{{row.status}}</td>
+    </tr>
+   </tbody>
+  </table>
+  <tiltle>Pulviometro</tiltle>
+  <table width="100%" class="table table-striped">
+   <thead>
+     <tr>
+       <th> </th>
+       <th>Data/Hora</th>
+       <th>Valor</th>   
+       <th>Status</th>
+     </tr>
+   </thead>
+   <tbody>
+    <tr ng-repeat="row in avisosListCollection | filter:searchBoxData">
+     <td>{{row.dt | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+      <td>{{row.valor}}</td>  
+      <td>{{row.status}}</td>
+    </tr>
+   </tbody>
+  </table>
+  <tiltle>Temperatura</tiltle>
+  <table width="100%" class="table table-striped">
+   <thead>
+     <tr>
+       <th> </th>
+       <th>Data/Hora</th>
+       <th>Valor</th>   
+       <th>Status</th>
+     </tr>
+   </thead>
+   <tbody>
+    <tr ng-repeat="row in avisosListCollection | filter:searchBoxData">
+     <td>{{row.dt | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+      <td>{{row.valor}}</td>  
+      <td>{{row.status}}</td>
+    </tr>
+   </tbody>
+  </table>
+  <tiltle>Umidade</tiltle>
+  <table width="100%" class="table table-striped">
+   <thead>
+     <tr>
+       <th> </th>
+       <th>Data/Hora</th>
+       <th>Valor</th>   
+       <th>Status</th>
+     </tr>
+   </thead>
+   <tbody>
+    <tr ng-repeat="row in avisosListCollection | filter:searchBoxData">
+     <td>{{row.dt | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+      <td>{{row.valor}}</td>  
       <td>{{row.status}}</td>
     </tr>
    </tbody>
