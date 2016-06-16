@@ -6,20 +6,24 @@ if [[ $EUID -ne 0 ]]; then
    exit 1
 fi
 
+# HiverServer
+echo "stopping hiveserver2"
+start-stop-daemon --stop --pidfile /var/run/hiveserver.pid
+
+# Oozie
+echo "stopping oozie"
+su -l $HADOOP_USER -c "$OOZIE_HOME/bin/oozied.sh stop"
+
+# HDFS+YARN+HistoryServer
+su -l $HADOOP_USER -c "$HADOOP_HOME/etc/hadoop/hadoop-env.sh && $HADOOP_HOME/sbin/mr-jobhistory-daemon.sh --config $HADOOP_CONF_DIR stop historyserver && $HADOOP_HOME/sbin/stop-yarn.sh && $HADOOP_HOME/sbin/stop-dfs.sh"
+
 # Hue
 echo "stopping hueserver"
 killall python2.7
 
 # LivyServer
 echo "stopping livyserver"
-start-stop-daemon --stop --pidfile /var/run/livyserver.pid
-
-# HiverServer
-echo "stopping hiveserver2"
-start-stop-daemon --stop --pidfile /var/run/hiveserver.pid
-
-# HDFS+YARN+HistoryServer
-su -l $HADOOP_USER -c "$HADOOP_HOME/etc/hadoop/hadoop-env.sh && $HADOOP_HOME/sbin/mr-jobhistory-daemon.sh --config $HADOOP_CONF_DIR stop historyserver && $HADOOP_HOME/sbin/stop-yarn.sh && $HADOOP_HOME/sbin/stop-dfs.sh"
+killall java
 
 service ssh stop
 service mysql stop

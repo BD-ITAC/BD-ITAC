@@ -19,8 +19,10 @@ chown -R hdfs:hdfs $HUE_HOME/
 rm /setup/*
 cp /usr/local/BD-ITAC/processamento/setup/* /setup/
 
-# Bashrc
-cp /usr/local/BD-ITAC/processamento/conf/bashrc $HADOOP_HOME/.bashrc
+# Profile/Bashrc
+cp /usr/local/BD-ITAC/processamento/conf/bashrc $HADOOP_HOME/.bashrc 
+cp /usr/local/BD-ITAC/processamento/conf/profile $HADOOP_HOME/.profile
 cp /usr/local/BD-ITAC/processamento/conf/bashrc ~/.bashrc
+cp /usr/local/BD-ITAC/processamento/conf/profile ~/.profile
 
 source ~/.bashrc
