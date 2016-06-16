@@ -6,6 +6,9 @@ if [[ $EUID -ne 1000 ]]; then
    exit 1
 fi
 
-$HUE_HOME/build/env/bin/hue reset_db --noinput
+mysql -uroot -e 'drop database hue;'
+mysql -uroot -e 'create database hue;'
+
+#$HUE_HOME/build/env/bin/hue reset_db --noinput
 $HUE_HOME/build/env/bin/hue syncdb --noinput
 $HUE_HOME/build/env/bin/hue migrate
