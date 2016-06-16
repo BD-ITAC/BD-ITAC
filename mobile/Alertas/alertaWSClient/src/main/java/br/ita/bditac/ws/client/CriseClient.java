@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.hateoas.hal.Jackson2HalModule;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -77,12 +78,15 @@ public class CriseClient {
         map.put("longitude", crise.getLongitude());
         map.put("fotografia", crise.getFotografia());
 
-        HttpEntity<Map<String, Object>> post = new HttpEntity<>(map);
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<Map<String, Object>> post = new HttpEntity<>(map, httpHeaders);
 
-        ResponseEntity<MessageResource> response = restTemplate.postForEntity(hostURL + SERVICE_URL, post, MessageResource.class);
+        ResponseEntity<MessageResource> response;
+        restTemplate.postForEntity(hostURL + SERVICE_URL, post, MessageResource.class);
+        response = restTemplate.postForEntity(hostURL + SERVICE_URL, post, MessageResource.class);
 
-        //return response.getStatusCode().equals(HttpStatus.CREATED);
-        return true;
+        return response.getStatusCode().equals(HttpStatus.CREATED);
 
     }
 
