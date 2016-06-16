@@ -1,17 +1,5 @@
 import os
 
-def test_core_site(File):
-    core = File(os.getenv("HADOOP_HOME") + "/etc/hadoop/core-site.xml")
-    assert core.is_file
-    assert core.contains("fs.defaultFS")
-
-def test_hdfs_site(File):
-    hdfs = File(os.getenv("HADOOP_HOME") + "/etc/hadoop/hdfs-site.xml")
-    assert hdfs.is_file
-    assert hdfs.contains("dfs.replication")
-root@master:~/testinfra# cat test_20_hadoop.py 
-import os
-
 HH = os.getenv("HADOOP_HOME")
 
 def test_hdfs_listening(Socket):
