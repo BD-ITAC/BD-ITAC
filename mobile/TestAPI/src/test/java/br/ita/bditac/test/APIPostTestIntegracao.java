@@ -44,7 +44,7 @@ import br.ita.bditac.ws.support.MessageResource;
 *
 */
 @RunWith(Parameterized.class)
-public class APIPostTests {
+public class APIPostTestIntegracao {
     
     private static byte[] _foto = null;
     
@@ -52,7 +52,7 @@ public class APIPostTests {
     	
     	try {
 	    	if(_foto == null) {
-		        _foto = Files.readAllBytes(Paths.get(Thread.currentThread().getContextClassLoader().getResource("foto1.png").getPath()));
+		        _foto = Files.readAllBytes(Paths.get(Thread.currentThread().getContextClassLoader().getResource("foto2.png").getPath()));
 	    	}
     	}
     	catch(IOException ioex) {
@@ -68,42 +68,15 @@ public class APIPostTests {
 	@Parameters public static Collection<Crise> data() {
 		Crise[] data = new Crise[] {
 			new Crise(
-		        	"Deslizamento na favela Primavera",
-					3,
-					"Ze das Couves",
-					"zedascouves@gmail.com",
-					"(12) 99876-1234",
-					-15.0,
-					-23.0,
-					getFoto()),
-			new Crise(
-		        	"Deslizamento na favela Verao",
-					3,
-					"Zé das Couves",
-					"zedascouves@gmail.com",
-					"(12) 99876-1234",
-					-15.0,
-					-23.0,
-					getFoto()),
-			new Crise(
-		        	"Deslizamento na favela Outono",
-					7,
-					"Ze das Couves",
-					"zedascouves@gmail.com",
-					"(12) 99876-1234",
-					-15.0,
-					-23.0,
-					"".getBytes()),
-			new Crise(
-		        	"Deslizamento na favela Inverno",
-					7,
-					"Zé das Couves",
-					"zedascouves@gmail.com",
-					"(12) 99876-1234",
-					-15.0,
-					-23.0,
-					"".getBytes())
-		};
+		        	"Alagamento no centro de Baurú",
+					1,
+					"Usuario de Testes",
+					"usuario.testes@gmail.com",
+					"(12)94321-1234",
+					-22.318265,
+					-49.068886,
+					getFoto())
+			};
 		
 		return Arrays.asList(data);
 	}
@@ -149,7 +122,7 @@ public class APIPostTests {
     }
     
     @Test
-    public void postCriseGerarAlertaComHeaders() throws Exception {
+    public void postCriseGerarAlerta() throws Exception {
         URI criseURI = new URI(getBaseUrl() + "/rest/avisos");
 
         Map<String, Object> map = new LinkedHashMap<>();
@@ -169,25 +142,6 @@ public class APIPostTests {
         HttpEntity<Map<String, Object>> post = new HttpEntity<>(map, httpHeaders);
 
 		ResponseEntity<MessageResource> criseResponseEntity = getRestTemplate().postForEntity(criseURI, post, MessageResource.class);
-
-        assertThat(criseResponseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
-    }
-    
-    @Test
-    public void postCriseGerarAlertaSemHeaders() throws Exception {
-        URI criseURI = new URI(getBaseUrl() + "/rest/avisos");
-
-        Map<String, Object> map = new LinkedHashMap<>();
-        map.put("descricao", crise.getDescricao());
-		map.put("categoria", crise.getCategoria());
-		map.put("nome", crise.getNome());
-		map.put("email", crise.getEmail());
-		map.put("telefone", crise.getTelefone());
-		map.put("latitude", crise.getLatitude());
-		map.put("longitude", crise.getLongitude());
-		map.put("fotografia", crise.getFotografia());
-
-		ResponseEntity<MessageResource> criseResponseEntity = getRestTemplate().postForEntity(criseURI, new HttpEntity<Map<String, Object>>(map), MessageResource.class);
 
         assertThat(criseResponseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
     }

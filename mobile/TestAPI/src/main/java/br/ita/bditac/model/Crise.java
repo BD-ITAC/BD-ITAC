@@ -59,7 +59,7 @@ public class Crise implements Serializable {
             String telefone,
             double latitude,
             double longitude,
-            String fotografia) {
+            byte[] fotografia) {
         
         this.descricao = descricao;
         this.categoria = categoria;
@@ -68,92 +68,43 @@ public class Crise implements Serializable {
         this.telefone = telefone;
         this.latitude = latitude;
         this.longitude = longitude;
-    	this.fotografia = Base64.encodeBase64(fotografia.getBytes());
+        this.fotografia = Base64.encodeBase64(fotografia);
     }
-
     
     public String getDescricao() {
         return descricao;
     }
-
-    
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
-    
     
     public int getCategoria() {
         return categoria;
     }
 
-    
-    public void setCategoria(int categoria) {
-        this.categoria = categoria;
-    }
-    
-
     public String getNome() {
         return nome;
     }
-
-    
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
     
     public String getEmail() {
         return email;
     }
-
-    
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     
     public String getTelefone() {
         return telefone;
     }
-
-    
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
-    }
-
     
     public static long getSerialversionuid() {
         return serialVersionUID;
     }
     
-
 	public double getLatitude() {
 		return latitude;
 	}
-	
-
-	public void setLatitude(double latitude) {
-		this.latitude = latitude;
-	}
-	
 
 	public double getLongitude() {
 		return longitude;
 	}
 	
-
-	public void setLongitude(double longitude) {
-		this.longitude = longitude;
-	}
-	
-	
 	public String getFotografia() {
 		return new String(fotografia);
-	}
-	
-	
-	public void setFotografia(String fotografia) {
-		this.fotografia = fotografia.getBytes();
 	}
     
 }
