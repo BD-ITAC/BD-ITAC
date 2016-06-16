@@ -1,6 +1,7 @@
 package org.spark;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
 
@@ -10,14 +11,30 @@ public class PropertiesUtils {
 	private static Properties properties;
 	
 	public PropertiesUtils() throws IOException {
+		
+		if(properties != null)
+			return;
+		
+		setProperties(filePath);
+	}
+	
+	public PropertiesUtils(String filePath) throws IOException {
+		
+		if(properties != null)
+			return;
+		
+		setProperties(filePath);
+	}
+
+	private void setProperties(String filePath) throws FileNotFoundException, IOException {
 		Properties props = new Properties();
 		FileInputStream file = new FileInputStream(filePath);
 		props.load(file);
-		properties = props;
+		setProperties(props);
 	}
 	
 	public String get(String property){
-		return properties.getProperty(property);
+		return getProperties().getProperty(property);
 	}
 	
 	public String getCassandraKeyspace(){
@@ -50,5 +67,13 @@ public class PropertiesUtils {
 
 	public String getCassandraMaster() {
 		return get("spark.master");
+	}
+
+	public static Properties getProperties() {
+		return properties;
+	}
+
+	public static void setProperties(Properties properties) {
+		PropertiesUtils.properties = properties;
 	}
 }
