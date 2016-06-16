@@ -22,8 +22,7 @@
   <tiltle>Barometrica</tiltle>
   <table width="100%" class="table table-striped">
    <thead>
-     <tr>
-       <th> </th>
+     <tr>       
        <th>Data/Hora</th>
        <th>Valor</th>   
        <th>Status</th>
@@ -31,17 +30,16 @@
    </thead>
    <tbody>
     <tr ng-repeat="row in avisosListCollection | filter:searchBoxData">
-     <td>{{row.dt | date:'yyyy-MM-dd HH:mm:ss'}}</td>
-      <td>{{row.valor}}</td>  
-      <td>{{row.status}}</td>
+      <td>{{row.cec_datahora | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+      <td>{{row.cec_barometrica}}</td>  
+      <td>{{row.cec_barosit}}</td>
     </tr>
    </tbody>
   </table>
   <tiltle>Nivel de água</tiltle>
   <table width="100%" class="table table-striped">
    <thead>
-     <tr>
-       <th> </th>
+     <tr>       
        <th>Data/Hora</th>
        <th>Valor</th>   
        <th>Status</th>
@@ -49,17 +47,16 @@
    </thead>
    <tbody>
     <tr ng-repeat="row in avisosListCollection | filter:searchBoxData">
-     <td>{{row.dt | date:'yyyy-MM-dd HH:mm:ss'}}</td>
-      <td>{{row.valor}}</td>  
-      <td>{{row.status}}</td>
+     <td>{{row.cec_datahora | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+      <td>{{row.cec_nivelagua}}</td>  
+      <td>{{row.cec_nivelsit}}</td>
     </tr>
    </tbody>
   </table>
-  <tiltle>Pulviometro</tiltle>
+  <tiltle>Pluviometro</tiltle>
   <table width="100%" class="table table-striped">
    <thead>
-     <tr>
-       <th> </th>
+     <tr>       
        <th>Data/Hora</th>
        <th>Valor</th>   
        <th>Status</th>
@@ -68,16 +65,15 @@
    <tbody>
     <tr ng-repeat="row in avisosListCollection | filter:searchBoxData">
      <td>{{row.dt | date:'yyyy-MM-dd HH:mm:ss'}}</td>
-      <td>{{row.valor}}</td>  
-      <td>{{row.status}}</td>
+      <td>{{row.cec_pluviometro}}</td>  
+      <td>{{row.cec_pluvsit}}</td>
     </tr>
    </tbody>
   </table>
   <tiltle>Temperatura</tiltle>
   <table width="100%" class="table table-striped">
    <thead>
-     <tr>
-       <th> </th>
+     <tr>       
        <th>Data/Hora</th>
        <th>Valor</th>   
        <th>Status</th>
@@ -86,16 +82,15 @@
    <tbody>
     <tr ng-repeat="row in avisosListCollection | filter:searchBoxData">
      <td>{{row.dt | date:'yyyy-MM-dd HH:mm:ss'}}</td>
-      <td>{{row.valor}}</td>  
-      <td>{{row.status}}</td>
+      <td>{{row.cec_temperatura}}</td>  
+      <td>{{row.cec_tempsit}}</td>
     </tr>
    </tbody>
   </table>
   <tiltle>Umidade</tiltle>
   <table width="100%" class="table table-striped">
    <thead>
-     <tr>
-       <th> </th>
+     <tr>       
        <th>Data/Hora</th>
        <th>Valor</th>   
        <th>Status</th>
@@ -104,8 +99,8 @@
    <tbody>
     <tr ng-repeat="row in avisosListCollection | filter:searchBoxData">
      <td>{{row.dt | date:'yyyy-MM-dd HH:mm:ss'}}</td>
-      <td>{{row.valor}}</td>  
-      <td>{{row.status}}</td>
+      <td>{{row.cec_umidade}}</td>  
+      <td>{{row.cec_umidsit}}</td>
     </tr>
    </tbody>
   </table>

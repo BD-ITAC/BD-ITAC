@@ -31,7 +31,7 @@ client.connect(function (err) {
 });
 
 dao.listSensors = function(callback){
-  client.execute('SELECT * FROM bditac.crise_estacao_captura', function (err, result) {
+  client.execute('SELECT * FROM bditac.crise_estacao_captura LIMIT 10', function (err, result) {
     if (err) {
       client.shutdown();
       callback(err, null);
@@ -45,9 +45,24 @@ function getDados(rows)
 {
   var sensors = [];
   for(i in rows){
-    var sensor = rows[i];
+    var sensor = 
+    {
+        cec_id: i,
+        cec_barometrica: rows[i].cec_barometrica,
+        cec_barosit: rows[i].cec_barosit,
+        cec_datahora: rows[i].cec_datahora,
+        cec_nivelagua: rows[i].cec_nivelagua,
+        cec_nivelsit: rows[i].cec_nivelsit,
+        cec_pluviometro: rows[i].cec_pluviometro,
+        cec_pluvsit: rows[i].cec_pluvsit,
+        cec_temperatura: rows[i].cec_temperatura,
+        cec_tempsit: rows[i].cec_tempsit,
+        cec_umidade: rows[i].cec_umidade,
+        cec_umidsit: rows[i].cec_umidsit,        
+    };
     sensors.push(sensor);
   }
+  //console.log(sensors);
   return sensors;
 }
 
