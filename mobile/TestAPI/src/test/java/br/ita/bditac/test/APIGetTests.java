@@ -4,29 +4,22 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.IOException;
 import java.net.URI;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import org.junit.FixMethodOrder;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-import org.junit.runners.MethodSorters;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.hateoas.hal.Jackson2HalModule;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -42,14 +35,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
 import br.ita.bditac.model.Categoria;
-import br.ita.bditac.model.Crise;
 import br.ita.bditac.model.Indicador;
 import br.ita.bditac.ws.support.AlertaResources;
 import br.ita.bditac.ws.support.AvisoResources;
 import br.ita.bditac.ws.support.CategoriaResources;
 import br.ita.bditac.ws.support.CriseResource;
 import br.ita.bditac.ws.support.IndicadorResources;
-import br.ita.bditac.ws.support.MessageResource;
+
 
 /**
  *
@@ -57,15 +49,12 @@ import br.ita.bditac.ws.support.MessageResource;
  *
  */
 @RunWith(JUnit4.class)
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class APITests {
-    
-    private static String _foto = null;
-    
-    class ClientErrorHandler implements ResponseErrorHandler {
+public class APIGetTests {
+
+	class ClientErrorHandler implements ResponseErrorHandler {
 
         public void handleError(ClientHttpResponse response) throws IOException {
-        	System.out.println(response.toString());
+        	
         }
 
         public boolean hasError(ClientHttpResponse response) throws IOException {
@@ -78,7 +67,7 @@ public class APITests {
 
     }
 
-    RestTemplate getRestTemplate() {
+    private RestTemplate getRestTemplate() {
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -96,80 +85,14 @@ public class APITests {
         return restTemplate;
 
     }
-    
-    String getFoto() throws IOException {
-    	
-    	if(_foto == null) {
-	        byte[] binaryFile = Files.readAllBytes(Paths.get(Thread.currentThread().getContextClassLoader().getResource("foto.png").getPath()));
-	        _foto = new String (binaryFile, StandardCharsets.UTF_8); 
-    	}
-	
-		return _foto;
-    	
-    }
 
     protected String getBaseUrl() {
         return "http://localhost:9080";
     }
-    
-    @Test
-    public void test101PostCriseGerarAlertaComFoto() throws Exception {
-        URI criseURI = new URI(getBaseUrl() + "/rest/avisos");
-
-        Crise crise = new Crise(
-        	"Deslizamento na favela do Paraiso",
-			5,
-			"Ze das Couves",
-			"zedascouves@gmail.com",
-			"(12) 99876-1234",
-			-15.0,
-			-23.0,
-			getFoto());
-
-        Map<String, Object> criseRequest = new LinkedHashMap<>();
-        criseRequest.put("descricao", crise.getDescricao());
-		criseRequest.put("categoria", crise.getCategoria());
-		criseRequest.put("nome", crise.getNome());
-		criseRequest.put("email", crise.getEmail());
-		criseRequest.put("telefone", crise.getTelefone());
-		criseRequest.put("latitude", crise.getLatitude());
-		criseRequest.put("longitude", crise.getLongitude());
-		criseRequest.put("fotografia", crise.getFotografia());
-		ResponseEntity<MessageResource> criseResponseEntity = getRestTemplate().postForEntity(criseURI, new HttpEntity<Map<String, Object>>(criseRequest), MessageResource.class);
-
-        assertThat(criseResponseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
-    }
-    
-    @Test
-    public void test102PostCriseGerarAlertaSemFoto() throws Exception {
-        URI criseURI = new URI(getBaseUrl() + "/rest/avisos");
-
-        Crise crise = new Crise(
-        	"Deslizamento na favela do Paraiso",
-			5,
-			"Ze das Couves",
-			"zedascouves@gmail.com",
-			"(12) 99876-1234",
-			-15.0,
-			-23.0,
-			"");
-
-        Map<String, Object> criseRequest = new LinkedHashMap<>();
-        criseRequest.put("descricao", crise.getDescricao());
-		criseRequest.put("categoria", crise.getCategoria());
-		criseRequest.put("nome", crise.getNome());
-		criseRequest.put("email", crise.getEmail());
-		criseRequest.put("telefone", crise.getTelefone());
-		criseRequest.put("latitude", crise.getLatitude());
-		criseRequest.put("longitude", crise.getLongitude());
-		criseRequest.put("fotografia", crise.getFotografia());
-		ResponseEntity<MessageResource> criseResponseEntity = getRestTemplate().postForEntity(criseURI, new HttpEntity<Map<String, Object>>(criseRequest), MessageResource.class);
-
-        assertThat(criseResponseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
-    }
 
     @Test
-    public void test103GetCriseInexistente() throws Exception {
+    @Ignore
+    public void getCriseInexistente() throws Exception {
         String criseURL = getBaseUrl() + "/rest/avisos/{id}";
 
         Map<String, Integer> params = new HashMap<String, Integer>();
@@ -181,7 +104,7 @@ public class APITests {
     }
 
     @Test
-    public void test105GetAvisos() throws Exception {
+    public void getAvisos() throws Exception {
         String alertaUrl = getBaseUrl() + "/rest/alerts";
 
         ResponseEntity<AvisoResources> resources = null;
@@ -196,7 +119,7 @@ public class APITests {
     }
 
     @Test
-    public void test107GetAlertasByCoords() throws Exception {
+    public void getAlertasByCoords() throws Exception {
         String alertaUrl = getBaseUrl() + "/rest/avisos/nearbyWarnings";
 
         DecimalFormat df=new DecimalFormat("#0.000000");
@@ -220,7 +143,7 @@ public class APITests {
 
     @Test
     @Ignore
-    public void test108GetAlertaByCoordsInexistente() throws Exception {
+    public void getAlertaByCoordsInexistente() throws Exception {
         String alertaUrl = getBaseUrl() + "/rest/avisos/nearbyWarnings";
 
         DecimalFormat df=new DecimalFormat("#0.000000");
@@ -237,7 +160,7 @@ public class APITests {
     }
    
    @Test
-   public void test115GetCategorias() throws Exception {
+   public void getCategorias() throws Exception {
 	   URI categoriaURI = new URI(getBaseUrl() + "/rest/categories");
 	   
 	   List<Categoria> categorias = getRestTemplate().getForObject(categoriaURI, CategoriaResources.class).unwrap();
@@ -246,7 +169,7 @@ public class APITests {
    }
 
    @Test
-   public void test117GetIndicadores() throws Exception {
+   public void getIndicadores() throws Exception {
 	   URI indicadoresURI = new URI(getBaseUrl() + "/rest/avisos/indicators");
 	   
 	   List<Indicador> indicadores = getRestTemplate().getForObject(indicadoresURI, IndicadorResources.class).unwrap();

@@ -5,7 +5,7 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({ APITests.class })
+@SuiteClasses({ APIGetTests.class, APIPostTests.class })
 public class AllTests {
 
 }
