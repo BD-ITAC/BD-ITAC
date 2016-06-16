@@ -50,7 +50,7 @@ avisosDAO = function(pool) {
        sin( radians('"+dados.latitude+"') ) * \n\
        sin( radians( geo_lat )))) as distance \n\
        from geografica \n\
-     ) A WHERE distance < '500' ORDER BY distance ASC LIMIT 0, 1; \n\n"+
+     ) A WHERE distance < '1000' ORDER BY distance ASC LIMIT 0, 1; \n\n"+
 
      "insert into aviso set \n \
      avs_data = NOW(), \n \
@@ -151,7 +151,7 @@ avisosDAO = function(pool) {
               dt: avisos.data,
               ativo: true,
               status: 1,
-               pic: avisos.fotografia 
+               pic: avisos.fotografia
             }
     return dados;
   }
