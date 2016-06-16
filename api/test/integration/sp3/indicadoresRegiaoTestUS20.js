@@ -9,7 +9,7 @@ describe('', function(){
     it('Deve listar os indicadores de crise', function(done){
 
       server
-      .get('/rest/avisos/indicators') //Url ainda nao implementada
+      .get('/rest/avisos/indicators')
       .end(function(err, res){
 
         res.status.should.equal(200);
@@ -19,15 +19,15 @@ describe('', function(){
       });
     });
     
-    it('Deve filtrar e listar os indicadores de crise por regiao', function(done){
+    it('Deve filtrar e listar os avisos por regiao', function(done){
 
       server
-      .get('/rest/avisos/indicators') //Url ainda nao implementada
+      .get('/rest/avisos/nearbyWarnings?latitude=40&longitude=50&raio=10&timestamp="2016/06/12T02:00:00"')
       .end(function(err, res){
 
-        res.status.should.equal(600); //fail - precisa refatorar para filtrar por regiao
+        res.status.should.equal(200);
         res.should.be.json;
-
+        
         done();
       });
     });
