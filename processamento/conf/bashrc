@@ -108,4 +108,6 @@ export HIVE_HOME=/usr/local/hive
 export HIVE_AUX_JARS_PATH=/usr/local/hive/auxlib
 export HUE_HOME=/usr/local/hue
 export SPARK_HOME=/usr/local/spark
-export PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin:$HIVE_HOME/bin:$SPARK_HOME/bin
+export PIG_HOME=/usr/local/pig
+export OOZIE_HOME=/usr/local/oozie
+export PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin:$HIVE_HOME/bin:$SPARK_HOME/bin:$PIG_HOME/bin:$OOZIE_HOME/bin
