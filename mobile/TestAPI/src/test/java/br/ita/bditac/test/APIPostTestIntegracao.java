@@ -51,7 +51,7 @@ public class APIPostTestIntegracao {
     	
     	try {
 	    	if(_foto == null) {
-		        _foto = Files.readAllBytes(Paths.get(Thread.currentThread().getContextClassLoader().getResource("foto1.png").getPath()));
+		        _foto = Files.readAllBytes(Paths.get(Thread.currentThread().getContextClassLoader().getResource("foto2.jpg").getPath()));
 	    	}
     	}
     	catch(IOException ioex) {
@@ -131,9 +131,9 @@ public class APIPostTestIntegracao {
 		Map<String,Object> map = new ObjectMapper().convertValue(crise, Map.class);
         HttpEntity<Map<String, Object>> post = new HttpEntity<>(map, httpHeaders);
 
-		ResponseEntity<MessageResource> criseResponseEntity = getRestTemplate().postForEntity(criseURI, post, MessageResource.class);
+		ResponseEntity<MessageResource> response = getRestTemplate().postForEntity(criseURI, post, MessageResource.class);
 
-        assertThat(criseResponseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
     }
    
 }

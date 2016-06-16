@@ -19,7 +19,6 @@ import org.springframework.web.client.RestTemplate;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 import br.ita.bditac.ws.model.Crise;
@@ -68,23 +67,15 @@ public class CriseClient {
 
     public boolean addCrise(Crise crise) {
 
-        Map<String, Object> map = new LinkedHashMap<>();
-        map.put("descricao", crise.getDescricao());
-        map.put("categoria", crise.getCategoria());
-        map.put("nome", crise.getNome());
-        map.put("email", crise.getEmail());
-        map.put("telefone", crise.getTelefone());
-        map.put("latitude", crise.getLatitude());
-        map.put("longitude", crise.getLongitude());
-        map.put("fotografia", crise.getFotografia());
+        Map<String,Object> map = new ObjectMapper().convertValue(crise, Map.class);
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+        httpHeaders.setAccept(Arrays.asList(MediaType.APPLICATION_JSON, MediaTypes.HAL_JSON));
+
         HttpEntity<Map<String, Object>> post = new HttpEntity<>(map, httpHeaders);
 
-        ResponseEntity<MessageResource> response;
-        restTemplate.postForEntity(hostURL + SERVICE_URL, post, MessageResource.class);
-        response = restTemplate.postForEntity(hostURL + SERVICE_URL, post, MessageResource.class);
+        ResponseEntity<MessageResource> response = restTemplate.postForEntity(hostURL + SERVICE_URL, post, MessageResource.class);
 
         return response.getStatusCode().equals(HttpStatus.CREATED);
 

@@ -63,7 +63,7 @@ public class Crise implements Serializable {
         }
         else {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
             byte[] byteArray = outputStream.toByteArray();
             this.fotografia = Base64.encodeBase64(byteArray);
         }
