@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # SSH/Profile/Bashrc
-cp /usr/local/BD-ITAC/processamento/conf/ssh/ssh.config $HADOOP_HOME/.ssh/config
+cp /usr/local/BD-ITAC/processamento/docker/hadoop/ssh/ssh.config $HADOOP_HOME/.ssh/config
 cp /usr/local/BD-ITAC/processamento/conf/bashrc $HADOOP_HOME/.bashrc
 cp /usr/local/BD-ITAC/processamento/conf/profile $HADOOP_HOME/.profile
 cp /usr/local/BD-ITAC/processamento/conf/bashrc ~/.bashrc
@@ -31,6 +31,6 @@ rsync -av /usr/local/BD-ITAC/processamento/setup/oozie/sbin/* $OOZIE_HOME/sbin/
 chown -R hdfs:hdfs $HADOOP_HOME/ $HIVE_HOME/ $HUE_HOME/ $SPARK_HOME/ $OOZIE_HOME/
 
 # Setup dir
-mkdir /setup
-cp /usr/local/BD-ITAC/processamento/setup/* /setup/
+mkdir /setup >/dev/null 2>&1
+cp /usr/local/BD-ITAC/processamento/setup/* /setup/ >/dev/null 2>&1
 

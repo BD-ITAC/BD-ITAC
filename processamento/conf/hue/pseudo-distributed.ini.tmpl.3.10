@@ -22,18 +22,18 @@
 
   # Set this to a random string, the longer the better.
   # This is used for secure hashing in the session store.
-  secret_key=hue
+  secret_key=
 
   # Execute this script to produce the Django secret key. This will be used when
   # `secret_key` is not set.
   ## secret_key_script=
 
   # Webserver listens on this address and port
-  http_host=master.bditac.com
-  http_port=8888
+  http_host=0.0.0.0
+  http_port=8000
 
   # Time zone name
-  time_zone=America/Sao_Paulo
+  time_zone=America/Los_Angeles
 
   # Enable or disable Django debug mode.
   ## django_debug_mode=true
@@ -61,10 +61,10 @@
   ## server_group=hue
 
   # This should be the Hue admin and proxy user
-  default_user=hdfs
+  ## default_user=hue
 
   # This should be the hadoop cluster admin
-  default_hdfs_superuser=hdfs
+  ## default_hdfs_superuser=hdfs
 
   # If set to false, runcpserver will not actually start the web server.
   # Used if Apache is being used as a WSGI container.
@@ -494,13 +494,6 @@
     ## password_script=/path/script
     ## name=desktop/desktop.db
     ## options={}
-    engine=mysql
-    host=localhost
-    port=3306
-    user=hue
-    password=hue.
-    name=hue
-    ## options={}
 
   # Configuration options for specifying the Desktop session.
   # For more info, see https://docs.djangoproject.com/en/1.4/topics/http/sessions/
@@ -706,7 +699,7 @@
 
     [[[default]]]
       # Enter the filesystem uri
-      fs_defaultfs=hdfs://master.bditac.com:9000
+      fs_defaultfs=hdfs://localhost:8020
 
       # NameNode logical name.
       ## logical_name=
@@ -714,7 +707,7 @@
       # Use WebHdfs/HttpFs as the communication mechanism.
       # Domain should be the NameNode or HttpFs host.
       # Default port is 14000 for HttpFs.
-      webhdfs_url=http://localhost:50070/webhdfs/v1
+      ## webhdfs_url=http://localhost:50070/webhdfs/v1
 
       # Change this if your HDFS cluster is Kerberos-secured
       ## security_enabled=false
@@ -732,10 +725,10 @@
 
     [[[default]]]
       # Enter the host on which you are running the ResourceManager
-      resourcemanager_host=localhost
+      ## resourcemanager_host=localhost
 
       # The port where the ResourceManager IPC listens on
-      resourcemanager_port=8032
+      ## resourcemanager_port=8032
 
       # Whether to submit jobs to this cluster
       submit_to=True
@@ -747,13 +740,13 @@
       ## security_enabled=false
 
       # URL of the ResourceManager API
-      resourcemanager_api_url=http://localhost:8088
+      ## resourcemanager_api_url=http://localhost:8088
 
       # URL of the ProxyServer API
       ## proxy_api_url=http://localhost:8088
 
       # URL of the HistoryServer API
-      history_server_api_url=http://localhost:19888
+      ## history_server_api_url=http://localhost:19888
 
       # URL of the Spark History Server
       ## spark_history_server_url=http://localhost:18088
@@ -817,10 +810,10 @@
 
   # Host where HiveServer2 is running.
   # If Kerberos security is enabled, use fully-qualified domain name (FQDN).
-  hive_server_host=localhost
+  ## hive_server_host=localhost
 
   # Port where HiveServer2 Thrift server runs on.
-  hive_server_port=10000
+  ## hive_server_port=10000
 
   # Hive configuration directory, where hive-site.xml is located
   ## hive_conf_dir=/etc/hive/conf
@@ -929,22 +922,22 @@
 
 [spark]
   # Host address of the Livy Server.
-  livy_server_host=localhost
+  ## livy_server_host=localhost
 
   # Port of the Livy Server.
-  livy_server_port=8998
+  ## livy_server_port=8998
 
   # Configure livy to start in local 'process' mode, or 'yarn' workers.
-  livy_server_session_kind=yarn
+  ## livy_server_session_kind=process
 
   # If livy should use proxy users when submitting a job.
-  livy_impersonation_enabled=false
+  ## livy_impersonation_enabled=true
 
   # Host of the Sql Server
-  sql_server_host=localhost
+  ## sql_server_host=localhost
 
   # Port of the Sql Server
-  sql_server_port=10000
+  ## sql_server_port=10000
 
 
 ###########################################################################
@@ -959,7 +952,7 @@
   ## sample_data_dir=...thirdparty/sample_data
 
   # Location on HDFS where the oozie examples and workflows are stored.
-  remote_data_dir=/user/hdfs/oozie/workspaces
+  ## remote_data_dir=/user/hue/oozie/workspaces
 
   # Maximum of Oozie workflows or coodinators to retrieve in one API call.
   ## oozie_jobs_count=50
@@ -974,7 +967,7 @@
 
 [filebrowser]
   # Location on local filesystem where the uploaded archives are temporary stored.
-  archive_upload_tempdir=/tmp
+  ## archive_upload_tempdir=/tmp
 
   # Show Download Button for HDFS file browser.
   ## show_download_button=false
@@ -1178,13 +1171,13 @@
 [liboozie]
   # The URL where the Oozie service runs on. This is required in order for
   # users to submit jobs. Empty value disables the config check.
-  oozie_url=http://localhost:11000/oozie
+  ## oozie_url=http://localhost:11000/oozie
 
   # Requires FQDN in oozie_url if enabled
   ## security_enabled=false
 
   # Location on HDFS where the workflows/coordinator are deployed when submitted.
-  remote_deployement_dir=/user/hdfs/oozie/deployments
+  ## remote_deployement_dir=/user/hue/oozie/deployments
 
 
 ###########################################################################

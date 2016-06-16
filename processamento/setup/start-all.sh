@@ -29,4 +29,4 @@ su -l $HADOOP_USER -c "$HUE_HOME/build/env/bin/hue livy_server > $HUE_HOME/logs/
 # Hue
 echo "starting hueserver"
 #start-stop-daemon --start --pidfile /var/run/hueserver.pid --make-pidfile --chuid $HADOOP_USER --chdir $HUE_HOME --background --startas $HUE_HOME/build/env/bin/hue -- runserver master.bditac.com:8888
-su -l $HADOOP_USER -c "$HUE_HOME/build/env/bin/hue runserver master.bditac.com:8888 > $HUE_HOME/logs/hueserver.log 2>&1 &"
+su -l $HADOOP_USER -c "$HUE_HOME/build/env/bin/supervisor > $HUE_HOME/logs/hueserver.log 2>&1 &"
