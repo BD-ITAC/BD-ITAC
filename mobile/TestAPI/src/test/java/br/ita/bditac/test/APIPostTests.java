@@ -9,7 +9,6 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.junit.Test;
@@ -144,7 +143,6 @@ public class APIPostTests {
     }
 
     protected String getBaseUrl() {
-        //return "http://localhost:9080";
     	return "http://200.144.14.28:80";
     }
     
@@ -152,15 +150,8 @@ public class APIPostTests {
     public void postCriseGerarAlertaComHeaders() throws Exception {
         URI criseURI = new URI(getBaseUrl() + "/rest/avisos");
 
-        Map<String, Object> map = new LinkedHashMap<>();
-        map.put("descricao", crise.getDescricao());
-		map.put("categoria", crise.getCategoria());
-		map.put("nome", crise.getNome());
-		map.put("email", crise.getEmail());
-		map.put("telefone", crise.getTelefone());
-		map.put("latitude", crise.getLatitude());
-		map.put("longitude", crise.getLongitude());
-		map.put("fotografia", crise.getFotografia());
+        @SuppressWarnings("unchecked")
+		Map<String,Object> map = new ObjectMapper().convertValue(crise, Map.class);
 		
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
@@ -177,15 +168,8 @@ public class APIPostTests {
     public void postCriseGerarAlertaSemHeaders() throws Exception {
         URI criseURI = new URI(getBaseUrl() + "/rest/avisos");
 
-        Map<String, Object> map = new LinkedHashMap<>();
-        map.put("descricao", crise.getDescricao());
-		map.put("categoria", crise.getCategoria());
-		map.put("nome", crise.getNome());
-		map.put("email", crise.getEmail());
-		map.put("telefone", crise.getTelefone());
-		map.put("latitude", crise.getLatitude());
-		map.put("longitude", crise.getLongitude());
-		map.put("fotografia", crise.getFotografia());
+        @SuppressWarnings("unchecked")
+		Map<String,Object> map = new ObjectMapper().convertValue(crise, Map.class);
 
 		ResponseEntity<MessageResource> criseResponseEntity = getRestTemplate().postForEntity(criseURI, new HttpEntity<Map<String, Object>>(map), MessageResource.class);
 

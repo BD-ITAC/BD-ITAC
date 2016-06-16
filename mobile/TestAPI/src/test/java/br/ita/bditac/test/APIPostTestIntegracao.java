@@ -9,7 +9,6 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.junit.Test;
@@ -52,7 +51,7 @@ public class APIPostTestIntegracao {
     	
     	try {
 	    	if(_foto == null) {
-		        _foto = Files.readAllBytes(Paths.get(Thread.currentThread().getContextClassLoader().getResource("foto2.png").getPath()));
+		        _foto = Files.readAllBytes(Paths.get(Thread.currentThread().getContextClassLoader().getResource("foto1.png").getPath()));
 	    	}
     	}
     	catch(IOException ioex) {
@@ -117,7 +116,6 @@ public class APIPostTestIntegracao {
     }
 
     protected String getBaseUrl() {
-        //return "http://localhost:9080";
     	return "http://200.144.14.28:80";
     }
     
@@ -125,20 +123,12 @@ public class APIPostTestIntegracao {
     public void postCriseGerarAlerta() throws Exception {
         URI criseURI = new URI(getBaseUrl() + "/rest/avisos");
 
-        Map<String, Object> map = new LinkedHashMap<>();
-        map.put("descricao", crise.getDescricao());
-		map.put("categoria", crise.getCategoria());
-		map.put("nome", crise.getNome());
-		map.put("email", crise.getEmail());
-		map.put("telefone", crise.getTelefone());
-		map.put("latitude", crise.getLatitude());
-		map.put("longitude", crise.getLongitude());
-		map.put("fotografia", crise.getFotografia());
-		
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
         httpHeaders.setAccept(Arrays.asList(MediaType.APPLICATION_JSON, MediaTypes.HAL_JSON));
         httpHeaders.add(HttpHeaders.ACCEPT_ENCODING, "gzip");
+        @SuppressWarnings("unchecked")
+		Map<String,Object> map = new ObjectMapper().convertValue(crise, Map.class);
         HttpEntity<Map<String, Object>> post = new HttpEntity<>(map, httpHeaders);
 
 		ResponseEntity<MessageResource> criseResponseEntity = getRestTemplate().postForEntity(criseURI, post, MessageResource.class);
