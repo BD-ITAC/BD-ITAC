@@ -78,7 +78,7 @@ public class ApplicationTest extends AndroidTestCase {
         // Na tela de cadastro selecionar o tipo de crise
         onView(withId(R.id.categoria))
                 .perform(click());
-        onData(allOf(is(instanceOf(String.class)), is("Alagamento")))
+        onData(allOf(is(instanceOf(String.class)), is("Alagamentos")))
                 .perform(click());
 
         // Informar o texto da crise
@@ -97,7 +97,7 @@ public class ApplicationTest extends AndroidTestCase {
         // Na tela de cadastro selecionar o tipo de crise
         onView(withId(R.id.categoria))
                 .perform(click());
-        onData(allOf(is(instanceOf(String.class)), is("Alagamento")))
+        onData(allOf(is(instanceOf(String.class)), is("Alagamentos")))
                 .perform(click());
 
         // Informar o texto da crise
