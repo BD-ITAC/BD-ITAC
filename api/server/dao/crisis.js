@@ -205,10 +205,15 @@ crisisDAO = function(pool) {
     return crises;
   }
 
-
-
-
-
+  dao.getCrisisID = function(cri_id, callback){
+    self.pool.query('SELECT * FROM crise WHERE cri_id = ?', cri_id, function(err, rows){
+      if(err){
+        return callback(err, null);
+      }else{
+        return callback(null, rows);
+      }
+    });
+  };
 
   dao.listType = function(callback){
     self.pool.query('SELECT * FROM crise_tipo', function(err, rows){

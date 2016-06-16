@@ -1,0 +1,23 @@
+<div ng-controller="AlertsController as vm">
+  <ol class="breadcrumb">
+  <li><a href="#">Home</a></li>
+  <li><a href="#">Alerts</a></li>
+  <li class="active">List</li>
+</ol>
+  <table width="100%" class="table table-hover">
+   <thead>
+     <tr>
+       <th>#ID</th>
+       <th>Description</th>
+       <th>Date Created</th>
+     </tr>
+   </thead>
+   <tbody>
+    <tr ng-repeat="alert in AlertsListCollection">
+      <td>{{alert.ale_id}}</td>
+      <td>{{alert.alt_msg}}</td>
+      <td>{{alert.alt_timestamp}}</td>
+    </tr>
+   </tbody>
+  </table>
+</div>

@@ -46,7 +46,15 @@ module.exports = function(app){
 	   });
    };
 
-
+   controller.getCrisisID = function(req, res, next){
+     crisisDAO.getCrisisID(req.params.cri_id, function(err, data){
+       if(err){
+         res.status(500).json(err);
+       }else{
+         res.json(data);
+       }
+     });
+   };
 
  controller.listType = function(req, res, next){
    crisisDAO.listType(function(err, data){

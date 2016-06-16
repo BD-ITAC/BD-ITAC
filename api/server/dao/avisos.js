@@ -151,7 +151,7 @@ avisosDAO = function(pool) {
               dt: avisos.data,
               ativo: true,
               status: 1,
-              pic: new Buffer(avisos.fotografia, 'base64')
+               pic: avisos.fotografia ? new Buffer(avisos.fotografia, 'base64') : null
             }
     return dados;
   }

@@ -1,10 +1,44 @@
 [
   {
     "type": "get",
-    "url": "/rest/alerts",
-    "title": "Listar todos alertas confirmados",
+    "url": "/rest/alerts?latitude=-9.44340653710605&longitude=-70.4864968937616&raio=10&timestamp=2016-06-14%2000:11:05",
+    "title": "Listar todos alertas confirmados por região",
     "group": "Alertas",
     "version": "1.0.0",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "latitude",
+            "description": "Latitude da localização."
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "longitude",
+            "description": "Longitude da localização."
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "raio",
+            "description": "Raio de alcance em Kms."
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "timestamp",
+            "description": "Data e Hora inicial para consulta. Informe '' caso deseje todos. Para filtrar, use o formato yyyy-mm-ddThh:MM:ss"
+          }
+        ]
+      }
+    },
     "success": {
       "fields": {
         "Success 200": [
@@ -60,9 +94,9 @@
         }
       ]
     },
-    "filename": "D:/Projetos/ITA/BD-ITAC/api/server/routes/alerts.js",
+    "filename": "C:/git/BD-ITAC/api/server/routes/alerts.js",
     "groupTitle": "Alertas",
-    "name": "GetRestAlerts"
+    "name": "GetRestAlertsLatitude944340653710605Longitude704864968937616Raio10Timestamp2016061420001105"
   },
   {
     "type": "get",
@@ -172,7 +206,7 @@
         "url": "/rest/avisos"
       }
     ],
-    "filename": "D:/Projetos/ITA/BD-ITAC/api/server/routes/avisos.js",
+    "filename": "C:/git/BD-ITAC/api/server/routes/avisos.js",
     "groupTitle": "Avisos",
     "name": "GetRestAvisos"
   },
@@ -297,7 +331,7 @@
         "url": "/rest/avisos"
       }
     ],
-    "filename": "D:/Projetos/ITA/BD-ITAC/api/server/routes/avisos.js",
+    "filename": "C:/git/BD-ITAC/api/server/routes/avisos.js",
     "groupTitle": "Avisos",
     "name": "GetRestAvisosId"
   },
@@ -396,7 +430,7 @@
         }
       ]
     },
-    "filename": "D:/Projetos/ITA/BD-ITAC/api/server/routes/avisos.js",
+    "filename": "C:/git/BD-ITAC/api/server/routes/avisos.js",
     "groupTitle": "Avisos",
     "name": "GetRestAvisosNearbywarningsLatitude23196641Longitude45946840Raio10Timestamp20160610t080000"
   },
@@ -517,7 +551,7 @@
         }
       ]
     },
-    "filename": "D:/Projetos/ITA/BD-ITAC/api/server/routes/avisos.js",
+    "filename": "C:/git/BD-ITAC/api/server/routes/avisos.js",
     "groupTitle": "Avisos",
     "name": "PostRestAvisos"
   },
@@ -559,7 +593,7 @@
         "url": "/rest/categories"
       }
     ],
-    "filename": "D:/Projetos/ITA/BD-ITAC/api/server/routes/category.js",
+    "filename": "C:/git/BD-ITAC/api/server/routes/category.js",
     "groupTitle": "Categorias",
     "name": "GetRestCategories"
   },
@@ -636,7 +670,7 @@
         "url": "/rest/crisis/type"
       }
     ],
-    "filename": "D:/Projetos/ITA/BD-ITAC/api/server/routes/crisis.js",
+    "filename": "C:/git/BD-ITAC/api/server/routes/crisis.js",
     "groupTitle": "Crisis",
     "name": "GetRestCrisisType"
   },
@@ -685,7 +719,7 @@
         "url": "/rest/avisos/indicators"
       }
     ],
-    "filename": "D:/Projetos/ITA/BD-ITAC/api/server/routes/avisos.js",
+    "filename": "C:/git/BD-ITAC/api/server/routes/avisos.js",
     "groupTitle": "avisos",
     "name": "GetRestAvisosIndicators"
   }

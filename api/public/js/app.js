@@ -22,6 +22,11 @@ function ($routeProvider, $httpProvider, $compileProvider) {
             controller: 'DashBoardController',
             requireLogin: true
         })
+        .when('/alerts', {
+            templateUrl: 'part-views/alerts.html',
+            controller: 'AlertsController',
+            requireLogin: true
+        })
         .when('/avisos', {
             templateUrl: 'part-views/avisos.html',
             controller: 'AvisosController',
@@ -35,6 +40,11 @@ function ($routeProvider, $httpProvider, $compileProvider) {
         .when('/crisis', {
             templateUrl: 'part-views/crisis.html',
             controller: 'CrisisController',
+            requireLogin: true
+        })
+        .when('/crisis-detail', {
+            templateUrl: 'part-views/crisis-detail.html',
+            controller: 'CrisisDetailController',
             requireLogin: true
         })
         .when('/classification', {

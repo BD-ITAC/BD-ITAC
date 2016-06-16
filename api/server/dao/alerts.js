@@ -15,27 +15,61 @@ alertsDAO = function(pool){
       this.pool = pool;
   }
 
-  dao.listAlerts = function(callback){
-      console.log(getAlerts());
-      callback(null,getAlerts());
+  dao.listAllAlerts = function(callback){
+    var query = "SELECT alt_id, alt_msg, date_format(alt_timestamp,'%d/%m/%Y') AS alt_timestamp FROM alerta";
+    self.pool.query(query, function(err, rows){
+      if(err){
+        callback (err, null);
+      }else{
+        callback(null, rows);
+      }
+    });
+  };
+
+  dao.listAlerts = function(filtro, callback){
+      var query ="select alt_msg, alt_timestamp, geo_uf, geo_lat, geo_long     \
+                ,( 6371 * acos( cos( radians(?) ) * cos( radians( geo_lat ) )   \
+                * cos( radians( geo_long ) - radians(?) ) + sin( radians(?) )  \
+	               * sin( radians( geo_lat ) ) ) ) AS distance  \
+                 from alerta \
+                 join geografica on geo_id = geo_cod \
+                 where alt_timestamp >= ? having distance < ? ";
+    self.pool.query(
+       query,
+       [filtro.latitude, filtro.longitude, filtro.latitude, filtro.timestamp, filtro.raio]
+       ,function(err, rows){
+      if(err){
+        callback(err,{});
+      }else{
+        if(rows[0] == null){
+          callback(null,null);
+        }else {
+            callback(null,getAlerts(rows));
+        }
+      }
+    });
   };
 
 
-  function getAlerts(callback)
+  function getAlerts(rows)
   {
      var alerts = [];
 
-     var alert =
-     {
-       descricao:"Alagamento na região de São José dos Campos",
-       datahora: "2016-06-12T08:00:32",
-       cidade: "São José dos Campos",
-       latitude: -23.1966,
-       longitude: -45.9468,
-       tipodacrise: "Alagamentos"
+     for (var i in rows) {
+       var alert =
+             {
+               descricao: rows[i].alt_msg,
+               datahora: rows[i].alt_timestamp,
+               cidade: rows[i].geo_uf,
+               latitude: rows[i].latitude,
+               longitude: rows[i].geo_lat,
+               tipodacrise: rows[i].geo_long
+             }
+
+       alerts.push(alert);
+
      }
 
-     alerts.push(alert);
 
      return alerts;
   };
