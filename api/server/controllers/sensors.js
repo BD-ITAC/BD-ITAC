@@ -1,17 +1,17 @@
 module.exports = function(app){
   var controller = {};
-  var crisisDAO = app.dao.sensors;
+  var sensorsDAO = app.dao.sensors;
 
    controller.list = function(req,res,next)
    {
-     crisisDAO.listCrisis(function(err, data) {
+     sensorsDAO.listSensors(function(err, data) {
        if(err)
        {
          res.status(500).json(err);
        }
        else
        {
-         if(data !== null && data.length >= 0){
+         if(data !== null ){
            res.json(data);
          }
          else
