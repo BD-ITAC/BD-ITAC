@@ -19,7 +19,8 @@ su -l $HADOOP_USER -c "$HADOOP_HOME/etc/hadoop/hadoop-env.sh && $HADOOP_HOME/sbi
 
 # Hue
 echo "stopping hueserver"
-killall python2.7
+killall supervisor
+killall hue
 
 # LivyServer
 echo "stopping livyserver"
