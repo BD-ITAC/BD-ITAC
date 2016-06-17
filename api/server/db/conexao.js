@@ -1,6 +1,3 @@
-/*
- * @author: edizon
- */
 var mysql = require('mysql')
 ,connection  = require('express-myconnection')
 , pool_connection
@@ -14,7 +11,7 @@ var mysql = require('mysql')
     connectionLimit    : 10,
     multipleStatements : true
     },
-    development_edizon: {
+    development_old: {
       host: "edizon.onmypc.net",
       user: "root",
       password: "@Senha01",
@@ -33,7 +30,6 @@ var mysql = require('mysql')
       multipleStatements : true
     }
 };
-
 
 module.exports = function(app){
   var conf = env_conf[process.env.NODE_ENV];

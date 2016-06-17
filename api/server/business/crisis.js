@@ -3,6 +3,7 @@ var str = require('string-validator');
 module.exports = function(app){
   var business = {};
   var crisisDAO = app.dao.crisis;
+  var avisosDAO = app.dao.avisos;
 
   /**
   * Realiza registro de uma nova crise
@@ -11,12 +12,8 @@ module.exports = function(app){
   */
   business.save = function(crisis, callback){
     //valida preenchimento de campos obrigatórios
-    var ValidEmail = str.isEmail();
-
-    if((!crisis.descricao || !crisis.nome || !crisis.email || !crisis.telefone
-      || !crisis.latitude || !crisis.longitude ||
-      !crisis.categoria) || !(crisis.categoria >= 0 && crisis.categoria <= 8)
-      || !(ValidEmail(crisis.email))){
+    if((!crisis.regiao_coords || !crisis.descricao || !crisis.cidade || !crisis.tipo
+      || !crisis.geoid)){
         callback({success: false, message: 'Invalid value data fields.', validationError:true});
       }else{
         crisisDAO.save(crisis, function(err, result){
@@ -48,8 +45,26 @@ module.exports = function(app){
         });
       }
   };
-
-  return business;
+  /*cancelamento de crise na tela de listagem de crise*/
+  business.cancelCrisis = function(cri_id, callback){
+    if(!cri_id){
+      callback({success: false, message: 'Informed value ID the crisis.'}, null);
+    }else{
+      avisosDAO.cancelAviso(cri_id, function(err, result){
+        if(err){
+          callback({success: false, message: err}, null);
+        }else{
+          crisisDAO.cancelCrisis(cri_id, function(err, result){
+            if(err){
+              callback({success: false, message: err}, null);
+            }else{
+              callback(null, {success: true, message: result});
+            }
+          });
+        }
+      });
+    }
+  };
 
   return business;
 };
