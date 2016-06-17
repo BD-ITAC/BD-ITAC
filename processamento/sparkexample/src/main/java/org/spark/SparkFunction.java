@@ -27,7 +27,7 @@ public class SparkFunction<T> {
 
 		public Tuple2<Integer, CriseCount> call(Facebook t) throws Exception {
 			//alterar para usar id da crise
-			return new Tuple2<Integer, CriseCount>(t.getFcb_id(), new CriseCount(t.getCri_id(), 1, now, CriseType.FACEBOOK));
+			return new Tuple2<Integer, CriseCount>(t.getCri_id(), new CriseCount(t.getCri_id(), 1, now, CriseType.FACEBOOK));
 		}
 	};
 
