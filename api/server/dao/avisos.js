@@ -50,7 +50,7 @@ avisosDAO = function(pool) {
        sin( radians('"+dados.latitude+"') ) * \n\
        sin( radians( geo_lat )))) as distance \n\
        from geografica \n\
-     ) A WHERE distance < '100' ORDER BY distance ASC LIMIT 0, 1; \n\n"+
+     ) A WHERE distance < '1000' ORDER BY distance ASC LIMIT 0, 1; \n\n"+
 
      "insert into aviso set \n \
      avs_data = NOW(), \n \
@@ -63,11 +63,11 @@ avisosDAO = function(pool) {
      avs_ptcoord=Point('"+dados.longitude+"','"+dados.latitude+"'),\n \
      cat_cod = '" + dados.categoria + "';\n\n " +
 
-     "select @idCrise:=avs_id from aviso where avs_id = LAST_INSERT_ID();\n\n"
+     "select @idCrise:=avs_id from aviso where avs_id = LAST_INSERT_ID();\n\n";
 
      if(dados.pic != null && dados.pic.length > 0)
      {
-       "insert into imagem set \n " +
+        query +="insert into imagem set \n " +
        "avs_cod = @idCrise, \n" +
        "img_arq = ? ; \n\n";
      }
@@ -151,7 +151,7 @@ avisosDAO = function(pool) {
               dt: avisos.data,
               ativo: true,
               status: 1,
-               pic: avisos.fotografia ? new Buffer(avisos.fotografia, 'base64') : null
+               pic: avisos.fotografia
             }
     return dados;
   }

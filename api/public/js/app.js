@@ -57,6 +57,11 @@ function ($routeProvider, $httpProvider, $compileProvider) {
             controller: 'EventoController',
             requireLogin: true
         })
+        .when('/sensors', {
+            templateUrl: 'part-views/sensors.html',
+            controller: 'SensorsController',
+            requireLogin: true
+        })
 /*        .when('/situation-room', {
             templateUrl: 'views/situation-room.html',
             controller: 'SituationRoomController',
