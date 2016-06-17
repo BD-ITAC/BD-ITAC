@@ -3,7 +3,7 @@ package br.ita.bditac.ws.model;
 
 public class Usuario {
 
-    private static String nome = "Usuário de Testes";
+    private static String nome = "Usuario de Testes";
 
     private static String email = "usuario.testes@gmail.com";
 

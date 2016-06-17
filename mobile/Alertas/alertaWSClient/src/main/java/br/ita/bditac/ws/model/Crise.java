@@ -59,13 +59,13 @@ public class Crise implements Serializable {
         this.latitude = latitude;
         this.longitude = longitude;
         if(bitmap == null) {
-            this.fotografia = "".getBytes();
+            this.fotografia = Base64.encodeBase64("".getBytes());
         }
         else {
-            ByteArrayOutputStream outputStream=new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
-            byte[] byteArray=outputStream.toByteArray();
-            this.fotografia=Base64.encodeBase64(byteArray);
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+            byte[] byteArray = outputStream.toByteArray();
+            this.fotografia = Base64.encodeBase64(byteArray);
         }
     }
     

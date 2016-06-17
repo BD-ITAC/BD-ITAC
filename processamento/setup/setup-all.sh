@@ -11,9 +11,9 @@ read -r -p "Are you sure? [y/N] " RESPONSE
 case $RESPONSE in
   [yY][eE][sS]|[yY]) 
 
-    find $HADOOP_HOME/logs -type f -exec rm {} \;
-    find $HIVE_HOME/logs -type f -exec rm {} \;
-    find $HUE_HOME/logs -type f -exec rm {} \;
+    [ -d "$HADOOP_HOME/logs" ] && find $HADOOP_HOME/logs -type f -exec rm {} \;
+    [ -d "$HIVE_HOME/logs" ] && find $HIVE_HOME/logs -type f -exec rm {} \;
+    [ -d "$HUE_HOME/logs" ] && find $HUE_HOME/logs -type f -exec rm {} \;
 
     service mysql start
     service ssh start
@@ -22,6 +22,7 @@ case $RESPONSE in
     su -l $HADOOP_USER -c "$HADOOP_HOME/sbin/setup-hdfs.sh"
     su -l $HADOOP_USER -c "$HIVE_HOME/sbin/setup-hive.sh"
     su -l $HADOOP_USER -c "$HUE_HOME/build/env/sbin/setup-hue.sh"
+    su -l $HADOOP_USER -c "$OOZIE_HOME/sbin/setup-oozie.sh"
 
     service ssh stop
     service mysql stop

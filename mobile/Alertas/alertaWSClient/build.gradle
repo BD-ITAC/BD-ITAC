@@ -41,15 +41,15 @@ dependencies {
     androidTestCompile 'junit:junit:4.12'
     androidTestCompile 'com.android.support.test:runner:0.4'
     compile 'org.springframework.android:spring-android-rest-template:1.0.1.RELEASE'
-    compile 'com.fasterxml.jackson.core:jackson-databind:2.5.4'
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.6.5'
     compile 'joda-time:joda-time:2.8.2'
     compile 'commons-codec:commons-codec:1.10'
     compile project(':springAndroidRest')
 
     testCompile 'org.apache.httpcomponents:httpclient:4.5.2'
-    testCompile 'com.fasterxml.jackson.core:jackson-databind:2.5.4'
-    testCompile 'org.springframework:spring-web:4.1.7.RELEASE'
-    testCompile 'org.springframework:spring-core:4.1.7.RELEASE'
+    testCompile 'com.fasterxml.jackson.core:jackson-databind:2.6.5'
+    testCompile 'org.springframework:spring-web:4.2.5.RELEASE'
+    testCompile 'org.springframework:spring-core:4.2.5.RELEASE'
     testCompile 'org.springframework.plugin:spring-plugin-core:1.2.0.RELEASE'
     testCompile 'commons-logging:commons-logging:1.2'
 

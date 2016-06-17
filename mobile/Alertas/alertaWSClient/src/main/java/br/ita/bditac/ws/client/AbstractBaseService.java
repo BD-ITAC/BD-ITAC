@@ -10,9 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 public abstract class AbstractBaseService {
     
@@ -32,7 +30,7 @@ public abstract class AbstractBaseService {
         mapper.registerModule(new Jackson2HalModule());
 
         MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
-        converter.setSupportedMediaTypes(Arrays.asList(MediaTypes.HAL_JSON));
+        converter.setSupportedMediaTypes(Arrays.asList(MediaType.APPLICATION_JSON, MediaTypes.HAL_JSON));
         converter.setObjectMapper(mapper);
 
         restTemplate = new RestTemplate();
@@ -40,14 +38,11 @@ public abstract class AbstractBaseService {
         restTemplate.getMessageConverters().add(converter);
         restTemplate.setErrorHandler(new ClientErrorHandler());
 
-        List<MediaType> acceptList = new ArrayList<>();
-        acceptList.add(MediaTypes.HAL_JSON);
-
         responseHeader = new HttpHeaders();
-        responseHeader.setAccept(acceptList);
+        responseHeader.setAccept(Arrays.asList(MediaType.APPLICATION_JSON, MediaTypes.HAL_JSON));
 
         requestHeader = new HttpHeaders();
-        requestHeader.setAccept(acceptList);
+        requestHeader.setAccept(Arrays.asList(MediaType.APPLICATION_JSON, MediaTypes.HAL_JSON));
         requestHeader.setContentType(MediaTypes.HAL_JSON);
 
     }

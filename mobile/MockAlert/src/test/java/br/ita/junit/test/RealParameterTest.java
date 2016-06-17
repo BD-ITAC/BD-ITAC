@@ -12,8 +12,6 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
 
-import br.ita.bditac.model.Real;
-
 @RunWith(Parameterized.class)
 public class RealParameterTest {
 

@@ -1,18 +1,11 @@
 package br.ita.bditac.mobile.alertas;
 
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Debug;
-import android.preference.PreferenceManager;
-import android.support.v4.app.FragmentActivity;
-
-import br.ita.bditac.ws.client.IndicadoresClient;
-import br.ita.bditac.ws.model.Indicadores;
+import android.support.v7.app.AppCompatActivity;
 
 
-public class ChartBase extends FragmentActivity {
+public class ChartBase extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

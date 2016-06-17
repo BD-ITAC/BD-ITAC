@@ -21,7 +21,7 @@ import br.ita.bditac.ws.model.Crise;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class AlertaTests extends TestCase {
 
-    private static final String HOST_URL = "http://localhost:8080";
+    private static final String HOST_URL = "http://200.144.14.28/rest/avisos";
 
     private static Bitmap _foto = null;
 
@@ -209,70 +209,6 @@ public class AlertaTests extends TestCase {
         AlertaClient alertaClient = new AlertaClient(HOST_URL);
         List<Alerta> alertas = alertaClient.getAlertaByRegiao(0.6D, 0.6D, 10D);
         assertEquals("Resposta inexperada!", alertas, null);
-    }
-
-    /**
-     *
-     * == Asserção:
-     *
-     * Testa a obtenção de alertas dentro de uma área identificada por um ponto geográfico e um raio no seriço de Alertas onde não há alertas:
-     *
-     * == Dados:
-     *
-     * Identificação da área de pesquisa desejada.
-     *
-     * === Dados informados:
-     *
-     * [source,http]
-     * --
-     *  /latitude/-25.0/longitude/-45.0/raio/1
-     * --
-     *
-     * == Execução:
-     *
-     * Uma chamada ao serviço de Alertas.
-     *
-     * == Resultado esperado:
-     *
-     * O código de estado de retorno deve ser o código HTTP 200 (OK).
-     *
-     */
-    @Test
-    public void test06GetRegiaoComAlerta() {
-        AlertaClient alertaClient = new AlertaClient(HOST_URL);
-        assertTrue("Falta de alerta inexperado em região com alertas", alertaClient.hasAlerta(-25.0D, -45.0D, 10D));
-    }
-
-    /**
-     *
-     * == Asserção:
-     *
-     * Testa a obtenção de alertas dentro de uma área identificada por um ponto geográfico e um raio no seriço de Alertas onde não há alertas:
-     *
-     * == Dados:
-     *
-     * Identificação da área de pesquisa desejada.
-     *
-     * === Dados informados:
-     *
-     * [source,http]
-     * --
-     *  /latitude/0.60/longitude/0.60/raio/1
-     * --
-     *
-     * == Execução:
-     *
-     * Uma chamada ao serviço de Alertas.
-     *
-     * == Resultado esperado:
-     *
-     * O código de estado de retorno deve ser o código HTTP 404 (NOT FOUND).
-     *
-     */
-    @Test
-    public void test07GetRegiaoSemAlerta() {
-        AlertaClient alertaClient = new AlertaClient(HOST_URL);
-        assertFalse("Alerta inexperado em região sem alertas", alertaClient.hasAlerta(0.6D, 0.6D, 10D));
     }
 
 }

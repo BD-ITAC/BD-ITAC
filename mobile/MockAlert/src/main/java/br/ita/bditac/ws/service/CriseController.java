@@ -17,12 +17,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.ita.bditac.model.Alerta;
 import br.ita.bditac.model.AlertaDAO;
-import br.ita.bditac.model.Categorias;
+import br.ita.bditac.model.Categoria;
 import br.ita.bditac.model.Crise;
 import br.ita.bditac.model.Message;
 import br.ita.bditac.ws.support.MessageResource;
 import br.ita.bditac.ws.support.MessageResourceAssembler;
-import br.ita.bditac.ws.support.ReverseEnum;
 
 @RestController
 @ExposesResourceFor(Crise.class)
@@ -37,11 +36,11 @@ public class CriseController {
     public ResponseEntity<MessageResource> adicionar(@RequestBody Crise body) {
     	try {
 	        Crise crise = AlertaDAO.adicionarCrise(body);
+	        Categoria categoria = AlertaDAO.obterCategoria(crise.getCategoria());
 	        
 	        // TODO - Simulação do gerenciamento de crises - o processo que torna o cadastramento de crise num alerta
-	        ReverseEnum<Categorias> reverseCategoria = new ReverseEnum<>(Categorias.class);
 	        Alerta alerta = new Alerta(
-	        		reverseCategoria.get(crise.getCategoria()).name(),
+	        		categoria.getDescricao(),
 	        		crise.getDescricao(),
 	        		crise.getCategoria(),
 	        		crise.getLatitude(),
