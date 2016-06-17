@@ -10,14 +10,7 @@
       <label for="searchBox"> Pesquisar: </label>
       <input  class="form-control" type="text" ng-model="searchBoxData.$" id="searchBox"
               placeholder="Pesquisar...">
-    </div>
-    <div class="form-group">
-        <label for="searchStatusBox"> Filtrar Status: </label>
-        <select class="form-control" name="searchStatusBox" id="searchStatusBox" ng-model="searchBoxData.status">
-          <option value="">   </option>
-          <option ng-repeat="row in avisosListCollection | unique:'status'">{{row.status}}</option>
-        </select>
-    </div>    
+    </div>  
   <hr/>
   <tiltle>Barometrica</tiltle>
   <table width="100%" class="table table-striped">
