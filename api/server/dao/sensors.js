@@ -1,3 +1,4 @@
+
 var cassandra = require('cassandra-driver'); // cassandra driver
 var conf = require('../db/casdb.json');          // cassandra connection configuration
 
@@ -45,7 +46,7 @@ function getDados(rows)
 {
   var sensors = [];
   for(i in rows){
-    var sensor = 
+    var sensor =
     {
         cec_id: i,
         cec_barometrica: rows[i].cec_barometrica,
@@ -58,7 +59,7 @@ function getDados(rows)
         cec_temperatura: rows[i].cec_temperatura,
         cec_tempsit: rows[i].cec_tempsit,
         cec_umidade: rows[i].cec_umidade,
-        cec_umidsit: rows[i].cec_umidsit,        
+        cec_umidsit: rows[i].cec_umidsit,
     };
     sensors.push(sensor);
   }

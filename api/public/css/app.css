@@ -133,3 +133,4 @@ img {
 .form-input-error{
   border: 1px solid #a94442 !important;
 }
+#mapCanvasCrise{width:100%;height:600px;}

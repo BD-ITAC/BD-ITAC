@@ -42,7 +42,7 @@ function ($routeProvider, $httpProvider, $compileProvider) {
             controller: 'CrisisController',
             requireLogin: true
         })
-        .when('/crisis-detail', {
+        .when('/crisis-detail/:cri_id', {
             templateUrl: 'part-views/crisis-detail.html',
             controller: 'CrisisDetailController',
             requireLogin: true

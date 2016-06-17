@@ -215,6 +215,51 @@ crisisDAO = function(pool) {
     });
   };
 
+  dao.getDetailCrisis = function(cri_id, callback){
+    var query = "select cri.cri_id, cri.cri_descricao, date_format(cri.cri_inicio,'%d/%m/%Y') AS cri_inicio, date_format(cri.cri_final,'%d/%m/%Y') AS cri_final, CAST(cri.cri_ativa AS DECIMAL(1)) AS cri_ativa, cri.cri_regiao, cri.cri_geotipo, tip.crt_descricao, cri.cid_id, cid_nome, cid.est_sigla, \
+                        (SELECT count(*) FROM aviso_crise avs WHERE avs.cri_cod=cri.cri_id) AS count_aviso, \
+                        (SELECT count(*) FROM alerta ale WHERE ale.cri_cod=cri.cri_id) AS count_alerta \
+                 from  crise cri \
+                 inner join crise_tipo tip on tip.crt_id=cri.crt_id \
+                 inner join cidade cid on cid.cid_id=cri.cid_id \
+                 where cri.cri_id = ?";
+
+    self.pool.query(query, cri_id, function(err, crises){
+      if(err){
+        return callback(err, null);
+      }else{
+        if(crises.length > 0){
+          var query = "SELECT \
+                         avi.avs_id, \
+                         avi.sta_cod, \
+                         (SELECT sta_ds FROM bditac.aviso_status WHERE sta_id = avi.sta_cod) AS sta_descricao, \
+                         avi.geo_cod, \
+                         avi.cat_cod, \
+                         (SELECT cat_ds FROM bditac.categoria WHERE cat_id=avi.cat_cod) AS cat_descricao, \
+                         avi.usu_cod, \
+                         (SELECT usu_nm FROM bditac.usuario WHERE usu_id = avi.usu_cod) AS usu_nome, \
+                         avi.avs_ds, \
+                         avi.avs_latitude, \
+                         avi.avs_longitude, \
+                         date_format(avi.avs_data,'%d/%m/%Y') AS avs_data, \
+                         avi.avs_ptcoord \
+                      FROM bditac.aviso avi \
+                      WHERE avi.avs_id in (SELECT avs_cod FROM bditac.aviso_crise WHERE cri_cod = ?)";
+
+          self.pool.query(query, cri_id, function(err, avisos){
+            if(err){
+              return callback(err, null);
+            }else{
+              var crise = crises[0];
+              crise.avisos = avisos;
+              return callback(null, crise);
+            }
+          });
+        }
+      }
+    });
+  };
+
   dao.listType = function(callback){
     self.pool.query('SELECT * FROM crise_tipo', function(err, rows){
       if(err){
