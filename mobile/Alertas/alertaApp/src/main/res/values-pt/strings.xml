@@ -21,4 +21,6 @@
     <string name="report">Relatório</string>
     <string name="browse">Listar</string>
     <string name="status">Situação</string>
+    <string name="title_alerta_detail">Detalhe do Alerta</string>
+    <string name="title_alerta_list">Alertas</string>
 </resources>

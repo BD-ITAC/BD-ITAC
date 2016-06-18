@@ -38,7 +38,8 @@ public class CriseClient {
     class ClientErrorHandler implements ResponseErrorHandler {
 
         public void handleError(ClientHttpResponse response) throws IOException {
-            Log.e(this.getClass().getSimpleName(), String.format("response status: '%s', headers: '%s'", response.getStatusText(), response.getHeaders()));
+            Log.e(this.getClass().getSimpleName(), String.format("Response STATUS: %d - '%s'", response.getRawStatusCode(), response.getStatusText()));
+            Log.e(this.getClass().getSimpleName(), String.format("Response HEADERS: '%s'", response.getHeaders()));
         }
 
         public boolean hasError(ClientHttpResponse response) throws IOException {

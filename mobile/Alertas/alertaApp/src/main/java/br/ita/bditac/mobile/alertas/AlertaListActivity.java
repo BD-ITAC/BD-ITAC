@@ -12,7 +12,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Debug;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
 import android.support.v4.app.NavUtils;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
@@ -50,17 +49,7 @@ public class AlertaListActivity extends AppCompatActivity {
 
     private class ConsultarAlertasTask extends AsyncTask<Void, Void, Void> {
 
-        private Exception exception;
-
-        private AppCompatActivity activity;
-
-        protected ConsultarAlertasTask(AppCompatActivity activity) {
-
-            super();
-
-            this.activity = activity;
-
-        }
+        private View recyclerView;
 
         protected Void doInBackground(Void... params) {
 
@@ -100,11 +89,88 @@ public class AlertaListActivity extends AppCompatActivity {
                 locationManager.removeUpdates(locationListener);
             }
 
+            recyclerView = findViewById(R.id.alerta_list);
+
+            assert recyclerView != null;
+
+            ((RecyclerView) recyclerView).setAdapter(new AlertaListRecyclerViewAdapter(ALERTAS_LIST));
+
         }
+
+    }
+
+    public class AlertaListRecyclerViewAdapter extends RecyclerView.Adapter<AlertaListRecyclerViewAdapter.ViewHolder> {
+
+        private final List<Alerta> mValues;
+
+        public AlertaListRecyclerViewAdapter(List<Alerta> items) {
+            mValues = items;
+        }
+
+        @Override
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
+            View view=LayoutInflater.from(parent.getContext()).inflate(R.layout.alerta_list_content, parent, false);
+
+            return new ViewHolder(view);
+
+        }
+
+        @Override
+        public void onBindViewHolder(final ViewHolder holder, int position) {
+
+            holder.mItem=mValues.get(position);
+            holder.mContentView.setText(holder.mItem.getDescricaoCompleta());
+
+            holder.mView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Context context=v.getContext();
+
+                    Intent alertaIntent = new Intent(context, NotificationReceiverActivity.class);
+                    alertaIntent.putExtra(Constants.EXTRA_NOTIFICATION_LATITUDE, holder.mItem.getOrigemLatitude());
+                    alertaIntent.putExtra(Constants.EXTRA_NOTIFICATION_LONGITUDE, holder.mItem.getOrigemLongitude());
+                    alertaIntent.putExtra(Constants.EXTRA_NOTIFICATION_RAIO, holder.mItem.getOrigemRaioKms());
+                    alertaIntent.putExtra(Constants.EXTRA_NOTIFICATION_ALERTA, holder.mItem.getDescricaoResumida());
+                    alertaIntent.putExtra(Constants.EXTRA_NOTIFICATION_DESCRICAO, holder.mItem.getDescricaoCompleta());
+
+                    context.startActivity(alertaIntent);
+                }
+            });
+
+        }
+
+        @Override
+        public int getItemCount() {
+
+            return mValues.size();
+
+        }
+
+        public class ViewHolder extends RecyclerView.ViewHolder {
+
+            public final View mView;
+            public final TextView mContentView;
+            public Alerta mItem;
+
+            public ViewHolder(View view) {
+                super(view);
+                mView=view;
+                mContentView=(TextView) view.findViewById(R.id.content);
+            }
+
+            @Override
+            public String toString() {
+                return super.toString() + " '" + mContentView.getText() + "'";
+            }
+
+        }
+
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alerta_list);
 
@@ -112,15 +178,10 @@ public class AlertaListActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());
 
-        // Show the Up button in the action bar.
         ActionBar actionBar=getSupportActionBar();
         if(actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-
-        View recyclerView=findViewById(R.id.alerta_list);
-        assert recyclerView != null;
-        setupRecyclerView((RecyclerView) recyclerView);
 
         SharedPreferences preferences = null;
 
@@ -158,83 +219,20 @@ public class AlertaListActivity extends AppCompatActivity {
             Log.e(this.getClass().getSimpleName(), ex.getMessage(), ex);
         }
 
-        new ConsultarAlertasTask(this).execute();
+        new ConsultarAlertasTask().execute();
 
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
         int id=item.getItemId();
         if(id == android.R.id.home) {
             NavUtils.navigateUpFromSameTask(this);
             return true;
         }
+
         return super.onOptionsItemSelected(item);
-    }
-
-    private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(ALERTAS_LIST));
-    }
-
-    public class SimpleItemRecyclerViewAdapter extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
-
-        private final List<Alerta> mValues;
-
-        public SimpleItemRecyclerViewAdapter(List<Alerta> items) {
-            mValues=items;
-        }
-
-        @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View view=LayoutInflater.from(parent.getContext()).inflate(R.layout.alerta_list_content, parent, false);
-            return new ViewHolder(view);
-        }
-
-        @Override
-        public void onBindViewHolder(final ViewHolder holder, int position) {
-            holder.mItem=mValues.get(position);
-            holder.mContentView.setText(holder.mItem.getDescricaoCompleta());
-
-            holder.mView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                Context context=v.getContext();
-
-                Intent alertaIntent = new Intent(context, NotificationReceiverActivity.class);
-                alertaIntent.putExtra(Constants.EXTRA_NOTIFICATION_LATITUDE, holder.mItem.getOrigemLatitude());
-                alertaIntent.putExtra(Constants.EXTRA_NOTIFICATION_LONGITUDE, holder.mItem.getOrigemLongitude());
-                alertaIntent.putExtra(Constants.EXTRA_NOTIFICATION_RAIO, holder.mItem.getOrigemRaioKms());
-                alertaIntent.putExtra(Constants.EXTRA_NOTIFICATION_ALERTA, holder.mItem.getDescricaoResumida());
-                alertaIntent.putExtra(Constants.EXTRA_NOTIFICATION_DESCRICAO, holder.mItem.getDescricaoCompleta());
-
-                context.startActivity(alertaIntent);
-                }
-            });
-        }
-
-        @Override
-        public int getItemCount() {
-            return mValues.size();
-        }
-
-        public class ViewHolder extends RecyclerView.ViewHolder {
-
-            public final View mView;
-            public final TextView mContentView;
-            public Alerta mItem;
-
-            public ViewHolder(View view) {
-                super(view);
-                mView=view;
-                mContentView=(TextView) view.findViewById(R.id.content);
-            }
-
-            @Override
-            public String toString() {
-                return super.toString() + " '" + mContentView.getText() + "'";
-            }
-
-        }
 
     }
 
