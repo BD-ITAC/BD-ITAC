@@ -8,8 +8,6 @@ public class Message implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private int id;
-
     public enum Type {
 
         INFO(0, "Information"), WARNING(1, "Warning"), ERROR(2, "Error");
@@ -46,42 +44,22 @@ public class Message implements Serializable {
 
     private String info;
 
-    private boolean success;
-
-    private String message;
-
-    private boolean validationError;
-
     public Message() {
         super();
 
-        this.id = 0;
         this.type = null;
         this.status = "";
         this.description = "";
         this.info = "";
-
-        this.success = true;
-        this.message = "";
-        this.validationError = false;
     }
 
     public Message(int id, Type type, String status, String description, String info, boolean success, String message, boolean validationError) {
         super();
 
-        this.id = id;
         this.type = type;
         this.status = status;
         this.description = description;
         this.info = info;
-
-        this.success = success;
-        this.message = message;
-        this.validationError = validationError;
-    }
-
-    public Integer getId() {
-        return id;
     }
 
     public Type getType() {
@@ -98,18 +76,6 @@ public class Message implements Serializable {
 
     public String getInfo() {
         return info;
-    }
-
-    public boolean isSuccess() {
-        return success;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public boolean isValidationError() {
-        return validationError;
     }
 
 }
