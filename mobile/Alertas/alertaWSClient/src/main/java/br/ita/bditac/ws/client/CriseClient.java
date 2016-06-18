@@ -82,7 +82,7 @@ public class CriseClient {
 
         ResponseEntity<MessageResource> response = restTemplate.postForEntity(hostURL + SERVICE_URL, post, MessageResource.class);
 
-        return response.getBody().getContent().getStatus().equals("OK");
+        return response.getStatusCode().equals(HttpStatus.CREATED);
 
     }
 
