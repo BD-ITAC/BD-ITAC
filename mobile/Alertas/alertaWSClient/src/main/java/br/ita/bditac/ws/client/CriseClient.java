@@ -29,7 +29,7 @@ import br.ita.bditac.ws.model.MessageResource;
 
 public class CriseClient {
 
-    private static final String SERVICE_URL = "/crisis";
+    private static final String SERVICE_URL = "/avisos";
 
     private String hostURL;
 
@@ -53,6 +53,7 @@ public class CriseClient {
     }
 
     public CriseClient(String hostURL) {
+
         this.hostURL = hostURL;
 
         ObjectMapper mapper = new ObjectMapper();
@@ -66,6 +67,7 @@ public class CriseClient {
         restTemplate = new RestTemplate();
         restTemplate.setMessageConverters(Collections.<HttpMessageConverter<?>> singletonList(converter));
         restTemplate.setErrorHandler(new ClientErrorHandler());
+
     }
 
     public boolean addCrise(Crise crise) {
@@ -80,7 +82,7 @@ public class CriseClient {
 
         ResponseEntity<MessageResource> response = restTemplate.postForEntity(hostURL + SERVICE_URL, post, MessageResource.class);
 
-        return response.getStatusCode().equals(HttpStatus.CREATED);
+        return response.getBody().getContent().getStatus().equals("OK");
 
     }
 
