@@ -1,11 +1,11 @@
 package br.ita.bditac.ws.model;
 
 import android.graphics.Bitmap;
-
-import org.apache.commons.codec.binary.Base64;
+import android.util.Base64;
 
 import java.io.ByteArrayOutputStream;
 import java.io.Serializable;
+
 
 public class Crise implements Serializable {
 
@@ -101,8 +101,7 @@ public class Crise implements Serializable {
     }
 
     public String getFotografia() {
-        String encodeString = new String(Base64.encodeBase64(fotografia));
-        return encodeString.replace("+", "-").replace("/", "_");
+        return new String(Base64.encodeToString(this.fotografia, Base64.DEFAULT));
     }
 
 }
