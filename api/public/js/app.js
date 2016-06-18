@@ -1,4 +1,9 @@
-var app = angular.module('bditac', ['ui.bootstrap','bootstrapLightbox','ngRoute', 'ngStorage','toastr']);
+var app = angular.module('bditac', ['ui.bootstrap',
+       'bootstrapLightbox',
+       'ngRoute', 'ngStorage','toastr','angularModalService',
+       'checklist-model',
+       'ngMap',
+     'angular.filter']);
 
 app.config(['$routeProvider','$httpProvider', '$compileProvider',
 function ($routeProvider, $httpProvider, $compileProvider) {
@@ -17,9 +22,29 @@ function ($routeProvider, $httpProvider, $compileProvider) {
             controller: 'DashBoardController',
             requireLogin: true
         })
+        .when('/alerts', {
+            templateUrl: 'part-views/alerts.html',
+            controller: 'AlertsController',
+            requireLogin: true
+        })
+        .when('/avisos', {
+            templateUrl: 'part-views/avisos.html',
+            controller: 'AvisosController',
+            requireLogin: true
+        })
+        .when('/crisis-type', {
+            templateUrl: 'part-views/crisis-type.html',
+            controller: 'CrisisTypeController',
+            requireLogin: true
+        })
         .when('/crisis', {
             templateUrl: 'part-views/crisis.html',
             controller: 'CrisisController',
+            requireLogin: true
+        })
+        .when('/crisis-detail/:cri_id', {
+            templateUrl: 'part-views/crisis-detail.html',
+            controller: 'CrisisDetailController',
             requireLogin: true
         })
         .when('/classification', {
@@ -30,6 +55,11 @@ function ($routeProvider, $httpProvider, $compileProvider) {
         .when('/evento', {
             templateUrl: 'part-views/evento.html',
             controller: 'EventoController',
+            requireLogin: true
+        })
+        .when('/sensors', {
+            templateUrl: 'part-views/sensors.html',
+            controller: 'SensorsController',
             requireLogin: true
         })
 /*        .when('/situation-room', {

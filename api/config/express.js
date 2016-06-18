@@ -22,6 +22,12 @@ module.exports = function(){
   app.set('view engine', 'ejs');
   app.use(bodyParser.urlencoded({extended: true}));
   app.use(bodyParser.json());
+  app.use(function (req, res, next) {
+    if(req.url.indexOf('rest') > -1){
+      res.contentType('application/hal+json');
+    }
+    next();
+  });
 
   load('models', {cwd: 'server'})
 //    .then('helpers')

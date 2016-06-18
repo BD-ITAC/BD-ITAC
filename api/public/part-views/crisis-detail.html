@@ -1,0 +1,66 @@
+<div ng-controller="CrisisDetailController as vm">
+  <ol class="breadcrumb">
+  <li><a href="#">Home</a></li>
+  <li><a href="#">Crisis</a></li>
+  <li class="active">Details</li>
+</ol>
+<form name="form" id="form">
+  <div class="row">
+    <div class="form-group col-xs-6">
+      <label for="class">ID</label>
+      <input type="text" class="form-control" ng-model="vm.form.cri_id" ng-disabled="true" />
+    </div>
+  </div>
+  <div class="row">
+    <div class="form-group col-xs-6">
+      <label for="class">Description</label>
+      <input type="text" class="form-control" ng-model="vm.form.cri_descricao" ng-disabled="true" />
+    </div>
+    <div class="form-group col-xs-6">
+      <label for="group">Ativa</label>
+      <input type="text" class="form-control" ng-model="vm.form.cri_ativa" ng-disabled="true" />
+    </div>
+  </div>
+  <div class="row">
+    <div class="form-group col-xs-6">
+      <label for="subgroup">Start</label>
+      <input type="text" class="form-control" ng-model="vm.form.cri_inicio" ng-disabled="true" />
+    </div>
+    <div class="form-group col-xs-6">
+      <label for="type">Finish</label>
+      <input type="text" class="form-control" ng-model="vm.form.cri_final" ng-disabled="true" />
+    </div>
+  </div>
+  <div class="row">
+    <div class="form-group col-xs-6">
+      <label for="subgroup">City</label>
+      <input type="text" class="form-control" ng-model="vm.form.cid_nome" ng-disabled="true" />
+    </div>
+    <div class="form-group col-xs-6">
+      <label for="type">State</label>
+      <input type="text" class="form-control" ng-model="vm.form.est_sigla" ng-disabled="true" />
+    </div>
+  </div>
+  <div class="row">
+    <table class="table table-bordered table-responsive" style="width: 96% !important; margin-left: 1% !important;">
+      <thead>
+      <tr>
+        <th>Count Avisos</th>
+        <th class="info">Count Facebook</th>
+        <th>Count Twitter</th>
+      </tr>
+      </thead>
+      <tr>
+        <td>100</td>
+        <td class="info">200</td>
+        <td>300</td>
+      </tr>
+    </table>
+  </div>
+  <div class="row">
+    <div id="mapCanvasCrise"></div>
+  </div>
+
+  <button type="button" ng-click="vm.goBack();" class="btn btn-link btn-default">Go back!</button>
+</form>
+</div>

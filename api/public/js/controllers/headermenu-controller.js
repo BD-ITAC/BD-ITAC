@@ -20,7 +20,7 @@ app.controller('HeaderMenuController', ['$scope', '$rootScope', '$location', '$h
       var name = $localStorage.user.name;
       $http.get('/rest/users/logout').then(function(response){
         if(response.status === 200){
-          UtilService.clearStorage();
+          UtilService.clearStorage(); 
           $location.path('/index');
         }
       });

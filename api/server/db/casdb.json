@@ -1,0 +1,7 @@
+{
+    "host"      :  "127.0.0.1",
+	"port"		:  "5000",
+    "userid"    :  "bditac",
+    "password"  :  "bditac2016",
+    "keyspace"  :  "bditac"
+}

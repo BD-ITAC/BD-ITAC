@@ -1,7 +1,7 @@
 var supertest = require("supertest");
 var should = require("should");
 
-var server = supertest.agent("http://localhost:3000");
+var server = supertest.agent("http://bditac.ddns.net");
 
 describe("Teste de Listagem de Alertas de Crises",function(){
 
