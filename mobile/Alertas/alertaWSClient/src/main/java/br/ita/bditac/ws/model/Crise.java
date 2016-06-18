@@ -59,59 +59,50 @@ public class Crise implements Serializable {
         this.latitude = latitude;
         this.longitude = longitude;
         if(bitmap == null) {
-            this.fotografia = Base64.encodeBase64("".getBytes());
+            this.fotografia = "".getBytes();
         }
         else {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
-            byte[] byteArray = outputStream.toByteArray();
-            this.fotografia = Base64.encodeBase64(byteArray);
+            this.fotografia = outputStream.toByteArray();
         }
     }
-    
-    
+
     public int getId() {
         return id;
     }
-
 
     public String getDescricao() {
         return descricao;
     }
 
-    
     public int getCategoria() {
         return categoria;
     }
-
 
     public String getNome() {
         return nome;
     }
 
-    
     public String getEmail() {
         return email;
     }
 
-    
     public String getTelefone() {
         return telefone;
     }
-
 
     public double getLatitude() {
         return latitude;
     }
 
-
     public double getLongitude() {
         return longitude;
     }
 
-
     public String getFotografia() {
-        return new String(fotografia);
+        String encodeString = new String(Base64.encodeBase64(fotografia));
+        return encodeString.replace("+", "-").replace("/", "_");
     }
 
 }
