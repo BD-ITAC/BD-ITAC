@@ -68,7 +68,7 @@ public class Crise implements Serializable {
         this.telefone = telefone;
         this.latitude = latitude;
         this.longitude = longitude;
-        this.fotografia = Base64.encodeBase64(fotografia);
+        this.fotografia = fotografia;
     }
     
     public String getDescricao() {
@@ -104,7 +104,7 @@ public class Crise implements Serializable {
 	}
 	
 	public String getFotografia() {
-		return new String(fotografia);
+		return Base64.encodeBase64String(fotografia);
 	}
     
 }

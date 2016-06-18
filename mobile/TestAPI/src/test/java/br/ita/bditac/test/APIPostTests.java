@@ -19,7 +19,6 @@ import org.junit.runners.Parameterized.Parameters;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.hateoas.hal.Jackson2HalModule;
 import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -51,7 +50,7 @@ public class APIPostTests {
     	
     	try {
 	    	if(_foto == null) {
-		        _foto = Files.readAllBytes(Paths.get(Thread.currentThread().getContextClassLoader().getResource("foto2.jpg").getPath()));
+		        _foto = Files.readAllBytes(Paths.get(Thread.currentThread().getContextClassLoader().getResource("foto2.png").getPath()));
 	    	}
     	}
     	catch(IOException ioex) {
@@ -147,25 +146,8 @@ public class APIPostTests {
     }
     
     @Test
-    public void postCriseGerarAlertaComHeaders() throws Exception {
-        URI criseURI = new URI(getBaseUrl() + "/rest/avisos");
-
-        @SuppressWarnings("unchecked")
-		Map<String,Object> map = new ObjectMapper().convertValue(crise, Map.class);
-		
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-        httpHeaders.setAccept(Arrays.asList(MediaType.APPLICATION_JSON, MediaTypes.HAL_JSON));
-        httpHeaders.add(HttpHeaders.ACCEPT_ENCODING, "gzip");
-        HttpEntity<Map<String, Object>> post = new HttpEntity<>(map, httpHeaders);
-
-		ResponseEntity<MessageResource> criseResponseEntity = getRestTemplate().postForEntity(criseURI, post, MessageResource.class);
-
-        assertThat(criseResponseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
-    }
-    
-    @Test
-    public void postCriseGerarAlertaSemHeaders() throws Exception {
+    public void postCriseGerarAlerta() throws Exception {
+    	
         URI criseURI = new URI(getBaseUrl() + "/rest/avisos");
 
         @SuppressWarnings("unchecked")
@@ -174,6 +156,7 @@ public class APIPostTests {
 		ResponseEntity<MessageResource> criseResponseEntity = getRestTemplate().postForEntity(criseURI, new HttpEntity<Map<String, Object>>(map), MessageResource.class);
 
         assertThat(criseResponseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+        
     }
    
 }
