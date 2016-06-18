@@ -11,6 +11,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -23,10 +24,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.web.client.ResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -45,6 +44,8 @@ import br.ita.bditac.ws.support.MessageResource;
 @RunWith(Parameterized.class)
 public class APIPostTestIntegracao {
     
+	private static RestTemplate restTemplate;
+	
     private static byte[] _foto = null;
     
     private static byte[] getFoto() {
@@ -80,23 +81,8 @@ public class APIPostTestIntegracao {
 		return Arrays.asList(data);
 	}
 
-	class ClientErrorHandler implements ResponseErrorHandler {
-
-        public void handleError(ClientHttpResponse response) throws IOException {
-        	
-        }
-
-        public boolean hasError(ClientHttpResponse response) throws IOException {
-            if ((response.getStatusCode().series() == HttpStatus.Series.CLIENT_ERROR) || (response.getStatusCode().series() == HttpStatus.Series.SERVER_ERROR)) {
-                return true;
-            }
-
-            return false;
-        }
-
-    }
-
-    private RestTemplate getRestTemplate() {
+	@BeforeClass
+    public static void getRestTemplate() {
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -107,11 +93,8 @@ public class APIPostTestIntegracao {
         converter.setSupportedMediaTypes(Arrays.asList(MediaType.APPLICATION_JSON, MediaTypes.HAL_JSON));
         converter.setObjectMapper(mapper);
 
-        RestTemplate restTemplate = new RestTemplate();
+        restTemplate = new RestTemplate();
         restTemplate.setMessageConverters(Collections.<HttpMessageConverter<?>> singletonList(converter));
-        restTemplate.setErrorHandler(new ClientErrorHandler());
-
-        return restTemplate;
 
     }
 
@@ -131,7 +114,7 @@ public class APIPostTestIntegracao {
 		Map<String,Object> map = new ObjectMapper().convertValue(crise, Map.class);
         HttpEntity<Map<String, Object>> post = new HttpEntity<>(map, httpHeaders);
 
-		ResponseEntity<MessageResource> response = getRestTemplate().postForEntity(criseURI, post, MessageResource.class);
+		ResponseEntity<MessageResource> response = restTemplate.postForEntity(criseURI, post, MessageResource.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
     }
