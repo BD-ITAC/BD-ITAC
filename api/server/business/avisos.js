@@ -9,20 +9,47 @@ module.exports = function(app){
   * @author Danilo Ramalho
   * @param objeto avisos
   */
-  business.save = function(avisos, callback){
+  business.save = function(req, callback){
     //valida preenchimento de campos obrigatórios
+    var avisos = req.body;
     var ValidEmail = str.isEmail();
+    var erros = '';
 
-    if((!avisos.descricao || !avisos.nome || !avisos.email || !avisos.telefone
-      || !avisos.latitude || !avisos.longitude ||
-      !avisos.categoria) || !(avisos.categoria >= 0 && avisos.categoria <= 8)
-      || !(ValidEmail(avisos.email))){
+    if(!avisos.descricao){
+      erros +="descricao,";
+    }
+    if(!avisos.nome){
+      erros +="nome,";
+    }
+    if(!avisos.email){
+      erros +="email,";
+    }
+    if(!avisos.telefone){
+      erros +="telefone,";
+    }
+    if(!avisos.latitude){
+      erros +="latitude,";
+    }
+    if(!avisos.longitude){
+      erros +="longitude,";
+    }
+    if(!avisos.categoria || avisos.categoria < 0){
+      erros +="categoria,";
+    }
+    if(!ValidEmail(avisos.email)){
+      erros +="email-inválido,";
+    }
+    if(erros)
+      {
+        if(req.get('content-type') != "application/json" ){
+          erros = " content-type=" + req.get('content-type') + " "+erros;
+        }
         var message = {
             "message" : {
               "id" : 1,
               "type" : "ERROR",
               "status" : "BAD_REQUEST",
-              "description" : "Invalid value data fields.",
+              "description" : "Invalid value data fields:" + erros,
               "info" : "Error"
             }
           };

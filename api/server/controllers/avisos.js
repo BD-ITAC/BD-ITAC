@@ -13,7 +13,7 @@ module.exports = function(app){
   */
   controller.saveAvisos = function(req, res, next){
 
-        avisosBusiness.save(req.body,function(err, data) {
+        avisosBusiness.save(req,function(err, data) {
           if(err) {
             var status = err.validationError ? 400 : 500;
             res.status(status).json(err);

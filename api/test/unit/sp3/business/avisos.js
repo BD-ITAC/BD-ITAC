@@ -24,14 +24,14 @@ describe('Avisos business', function() {
 
     };
 
-
+    var req={body:avisos};
 
     stub.returns( function(avisos, callback){
      return callback(null, {status: 'ok'});
     });
 
 
-     avisosBusiness.save(avisos, function(err, data) {
+     avisosBusiness.save(req, function(err, data) {
 
       });
 
@@ -54,6 +54,7 @@ describe('Avisos business', function() {
          "longitude": 50
 
     };
+    var req={body:avisos};
 
 
 
@@ -62,7 +63,7 @@ describe('Avisos business', function() {
     });
 
 
-     avisosBusiness.save(avisos, function(err, data) {
+     avisosBusiness.save(req, function(err, data) {
 
       });
 
