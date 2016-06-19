@@ -33,4 +33,4 @@ chown -R hdfs:hdfs $HADOOP_HOME/ $HIVE_HOME/ $HUE_HOME/ $SPARK_HOME/ $OOZIE_HOME
 # Setup dir
 mkdir /setup >/dev/null 2>&1
 cp /usr/local/BD-ITAC/processamento/setup/* /setup/ >/dev/null 2>&1
-
+cp /usr/local/BD-ITAC/processamento/conf/hadoop/hosts /etc/hosts
