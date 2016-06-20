@@ -248,7 +248,7 @@ avisosDAO = function(pool) {
     var pic1 = '';
 
     if(row.img_arq != null){
-      pic1 = new Buffer(row.img_arq).toString('base64');
+      pic1 = new Buffer(row.img_arq).toString();
     }
 
     var aviso={
