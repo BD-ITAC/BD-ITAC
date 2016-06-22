@@ -42,5 +42,6 @@ $HADOOP_HOME/bin/hdfs dfs -put $SPARK_HOME/lib/* /spark/auxlib
 # Oozie
 $HADOOP_HOME/bin/hdfs dfs -mkdir -p /oozie/auxlib
 $HADOOP_HOME/bin/hdfs dfs -put $OOZIE_HOME/share/lib/* /oozie/auxlib
+$HADOOP_HOME/bin/hdfs dfs -put $SPARK_HOME/lib/* /oozie/auxlib
 
 $HADOOP_HOME/sbin/stop-dfs.sh

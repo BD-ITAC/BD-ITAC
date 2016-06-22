@@ -36,10 +36,28 @@
           <value>*=/usr/local/hadoop/etc/hadoop</value>
 	</property>
 
+    	<property>
+          <name>oozie.service.SparkConfigurationService.spark.configurations</name>
+          <value>*=/usr/local/spark/conf</value>
+        </property>
+
 	<property>
           <name>oozie.service.WorkflowAppService.system.libpath</name>
           <value>/oozie/auxlib</value>
 	</property>
-
+	<property>
+  	  <name>oozie.services.ext</name>
+  	  <value>
+    		org.apache.oozie.service.EventHandlerService,
+    		org.apache.oozie.sla.service.SLAService
+  	  </value>
+	</property>
+	<property>
+  	  <name>oozie.service.EventHandlerService.event.listeners</name>
+  	  <value>
+    		org.apache.oozie.sla.listener.SLAJobEventListener,
+    		org.apache.oozie.sla.listener.SLAEmailEventListener
+  	  </value>
+	</property>
 
 </configuration>
