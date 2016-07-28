@@ -1,0 +1,212 @@
+API Cliente Android BD-ITAC
+===========================
+
+= Interface de programação do serviço web de Alertas - projeto [big]*https://sites.google.com/site/interdproj2016/[BD-ITAC]*
+
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 4
+:sectlinks:
+
+
+[introduction]
+
+Este é o micro-serviço ReST para integração com a aplicação móvel no sistema BD-ITAC.
+
+
+[[overview]]
+== Verbos HTTP
+
+Este serviço procura aderir na medida do possível aos padrões HTTP e às convenções ReST no uso dos verbos HTTP.
+
+|===
+| Verbo | Uso
+
+| `GET`
+| Utilizado para recuperar um recurso do sistema
+
+| `HEAD`
+| Utilizado para obter informações de um recurso
+
+| `POST`
+| Utilizado para criar um novo recurso
+
+| `PATCH`
+| Utilizado para atualizar parcialmente um recurso
+
+| `PUT`
+| Utilizado para atualizar completamente um recurso
+
+| `DELETE`
+| Utilizado para excluir um recurso 
+ 
+|===
+
+Observar que nem todos os recursos possuem todas as operações implementadas.
+
+[[overview-http-status-code]]
+== Códigos de estado HTTP
+
+Este serviço procurar aderir na medida do possível aos padrões HTTP e às convenções ReST no uso dos códigos de estado HTTP.
+
+|===
+| Código de estado | Descrição
+
+| `200 OK` | Resposta comum para requisições HTTP bem sucedidas.
+
+A resposta atual vai depender do método de requisição utilizado.
+
+Numa requisição `GET`, a resposta irá conter uma entidade correspondendo ao recurso requisitado.
+
+Numa requisiçào `POST`, a resposta irá conter uma entidade descrevendo o resultado da ação.
+
+| `201 Created` | A requisição foi executada com sucesso e o recurso foi criado.
+
+| `204 No Content` | A requisição foi executada com sucesso, mas não retornou nenhum conteúdo.
+
+| `400 Bad Request` | O servidor não pode processar a requisição devido a algo que o servidor percebe com sendo erro do cliente (por exemplo, sintaxe da requisição incorreta).
+
+| `404 Not Found` | O recurso não pode ser encontrado porém pode estar disponível em requisições subseqüentes.
+|===
+
+
+[[resources]]
+= Recursos
+
+Documentação da versão da API/ReST do BD-ITAC.
+
+
+[[resources-categorias]]
+== Categorias
+
+Categorias são os tipos de crises e alertas que o sistema atualmente cobre, baseado na tabela do COBRADE.
+
+=== Lista
+
+Para obter uma lista das categorias de crises e alertas disponíveis no sistema, podemos pesquisar utilzando o seguinte comando (em +curl+):
+include::{snippets}/categorias/curl-request.adoc[]
+
+==== Requisição
+
+A requisição irá tomar o seguinte formato:
+include::{snippets}/categorias/http-request.adoc[]
+
+==== Resposta
+
+O serviço irá responder com +Status 200 - Created+ e os dados disponíveis:
+include::{snippets}/categorias/http-response.adoc[]
+
+==== Descrição da resposta
+
+A descrição do(s) atributo(s) retornado(s): 
+include::{snippets}/categorias/response-fields.adoc[]
+
+
+[[resources-crises]]
+== Crises
+
+As crises são cadastradas por um usuário da aplicação móvel e são enviados para o sistema para processamento. A partir das crises cadastradas é possível gerar alertas.
+
+=== Gravação
+
+Para gravar uma crise podemos utilizar o seguinte exemplo (em +curl+).:
+include::{snippets}/crise/post/curl-request.adoc[]
+Os dados a serem inseridos devem ser enviados no formato +JSON+.
+
+==== Requisição
+
+A requisição irá tomar o seguinte formato:
+include::{snippets}/crise/post/http-request.adoc[]
+
+==== Resposta
+
+O serviço irá responder com +Status 201 - Created+ e uma mensagem de sucesso da inclusão ou um +Status+ de erro e uma mensagem informando o motivo do erro:
+include::{snippets}/crise/post/http-response.adoc[]
+
+==== Descrição da resposta
+
+A descrição do(s) atributo(s) retornado(s): 
+include::{snippets}/crise/post/response-fields.adoc[]
+
+[[resources-alertas]]
+== Alertas
+
+Alertas são mensagens enviadas pelo sistema para alertar a população de um problema que estiver ocorrendo em determinada área. Dado o volume presumidamente baixo de alertas enviados pelo sistema, todos os usuários recebem todos os alertas em seus aplicativos móveis e o próprio aplicativo determina se o usuário deve ter sua atenção focada na ocorrência com base em parâmetros definidos pelo próprio como tipos de ocorrências, área da ocorrência, magnitude, etc.
+
+=== Pesquisa por *identificador*
+
+Para pesquisar um registro específico do serviço podemos utilizar o seguinte comando (em +curl+):
+include::{snippets}/alerta/id/curl-request.adoc[]
+
+==== Requisição
+
+A requisição toma a seguinte forma:
+include::{snippets}/alerta/id/http-request.adoc[]
+
+==== Parâmetros da requisição
+
+Os parâmetros que devem ser informados na requisição são:
+include::{snippets}/alerta/id/path-parameters.adoc[]
+
+==== Resposta
+
+A resposta irá conter uma lista com os dados formatados em +JSON+ além do cabeçalho com o resultado da operação:
+include::{snippets}/alerta/id/http-response.adoc[]
+
+==== Descrição da resposta
+
+A descrição do(s) atributo(s) retornado(s):
+include::{snippets}/alerta/id/response-fields.adoc[]
+
+=== Pesquisa por *coordenadas*
+
+Para pesquisar uma lista de registros numa região específica do serviço podemos utilizar o seguinte comando (em +curl+):
+include::{snippets}/alerta/getCoords/curl-request.adoc[]
+
+==== Requisição
+
+A requisição toma a seguinte forma:
+include::{snippets}/alerta/getCoords/http-request.adoc[]
+
+==== Parâmetros da requisição
+
+Os parâmetros que devem ser informados na requisição são:
+include::{snippets}/alerta/locationsCoords/path-parameters.adoc[]
+
+==== Resposta
+
+A resposta irá conter uma lista com os dados formatados em +JSON+ além do cabeçalho com o resultado da operação:
+include::{snippets}/alerta/getCoords/http-response.adoc[]
+
+==== Descrição da resposta
+
+A descrição do(s) atributo(s) retornado(s):
+include::{snippets}/alerta/getCoords/response-fields.adoc[]
+
+
+[[resources-indicadores]]
+== Indicadores
+
+Indicadores são estatísticas do sistema, contendo valores numéricos de alertas e crises e indicam a situação do atendimento.
+
+=== Lista
+
+Para obter uma lista dos indicadores disponíveis no sistema, podemos pesquisar utilzando o seguinte comando (em +curl+):
+include::{snippets}/indicadores/curl-request.adoc[]
+
+==== Requisição
+
+A requisição irá tomar o seguinte formato:
+include::{snippets}/indicadores/http-request.adoc[]
+
+==== Resposta
+
+O serviço irá responder com +Status 200 - Created+ e os dados disponíveis:
+include::{snippets}/indicadores/http-response.adoc[]
+
+==== Descrição da resposta
+
+A descrição do(s) atributo(s) retornado(s): 
+include::{snippets}/indicadores/response-fields.adoc[]

@@ -1,0 +1,22 @@
+abv_abreviacao;abv_explicacao;pal_id
+bb;bebê;39857
+jto;jeito;177462
+p/;para;236520
+wpp;whatsapp;23810
+zap;whatsapp;23810
+mt;muito;214937
+loko;louco;189847
+cmg;comigo;78051
+ñ;não;217937
+n;não;217937
+s;sim;290557
+ptgs;português;257986
+ctg;contigo;81231
+pfv;por favor;133102
+plmds;pelo amor de Deus;97386
+mds;meu Deus;97386
+omg;oh my God;97386
+lgl;legal;183224
+lgc;lógico;188993
+amr;amor;17151
+m.a;melhor amigo(a);16627

@@ -1,0 +1,6 @@
+server:
+    port: 80
+    address: bditac.ddns.net
+info:
+  build.version: "@project.version@"
+    

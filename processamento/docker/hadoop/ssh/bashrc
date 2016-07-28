@@ -1,0 +1,9 @@
+# Java env
+export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-amd64
+
+# Hadoop env
+export HADOOP_HOME=/usr/local/hadoop
+export HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop
+export YARN_HOME=$HADOOP_HOME
+export YARN_CONF_DIR=$HADOOP_HOME/etc/hadoop
+export PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin

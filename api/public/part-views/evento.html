@@ -1,0 +1,39 @@
+<div ng-controller="EventoController as vm">
+  <ol class="breadcrumb">
+  <li><a href="#">Home</a></li>
+  <li><a href="#">Parameters</a></li>
+  <li class="active">Classification</li>
+</ol>
+<div class="container">
+  <h2>Eventos Cadastradas</h2>
+
+  <!-- Nova Claassificacação -->
+ <form role="form" ng-submit="addEvento()">
+   <div class="row">
+     <div class="input-group">
+       <div style="overflow: hidden;">
+           <input type="text" ng-model="cid" placeholder="CID" class="form-control" style="width:20%;float: left;"
+                   required="" ng-class="{'form-input-error': (vm.form.submitted == true && form.cid.$invalid == true)}"/>
+           <input type="text" ng-model="descricao" placeholder="Novo Evento" class="form-control" style="width:80%;float: right;overflow: hidden;"
+                  required="" ng-class="{'form-input-error': (vm.form.submitted == true && form.dsc.$invalid == true)}"/>
+       </div>
+       <span class="input-group-btn">
+         <input type="submit" class="btn btn-primary" value="Add">
+       </span>
+     </div>
+   </div>
+ </form>
+
+ <!-- Lista de Classificações -->
+ <div class="input-group" ng-repeat="item in ItemListCollection" style="width:100%">
+  <div class="form-group" style="width:20%;overflow: hidden;float: left;">
+     <input type="text" ng-model="item.cid" class="form-control" disabled="true">
+   </div>
+     <div class="form-group">
+       <input type="text" ng-model="item.descricao" class="form-control" style="width:75%;overflow: hidden;float: left;" disabled="true">
+       <span class="input-group-btn" style="width:5%;overflow: hidden;float: right;">
+         <button class="btn btn-danger" ng-click="removeEvento(item)" aria-label="Remove" >X</button>
+       </span>
+     </div>
+</div>
+</div>

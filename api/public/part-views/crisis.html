@@ -1,0 +1,43 @@
+<div ng-controller="CrisisController as vm">
+  <ol class="breadcrumb">
+  <li><a href="#">Home</a></li>
+  <li><a href="#">Crisis</a></li>
+  <li class="active">List</li>
+</ol>
+  <table width="100%" class="table table-hover">
+   <thead>
+     <tr>
+       <th>#ID</th>
+       <th>Description / Local</th>
+       <th>Start</th>
+       <th>Finish</th>
+       <th>Count Avisos</th>
+       <th>Is Alerta</th>
+       <th>Active</th>
+       <th></th>
+     </tr>
+   </thead>
+   <tbody>
+    <tr ng-repeat="crise in CrisisListCollection" ng-class="[{'success' : crise.count_alerta > 0}, {'danger' : crise.cri_ativa == 0}]">
+      <td>{{crise.cri_id}}</td>
+      <td>{{crise.cri_descricao}} <br /> {{crise.cid_nome}} / {{crise.est_sigla}}</td>
+      <td>{{crise.cri_inicio}}</td>
+      <td>{{crise.cri_final}}</td>
+      <td>{{crise.count_aviso}}</td>
+      <td>{{vm.alerta(crise.count_alerta)}}</td>
+      <td>{{vm.parseBoolString(crise.cri_ativa)}}</td>
+      <td>
+        <button class="btn btn-default" type="button" title="Detail Crisis" ng-click="vm.openDetail(crise.cri_id);">
+           <span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>
+        </button>
+        <button class="btn btn-success" type="button" title="Create Alert" ng-disabled="vm.disabled(crise.cri_ativa, crise.count_alerta);" ng-click="vm.createAlert(crise.cri_id);">
+           <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+        </button>
+        <button class="btn btn-danger" type="button" title="Cancel Crisis" ng-click="vm.cancel(crise.cri_id);" ng-disabled="vm.disabled(crise.cri_ativa, crise.count_alerta);">
+           <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+        </button>
+      </td>
+    </tr>
+   </tbody>
+  </table>
+</div>

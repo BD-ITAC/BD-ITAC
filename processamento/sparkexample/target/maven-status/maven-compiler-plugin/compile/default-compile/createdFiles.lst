@@ -1,0 +1,17 @@
+org/spark/WordCount2$1.class
+org/spark/model/pojo/CriseType.class
+org/spark/model/repository/MySQLDAO.class
+org/spark/WordCount2$2.class
+org/spark/WordCount2.class
+org/spark/model/pojo/Facebook.class
+org/spark/model/pojo/Twitter.class
+org/spark/SparkFunction.class
+org/spark/Processamento.class
+org/spark/model/repository/CriseRepository.class
+org/spark/WordCount2$3.class
+org/spark/SparkFunction$2.class
+org/spark/PropertiesUtils.class
+org/spark/SparkFunction$3.class
+org/spark/model/pojo/CriseCount.class
+org/spark/SparkFunction$1.class
+org/spark/model/pojo/CrisePojo.class
